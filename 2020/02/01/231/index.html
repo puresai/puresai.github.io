@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>系列文章---基础篇：1.PSR | 13sai blog</title><meta name="description" content="PSR"><meta name="keywords" content="PHP系列"><meta name="author" content="13sai"><meta name="copyright" content="13sai"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="系列文章---基础篇：1.PSR"><meta name="twitter:description" content="PSR"><meta name="twitter:image" content="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><meta property="og:type" content="article"><meta property="og:title" content="系列文章---基础篇：1.PSR"><meta property="og:url" content="http://github.13sai.com/2020/02/01/231/"><meta property="og:site_name" content="13sai blog"><meta property="og:description" content="PSR"><meta property="og:image" content="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://github.13sai.com/2020/02/01/231/"><link rel="prev" title="系列文章---基础篇：2.composer" href="http://github.13sai.com/2020/02/01/232/"><link rel="next" title="常见排序算法" href="http://github.13sai.com/2020/01/31/226/"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight_copy: 'false',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'false',
+  Snackbar: undefined
+  
+}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">13sai blog</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="http://image.13sai.com/sai.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">174</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">37</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">27</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#创作初衷"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">创作初衷</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#你能学到什么"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">你能学到什么</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#什么是PSR？"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">什么是PSR？</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#PSR-1-基础编码规范"><span class="toc_mobile_items-number">3.1.</span> <span class="toc_mobile_items-text">PSR-1 基础编码规范</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#PSR-12-代码风格规范"><span class="toc_mobile_items-number">3.2.</span> <span class="toc_mobile_items-text">PSR-12 代码风格规范</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#PSR-4-自动加载"><span class="toc_mobile_items-number">3.3.</span> <span class="toc_mobile_items-text">PSR-4 自动加载</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-5"><a class="toc_mobile_items-link" href="#例子"><span class="toc_mobile_items-number">3.3.1.</span> <span class="toc_mobile_items-text">例子</span></a></li></ol></li></ol></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#创作初衷"><span class="toc-number">1.</span> <span class="toc-text">创作初衷</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#你能学到什么"><span class="toc-number">2.</span> <span class="toc-text">你能学到什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是PSR？"><span class="toc-number">3.</span> <span class="toc-text">什么是PSR？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#PSR-1-基础编码规范"><span class="toc-number">3.1.</span> <span class="toc-text">PSR-1 基础编码规范</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PSR-12-代码风格规范"><span class="toc-number">3.2.</span> <span class="toc-text">PSR-12 代码风格规范</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PSR-4-自动加载"><span class="toc-number">3.3.</span> <span class="toc-text">PSR-4 自动加载</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#例子"><span class="toc-number">3.3.1.</span> <span class="toc-text">例子</span></a></li></ol></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">系列文章---基础篇：1.PSR</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-02-01<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-02-27</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/">系列文章</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true">       </i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><ul>
+<li><a href="https://mp.weixin.qq.com/mp/homepage?__biz=MzI3Njc5Mjc0Mg==&hid=7&sn=ec786eb198002a02d9fb203b31b032b9" target="_blank" rel="noopener">PHP DIY系列–一起手写一个api框架</a></li>
+</ul>
+<hr>
+<p>PHP DIY系列–一起手写一个api框架</p>
+<h3 id="创作初衷"><a href="#创作初衷" class="headerlink" title="创作初衷"></a>创作初衷</h3><ul>
+<li>有没有用烦了CURD？</li>
+<li>各种框架是不是有点头大？</li>
+<li>有没有尝试自己设计一个框架？</li>
+<li>学了PHP语法，没有项目去实战，夯实基础</li>
+</ul>
+<p>希望能帮助能让你快速地搭建一个自己的框架，能给你的工作或者学习中带来一定的帮助与启发。</p>
+<h3 id="你能学到什么"><a href="#你能学到什么" class="headerlink" title="你能学到什么"></a>你能学到什么</h3><ol>
+<li>PSR规范</li>
+<li>composer的使用</li>
+<li>快速搭建一个API接口框架</li>
+<li>Redis各种数据类型的应用</li>
+<li>缓存应用分析</li>
+</ol>
+<hr>
+<p>在开发框架之前，我来介绍框架开发遵循的规范。</p>
+<p>大多数编程语言都有自己的一套编码规范，作为“世界上最好的语言”，PHP当然也有自己的编码规范。这个规范就是PHP Standard Recommendation（简称PSR）。</p>
+<p>当然，从我自己的工作中，我发现很多PHP程序员尤其是初级程序员，是不知道PHP是有这么一个规范的，我认为这是不科学的。</p>
+<h3 id="什么是PSR？"><a href="#什么是PSR？" class="headerlink" title="什么是PSR？"></a>什么是PSR？</h3><p>介绍PSR之前需要介绍一下制定此规范的组织—–PHP-FIG，全称是PHP Framework Interoperability。</p>
+<p>组织成员制定规范，并且落实在自己的项目中，虽然不是官方组织，但也代表了大部分PHP社区项目，如CakePHP，Composer，Drupal，PEAR，Slim，Yii framework，Zend Framework等。并且有越来越多的项目加入并遵循此标准。</p>
+<p>PSR项目的目的在于：通过框架作者或者框架的代表之间讨论，以最低程度的限制，制定一个协作标准，各个框架遵循统一的编码规范，让工程师一起更好协同工作。</p>
+<p>截止目前，已经官网已有20条列出，除去起草中和舍弃的，有以下13条。</p>
+<p><img alt="PSRs" data-src="https://cdn.learnku.com/uploads/images/202002/18/41489/1wmtWCQ4Fv.png!large" class="lazyload"></p>
+<hr>
+<p>我们不妨来看看这些规范：</p>
+<h4 id="PSR-1-基础编码规范"><a href="#PSR-1-基础编码规范" class="headerlink" title="PSR-1 基础编码规范"></a>PSR-1 基础编码规范</h4><ul>
+<li>PHP 代码文件必须以 &lt;?php 或 &lt;?= 标签开始</li>
+<li>PHP 代码文件必须以不带BOM的UTF-8编码</li>
+<li>PHP 代码中 应该 只定义类、函数、常量等声明，或其他会产生 副作用 的操作（如：生成文件输出以及修改 .ini 配置文件等），二者只能选其一</li>
+<li>命名空间以及类必须符合 PSR 的自动加载规范PSR-4</li>
+<li>类的命名必须遵循 StudlyCaps 式大写开头的驼峰命名规范</li>
+<li>类中的常量所有字母都必须 大写，单词间用下划线分隔</li>
+<li>方法名称必须符合 camelCase 式的小写开头驼峰命名规范</li>
+</ul>
+<h4 id="PSR-12-代码风格规范"><a href="#PSR-12-代码风格规范" class="headerlink" title="PSR-12 代码风格规范"></a>PSR-12 代码风格规范</h4><p>PSR-12的规范很细致，包含了声明、命名空间、类及继承以及控制结构等说明。</p>
+<p>我们先来看一个demo：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">declare(strict_types=1);</span><br><span class="line"></span><br><span class="line">namespace Vendor\Package;</span><br><span class="line"></span><br><span class="line">use Vendor\Package\&#123;ClassA as A, ClassB, ClassC as C&#125;;</span><br><span class="line">use Vendor\Package\SomeNamespace\ClassD as D;</span><br><span class="line"></span><br><span class="line">use function Vendor\Package\&#123;functionA, functionB, functionC&#125;;</span><br><span class="line"></span><br><span class="line">use const Vendor\Package\&#123;ConstantA, ConstantB, ConstantC&#125;;</span><br><span class="line"></span><br><span class="line">class Foo extends Bar implements FooInterface</span><br><span class="line">&#123;</span><br><span class="line">    public function sampleFunction(int $a, int $b = null): array</span><br><span class="line">    &#123;</span><br><span class="line">        if ($a === $b) &#123;</span><br><span class="line">            bar();</span><br><span class="line">        &#125; elseif ($a &gt; $b) &#123;</span><br><span class="line">            $foo-&gt;bar($arg1);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            BazClass::bar($arg2, $arg3);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    final public static function bar()</span><br><span class="line">    &#123;</span><br><span class="line">        // method body</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>代码 必须 遵循 [PSR-1] 中的编码规范</li>
+<li>所有PHP文件必须使用Unix LF (linefeed)作为行的结束符；</li>
+<li>所有PHP文件必须以一个空白行作为结束；</li>
+<li>纯PHP代码文件必须省略最后的 ?&gt; 结束标签</li>
+<li>每行的字符数 应该软性保持在 80 个之内，理论上 一定不可 多于 120 个，但一定不可有硬性限制；非空行后一定不能有多余的空格符；</li>
+<li>空行可以使得阅读代码更加方便以及有助于代码的分块。</li>
+<li>每行一定不能存在多于一条语句</li>
+<li>代码必须使用4个空格符的缩进，一定不能用 tab键</li>
+<li>PHP所有关键字必须全部小写</li>
+<li>控制结构的基本规范如下：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">控制结构关键词后必须有一个空格。</span><br><span class="line">左括号 ( 后一定不能有空格。</span><br><span class="line">右括号 ) 前也一定不能有空格。</span><br><span class="line">右括号 ) 与开始花括号 &#123; 间一定有一个空格。</span><br><span class="line">结构体主体一定要有一次缩进。</span><br><span class="line">结束花括号 &#125; 一定在结构体主体后单独成行。</span><br></pre></td></tr></table></figure>
+代码风格规范内容很多，这里就不一一说明了，大家可自行阅读</li>
+</ul>
+<h4 id="PSR-4-自动加载"><a href="#PSR-4-自动加载" class="headerlink" title="PSR-4 自动加载"></a>PSR-4 自动加载</h4><p>关于由文件路径 自动载入 对应类的相关规范， 本规范是可互操作的，可以作为任一自动载入规范的补充，其中包括 PSR-0，此外， 本 PSR 还包括自动载入的类对应的文件存放路径规范。</p>
+<ol>
+<li><p>此处的“类”泛指所有的class类、接口、traits可复用代码块以及其它类似结构。</p>
+</li>
+<li><p>一个完整的类名需具有以下结构:</p>
+<pre><code>\&lt;命名空间&gt;(\&lt;子命名空间&gt;)*\&lt;类名&gt;</code></pre><ol>
+<li><p>完整的类名<strong>必须</strong>要有一个顶级命名空间，被称为 “vendor namespace”；</p>
+</li>
+<li><p>完整的类名<strong>可以</strong>有一个或多个子命名空间；</p>
+</li>
+<li><p>完整的类名<strong>必须</strong>有一个最终的类名；</p>
+</li>
+<li><p>完整的类名中任意一部分中的下划线都是没有特殊含义的；</p>
+</li>
+<li><p>完整的类名<strong>可以</strong>由任意大小写字母组成；</p>
+</li>
+<li><p>所有类名都<strong>必须</strong>是大小写敏感的。</p>
+</li>
+</ol>
+</li>
+<li><p>当根据完整的类名载入相应的文件……</p>
+<ol>
+<li><p>完整的类名中，去掉最前面的命名空间分隔符，前面连续的一个或多个命名空间和子命名空间，作为“命名空间前缀”，其必须与至少一个“文件基目录”相对应；</p>
+</li>
+<li><p>紧接命名空间前缀后的子命名空间<strong>必须</strong>与相应的”文件基目录“相匹配，其中的命名空间分隔符将作为目录分隔符。</p>
+</li>
+<li><p>末尾的类名<strong>必须</strong>与对应的以 <code>.php</code> 为后缀的文件同名。</p>
+</li>
+<li><p>自动加载器（autoloader）的实现<strong>一定不能</strong>抛出异常、<strong>一定不能</strong>触发任一级别的错误信息以及<strong>不应该</strong>有返回值。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><p>下表展示了符合规范完整类名、命名空间前缀和文件基目录所对应的文件路径。</p>
+<table>
+<thead>
+<tr>
+<th>完整类名</th>
+<th>命名空间前缀</th>
+<th>文件基目录</th>
+<th>文件路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>\Acme\Log\Writer\File_Writer</td>
+<td>Acme\Log\Writer</td>
+<td>./acme-log-writer/lib/</td>
+<td>./acme-log-writer/lib/File_Writer.php</td>
+</tr>
+<tr>
+<td>\Aura\Web\Response\Status</td>
+<td>Aura\Web</td>
+<td>/path/to/aura-web/src/</td>
+<td>/path/to/aura-web/src/Response/Status.php</td>
+</tr>
+<tr>
+<td>\Symfony\Core\Request</td>
+<td>Symfony\Core</td>
+<td>./vendor/Symfony/Core/</td>
+<td>./vendor/Symfony/Core/Request.php</td>
+</tr>
+<tr>
+<td>\Zend\Acl</td>
+<td>Zend</td>
+<td>/usr/includes/Zend/</td>
+<td>/usr/includes/Zend/Acl.php</td>
+</tr>
+</tbody></table>
+<p>暂且只介绍这比较常用的三个规范。</p>
+<p><a href="https://www.php-fig.org/psr/" target="_blank" rel="noopener">更多最新规范建议点击查看</a></p>
+<hr>
+<p>本节主要介绍了PHP的编码规范PSR，建议大家在开发中尽量遵循此规范，特别是团队开发的时候，我们不应该各自有着各自的编码风格，应该尽可能统一风格。正如PHP-FIG组织的初衷所说，他们建立的规范不是限制大家的编码自由，只是寻找共性，为了我们一起更好的协同工作。</p>
+</div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PHP%E7%B3%BB%E5%88%97/">PHP系列    </a></div><div class="post_share"><div class="social-share" data-image="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="http://image.13sai.com/zan.jpg"><div class="post-qr-code__desc">微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/02/01/232/"><img class="prev_cover lazyload" data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>系列文章---基础篇：2.composer</span></div></a></div><div class="next-post pull_right"><a href="/2020/01/31/226/"><img class="next_cover lazyload" data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>常见排序算法</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/01/232/" title="系列文章---基础篇：2.composer"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---基础篇：2.composer</div></a></div><div class="relatedPosts_item"><a href="/2020/02/22/243/" title="系列文章---应用篇：1.分布式锁"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---应用篇：1.分布式锁</div></a></div><div class="relatedPosts_item"><a href="/2020/02/01/233/" title="系列文章---基础篇：3.反射"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---基础篇：3.反射</div></a></div><div class="relatedPosts_item"><a href="/2020/02/22/244/" title="系列文章---应用篇：2.延时任务"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---应用篇：2.延时任务</div></a></div><div class="relatedPosts_item"><a href="/2020/02/04/235/" title="系列文章---框架篇：2.请求与输出"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---框架篇：2.请求与输出</div></a></div><div class="relatedPosts_item"><a href="/2020/02/02/234/" title="系列文章---框架篇：1.框架目录与辅助"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---框架篇：1.框架目录与辅助</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: '56020318cc01a9d56fdd',
+  clientSecret: '2fbbfefbb59c1247f4e212b7b83909302553911c',
+  repo: '13sai.github.io',
+  owner: '13sai',
+  admin: '13sai',
+  id: md5(decodeURI(location.pathname)),
+  language: ''
+})
+gitalk.render('gitalk-container')</script></div></div></div><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2020 By 13sai</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span>皖ICP备14021992号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>

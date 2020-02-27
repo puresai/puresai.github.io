@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>系列文章---框架篇：7.使用redis加速session读写 | 13sai blog</title><meta name="description" content="PSR"><meta name="keywords" content="PHP系列"><meta name="author" content="13sai"><meta name="copyright" content="13sai"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="系列文章---框架篇：7.使用redis加速session读写"><meta name="twitter:description" content="PSR"><meta name="twitter:image" content="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><meta property="og:type" content="article"><meta property="og:title" content="系列文章---框架篇：7.使用redis加速session读写"><meta property="og:url" content="http://github.13sai.com/2020/02/15/240/"><meta property="og:site_name" content="13sai blog"><meta property="og:description" content="PSR"><meta property="og:image" content="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://github.13sai.com/2020/02/15/240/"><link rel="prev" title="系列文章---框架篇：8.依赖注入与控制反转" href="http://github.13sai.com/2020/02/15/241/"><link rel="next" title="系列文章---框架篇：6.简单测试" href="http://github.13sai.com/2020/02/13/239/"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight_copy: 'false',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'false',
+  Snackbar: undefined
+  
+}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">13sai blog</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="http://image.13sai.com/sai.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">174</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">37</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">27</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Redis是什么？"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">Redis是什么？</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Redis数据结构"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">Redis数据结构</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Redis的优势"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">Redis的优势</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Redis应用"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">Redis应用</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#Redis命令"><span class="toc_mobile_items-number">5.</span> <span class="toc_mobile_items-text">Redis命令</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#使用redis存储session"><span class="toc_mobile_items-number">6.</span> <span class="toc_mobile_items-text">使用redis存储session</span></a></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#session-start"><span class="toc_mobile_items-number"></span> <span class="toc_mobile_items-text">session_start</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#session-set-save-handler"><span class="toc_mobile_items-number"></span> <span class="toc_mobile_items-text">session_set_save_handler</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#总结"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">总结</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis是什么？"><span class="toc-number">1.</span> <span class="toc-text">Redis是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis数据结构"><span class="toc-number">2.</span> <span class="toc-text">Redis数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis的优势"><span class="toc-number">3.</span> <span class="toc-text">Redis的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis应用"><span class="toc-number">4.</span> <span class="toc-text">Redis应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis命令"><span class="toc-number">5.</span> <span class="toc-text">Redis命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用redis存储session"><span class="toc-number">6.</span> <span class="toc-text">使用redis存储session</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session-start"><span class="toc-number"></span> <span class="toc-text">session_start</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session-set-save-handler"><span class="toc-number"></span> <span class="toc-text">session_set_save_handler</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.</span> <span class="toc-text">总结</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">系列文章---框架篇：7.使用redis加速session读写</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-02-15<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-02-27</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/">系列文章</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true">       </i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><ul>
+<li><a href="https://github.com/13sai/saiAPI" target="_blank" rel="noopener" title="git项目地址">git项目地址</a></li>
+<li><a href="https://mp.weixin.qq.com/mp/homepage?__biz=MzI3Njc5Mjc0Mg==&hid=7&sn=ec786eb198002a02d9fb203b31b032b9" target="_blank" rel="noopener">PHP DIY系列–一起手写一个api框架</a></li>
+</ul>
+<hr>
+<p>大家都知道，默认的session是存储在文件里的，一般情况下这是没什么问题的，然而一旦访问很多，session的使用就会频繁读写文件，必然会影响应用的性能。另外，假如是多机部署，session的共享也是个问题。</p>
+<p>既然我们知道有Redis这个利器，而PHP也是支持session自定义的，那么为何不要性能更好又能实现共享session的Redis呢？</p>
+<h3 id="Redis是什么？"><a href="#Redis是什么？" class="headerlink" title="Redis是什么？"></a>Redis是什么？</h3><p>Redis 是完全开源免费的，遵守 BSD 协议，是一个高性能的 key - value 数据库</p>
+<h3 id="Redis数据结构"><a href="#Redis数据结构" class="headerlink" title="Redis数据结构"></a>Redis数据结构</h3><ul>
+<li>string</li>
+<li>hash</li>
+<li>set</li>
+<li>sorted set</li>
+<li>pub/sub</li>
+<li>list</li>
+</ul>
+<p>另外还有HyperLogLog，geo….</p>
+<h3 id="Redis的优势"><a href="#Redis的优势" class="headerlink" title="Redis的优势"></a>Redis的优势</h3><ul>
+<li>性能极佳，官网显示QPS能达到100k/s</li>
+<li>数据结构丰富，不止于字符串，hash</li>
+<li>稳定性不错，持久化</li>
+<li>支持集群</li>
+<li>社区不错，使用率高，对于PHP程序员，除了LNMP/LAMP，然后应该就是Redis了</li>
+</ul>
+<h3 id="Redis应用"><a href="#Redis应用" class="headerlink" title="Redis应用"></a>Redis应用</h3><ul>
+<li>缓存</li>
+<li>分布式锁</li>
+<li>计数器</li>
+<li>队列</li>
+<li>geo</li>
+<li>……</li>
+</ul>
+<h3 id="Redis命令"><a href="#Redis命令" class="headerlink" title="Redis命令"></a>Redis命令</h3><ul>
+<li><a href="http://doc.redisfans.com/" target="_blank" rel="noopener">点击查看Redis命令</a></li>
+</ul>
+<h3 id="使用redis存储session"><a href="#使用redis存储session" class="headerlink" title="使用redis存储session"></a>使用redis存储session</h3><p>我介绍两种方法给大家：</p>
+<ol>
+<li>session_start带参</li>
+<li>session_set_save_handler托管session</li>
+</ol>
+<p>下面我们里一一说明：</p>
+<h2 id="session-start"><a href="#session-start" class="headerlink" title="session_start"></a>session_start</h2><p>session_start ([ array $options = array() ] ) : bool —— 启动新会话或者重用现有会话（<a href="https://www.php.net/manual/zh/session.configuration.php" target="_blank" rel="noopener">点击查看更多参数</a>）</p>
+<p>来看demo：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">session_start([</span><br><span class="line">    &apos;save_path&apos; =&gt; &apos;tcp://127.0.0.1:6379&apos;,</span><br><span class="line">    &apos;save_handler&apos; =&gt; &apos;redis&apos;,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line">$_SESSION[&apos;user_id&apos;] = 10001;</span><br><span class="line">$_SESSION[&apos;userInfo&apos;] = [&apos;name&apos; =&gt; &apos;sai&apos;];</span><br><span class="line">p($_SESSION[&apos;user_id&apos;]);</span><br><span class="line">p($_SESSION[&apos;userInfo&apos;]);</span><br></pre></td></tr></table></figure>
+
+
+<p>输出如下：</p>
+<pre style="position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;">10001</pre>
+<pre style="position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;">Array
+(
+    [name] => sai
+)
+</pre>
+
+
+<p>我们可以使用redis-cli连接查看：</p>
+<blockquote>
+<p>redis-cli -h 127.0.0.1 -p 6379<br>// 如设置密码再输入（auth 你设置的密码）即可</p>
+</blockquote>
+<p><img alt="image" data-src="https://cdn.learnku.com/uploads/images/202002/20/41489/89KRhPfXOo.png!large" class="lazyload"></p>
+<p>我们可以看到redis里有了PHPREDIS_SESSION:nmo65igogqnq8ur2gia94jt15u，里面存储了我们的session信息。</p>
+<h2 id="session-set-save-handler"><a href="#session-set-save-handler" class="headerlink" title="session_set_save_handler"></a>session_set_save_handler</h2><p>建议session.serialize_handler = php_serialize，默认php写入和读取略微繁琐。</p>
+<p>这里说明我们成功了将session信息通过Redis进行了读写。下面我们使用session_set_save_handler来实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">namespace Library\Sessions;</span><br><span class="line"></span><br><span class="line">use SessionHandler;</span><br><span class="line"></span><br><span class="line">class RedisSession extends SessionHandler</span><br><span class="line">&#123;</span><br><span class="line">    private $redis;</span><br><span class="line">    </span><br><span class="line">    private $lifeTime = 7200;</span><br><span class="line">    </span><br><span class="line">    private $config;</span><br><span class="line"></span><br><span class="line">    private $prefix = &apos;PHPREDIS_SESSION:&apos;;</span><br><span class="line"></span><br><span class="line">    public function __construct($config)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;config = $config;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    private function getRedisInstance()</span><br><span class="line">    &#123;</span><br><span class="line">        if (empty($this-&gt;redis)) &#123;</span><br><span class="line">            $redis = new \Redis();</span><br><span class="line">            $redis-&gt;connect($this-&gt;config[&apos;host&apos;], $this-&gt;config[&apos;port&apos;], $this-&gt;config[&apos;timeout&apos;]);</span><br><span class="line">            if (!$this-&gt;config[&apos;auth&apos;]) &#123;</span><br><span class="line">                $redis-&gt;auth($this-&gt;config[&apos;auth&apos;]);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            $this-&gt;redis = $redis;</span><br><span class="line">        &#125;</span><br><span class="line">        return $this-&gt;redis;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function read($id)</span><br><span class="line">    &#123;</span><br><span class="line">        return $this-&gt;getRedisInstance()-&gt;get($this-&gt;prefix.$id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function write($id, $data)</span><br><span class="line">    &#123;</span><br><span class="line">        if ($this-&gt;getRedisInstance()-&gt;setex($this-&gt;prefix.$id, $this-&gt;lifeTime, $data)) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function destroy($id)</span><br><span class="line">    &#123;</span><br><span class="line">        if($this-&gt;getRedisInstance()-&gt;delete($id))&#123;//删除redis中的指定记录</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function gc($maxlifetime)</span><br><span class="line">    &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function __destruct()</span><br><span class="line">    &#123;</span><br><span class="line">        session_write_close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$handler = new RedisSession([</span><br><span class="line">            &apos;host&apos; =&gt; &apos;127.0.0.1&apos;,</span><br><span class="line">            &apos;port&apos; =&gt; 6379,</span><br><span class="line">            &apos;auth&apos; =&gt; null,</span><br><span class="line">            &apos;timeout&apos; =&gt; 5,</span><br><span class="line">        ]);</span><br><span class="line">session_set_save_handler($handler, true);</span><br><span class="line">session_start();</span><br><span class="line"></span><br><span class="line">$_SESSION[&apos;user_id&apos;] = 10001;</span><br><span class="line">$_SESSION[&apos;userInfo&apos;] = [&apos;name&apos; =&gt; &apos;sai&apos;];</span><br><span class="line">p($_SESSION[&apos;user_id&apos;]);</span><br><span class="line">p($_SESSION[&apos;userInfo&apos;]);</span><br></pre></td></tr></table></figure>
+
+<p>知识点：</p>
+<ol>
+<li>这里需要注意下read方法，里面需要加一下serialize，以便于我们存储复杂的session结构。如果不加会报错（Warning: session_start(): Failed to read session data: user (path: )）这是因为Redis无法直接存储array结构，需要转化为string类型存储。</li>
+</ol>
+<p>我们也来看看Redis客户端存储情况：</p>
+<p><img alt="image" data-src="https://cdn.learnku.com/uploads/images/202002/20/41489/joxyEbzS9I.png!large" class="lazyload"></p>
+<p>通用我们也看到redis存储了session，与前面略有不同的只是存储的key不一样。但是我们可以定义一个私有属性：</p>
+<blockquote>
+<p>private $prefix = ‘PHPREDIS_SESSION:’;</p>
+</blockquote>
+<p>然后做一下调整即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public function read($id)</span><br><span class="line">&#123;</span><br><span class="line">    return serialize($this-&gt;getRedisInstance()-&gt;get($this-&gt;prefix.$id));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public function write($id,$data)</span><br><span class="line">&#123;</span><br><span class="line">    if ($this-&gt;getRedisInstance()-&gt;setex($this-&gt;prefix.$id, $this-&gt;lifeTime, $data)) &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行后会发现把之前第一种设置的session覆盖掉。</p>
+<p>当然我比较建议使用第二种方法，便于我们定制化编码。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总的来说，两种方法配置都比较简单，个人建议使用第二种方式实现，这样也比较适合集成到框架，后期我们可以在进行扩展。</p>
+</div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PHP%E7%B3%BB%E5%88%97/">PHP系列    </a></div><div class="post_share"><div class="social-share" data-image="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="http://image.13sai.com/zan.jpg"><div class="post-qr-code__desc">微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/02/15/241/"><img class="prev_cover lazyload" data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>系列文章---框架篇：8.依赖注入与控制反转</span></div></a></div><div class="next-post pull_right"><a href="/2020/02/13/239/"><img class="next_cover lazyload" data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>系列文章---框架篇：6.简单测试</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/01/231/" title="系列文章---基础篇：1.PSR"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---基础篇：1.PSR</div></a></div><div class="relatedPosts_item"><a href="/2020/02/01/232/" title="系列文章---基础篇：2.composer"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---基础篇：2.composer</div></a></div><div class="relatedPosts_item"><a href="/2020/02/22/243/" title="系列文章---应用篇：1.分布式锁"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---应用篇：1.分布式锁</div></a></div><div class="relatedPosts_item"><a href="/2020/02/01/233/" title="系列文章---基础篇：3.反射"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---基础篇：3.反射</div></a></div><div class="relatedPosts_item"><a href="/2020/02/22/244/" title="系列文章---应用篇：2.延时任务"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---应用篇：2.延时任务</div></a></div><div class="relatedPosts_item"><a href="/2020/02/04/235/" title="系列文章---框架篇：2.请求与输出"><img class="relatedPosts_cover lazyload"data-src="https://pic1.zhimg.com/v2-1b5aeb315b4c894cd9cceba3875f7aa3_1200x500.jpg"><div class="relatedPosts_title">系列文章---框架篇：2.请求与输出</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: '56020318cc01a9d56fdd',
+  clientSecret: '2fbbfefbb59c1247f4e212b7b83909302553911c',
+  repo: '13sai.github.io',
+  owner: '13sai',
+  admin: '13sai',
+  id: md5(decodeURI(location.pathname)),
+  language: ''
+})
+gitalk.render('gitalk-container')</script></div></div></div><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2020 By 13sai</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a><img class="icp-icon" src="/img/icp.png"><span>皖ICP备14021992号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
