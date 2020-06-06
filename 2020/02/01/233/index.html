@@ -1,0 +1,459 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>系列文章---基础篇：3.反射 | 13sai blog</title><meta name="description" content="PHP的反射"><meta name="keywords" content="PHP系列"><meta name="author" content="13sai"><meta name="copyright" content="13sai"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="系列文章---基础篇：3.反射"><meta name="twitter:description" content="PHP的反射"><meta name="twitter:image" content="http://github.13sai.com/img/php2.jpeg"><meta property="og:type" content="article"><meta property="og:title" content="系列文章---基础篇：3.反射"><meta property="og:url" content="http://github.13sai.com/2020/02/01/233/"><meta property="og:site_name" content="13sai blog"><meta property="og:description" content="PHP的反射"><meta property="og:image" content="http://github.13sai.com/img/php2.jpeg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://github.13sai.com/2020/02/01/233/"><link rel="prev" title="系列文章---框架篇：1.框架目录与辅助" href="http://github.13sai.com/2020/02/02/234/"><link rel="next" title="系列文章---基础篇：2.composer" href="http://github.13sai.com/2020/02/01/232/"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight_copy: 'false',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'false',
+  Snackbar: undefined
+  
+}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">13sai blog</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/sai.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">191</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">40</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">28</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#更多方法"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">更多方法</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#反射的实际应用"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">反射的实际应用</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#反射的优点"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">反射的优点</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#反射的缺点"><span class="toc_mobile_items-number">4.</span> <span class="toc_mobile_items-text">反射的缺点</span></a></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#更多方法"><span class="toc-number">1.</span> <span class="toc-text">更多方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#反射的实际应用"><span class="toc-number">2.</span> <span class="toc-text">反射的实际应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#反射的优点"><span class="toc-number">3.</span> <span class="toc-text">反射的优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#反射的缺点"><span class="toc-number">4.</span> <span class="toc-text">反射的缺点</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(/img/php.jpeg)"><div id="post-info"><div id="post-title"><div class="posttitle">系列文章---基础篇：3.反射</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-02-01<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-06-06</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/">系列文章</a></span><div class="post-meta-wordcount"></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><ul>
+<li><a href="https://mp.weixin.qq.com/mp/homepage?__biz=MzI3Njc5Mjc0Mg==&hid=7&sn=ec786eb198002a02d9fb203b31b032b9" target="_blank" rel="noopener">PHP DIY系列–一起手写一个api框架</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>反射，直观理解就是根据到达地找到出发地和来源。 反射指在PHP运行状态中，扩展分析PHP程序，导出或提出关于类、方法、属性、参数等的详细信息，包括注释。这种动态获取信息以及动态调用对象方法的功能称为反射API。</p>
+</blockquote>
+<p>不妨先来看一个demo：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">/**</span><br><span class="line"> * Author: sai</span><br><span class="line"> * Date: 2019/10/21</span><br><span class="line"> * Time: 10:59</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">function p($msg, $var)</span><br><span class="line">&#123;</span><br><span class="line">    echo(&quot;&lt;pre style=&apos;position:relative;</span><br><span class="line">z-index:999;</span><br><span class="line">padding:10px;</span><br><span class="line">border-radius:5px;</span><br><span class="line">background:#f5f5f5;</span><br><span class="line">border:1px solid #aaa;</span><br><span class="line">font-size:14px;</span><br><span class="line">line-height:18px;</span><br><span class="line">opacity:0.8;&apos;&gt;&quot;.$msg.&quot;:&quot;.print_r($var, true).&quot;&lt;/pre&gt;&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Demo</span><br><span class="line">&#123;</span><br><span class="line">    private $id;</span><br><span class="line"></span><br><span class="line">    protected $name;</span><br><span class="line"></span><br><span class="line">    public $skills = [];</span><br><span class="line"></span><br><span class="line">    public function __construct($id, $name, $skills = [])</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;id = $id;</span><br><span class="line">        $this-&gt;name = $name;</span><br><span class="line">        $this-&gt;skills = $skills;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function getName()</span><br><span class="line">    &#123;</span><br><span class="line">        return $this-&gt;name;</span><br><span class="line">    &#125;</span><br><span class="line">    public function getSkill()</span><br><span class="line">    &#123;</span><br><span class="line">        p(&apos;skill&apos;, $this-&gt;skills);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ref = new ReflectionClass(&apos;Demo&apos;);</span><br><span class="line">if ($ref-&gt;isInstantiable()) &#123;</span><br><span class="line">    p(&apos;检查类是否可实例化isInstantiable&apos;, null );</span><br><span class="line">&#125;</span><br><span class="line">$constructor = $ref-&gt;getConstructor();</span><br><span class="line">p(&apos;获取构造函数getConstructor&apos;, $constructor);</span><br><span class="line"></span><br><span class="line">$parameters = $constructor-&gt;getParameters();</span><br><span class="line">foreach ($parameters as $param) &#123;</span><br><span class="line">    p(&apos;获取参数getParameters&apos;, $param);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if ($ref-&gt;hasProperty(&apos;name&apos;)) &#123;</span><br><span class="line">    $attr = $ref-&gt;getProperty(&apos;name&apos;);</span><br><span class="line">    p(&apos;获取属性getProperty&apos;, $attr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$attributes = $ref-&gt;getProperties();</span><br><span class="line">foreach ($attributes as $row) &#123;</span><br><span class="line">    p(&apos;获取属性列表getProperties&apos;, $row-&gt;getName() );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if ($ref-&gt;hasMethod(&apos;getSkill&apos;)) &#123;</span><br><span class="line">    $method = $ref-&gt;getMethod(&apos;getSkill&apos;);</span><br><span class="line">    p(&apos;获取方法getMethod&apos;, $method);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$methods = $ref-&gt;getMethods();</span><br><span class="line">foreach ($methods as $row) &#123;</span><br><span class="line">    p(&apos;获取方法列表getMethods&apos;, $row-&gt;getName());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$instance = $ref-&gt;newInstanceArgs([1, &apos;sai&apos;, [&apos;php&apos;, &apos;js&apos;]]);</span><br><span class="line">p(&apos;newInstanceArgs&apos;, $instance);</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>检查类是否可实例化isInstantiable:</pre>
+
+<pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取构造函数getConstructor:ReflectionMethod Object
+(
+    [name] => __construct
+    [class] => Demo
+)
+</pre>
+<p></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => id<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => name<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => skills<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取属性getProperty:ReflectionProperty Object<br>(<br>    [name] => name<br>    [class] => Demo<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取属性列表getProperties:id</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取属性列表getProperties:name</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取属性列表getProperties:skills</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取方法getMethod:ReflectionMethod Object<br>(<br>    [name] => getSkill<br>    [class] => Demo<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取方法列表getMethods:__construct</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取方法列表getMethods:getName</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取方法列表getMethods:getSkill</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>newInstanceArgs:Demo Object<br>(<br>    [id:Demo:private] => 1<br>    [name:protected] => sai<br>    [skills] => Array<br>        (<br>            [0] => php<br>            [1] => js<br>        )</p>
+<p>)<br></pre></p>
+<p>demo里面就有使用了ReflectionClass类，当然ReflectionClass类不止于这些方法。</p>
+<h3 id="更多方法"><a href="#更多方法" class="headerlink" title="更多方法"></a>更多方法</h3><p>ReflectionClass类还有更多方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ReflectionClass::__construct</td>
+<td>初始化 ReflectionClass 类</td>
+</tr>
+<tr>
+<td>ReflectionClass::export</td>
+<td>导出一个类</td>
+</tr>
+<tr>
+<td>ReflectionClass::getConstant</td>
+<td>获取定义过的一个常量</td>
+</tr>
+<tr>
+<td>ReflectionClass::getConstants</td>
+<td>获取一组常量</td>
+</tr>
+<tr>
+<td>ReflectionClass::getConstructor</td>
+<td>获取类的构造函数</td>
+</tr>
+<tr>
+<td>ReflectionClass::getDefaultProperties</td>
+<td>获取默认属性</td>
+</tr>
+<tr>
+<td>ReflectionClass::getDocComment</td>
+<td>获取文档注释</td>
+</tr>
+<tr>
+<td>ReflectionClass::getEndLine</td>
+<td>获取最后一行的行数</td>
+</tr>
+<tr>
+<td>ReflectionClass::getExtension</td>
+<td>根据已定义的类获取所在扩展的 ReflectionExtension 对象</td>
+</tr>
+<tr>
+<td>ReflectionClass::getExtensionName</td>
+<td>获取定义的类所在的扩展的名称</td>
+</tr>
+<tr>
+<td>ReflectionClass::getFileName</td>
+<td>获取定义类的文件名</td>
+</tr>
+<tr>
+<td>ReflectionClass::getInterfaceNames</td>
+<td>获取接口（interface）名称</td>
+</tr>
+<tr>
+<td>ReflectionClass::getInterfaces</td>
+<td>获取接口</td>
+</tr>
+<tr>
+<td>ReflectionClass::getMethod</td>
+<td>获取一个类方法的 ReflectionMethod。</td>
+</tr>
+<tr>
+<td>ReflectionClass::getMethods</td>
+<td>获取方法的数组</td>
+</tr>
+<tr>
+<td>ReflectionClass::getModifiers</td>
+<td>获取类的修饰符</td>
+</tr>
+<tr>
+<td>ReflectionClass::getName</td>
+<td>获取类名</td>
+</tr>
+<tr>
+<td>ReflectionClass::getNamespaceName</td>
+<td>获取命名空间的名称</td>
+</tr>
+<tr>
+<td>ReflectionClass::getParentClass</td>
+<td>获取父类</td>
+</tr>
+<tr>
+<td>ReflectionClass::getProperties</td>
+<td>获取一组属性</td>
+</tr>
+<tr>
+<td>ReflectionClass::getProperty</td>
+<td>获取类的一个属性的 ReflectionProperty</td>
+</tr>
+<tr>
+<td>ReflectionClass::getReflectionConstant</td>
+<td>Gets a ReflectionClassConstant for a class’s constant</td>
+</tr>
+<tr>
+<td>ReflectionClass::getReflectionConstants</td>
+<td>Gets class constants</td>
+</tr>
+<tr>
+<td>ReflectionClass::getShortName</td>
+<td>获取短名</td>
+</tr>
+<tr>
+<td>ReflectionClass::getStartLine</td>
+<td>获取起始行号</td>
+</tr>
+<tr>
+<td>ReflectionClass::getStaticProperties</td>
+<td>获取静态（static）属性</td>
+</tr>
+<tr>
+<td>ReflectionClass::getStaticPropertyValue</td>
+<td>获取静态（static）属性的值</td>
+</tr>
+<tr>
+<td>ReflectionClass::getTraitAliases</td>
+<td>返回 trait 别名的一个数组</td>
+</tr>
+<tr>
+<td>ReflectionClass::getTraitNames</td>
+<td>返回这个类所使用 traits 的名称的数组</td>
+</tr>
+<tr>
+<td>ReflectionClass::getTraits</td>
+<td>返回这个类所使用的 traits 数组</td>
+</tr>
+<tr>
+<td>ReflectionClass::hasConstant</td>
+<td>检查常量是否已经定义</td>
+</tr>
+<tr>
+<td>ReflectionClass::hasMethod</td>
+<td>检查方法是否已定义</td>
+</tr>
+<tr>
+<td>ReflectionClass::hasProperty</td>
+<td>检查属性是否已定义</td>
+</tr>
+<tr>
+<td>ReflectionClass::implementsInterface</td>
+<td>接口的实现</td>
+</tr>
+<tr>
+<td>ReflectionClass::inNamespace</td>
+<td>检查是否位于命名空间中</td>
+</tr>
+<tr>
+<td>ReflectionClass::isAbstract</td>
+<td>检查类是否是抽象类（abstract）</td>
+</tr>
+<tr>
+<td>ReflectionClass::isAnonymous</td>
+<td>检查类是否是匿名类</td>
+</tr>
+<tr>
+<td>ReflectionClass::isCloneable</td>
+<td>返回了一个类是否可复制</td>
+</tr>
+<tr>
+<td>ReflectionClass::isFinal</td>
+<td>检查类是否声明为 final</td>
+</tr>
+<tr>
+<td>ReflectionClass::isInstance</td>
+<td>检查类的实例</td>
+</tr>
+<tr>
+<td>ReflectionClass::isInstantiable</td>
+<td>检查类是否可实例化</td>
+</tr>
+<tr>
+<td>ReflectionClass::isInterface</td>
+<td>检查类是否是一个接口（interface）</td>
+</tr>
+<tr>
+<td>ReflectionClass::isInternal</td>
+<td>检查类是否由扩展或核心在内部定义</td>
+</tr>
+<tr>
+<td>ReflectionClass::isIterable</td>
+<td>Check whether this class is iterable</td>
+</tr>
+<tr>
+<td>ReflectionClass::isIterateable</td>
+<td>检查是否可迭代（iterateable）</td>
+</tr>
+<tr>
+<td>ReflectionClass::isSubclassOf</td>
+<td>检查是否为一个子类</td>
+</tr>
+<tr>
+<td>ReflectionClass::isTrait</td>
+<td>返回了是否为一个 trait</td>
+</tr>
+<tr>
+<td>ReflectionClass::isUserDefined</td>
+<td>检查是否由用户定义的</td>
+</tr>
+<tr>
+<td>ReflectionClass::newInstance</td>
+<td>从指定的参数创建一个新的类实例</td>
+</tr>
+<tr>
+<td>ReflectionClass::newInstanceArgs</td>
+<td>从给出的参数创建一个新的类实例。</td>
+</tr>
+<tr>
+<td>ReflectionClass::newInstanceWithoutConstructor</td>
+<td>创建一个新的类实例而不调用它的构造函数</td>
+</tr>
+<tr>
+<td>ReflectionClass::setStaticPropertyValue</td>
+<td>设置静态属性的值</td>
+</tr>
+<tr>
+<td>ReflectionClass::__toString</td>
+<td>返回 ReflectionClass 对象字符串的表示形式。</td>
+</tr>
+</tbody></table>
+<p>除去强大的ReflectionClass，还有Reflection、ReflectionClassConstant 、ReflectionMethod 、ReflectionFunctionAbstract等等。建议查看手册：</p>
+<ul>
+<li><a href="https://www.php.net/manual/zh/book.reflection.php" target="_blank" rel="noopener">PHP反射</a></li>
+</ul>
+<h3 id="反射的实际应用"><a href="#反射的实际应用" class="headerlink" title="反射的实际应用"></a>反射的实际应用</h3><ol>
+<li>反射可以用于文档、文件生成。可以用它对文件里的类进行扫描，逐个生成描述文档;</li>
+<li>既然反射可以探知类的内部结构，那么可以用它做hook实现插件功能；</li>
+<li>可以用于做动态代理，在未知或者不确定类名的情况下，动态生成和实例化一些类和执行方法；</li>
+<li>依赖注入。对于多次继承的类，我们可以通过多次反射探索到基类的结构，或者采用递归的形式反射，实现实例化所有继承类，这也是PHP依赖注入的原理。</li>
+</ol>
+<h3 id="反射的优点"><a href="#反射的优点" class="headerlink" title="反射的优点"></a>反射的优点</h3><ol>
+<li>支持反射的语言提供了一些在低级语言中难以实现的运行时特性。</li>
+<li>可以在一定程度上避免硬编码，提供灵活性和通用性。</li>
+<li>可以作为一个第一类对象发现并修改源代码的结构（如代码块、类、方法、协议等）。</li>
+<li>可以在运行时像对待源代码语句一样计算符号语法的字符串（类似JavaScript的eval()函数），进而可将跟class或function匹配的字符串转换成class或function的调用或引用。</li>
+<li>可以创建一个新的语言字节码解释器来给编程结构一个新的意义或用途。</li>
+</ol>
+<h3 id="反射的缺点"><a href="#反射的缺点" class="headerlink" title="反射的缺点"></a>反射的缺点</h3><ol>
+<li>学习成本高。面向反射的编程需要较多的高级知识，包括框架、关系映射和对象交互，以利用更通用的代码执行</li>
+<li>同样因为反射的概念和语法都比较抽象，过多地滥用反射技术会使得代码难以被其他人读懂，不利于合作与交流</li>
+<li>反射在提高了代码灵活性的同时，牺牲了一点点运行效率，有一定的消耗</li>
+<li>反射也会破坏类的封装性，把本不该暴露的方法或属性暴露了出来</li>
+</ol>
+<p>在平时的开发中，我们用到反射其实不多，为什么把它拿到这里来说呢？一来是我们后面会使用到反射去实现Ioc容器，二来反射也是PHP核心功能之一，在我们流行的框架中十分常见，理解它是很有必要的。</p>
+</div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PHP%E7%B3%BB%E5%88%97/">PHP系列    </a></div><div class="post_share"><div class="social-share" data-image="/img/php2.jpeg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="http://image.13sai.com/zan.jpg"><div class="post-qr-code__desc">微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/02/02/234/"><img class="prev_cover lazyload" data-src="/img/php2.jpeg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>系列文章---框架篇：1.框架目录与辅助</span></div></a></div><div class="next-post pull_right"><a href="/2020/02/01/232/"><img class="next_cover lazyload" data-src="/img/php2.jpeg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>系列文章---基础篇：2.composer</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/02/01/231/" title="系列文章---基础篇：1.PSR"><img class="relatedPosts_cover lazyload"data-src="/img/php2.jpeg"><div class="relatedPosts_title">系列文章---基础篇：1.PSR</div></a></div><div class="relatedPosts_item"><a href="/2020/02/01/232/" title="系列文章---基础篇：2.composer"><img class="relatedPosts_cover lazyload"data-src="/img/php2.jpeg"><div class="relatedPosts_title">系列文章---基础篇：2.composer</div></a></div><div class="relatedPosts_item"><a href="/2020/02/22/244/" title="系列文章---应用篇：2.延时任务"><img class="relatedPosts_cover lazyload"data-src="/img/php2.jpeg"><div class="relatedPosts_title">系列文章---应用篇：2.延时任务</div></a></div><div class="relatedPosts_item"><a href="/2020/02/22/243/" title="系列文章---应用篇：1.分布式锁"><img class="relatedPosts_cover lazyload"data-src="/img/php2.jpeg"><div class="relatedPosts_title">系列文章---应用篇：1.分布式锁</div></a></div><div class="relatedPosts_item"><a href="/2020/02/02/234/" title="系列文章---框架篇：1.框架目录与辅助"><img class="relatedPosts_cover lazyload"data-src="/img/php2.jpeg"><div class="relatedPosts_title">系列文章---框架篇：1.框架目录与辅助</div></a></div><div class="relatedPosts_item"><a href="/2020/02/04/235/" title="系列文章---框架篇：2.请求与输出"><img class="relatedPosts_cover lazyload"data-src="/img/php2.jpeg"><div class="relatedPosts_title">系列文章---框架篇：2.请求与输出</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: '56020318cc01a9d56fdd',
+  clientSecret: '2fbbfefbb59c1247f4e212b7b83909302553911c',
+  repo: '13sai.github.io',
+  owner: '13sai',
+  admin: '13sai',
+  id: md5(decodeURI(location.pathname)),
+  language: ''
+})
+gitalk.render('gitalk-container')</script></div></div></div><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2020 By 13sai</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"><span>皖ICP备14021992号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>

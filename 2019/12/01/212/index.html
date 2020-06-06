@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>利用consul+nginx-upsync实现动态负载 | 13sai blog</title><meta name="description" content="利用consul+nginx-upsync实现动态负载"><meta name="keywords" content="nginx,consul"><meta name="author" content="13sai"><meta name="copyright" content="13sai"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="利用consul+nginx-upsync实现动态负载"><meta name="twitter:description" content="利用consul+nginx-upsync实现动态负载"><meta name="twitter:image" content="http://github.13sai.com/img/flower.jpg"><meta property="og:type" content="article"><meta property="og:title" content="利用consul+nginx-upsync实现动态负载"><meta property="og:url" content="http://github.13sai.com/2019/12/01/212/"><meta property="og:site_name" content="13sai blog"><meta property="og:description" content="利用consul+nginx-upsync实现动态负载"><meta property="og:image" content="http://github.13sai.com/img/flower.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
+var t = Cookies.get("theme");
+if (autoChangeMode == '1'){
+const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+if (t === undefined){
+  if (isLightMode) activateLightMode()
+  else if (isDarkMode) activateDarkMode()
+  else if (isNotSpecified || hasNoSupport){
+    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+    now = new Date();
+    hour = now.getHours();
+    isNight = hour < 6 || hour >= 18
+    isNight ? activateDarkMode() : activateLightMode()
+}
+} else if (t == 'light') activateLightMode()
+else activateDarkMode()
+
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://github.13sai.com/2019/12/01/212/"><link rel="prev" title="docker安装gogs" href="http://github.13sai.com/2019/12/08/214/"><link rel="next" title="TCP三次握手和四次挥手" href="http://github.13sai.com/2019/11/26/210/"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight_copy: 'false',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: 'Snackbar.bookmark.title',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  copyright: undefined,
+  copy_copyright_js: false,
+  ClickShowText: undefined,
+  medium_zoom: 'false',
+  Snackbar: undefined
+  
+}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">13sai blog</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/sai.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">191</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">40</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">28</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#nginx-upsync-module"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">nginx-upsync-module</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#利用docker安装"><span class="toc_mobile_items-number">1.0.1.</span> <span class="toc_mobile_items-text">利用docker安装</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#进入容器配置"><span class="toc_mobile_items-number">1.0.2.</span> <span class="toc_mobile_items-text">进入容器配置</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#upsync语法说明"><span class="toc_mobile_items-number">1.0.3.</span> <span class="toc_mobile_items-text">upsync语法说明</span></a></li></ol></li></ol></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#利用swoole启动3个http服务"><span class="toc_mobile_items-number">2.</span> <span class="toc_mobile_items-text">利用swoole启动3个http服务</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#consul安装"><span class="toc_mobile_items-number">3.</span> <span class="toc_mobile_items-text">consul安装</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#启动："><span class="toc_mobile_items-number">3.0.1.</span> <span class="toc_mobile_items-text">启动：</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#UI查看"><span class="toc_mobile_items-number">3.0.2.</span> <span class="toc_mobile_items-text">UI查看</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#查看节点"><span class="toc_mobile_items-number">3.0.3.</span> <span class="toc_mobile_items-text">查看节点</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#查看kv值"><span class="toc_mobile_items-number">3.0.4.</span> <span class="toc_mobile_items-text">查看kv值</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#添加"><span class="toc_mobile_items-number">3.0.5.</span> <span class="toc_mobile_items-text">添加</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-4"><a class="toc_mobile_items-link" href="#删除"><span class="toc_mobile_items-number">3.0.6.</span> <span class="toc_mobile_items-text">删除</span></a></li></ol></li></ol></li></ol></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx-upsync-module"><span class="toc-number">1.</span> <span class="toc-text">nginx-upsync-module</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#利用docker安装"><span class="toc-number">1.0.1.</span> <span class="toc-text">利用docker安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#进入容器配置"><span class="toc-number">1.0.2.</span> <span class="toc-text">进入容器配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#upsync语法说明"><span class="toc-number">1.0.3.</span> <span class="toc-text">upsync语法说明</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用swoole启动3个http服务"><span class="toc-number">2.</span> <span class="toc-text">利用swoole启动3个http服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#consul安装"><span class="toc-number">3.</span> <span class="toc-text">consul安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#启动："><span class="toc-number">3.0.1.</span> <span class="toc-text">启动：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UI查看"><span class="toc-number">3.0.2.</span> <span class="toc-text">UI查看</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看节点"><span class="toc-number">3.0.3.</span> <span class="toc-text">查看节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看kv值"><span class="toc-number">3.0.4.</span> <span class="toc-text">查看kv值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#添加"><span class="toc-number">3.0.5.</span> <span class="toc-text">添加</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除"><span class="toc-number">3.0.6.</span> <span class="toc-text">删除</span></a></li></ol></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(/img/flower.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">利用consul+nginx-upsync实现动态负载</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-12-01<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-12-02</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/nginx/">nginx</a></span><div class="post-meta-wordcount"></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>这是前一段时间学习的课程上面的，自己实际操作了一下，详细操作及说明如下。</p>
+<hr>
+<p>如果Nginx遇到大流量和高负载，修改配置文件重启可能并不总是那么方便，因为恢复Nginx并重载配置会进一步增加系统负载，并很可能暂时降低性能。而一个个修改配置文件也是很容易出错和费时间的操作。</p>
+<p>这时候不妨试试consul+nginx-upsync-module实现Nginx的动态负载。</p>
+<h2 id="nginx-upsync-module"><a href="#nginx-upsync-module" class="headerlink" title="nginx-upsync-module"></a>nginx-upsync-module</h2><p>nginx-upsync-module 提供了动态的负载均衡，它可以从consul或etcd同步upstreams，动态修改后端服务器属性（weight，max_fails，down…），而不需要重新加载nginx。这样我们通过它实现平滑伸缩，而不严重地影响性能。</p>
+<h4 id="利用docker安装"><a href="#利用docker安装" class="headerlink" title="利用docker安装"></a>利用docker安装</h4><p>我已经基于centos7构建了一个镜像 13sai/nginx-lua-upsync ，你可以使用下面的命令启动一个容器</p>
+<blockquote>
+<p>docker run -itd –name=nginx-upsync -p 8008:80 -p 9501:9501 -p 9502:9502 -p 9503:9503 -p 8500:8500 13sai/nginx-lua-upsync</p>
+</blockquote>
+<p>当然，你也可以不使用docker自行搭建，添加nginx-upsync-module模块可以参考<a href="https://learnku.com/articles/36567" target="_blank" rel="noopener">nginx模块lua模块</a>。</p>
+<ul>
+<li><a href="https://github.com/weibocom/nginx-upsync-module#installation" target="_blank" rel="noopener">nginx-upsync-module的git地址</a></li>
+</ul>
+<h4 id="进入容器配置"><a href="#进入容器配置" class="headerlink" title="进入容器配置"></a>进入容器配置</h4><blockquote>
+<p>docker exec -it nginx-upsync /bin/bash</p>
+</blockquote>
+<blockquote>
+<p>cd /usr/local/nginx/conf</p>
+</blockquote>
+<blockquote>
+<p>echo “server host.docker.internal:9501 weight=1 fail_timeout=10 max_fails=3;” &gt;&gt; servers.conf</p>
+</blockquote>
+<blockquote>
+<p>vi nginx.conf</p>
+</blockquote>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> #nginx.conf 主要配置</span><br><span class="line"> ...</span><br><span class="line"> </span><br><span class="line"> upstream 13sai&#123;</span><br><span class="line">    upsync 192.168.65.2:8500/v1/kv/upstreams/test-server upsync_timeout=6m upsync_interval=500ms upsync_type=consul strong_dependency=off;</span><br><span class="line">    upsync_dump_path /usr/local/nginx/conf/servers.conf;</span><br><span class="line">    include /usr/local/nginx/conf/servers.conf;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">		proxy_pass http://13sai;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h4 id="upsync语法说明"><a href="#upsync语法说明" class="headerlink" title="upsync语法说明"></a>upsync语法说明</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">语法：syntax: upsync $consul/etcd.api.com:$port/v1/kv/upstreams/$upstream_name/ [upsync_type=consul/etcd] [upsync_interval=second/minutes] [upsync_timeout=second/minutes] [strong_dependency=off/on]</span><br><span class="line">默认值：无，如果省略参数，则默认参数为upsync_interval = 5s upsync_timeout = 6m strong_dependency = off</span><br><span class="line">描述：从 consul/etcd 中拉取upstreams</span><br><span class="line"></span><br><span class="line">upsync 定义从consul/etcd拉取最新的upstream信息并存到本地的操作</span><br><span class="line">upsync_timeout 定义从consul/etcd拉取配置的超时时间</span><br><span class="line">upsync_interval 定义从consul/etc拉取配置的间隔时间</span><br><span class="line">upsync_type 定义使用配置服务类型</span><br><span class="line">strong_dependency 启动时是否强制依赖配置服务器，如果配置为on,则拉取失败，nginx同样会启用失败</span><br><span class="line">upsync_dump_path 定义从consul/etcd拉取配置后持久化到的本地的文件路径，这样即使 consul/etcd出问题了，本地同样会有备份文件</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意下面这个文件必须要有，文件路径和名称可以自定义，nginx-upsync-module会将负载信息缓存到此文件，否则Nginx启动会报错。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#servers.conf，192.168.x.xxx是我的宿主机ip</span><br><span class="line">server 192.168.x.xxx:9501 weight=20 max_fails=1 fail_timeout=5s;</span><br></pre></td></tr></table></figure>
+
+
+<p>重启nginx</p>
+<blockquote>
+<p>/usr/local/nginx/sbin/nginx -t</p>
+</blockquote>
+<blockquote>
+<p>/usr/local/nginx/sbin/nginx -s reload</p>
+</blockquote>
+<p>这里虽然我们还未启动consul，但没有什么影响，upsync会去拉取，也必然会失败，servers.conf就不会更新，Nginx的error日志会有信息。</p>
+<h2 id="利用swoole启动3个http服务"><a href="#利用swoole启动3个http服务" class="headerlink" title="利用swoole启动3个http服务"></a>利用swoole启动3个http服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 可启动3个server，端口分别为9501，9502，9503，输出也做对应修改</span><br><span class="line">$http = new Swoole\Http\Server(&quot;127.0.0.1&quot;, 9501);</span><br><span class="line">$http-&gt;on(&apos;request&apos;, function ($request, $response) &#123;</span><br><span class="line">    $response-&gt;end(&quot;9501&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="consul安装"><a href="#consul安装" class="headerlink" title="consul安装"></a>consul安装</h2><blockquote>
+<p>这里consul只做一个kv存储，我自己也是第一次用，就不去做过多介绍了。</p>
+</blockquote>
+<p><a href="https://www.consul.io/downloads.html" target="_blank" rel="noopener">下载地址</a></p>
+<p>解压到你需要的目录，主要也就是一个consul可执行文件。（这里我装在我的电脑，而不是刚才的docker容器）</p>
+<p>命令可看文档：<a href="https://book-consul-guide.vnzmi.com/" target="_blank" rel="noopener">Consul 简介和快速入门</a></p>
+<h4 id="启动："><a href="#启动：" class="headerlink" title="启动："></a>启动：</h4><blockquote>
+<p>nohup ./consul agent -dev &amp;</p>
+</blockquote>
+<p>为了方便，我们也没有启动集群，生产环境建议使用consul集群。</p>
+<h4 id="UI查看"><a href="#UI查看" class="headerlink" title="UI查看"></a>UI查看</h4><blockquote>
+<p><a href="http://127.0.0.1:8500/" target="_blank" rel="noopener">http://127.0.0.1:8500/</a></p>
+</blockquote>
+<h4 id="查看节点"><a href="#查看节点" class="headerlink" title="查看节点"></a>查看节点</h4><blockquote>
+<p>./consul members</p>
+</blockquote>
+<blockquote>
+<p>curl 127.0.0.1:8500/v1/catalog/nodes</p>
+</blockquote>
+<h4 id="查看kv值"><a href="#查看kv值" class="headerlink" title="查看kv值"></a>查看kv值</h4><blockquote>
+<p>curl -v <a href="http://127.0.0.1:8500/v1/kv/\?recurse" target="_blank" rel="noopener">http://127.0.0.1:8500/v1/kv/\?recurse</a></p>
+</blockquote>
+<h4 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h4><blockquote>
+<p>curl -X PUT -d ‘{“weight”:20,”max_fails”:2,”fail_timeout”:5}’ <a href="http://127.0.0.1:8500/v1/kv/upstreams/test-server/192.168.x.xxx:9502" target="_blank" rel="noopener">http://127.0.0.1:8500/v1/kv/upstreams/test-server/192.168.x.xxx:9502</a></p>
+</blockquote>
+<p>此处192.168.x.xxx是因为我创建的docker容器的宿主机ip。</p>
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><blockquote>
+<p>curl -X DELETE <a href="http://127.0.0.1:8500/v1/kv/upstreams/test-server/192.168.x.xxx:9502" target="_blank" rel="noopener">http://127.0.0.1:8500/v1/kv/upstreams/test-server/192.168.x.xxx:9502</a></p>
+</blockquote>
+<hr>
+<p>我们可以通过添加和删除来测试，查看<a href="http://127.0.0.1:8008/来查看输出，也可以看看Nginx里的配置文件servers.conf，你会看到你操作consul，会动态改变Nginx的upstream，这样就实现了Nginx的动态扩容。" target="_blank" rel="noopener">http://127.0.0.1:8008/来查看输出，也可以看看Nginx里的配置文件servers.conf，你会看到你操作consul，会动态改变Nginx的upstream，这样就实现了Nginx的动态扩容。</a></p>
+<hr>
+<p>对consul和docker的学习还不够深入，文中如有错误，欢迎指正交流。</p>
+</div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/nginx/">nginx    </a><a class="post-meta__tags" href="/tags/consul/">consul    </a></div><div class="post_share"><div class="social-share" data-image="/img/flower.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="http://image.13sai.com/zan.jpg"><div class="post-qr-code__desc">微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2019/12/08/214/"><img class="prev_cover lazyload" data-src="/img/gogs.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>docker安装gogs</span></div></a></div><div class="next-post pull_right"><a href="/2019/11/26/210/"><img class="next_cover lazyload" data-src="/img/flower.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>TCP三次握手和四次挥手</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/11/22/208/" title="Nginx代理缓存"><img class="relatedPosts_cover lazyload"data-src="/upload/article/nginx2.jpeg"><div class="relatedPosts_title">Nginx代理缓存</div></a></div><div class="relatedPosts_item"><a href="/2019/12/20/216/" title="Nginx工作模式和进程模型"><img class="relatedPosts_cover lazyload"data-src="/upload/article/nginx2.jpeg"><div class="relatedPosts_title">Nginx工作模式和进程模型</div></a></div><div class="relatedPosts_item"><a href="/2019/11/22/210/" title="Nginx内嵌变量"><img class="relatedPosts_cover lazyload"data-src="/upload/article/nginx1.jpeg"><div class="relatedPosts_title">Nginx内嵌变量</div></a></div><div class="relatedPosts_item"><a href="/2019/07/23/193/" title="nginx日志按日配置"><img class="relatedPosts_cover lazyload"data-src="http://img.13sai.com/1563789635000.png"><div class="relatedPosts_title">nginx日志按日配置</div></a></div><div class="relatedPosts_item"><a href="/2019/11/20/202/" title="Nginx添加lua-nginx模块"><img class="relatedPosts_cover lazyload"data-src="/img/flower.jpg"><div class="relatedPosts_title">Nginx添加lua-nginx模块</div></a></div><div class="relatedPosts_item"><a href="/2019/11/18/203/" title="Nginx负载均衡"><img class="relatedPosts_cover lazyload"data-src="http://img.13sai.com/1573999304000.png"><div class="relatedPosts_title">Nginx负载均衡</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: '56020318cc01a9d56fdd',
+  clientSecret: '2fbbfefbb59c1247f4e212b7b83909302553911c',
+  repo: '13sai.github.io',
+  owner: '13sai',
+  admin: '13sai',
+  id: md5(decodeURI(location.pathname)),
+  language: ''
+})
+gitalk.render('gitalk-container')</script></div></div></div><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2020 By 13sai</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"><span>皖ICP备14021992号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
