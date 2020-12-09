@@ -26,7 +26,7 @@
 <meta property="og:description" content="2015年7月，材料物理专业毕业进钢企，工作数月后辞职到南京，转行做前端。2016年，不局限于前端，专心做WEB开发，主要语言PHP、JS。2017年，保持对技术的好奇心与渴望。8月份跳槽到杭州，从事PHP开发。2018年，保持对PHP开发的激情，探讨更多开发相关知识（vue、redis、mq）。2019年，深入底层源码、实现原理，争取技术更有深度，建立比较完整的技术栈。2020年，不局限于语言与">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;image.13sai.com&#x2F;qrcode.jpg">
-<meta property="og:updated_time" content="2020-06-06T08:58:26.779Z">
+<meta property="og:updated_time" content="2020-12-09T09:33:33.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;image.13sai.com&#x2F;qrcode.jpg">
   <!-- Canonical links -->
@@ -339,6 +339,13 @@
 
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/about/index.html#comments" class="article-comment-link">评论</a></span>
         
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 222(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
+	
+
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
@@ -346,8 +353,8 @@
         <p>2015年7月，材料物理专业毕业进钢企，工作数月后辞职到南京，转行做前端。<br>2016年，不局限于前端，专心做WEB开发，主要语言PHP、JS。<br>2017年，保持对技术的好奇心与渴望。8月份跳槽到杭州，从事PHP开发。<br>2018年，保持对PHP开发的激情，探讨更多开发相关知识（vue、redis、mq）。<br>2019年，深入底层源码、实现原理，争取技术更有深度，建立比较完整的技术栈。<br>2020年，不局限于语言与角色，兴趣与工作驱动技术，技术成长反馈于工作于日常生活。</p>
 <p>电影，篮球，历史爱好者，摄影小白，乐器小白。<br>待人唯心，对事唯物，是个后现代风格逗比。</p>
 <p>github：<a href="https://github.com/13sai" target="_blank" rel="noopener">13sai</a></p>
-<p>微信公众号：爱好历史的程序员<br><img src="http://image.13sai.com/qrcode.jpg" alt="爱好历史的程序员"></p>
 <p>知乎专栏：<a href="https://zhuanlan.zhihu.com/thesai" target="_blank" rel="noopener">技术无边界</a></p>
+<p>微信公众号：爱好历史的程序员<br><img src="http://image.13sai.com/qrcode.jpg" alt="爱好历史的程序员"></p>
 
       
     </div>
@@ -402,6 +409,12 @@
   <div class="bar-inner">
   
   
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
   
   <div class="bar-right">
     
@@ -409,6 +422,48 @@
   </div>
 </nav>
   
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 </main>
