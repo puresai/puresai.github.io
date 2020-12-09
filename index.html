@@ -1,158 +1,1116 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>13sai blog</title><meta name="description" content="哦，宓记！13sai blog，分享有用的互联网知识，欢迎交流！"><meta name="keywords"><meta name="author" content="13sai"><meta name="copyright" content="13sai"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="13sai blog"><meta name="twitter:description" content="哦，宓记！13sai blog，分享有用的互联网知识，欢迎交流！"><meta name="twitter:image" content="http://gitee.13sai.com/img/sai.jpg"><meta property="og:type" content="website"><meta property="og:title" content="13sai blog"><meta property="og:url" content="http://gitee.13sai.com/"><meta property="og:site_name" content="13sai blog"><meta property="og:description" content="哦，宓记！13sai blog，分享有用的互联网知识，欢迎交流！"><meta property="og:image" content="http://gitee.13sai.com/img/sai.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
-var t = Cookies.get("theme");
-if (autoChangeMode == '1'){
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
-
-if (t === undefined){
-  if (isLightMode) activateLightMode()
-  else if (isDarkMode) activateDarkMode()
-  else if (isNotSpecified || hasNoSupport){
-    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
-    now = new Date();
-    hour = now.getHours();
-    isNight = hour < 6 || hour >= 18
-    isNight ? activateDarkMode() : activateLightMode()
-}
-} else if (t == 'light') activateLightMode()
-else activateDarkMode()
-
-
-} else if (autoChangeMode == '2'){
-  now = new Date();
-  hour = now.getHours();
-  isNight = hour < 6 || hour >= 18
-  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
-  else if (t === 'light') activateLightMode()
-  else activateDarkMode() 
-} else {
-  if ( t == 'dark' ) activateDarkMode()
-  else if ( t == 'light') activateLightMode()
-}
-
-function activateDarkMode(){
-  document.documentElement.setAttribute('data-theme', 'dark')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
-  }
-}
-function activateLightMode(){
-  document.documentElement.setAttribute('data-theme', 'light')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
-  }
-}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://gitee.13sai.com/"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="preload" href="/img/banner111.jpeg" as="image"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  highlight_copy: 'false',
-  highlight_lang: 'true',
-  highlight_shrink: 'false',
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  bookmark: {
-    title: 'Snackbar.bookmark.title',
-    message_prev: '按',
-    message_next: '键将本页加入书签'
-  },
-  runtime_unit: '天',
-  copyright: undefined,
-  copy_copyright_js: false,
-  ClickShowText: undefined,
-  medium_zoom: 'false',
-  Snackbar: undefined
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
   
-}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">13sai blog</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/sai.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">203</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">42</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">28</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><nav class="full_page" id="nav"><div class="nav_bg" style="background-image: url(/img/banner111.jpeg)"></div><div id="site-info"><div id="site-title"><span class="blogtitle">13sai blog</span></div><div id="site-sub-title"><span class="subtitle"></span></div><div id="site-social-icons"><a class="social-icon" href="https://github.com/13sai" target="_blank"><i class="fa fa-github"></i></a><a class="social-icon" href="mailto:sai0556@qq.com" target="_blank"><i class="fa fa-envelope"></i></a></div></div><div class="scroll-down"><i class="fa fa-angle-down scroll-down-effects"></i></div></nav><div id="content-outer"><div class="layout_page" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/11/21/283/" title="go的并发模型"><img class="post_bg lazyload" data-src="/img/go.jpeg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/11/21/283/" title="go的并发模型">go的并发模型</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-11-21</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/go/">go</a></span><div class="content">介绍并发模型，我们先来说一下并发和并行。
-并发和并行并发和并行否是为了充分利用CPU多核计算资源提出来的概念。
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Hexo</title>
+  <meta name="description" content="哦，宓记！13sai blog，分享有用的互联网知识，欢迎交流！">
+<meta property="og:type" content="website">
+<meta property="og:title" content="13sai blog">
+<meta property="og:url" content="http:&#x2F;&#x2F;github.13sai.com&#x2F;index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="哦，宓记！13sai blog，分享有用的互联网知识，欢迎交流！">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="13sai blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
 
-并发指的是在同一个时间段内，多条指令在CPU上同时执行
-并行值得是在同一时刻，多条指令在CPU上同时执行
 
-并发程序其实并不要求CPU具备多核计算的能力，在同一时间段内，多个线程会被分配 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/10/27/280/" title="MySQL间隙锁"><img class="post_bg lazyload" data-src="http://img.13sai.com/1546153260000.png" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/10/27/280/" title="MySQL间隙锁">MySQL间隙锁</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-10-27</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/mysql/">mysql</a></span><div class="content">gap lock，也就是间隙锁，是innodb行级锁的一种，其他的还有record lock, Next-KeyLocks。
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
 
-行锁（Record Lock）：锁直接加在索引记录上面。
-间隙锁（Gap Lock）：锁加在不存在的空闲空间，可以是两个索引记录之间，也可能是第一个索引记录之前或最后一个索 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/10/21/277/" title="layer关闭的问题"><img class="post_bg lazyload" data-src="/img/flower.jpg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/10/21/277/" title="layer关闭的问题">layer关闭的问题</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-10-21</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/js/">js</a></span><div class="content">layer弹出层应该是我们比较常用的一个组件了。
-遇到个问题，就是弹出层加上下一个上一个，其实按理是比较好实现，点击上一个下一个按钮，调用一下layer.close即可，然而无奈的是弹出的是一个iframe，都不在一个页面，如何调用layer.close。
-那可怎么办呢？
-123456789var  ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/09/10/275/" title="golang的time使用"><img class="post_bg lazyload" data-src="/img/go.jpeg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/09/10/275/" title="golang的time使用">golang的time使用</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-09-10</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/go/">go</a></span><div class="content">time应该是开发中比较常用的库了，常见方法说明：
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/08/31/272/" title="Laravel6配合MaatwebsiteExcel实现Excel导出"><img class="post_bg lazyload" data-src="https://cdn.learnku.com/uploads/images/201802/28/1/Jk8mC7SGI5.jpg!/both/400x400" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/08/31/272/" title="Laravel6配合MaatwebsiteExcel实现Excel导出">Laravel6配合MaatwebsiteExcel实现Excel导出</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-08-31</time><div class="content">相比导入，项目中导出场景更多，估摸着现在有十多个导出了，之前写了导入，这会才把导出补上。
-安装之前说过，这里说一下配置，虽然已有默认配置，但还是有修改配置的场景，所以建议生成配置文件。
-配置12//生成config/excel.phpphp artisan vendor:publish --prov ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/08/30/270/" title="Laravel常用代码合集"><img class="post_bg lazyload" data-src="https://cdn.learnku.com/uploads/images/201802/28/1/Jk8mC7SGI5.jpg!/both/400x400" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/08/30/270/" title="Laravel常用代码合集">Laravel常用代码合集</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-08-30</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/php/">php</a></span><div class="content">用Laravel也有不短的时间了，也用过不少版本了，以下代码是在日常项目中收集，作为笔记，也分享出来，希望对你有点用处。注：版本没标注，若有不兼容的问题，微调即可。
-验证不太习惯单独弄个Request验证类，比较习惯下面的写法：
-12345678910111213141516171819202122 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/08/02/263/" title="利用之前的gin-frame做一个钉钉智能提醒"><img class="post_bg lazyload" data-src="/img/gin.png" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/08/02/263/" title="利用之前的gin-frame做一个钉钉智能提醒">利用之前的gin-frame做一个钉钉智能提醒</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-08-02</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/go/">go</a></span><div class="content">最近项目有点多，更新文章的频率降低了，虽然都是公司自己的项目，但让我作着作着作出了外包的感觉～～～
-之前又出过gin-frame的文章，今天就利用gin-frame做一个钉钉智能提醒功能吧。
-需求工作生活中，琐事太多，就容易忘，希望有这么个智能提醒功能，能利用钉钉准时推送提醒我！比如：
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
 
-每周五18 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/07/20/261/" title="最近使用gin的总结"><img class="post_bg lazyload" data-src="/img/flower.jpg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/07/20/261/" title="最近使用gin的总结">最近使用gin的总结</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-07-20</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/go/">go</a></span><div class="content">最近有新项目是利用gin开发的，过程中遇到一些问题，总结一下，作为笔记，也希望能帮助到你。
-跨域问题中间件：
-1234567891011121314151617181920func Cors() gin.HandlerFunc &#123;	return func(c *gin.Context) & ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/07/14/262/" title="使用vue-element-admin的一些总结"><img class="post_bg lazyload" data-src="/img/flower.jpg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/07/14/262/" title="使用vue-element-admin的一些总结">使用vue-element-admin的一些总结</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-07-14</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/vue/">vue</a></span><div class="content">最近开发的项目后台基于vue-element-admin开发，在逐步完善的过程中遇到了一些问题，特此总结，希望能对你有所帮助。
-先上链接，真的很好用，安利一下，链接如下：
 
-A magical vue admin
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
 
-基本上常用的不常用的功能都有，就不多说了，有兴趣链接直达，正式开始正文。
-修改菜单图 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/06/15/256/" title="结合gin+gorm+go-Redis写一个基础 API（下篇）"><img class="post_bg lazyload" data-src="/img/gin.png" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/06/15/256/" title="结合gin+gorm+go-Redis写一个基础 API（下篇）">结合gin+gorm+go-Redis写一个基础 API（下篇）</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-06-15</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/go/">go</a></span><div class="content">前两篇我们已经完成了gin+gorm部分，今天我们来补充go-Redis，并进行测试。
-整合go-Redis我们把Redis相关也放在model下面，使用的是常见的go-redis：
-123456789101112131415161718192021222324// redis.gopackage  ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/06/11/255/" title="结合gin+gorm+go-Redis写一个基础 API（中篇）"><img class="post_bg lazyload" data-src="/img/gin.png" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/06/11/255/" title="结合gin+gorm+go-Redis写一个基础 API（中篇）">结合gin+gorm+go-Redis写一个基础 API（中篇）</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-06-11</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/go/">go</a></span><div class="content">在上篇里，我介绍了读取配置，并尝试连接了数据库，那么这一篇呢，我们主要利用gin框架来写写简单的接口。
+    </nav>
+  </div>
+</header>
 
-路由为了便于管理，还是将路由文件单独出来，新建routes：
-123456789101112131415161718192021package routerimport (	"net/http" ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/06/10/254/" title="结合gin+gorm+go-Redis写一个基础 API（上篇）"><img class="post_bg lazyload" data-src="/img/gin.png" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/06/10/254/" title="结合gin+gorm+go-Redis写一个基础 API（上篇）">结合gin+gorm+go-Redis写一个基础 API（上篇）</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-06-10</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/go/">go</a></span><div class="content">初始化新建目录，初始化项目，运行：
-12345go mod init sai0556/gin-frame// 使用本地modulego mod edit -require=local.com/sai0556/gin-frame@v1.0.0go mod edit -replace=local.com ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/06/03/253/" title="PHP的构成和生命周期"><img class="post_bg lazyload" data-src="/img/php2.jpeg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/06/03/253/" title="PHP的构成和生命周期">PHP的构成和生命周期</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-06-03</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/php/">php</a></span><div class="content">PHP的源码构成
-SAPI（PHP的应用接口层）
-main（主要代码，输入/输出，web通信以及PHP框架的初始化操作等）
-ZendVM（PHP解析器的主要实现，代码的解释和执行，核心部分）
-Extension（可分为PHP和Zend扩展）
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!qq:957042781</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-生命周期
-模块初始化（PHP框架，Zend引擎的初始化操 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/05/04/250/" title="利用ElementUI的table和calendar制作一个价格日历"><img class="post_bg lazyload" data-src="https://cdn.learnku.com/uploads/images/202005/04/41489/pto2GeGfrI.jpg!large" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/05/04/250/" title="利用ElementUI的table和calendar制作一个价格日历">利用ElementUI的table和calendar制作一个价格日历</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-05-04</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/js/">js</a></span><div class="content">项目中需要做一个价格日历，便于展示和修改日期价格，我们先看下最终效果，然后利用ElementUI的table 和 calendar 实现一下。
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CI/">CI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MQ/">MQ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP%E8%A7%A3%E6%9E%90%E8%B7%AF%E7%94%B1/">PHP解析路由</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ci/">ci</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/elasticsearch/">elasticsearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">51</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/svn/">svn</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/windows/">windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/">系列文章</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
 
-来看看主要代码（代码仅保留了主要代码和属性，并不完整，可以自行根据实际情况修改）：
-12345678910111213141516171819202122 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/04/29/248/" title="利用 Laravel 中间件给后台加个操作日志"><img class="post_bg lazyload" data-src="https://cdn.learnku.com/uploads/images/201802/28/1/Jk8mC7SGI5.jpg!/both/400x400" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/04/29/248/" title="利用 Laravel 中间件给后台加个操作日志">利用 Laravel 中间件给后台加个操作日志</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-04-29</time><div class="content">项目后台角色及人员变多，需要加下日志，方便查询，不妨利用中间件实现下。
-方案：
 
-中间件判断是否需要记录，写入队列
-队列写入数据库
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ElementUI/" rel="tag">ElementUI</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LNMP/" rel="tag">LNMP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Laravel/" rel="tag">Laravel</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MQ/" rel="tag">MQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a><span class="tag-list-count">50</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP%E7%B3%BB%E5%88%97/" rel="tag">PHP系列</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVN/" rel="tag">SVN</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell/" rel="tag">Shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/" rel="tag">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asp/" rel="tag">asp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/consul/" rel="tag">consul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elementUI/" rel="tag">elementUI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gin/" rel="tag">gin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jwt/" rel="tag">jwt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/" rel="tag">other</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/" rel="tag">tcp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/" rel="tag">test</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thinkphp/" rel="tag">thinkphp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
 
-表设计
-12345678910CREATE TABLE `admin_log` (  `id` int(10) unsigned NOT NULL AUTO_INCR ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/04/29/247/" title="ElementUI中table表格自定义表头Tooltip文字提示"><img class="post_bg lazyload" data-src="http://image.13sai.com/theme-index-blue.c38b733.png" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/04/29/247/" title="ElementUI中table表格自定义表头Tooltip文字提示">ElementUI中table表格自定义表头Tooltip文字提示</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-04-29</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/vue/">vue</a></span><div class="content">table表格需要增加提示文案说明，没有现成的属性添加，我们可以通过render-header来渲染表头。
-代码如下：
-123456789&lt;el-table-column        align=&quot;center&quot;        label=&quot;价格&quot;   ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/04/25/246/" title="分享按日执行的脚本"><img class="post_bg lazyload" data-src="/img/flower.jpg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/04/25/246/" title="分享按日执行的脚本">分享按日执行的脚本</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-04-25</time><div class="content">项目中要做一些按日进行的统计，之前的任务都没跑，写个脚本执行下。
-plus.sh
-1234567891011121314#!/bin/bashSTART_DATE=$1END_DATE=$2EXEC_COMMAND=$3echo &apos;start_date: &apos;$START_DATE ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/04/05/245/" title="Laravel6配合MaatwebsiteExcel实现Excel导入"><img class="post_bg lazyload" data-src="https://cdn.learnku.com/uploads/images/201802/28/1/Jk8mC7SGI5.jpg!/both/400x400" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/04/05/245/" title="Laravel6配合MaatwebsiteExcel实现Excel导入">Laravel6配合MaatwebsiteExcel实现Excel导入</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-04-05</time><div class="content">前一段需要项目中需要通过Excel导入用户，之前用过phpexcel，总感觉太过繁琐，印象中phpexcel也很久没更新，看到项目中有使用Maatwebsite\Excel，便尝试使用一下。
-安装1composer require maatwebsite/excel
 
-导入生成导入类1php art ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_left left_radius"><a href="/2020/03/29/243/" title="go的类型转换"><img class="post_bg lazyload" data-src="/img/go.jpeg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/03/29/243/" title="go的类型转换">go的类型转换</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-03-29</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/go/">go</a></span><div class="content">类型转换是经常使用到的，汇总了一些比较常见的用法，分享给你～
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364 ...</div></div></div><div class="recent-post-item article-container"><div class="post_cover pull_right right_radius"><a href="/2020/03/24/242/" title="Redis持久化"><img class="post_bg lazyload" data-src="/img/flower.jpg" onerror="onerror=null;src='/img/404.jpg'"></a></div><div class="recent-post-info">  <a class="article-title" href="/2020/03/24/242/" title="Redis持久化">Redis持久化</a><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-03-24</time><span class="article-meta"><span class="article-meta__separator">|</span><i class="fa fa-inbox article-meta__icon" aria-hidden="true"></i><a class="article-meta__categories" href="/categories/redis/">redis</a></span><div class="content">
-持久化的功能:Redis是内存数据库，数据都是存储在内存中，为了避免进程退出导致数据的永久丢失，需要定期将Redis中的数据以某种形式(数据或命令) 从内存保存到硬盘。 当下次Redis重启时，利用持久化文件实现数据恢复。除此之外，为了进行灾难备份，可以将持久化文件拷贝到一个远程位置。
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13.08px;">CI</a> <a href="/tags/ElementUI/" style="font-size: 13.17px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.5px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.58px;">Linux</a> <a href="/tags/MQ/" style="font-size: 13px;">MQ</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.75px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/Shell/" style="font-size: 13px;">Shell</a> <a href="/tags/api/" style="font-size: 13px;">api</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.67px;">css</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/elementUI/" style="font-size: 13px;">elementUI</a> <a href="/tags/gin/" style="font-size: 13px;">gin</a> <a href="/tags/git/" style="font-size: 13.17px;">git</a> <a href="/tags/go/" style="font-size: 13.58px;">go</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.92px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/mysql/" style="font-size: 13.83px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.58px;">nginx</a> <a href="/tags/other/" style="font-size: 13px;">other</a> <a href="/tags/php/" style="font-size: 13px;">php</a> <a href="/tags/python/" style="font-size: 13.08px;">python</a> <a href="/tags/redis/" style="font-size: 13.42px;">redis</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.33px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/thinkphp/" style="font-size: 13px;">thinkphp</a> <a href="/tags/vue/" style="font-size: 13.25px;">vue</a> <a href="/tags/web/" style="font-size: 13.5px;">web</a> <a href="/tags/windows/" style="font-size: 13.08px;">windows</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.08px;">算法</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
 
-Redi ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-chevron-right"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card_widget card-author"><div class="card-content"><div class="post_data"><div class="data-item is_center"><img class="lazyload avatar_img" src="/img/sai.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><p class="author-info__name is_center">13sai</p><p class="author-info__description is_center">哦，宓记！13sai blog，分享有用的互联网知识，欢迎交流！</p></div></div><div class="post_data data_config"><div class="data-item is_center"><div class="data_link"><a href="/archives/"><p class="headline">文章</p><p class="length_num">203</p></a></div></div><div class="data-item is_center">      <div class="data_link"><a href="/tags/"><p class="headline">标签</p><p class="length_num">42</p></a></div></div><div class="data-item is_center">     <div class="data_link"><a href="/categories/"><p class="headline">分类</p><p class="length_num">28</p></a></div></div></div><div class="post_data is_center"><a class="data-item bookmark bookmarke--primary bookmark--animated" id="bookmark-it" href="javascript:;" title="加入书签" target="_self"><i class="fa fa-bookmark" aria-hidden="true"></i><span>加入书签</span></a></div><div class="post_data data_config"><div id="aside-social-icons"> <a class="social-icon data-item" href="https://github.com/13sai" target="_blank"><i class="fa fa-github"></i></a><a class="social-icon data-item" href="mailto:sai0556@qq.com" target="_blank"><i class="fa fa-envelope"></i></a></div></div></div></div><div class="card_widget card-announcement"><div class="card-content"><div class="item_headline"><i class="fa fa-bullhorn card-announcement-animation" aria-hidden="true"></i><span>公告</span></div><div class="announcement_content">感谢访问本站，喜欢请收藏 ^_^</div></div></div><div class="card_widget card-recent-post"><div class="card-content"><div class="item_headline"><i class="fa fa-history" aria-hidden="true"></i><span>最新文章</span></div><div class="aside_recent_item"><div class="aside_recent_post"><a href="/2020/11/21/283/"><div class="aside_post_cover"><img class="aside_post_bg lazyload" data-src="/img/go.jpeg" onerror="onerror=null;src='/img/404.jpg'" title="go的并发模型"></div><div id="aside_title"><div class="aside_post_title" href="/2020/11/21/283/" title="go的并发模型">go的并发模型</div><time class="aside_post_meta post-meta__date">2020-11-21</time></div></a></div><div class="aside_recent_post"><a href="/2020/10/27/280/"><div class="aside_post_cover"><img class="aside_post_bg lazyload" data-src="http://img.13sai.com/1546153260000.png" onerror="onerror=null;src='/img/404.jpg'" title="MySQL间隙锁"></div><div id="aside_title"><div class="aside_post_title" href="/2020/10/27/280/" title="MySQL间隙锁">MySQL间隙锁</div><time class="aside_post_meta post-meta__date">2020-10-27</time></div></a></div><div class="aside_recent_post"><a href="/2020/10/21/277/"><div class="aside_post_cover"><img class="aside_post_bg lazyload" data-src="/img/flower.jpg" onerror="onerror=null;src='/img/404.jpg'" title="layer关闭的问题"></div><div id="aside_title"><div class="aside_post_title" href="/2020/10/21/277/" title="layer关闭的问题">layer关闭的问题</div><time class="aside_post_meta post-meta__date">2020-10-21</time></div></a></div><div class="aside_recent_post"><a href="/2020/09/10/275/"><div class="aside_post_cover"><img class="aside_post_bg lazyload" data-src="/img/go.jpeg" onerror="onerror=null;src='/img/404.jpg'" title="golang的time使用"></div><div id="aside_title"><div class="aside_post_title" href="/2020/09/10/275/" title="golang的time使用">golang的time使用</div><time class="aside_post_meta post-meta__date">2020-09-10</time></div></a></div><div class="aside_recent_post"><a href="/2020/08/31/272/"><div class="aside_post_cover"><img class="aside_post_bg lazyload" data-src="https://cdn.learnku.com/uploads/images/201802/28/1/Jk8mC7SGI5.jpg!/both/400x400" onerror="onerror=null;src='/img/404.jpg'" title="Laravel6配合MaatwebsiteExcel实现Excel导出"></div><div id="aside_title"><div class="aside_post_title" href="/2020/08/31/272/" title="Laravel6配合MaatwebsiteExcel实现Excel导出">Laravel6配合MaatwebsiteExcel实现Excel导出</div><time class="aside_post_meta post-meta__date">2020-08-31</time></div></a></div></div></div></div><div class="card_widget card-categories"><div class="card-content"><div class="item_headline"><i class="fa fa-folder-open" aria-hidden="true"></i><span>分类</span></div><ul class="aside_category_item">       <li class="aside_category_list"><a class="aside_category_list_link" href="/categories/CI/"><span class="aside_category_list_name">CI</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/Linux/"><span class="aside_category_list_name">Linux</span><span class="aside_category_list_length">10</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/MQ/"><span class="aside_category_list_name">MQ</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/PHP%E8%A7%A3%E6%9E%90%E8%B7%AF%E7%94%B1/"><span class="aside_category_list_name">PHP解析路由</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/algorithm/"><span class="aside_category_list_name">algorithm</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/asp/"><span class="aside_category_list_name">asp</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/ci/"><span class="aside_category_list_name">ci</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/css/"><span class="aside_category_list_name">css</span><span class="aside_category_list_length">12</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/elasticsearch/"><span class="aside_category_list_name">elasticsearch</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/git/"><span class="aside_category_list_name">git</span><span class="aside_category_list_length">3</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/go/"><span class="aside_category_list_name">go</span><span class="aside_category_list_length">11</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/js/"><span class="aside_category_list_name">js</span><span class="aside_category_list_length">30</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/mysql/"><span class="aside_category_list_name">mysql</span><span class="aside_category_list_length">14</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/nginx/"><span class="aside_category_list_name">nginx</span><span class="aside_category_list_length">10</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/other/"><span class="aside_category_list_name">other</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/php/"><span class="aside_category_list_name">php</span><span class="aside_category_list_length">51</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/python/"><span class="aside_category_list_name">python</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/redis/"><span class="aside_category_list_name">redis</span><span class="aside_category_list_length">8</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/sql/"><span class="aside_category_list_name">sql</span><span class="aside_category_list_length">9</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/svn/"><span class="aside_category_list_name">svn</span><span class="aside_category_list_length">2</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/test/"><span class="aside_category_list_name">test</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/vue/"><span class="aside_category_list_name">vue</span><span class="aside_category_list_length">2</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/web/"><span class="aside_category_list_name">web</span><span class="aside_category_list_length">10</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/windows/"><span class="aside_category_list_name">windows</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/%E7%AE%97%E6%B3%95/"><span class="aside_category_list_name">算法</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/"><span class="aside_category_list_name">系列文章</span><span class="aside_category_list_length">13</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/%E7%BD%91%E7%BB%9C/"><span class="aside_category_list_name">网络</span><span class="aside_category_list_length">1</span></a></li><li class="aside_category_list"><a class="aside_category_list_link" href="/categories/%E9%9D%A2%E8%AF%95/"><span class="aside_category_list_name">面试</span><span class="aside_category_list_length">1</span></a></li></ul></div></div><div class="card_widget card-tags"><div class="card-content"><div class="item_headline"><i class="fa fa-tags" aria-hidden="true"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/CI/" style="font-size: 16.67px; color: #8c8c8c">CI</a> <a href="/tags/ElementUI/" style="font-size: 17.33px; color: #808080">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 16px; color: #999">LNMP</a> <a href="/tags/Laravel/" style="font-size: 20px; color: #4d4d4d">Laravel</a> <a href="/tags/Linux/" style="font-size: 20.67px; color: #404040">Linux</a> <a href="/tags/MQ/" style="font-size: 16px; color: #999">MQ</a> <a href="/tags/PHP/" style="font-size: 24px; color: #000">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 22px; color: #262626">PHP系列</a> <a href="/tags/RPC/" style="font-size: 16px; color: #999">RPC</a> <a href="/tags/SVN/" style="font-size: 16px; color: #999">SVN</a> <a href="/tags/Shell/" style="font-size: 16px; color: #999">Shell</a> <a href="/tags/api/" style="font-size: 16px; color: #999">api</a> <a href="/tags/asp/" style="font-size: 16px; color: #999">asp</a> <a href="/tags/consul/" style="font-size: 16px; color: #999">consul</a> <a href="/tags/css/" style="font-size: 21.33px; color: #333">css</a> <a href="/tags/docker/" style="font-size: 16px; color: #999">docker</a> <a href="/tags/elasticsearch/" style="font-size: 16px; color: #999">elasticsearch</a> <a href="/tags/elementUI/" style="font-size: 16px; color: #999">elementUI</a> <a href="/tags/gin/" style="font-size: 16px; color: #999">gin</a> <a href="/tags/git/" style="font-size: 17.33px; color: #808080">git</a> <a href="/tags/go/" style="font-size: 20.67px; color: #404040">go</a> <a href="/tags/html/" style="font-size: 16px; color: #999">html</a> <a href="/tags/jenkins/" style="font-size: 16px; color: #999">jenkins</a> <a href="/tags/js/" style="font-size: 23.33px; color: #0d0d0d">js</a> <a href="/tags/jwt/" style="font-size: 16px; color: #999">jwt</a> <a href="/tags/mysql/" style="font-size: 22.67px; color: #1a1a1a">mysql</a> <a href="/tags/nginx/" style="font-size: 20.67px; color: #404040">nginx</a> <a href="/tags/other/" style="font-size: 16px; color: #999">other</a> <a href="/tags/php/" style="font-size: 16px; color: #999">php</a> <a href="/tags/python/" style="font-size: 16.67px; color: #8c8c8c">python</a> <a href="/tags/redis/" style="font-size: 19.33px; color: #595959">redis</a> <a href="/tags/shell/" style="font-size: 16px; color: #999">shell</a> <a href="/tags/sql/" style="font-size: 18.67px; color: #666">sql</a> <a href="/tags/svn/" style="font-size: 16px; color: #999">svn</a> <a href="/tags/tcp/" style="font-size: 16px; color: #999">tcp</a> <a href="/tags/test/" style="font-size: 16px; color: #999">test</a> <a href="/tags/thinkphp/" style="font-size: 16px; color: #999">thinkphp</a> <a href="/tags/vue/" style="font-size: 18px; color: #737373">vue</a> <a href="/tags/web/" style="font-size: 20px; color: #4d4d4d">web</a> <a href="/tags/windows/" style="font-size: 16.67px; color: #8c8c8c">windows</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 16.67px; color: #8c8c8c">算法</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 16px; color: #999">面试</a></div></div></div><div class="card_widget card-archives"><div class="card-content"><div class="item_headline"><i class="fa fa-archive" aria-hidden="true"></i><span>归档</span></div><div class="archives_item"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">2020年11月<span class="archive-list-count">1</span></a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">2020年10月<span class="archive-list-count">2</span></a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">2020年09月<span class="archive-list-count">1</span></a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">2020年08月<span class="archive-list-count">3</span></a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">2020年07月<span class="archive-list-count">2</span></a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">2020年06月<span class="archive-list-count">4</span></a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">2020年05月<span class="archive-list-count">1</span></a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">2020年04月<span class="archive-list-count">4</span></a></li><li class="archive-list-item"><a class="archive-list-link is_center" href="/archives" >查看更多</a></li></ul></div></div></div><div class="card_widget card-webinfo"><div class="card-content"><div class="item_headline"><i class="fa fa-line-chart" aria-hidden="true"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo_item"><div class="webinfo_article_name">文章数目 :</div><div class="webinfo_article_count">203</div></div><div class="webinfo_item"><div class="webinfo_runtime_name">已运行时间 :</div><div class="webinfo_runtime_count" id="webinfo_runtime_count"></div><script id="runtionshow" src="/js/runtimeshow.js" start_date="11/20/2019 15:00:00">      </script></div><div class="webinfo_item"><div class="webinfo_site_name">本站总访问量 :</div><div class="webinfo_site_pv_count" id="busuanzi_value_site_pv"></div></div></div></div></div></div></div></div><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2020 By 13sai</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"><span>皖ICP备14021992号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script>if (/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {} else {
-  $('.full_page .nav_bg').css('background-attachment', 'fixed');
-}
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
 
-</script><script src="https://cdn.jsdelivr.net/npm/typed.js"></script><script>var typed = new Typed(".subtitle", {
-strings: '人必有痴&#44;而后有成,Never give up!'.split(","),
-startDelay: 300,
-typeSpeed: 100,
-loop: true,
-backSpeed: 50
-});
-</script><script>//首頁fullpage
-function alignContent() {
-  for (var n = $(window).height(), e = document.querySelectorAll(".full_page"), i = 0; i < e.length; i++) 
-    e[i].style.height = n + "px";
-    $("#site-info").each(function () {
-      var x = $(this).height();
-      $(this).css("top", (n-x)/2)       
-    })
-}
-alignContent();
 
-$(window).bind("resize", function () {
-  alignContent()
-})</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/21/283/" class="title">go的并发模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-21T13:26:35.000Z" itemprop="datePublished">2020-11-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/mysql/">mysql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/10/27/280/" class="title">MySQL间隙锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-10-27T12:01:18.000Z" itemprop="datePublished">2020-10-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/js/">js</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/10/21/277/" class="title">layer关闭的问题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-10-21T11:54:05.000Z" itemprop="datePublished">2020-10-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/09/10/275/" class="title">golang的time使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-09-10T12:44:26.000Z" itemprop="datePublished">2020-09-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/08/31/272/" class="title">Laravel6配合MaatwebsiteExcel实现Excel导出</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-08-31T04:43:01.000Z" itemprop="datePublished">2020-08-31</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  <main class="main" role="main">
+  
+  <div class="content article-list">
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/21/283/">go的并发模型</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/11/21/283/" class="article-date">
+	  <time datetime="2020-11-21T13:26:35.000Z" itemprop="datePublished">11月 21</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/11/21/283/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/27/280/">MySQL间隙锁</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/27/280/" class="article-date">
+	  <time datetime="2020-10-27T12:01:18.000Z" itemprop="datePublished">10月 27</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/mysql/" rel="tag">mysql</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/27/280/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/21/277/">layer关闭的问题</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/21/277/" class="article-date">
+	  <time datetime="2020-10-21T11:54:05.000Z" itemprop="datePublished">10月 21</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/js/">js</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/js/" rel="tag">js</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/21/277/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/10/275/">golang的time使用</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/09/10/275/" class="article-date">
+	  <time datetime="2020-09-10T12:44:26.000Z" itemprop="datePublished">9月 10</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/09/10/275/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/31/272/">Laravel6配合MaatwebsiteExcel实现Excel导出</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/08/31/272/" class="article-date">
+	  <time datetime="2020-08-31T04:43:01.000Z" itemprop="datePublished">8月 31</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Laravel/" rel="tag">Laravel</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/08/31/272/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/30/270/">Laravel常用代码合集</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/08/30/270/" class="article-date">
+	  <time datetime="2020-08-30T12:40:13.000Z" itemprop="datePublished">8月 30</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/php/">php</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Laravel/" rel="tag">Laravel</a>, <a class="article-tag-link" href="/tags/PHP/" rel="tag">PHP</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/08/30/270/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/02/263/">利用之前的gin-frame做一个钉钉智能提醒</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/08/02/263/" class="article-date">
+	  <time datetime="2020-08-02T02:04:43.000Z" itemprop="datePublished">8月 2</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/08/02/263/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/20/261/">最近使用gin的总结</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/07/20/261/" class="article-date">
+	  <time datetime="2020-07-20T03:19:09.000Z" itemprop="datePublished">7月 20</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/gin/" rel="tag">gin</a>, <a class="article-tag-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/07/20/261/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/14/262/">使用vue-element-admin的一些总结</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/07/14/262/" class="article-date">
+	  <time datetime="2020-07-14T03:28:52.000Z" itemprop="datePublished">7月 14</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/vue/">vue</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/elementUI/" rel="tag">elementUI</a>, <a class="article-tag-link" href="/tags/vue/" rel="tag">vue</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/07/14/262/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-结合" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/256/">结合gin+gorm+go-Redis写一个基础 API（下篇）</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/06/15/256/" class="article-date">
+	  <time datetime="2020-06-15T13:49:28.000Z" itemprop="datePublished">6月 15</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/06/15/256/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-结合" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/11/255/">结合gin+gorm+go-Redis写一个基础 API（中篇）</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/06/11/255/" class="article-date">
+	  <time datetime="2020-06-11T12:19:38.000Z" itemprop="datePublished">6月 11</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/06/11/255/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-结合" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/10/254/">结合gin+gorm+go-Redis写一个基础 API（上篇）</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/06/10/254/" class="article-date">
+	  <time datetime="2020-06-10T13:19:38.000Z" itemprop="datePublished">6月 10</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/06/10/254/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/03/253/">PHP的构成和生命周期</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/06/03/253/" class="article-date">
+	  <time datetime="2020-06-03T08:05:37.000Z" itemprop="datePublished">6月 3</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/php/">php</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/PHP/" rel="tag">PHP</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/06/03/253/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/04/250/">利用ElementUI的table和calendar制作一个价格日历</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/05/04/250/" class="article-date">
+	  <time datetime="2020-05-04T11:43:59.000Z" itemprop="datePublished">5月 4</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/js/">js</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/ElementUI/" rel="tag">ElementUI</a>, <a class="article-tag-link" href="/tags/vue/" rel="tag">vue</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/05/04/250/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/29/248/">利用 Laravel 中间件给后台加个操作日志</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/04/29/248/" class="article-date">
+	  <time datetime="2020-04-29T12:48:08.000Z" itemprop="datePublished">4月 29</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Laravel/" rel="tag">Laravel</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/29/248/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/29/247/">ElementUI中table表格自定义表头Tooltip文字提示</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/04/29/247/" class="article-date">
+	  <time datetime="2020-04-29T08:18:28.000Z" itemprop="datePublished">4月 29</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/vue/">vue</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/ElementUI/" rel="tag">ElementUI</a>, <a class="article-tag-link" href="/tags/vue/" rel="tag">vue</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/29/247/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/25/246/">分享按日执行的脚本</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/04/25/246/" class="article-date">
+	  <time datetime="2020-04-25T09:55:07.000Z" itemprop="datePublished">4月 25</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/shell/" rel="tag">shell</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/25/246/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/05/245/">Laravel6配合MaatwebsiteExcel实现Excel导入</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/04/05/245/" class="article-date">
+	  <time datetime="2020-04-05T02:52:58.000Z" itemprop="datePublished">4月 5</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/Laravel/" rel="tag">Laravel</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/04/05/245/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/29/243/">go的类型转换</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/03/29/243/" class="article-date">
+	  <time datetime="2020-03-29T14:34:45.000Z" itemprop="datePublished">3月 29</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/go/">go</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/29/243/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
+    
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/24/242/">Redis持久化</a>
+    </h1>
+  
+
+  </div>
+  
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/03/24/242/" class="article-date">
+	  <time datetime="2020-03-24T13:16:09.000Z" itemprop="datePublished">3月 24</time>
+	</a>
+</span>
+    
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/redis/">redis</a>
+  </span>
+
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/redis/" rel="tag">redis</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/03/24/242/#comments" class="article-comment-link">评论</a></span>
+    
+  </p>
+</article>
+
+    
+  </div>
+
+  
+    
+    <nav class="bar bar-footer clearfix" data-stick-bottom>
+        <div class="bar-inner">
+        <div class="pager pull-left">
+            
+            <a class="prev disabled" href="javascript:;" target="_blank" rel="noopener"><i class="icon icon-angle-left"></i> 上一页</a>
+            
+            <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">下一页 &lt;i class=&quot;icon icon-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+            
+        </div>
+        <div class="total-article bar-right">Page 1 of 11</div>
+        </div>
+    </nav>
+    
+ 
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>

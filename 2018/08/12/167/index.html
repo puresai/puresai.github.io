@@ -1,81 +1,518 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>事务隔离级别 | 13sai blog</title><meta name="description" content="mysql中定义了4中隔离级别，分别是READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE。"><meta name="keywords" content="mysql"><meta name="author" content="13sai"><meta name="copyright" content="13sai"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="preconnect" href="//cdn.jsdelivr.net"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="事务隔离级别"><meta name="twitter:description" content="mysql中定义了4中隔离级别，分别是READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE。"><meta name="twitter:image" content="http://gitee.13sai.com/upload/article/15340604271.jpg"><meta property="og:type" content="article"><meta property="og:title" content="事务隔离级别"><meta property="og:url" content="http://gitee.13sai.com/2018/08/12/167/"><meta property="og:site_name" content="13sai blog"><meta property="og:description" content="mysql中定义了4中隔离级别，分别是READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE。"><meta property="og:image" content="http://gitee.13sai.com/upload/article/15340604271.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>const autoChangeMode = 'false'
-var t = Cookies.get("theme");
-if (autoChangeMode == '1'){
-const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-const isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
-
-if (t === undefined){
-  if (isLightMode) activateLightMode()
-  else if (isDarkMode) activateDarkMode()
-  else if (isNotSpecified || hasNoSupport){
-    console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
-    now = new Date();
-    hour = now.getHours();
-    isNight = hour < 6 || hour >= 18
-    isNight ? activateDarkMode() : activateLightMode()
-}
-} else if (t == 'light') activateLightMode()
-else activateDarkMode()
-
-
-} else if (autoChangeMode == '2'){
-  now = new Date();
-  hour = now.getHours();
-  isNight = hour < 6 || hour >= 18
-  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
-  else if (t === 'light') activateLightMode()
-  else activateDarkMode() 
-} else {
-  if ( t == 'dark' ) activateDarkMode()
-  else if ( t == 'light') activateLightMode()
-}
-
-function activateDarkMode(){
-  document.documentElement.setAttribute('data-theme', 'dark')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
-  }
-}
-function activateLightMode(){
-  document.documentElement.setAttribute('data-theme', 'light')
-  if (document.querySelector('meta[name="theme-color"]') !== null){
-  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
-  }
-}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="http://gitee.13sai.com/2018/08/12/167/"><link rel="prev" title="小型商城商品模块设计" href="http://gitee.13sai.com/2018/08/31/168/"><link rel="next" title="基于redis的秒杀" href="http://gitee.13sai.com/2018/08/09/165/"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
-  root: '/',
-  algolia: undefined,
-  localSearch: undefined,
-  translate: undefined,
-  highlight_copy: 'false',
-  highlight_lang: 'true',
-  highlight_shrink: 'false',
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  bookmark: {
-    title: 'Snackbar.bookmark.title',
-    message_prev: '按',
-    message_next: '键将本页加入书签'
-  },
-  runtime_unit: '天',
-  copyright: undefined,
-  copy_copyright_js: false,
-  ClickShowText: undefined,
-  medium_zoom: 'false',
-  Snackbar: undefined
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
   
-}</script></head><body><div id="header"> <div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">13sai blog</a></span><i class="fa fa-bars fa-fw toggle-menu pull_right close" aria-hidden="true"></i><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></span><span class="pull_right" id="search_button"></span></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="lazyload avatar_img" src="/img/sai.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item is_center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">203</div></a></div></div><div class="mobile_data_item is_center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">42</div></a></div></div><div class="mobile_data_item is_center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">28</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-folder-open" aria-hidden="true"></i><span> 分类</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/categories/nginx/"><i class="fa-fw"></i><span> Nginx</span></a></li><li><a class="site-page" href="/categories/mysql/"><i class="fa-fw"></i><span> Mysql</span></a></li><li><a class="site-page" href="/categories/php/"><i class="fa-fw"></i><span> PHP</span></a></li><li><a class="site-page" href="/categories/redis/"><i class="fa-fw"></i><span> Redis</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 书签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div><div id="mobile-sidebar-toc"><div class="toc_mobile_headline">目录</div></div></div><div id="body-wrap"><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true">     </i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(/upload/article/15340604271.jpg)"><div id="post-info"><div id="post-title"><div class="posttitle">事务隔离级别</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2018-08-12<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-11-21</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/mysql/">mysql</a></span><div class="post-meta-wordcount"><i class="fa fa-eye post-meta__icon" aria-hidden="true">       </i><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"> <p><br/></p><p>mysql中定义了4中隔离级别，分别是READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE。</p><p><br/></p><p>下面表格列出了可能出现的问题，Y表示可能出现，N表示几乎不可能出现。</p><table width="615" height="92"><tbody style="margin: 0px; padding: 0px;"><tr style="margin: 0px; padding: 0px;" class="firstRow"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">事务隔离级别</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">脏读</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">不可重复读</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">幻读</span></td></tr><tr style="margin: 0px; padding: 0px;"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">未提交读（read-uncommitted）</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td></tr><tr style="margin: 0px; padding: 0px;"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">不可重复读（read-committed）</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td></tr><tr style="margin: 0px; padding: 0px;"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">可重复读（repeatable-read）</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td></tr><tr style="margin: 0px; padding: 0px;"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">串行化（serializable）</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td></tr></tbody></table><p style="margin: 10px auto; padding: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);">&nbsp;</p><p><strong>脏读</strong>：(针对未提交的数据)A事务在更新一条记录，未提交前，B事务读到了A事务更新后的记录，那么B事务就读到了脏数据，会产生对A未提交数据的依赖。一旦A事务回滚，那么B事务读到的数据，将是错误的脏数据。</p><p><br/></p><p><strong>不可重复读</strong>：（读取数据本身的对比）A事务在读取某些数据后的一段时间后，再次读取这个数据，发现其读取出来的数据内容已经发生了改变，就是不可重复读。</p><p><br/></p><p><strong>幻读</strong>：（读取结果集条数的对比）A事务按相同的查询条件查询之前检索过的数据，确发现检索出来的结果集条数变多或者减少（由其他事务插入、删除的），类似产生幻觉。</p><p><br/></p><p><br/></p><p>事务的基本要素（ACID）:</p><p>1、原子性（Atomicity）：事务开始后所有操作，要么全部做完，要么全部不做，不可能停滞在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。也就是说事务是一个不可分割的整体，就像化学中学过的原子，是物质构成的基本单位。</p><p>2、一致性（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏 。比如A向B转账，不可能A扣了钱，B却没收到。<br/></p><p>3、隔离性（Isolation）：同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。比如A正在从一张银行卡中取钱，在A取钱的过程结束前，B不能向这张卡转账。<br/></p><p>4、持久性（Durability）：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。<br/></p><p style="margin: 10px auto; padding: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);">&nbsp;</p><p style="margin: 10px auto; padding: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);">&nbsp;更多可查看mysql手册：<a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html" target="_blank" title="14.5.2.1 Transaction Isolation Levels">事务隔离级别</a></p><p style="margin: 10px auto; padding: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);">&nbsp;</p><p><br/></p>
-</div></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/mysql/">mysql    </a></div><div class="post_share"><div class="social-share" data-image="/upload/article/15340604271.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-button"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lazyload post-qr-code__img" src="http://image.13sai.com/zan.jpg"><div class="post-qr-code__desc">微信</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2018/08/31/168/"><img class="prev_cover lazyload" data-src="/upload/article/15357100271.png" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>小型商城商品模块设计</span></div></a></div><div class="next-post pull_right"><a href="/2018/08/09/165/"><img class="next_cover lazyload" data-src="/upload/article/15338258391.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>基于redis的秒杀</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/03/12/233/" title="MySQL中几个重要的日志"><img class="relatedPosts_cover lazyload"data-src="http://img.13sai.com/1546153260000.png"><div class="relatedPosts_title">MySQL中几个重要的日志</div></a></div><div class="relatedPosts_item"><a href="/2020/03/17/239/" title="MySQL主从"><img class="relatedPosts_cover lazyload"data-src="http://img.13sai.com/1546153260000.png"><div class="relatedPosts_title">MySQL主从</div></a></div><div class="relatedPosts_item"><a href="/2020/03/13/235/" title="MySQL事务隔离"><img class="relatedPosts_cover lazyload"data-src="http://img.13sai.com/1546153260000.png"><div class="relatedPosts_title">MySQL事务隔离</div></a></div><div class="relatedPosts_item"><a href="/2020/03/11/232/" title="MySQL执行流程说明"><img class="relatedPosts_cover lazyload"data-src="http://img.13sai.com/1546153260000.png"><div class="relatedPosts_title">MySQL执行流程说明</div></a></div><div class="relatedPosts_item"><a href="/2020/03/15/237/" title="MySQL的count"><img class="relatedPosts_cover lazyload"data-src="/img/flower.jpg"><div class="relatedPosts_title">MySQL的count</div></a></div><div class="relatedPosts_item"><a href="/2020/03/14/236/" title="MySQL的锁"><img class="relatedPosts_cover lazyload"data-src="http://img.13sai.com/1546153260000.png"><div class="relatedPosts_title">MySQL的锁</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
-  clientID: '56020318cc01a9d56fdd',
-  clientSecret: '2fbbfefbb59c1247f4e212b7b83909302553911c',
-  repo: '13sai.github.io',
-  owner: '13sai',
-  admin: '13sai',
-  id: md5(decodeURI(location.pathname)),
-  language: ''
-})
-gitalk.render('gitalk-container')</script></div></div></div><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2014 - 2020 By 13sai</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"><span>皖ICP备14021992号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@latest/lazysizes.min.js" async=""></script></body></html>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>事务隔离级别 | Hexo</title>
+  <meta name="description" content="mysql中定义了4中隔离级别，分别是READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE。">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事务隔离级别">
+<meta property="og:url" content="http:&#x2F;&#x2F;github.13sai.com&#x2F;2018&#x2F;08&#x2F;12&#x2F;167&#x2F;index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="mysql中定义了4中隔离级别，分别是READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-21T05:48:53.948Z">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/2018/08/12/167/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="13sai blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!qq:957042781</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CI/">CI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MQ/">MQ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PHP%E8%A7%A3%E6%9E%90%E8%B7%AF%E7%94%B1/">PHP解析路由</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ci/">ci</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/css/">css</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/elasticsearch/">elasticsearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">30</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">51</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/svn/">svn</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/vue/">vue</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/windows/">windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0/">系列文章</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CI/" rel="tag">CI</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ElementUI/" rel="tag">ElementUI</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LNMP/" rel="tag">LNMP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Laravel/" rel="tag">Laravel</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MQ/" rel="tag">MQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a><span class="tag-list-count">50</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP%E7%B3%BB%E5%88%97/" rel="tag">PHP系列</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RPC/" rel="tag">RPC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVN/" rel="tag">SVN</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Shell/" rel="tag">Shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/" rel="tag">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asp/" rel="tag">asp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/consul/" rel="tag">consul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elementUI/" rel="tag">elementUI</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gin/" rel="tag">gin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/" rel="tag">html</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jenkins/" rel="tag">jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/" rel="tag">js</a><span class="tag-list-count">29</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jwt/" rel="tag">jwt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/" rel="tag">other</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/" rel="tag">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp/" rel="tag">tcp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test/" rel="tag">test</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thinkphp/" rel="tag">thinkphp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13.08px;">CI</a> <a href="/tags/ElementUI/" style="font-size: 13.17px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.5px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.58px;">Linux</a> <a href="/tags/MQ/" style="font-size: 13px;">MQ</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.75px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/Shell/" style="font-size: 13px;">Shell</a> <a href="/tags/api/" style="font-size: 13px;">api</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.67px;">css</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/elementUI/" style="font-size: 13px;">elementUI</a> <a href="/tags/gin/" style="font-size: 13px;">gin</a> <a href="/tags/git/" style="font-size: 13.17px;">git</a> <a href="/tags/go/" style="font-size: 13.58px;">go</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.92px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/mysql/" style="font-size: 13.83px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.58px;">nginx</a> <a href="/tags/other/" style="font-size: 13px;">other</a> <a href="/tags/php/" style="font-size: 13px;">php</a> <a href="/tags/python/" style="font-size: 13.08px;">python</a> <a href="/tags/redis/" style="font-size: 13.42px;">redis</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.33px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/thinkphp/" style="font-size: 13px;">thinkphp</a> <a href="/tags/vue/" style="font-size: 13.25px;">vue</a> <a href="/tags/web/" style="font-size: 13.5px;">web</a> <a href="/tags/windows/" style="font-size: 13.08px;">windows</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.08px;">算法</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/21/283/" class="title">go的并发模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-21T13:26:35.000Z" itemprop="datePublished">2020-11-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/mysql/">mysql</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/10/27/280/" class="title">MySQL间隙锁</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-10-27T12:01:18.000Z" itemprop="datePublished">2020-10-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/js/">js</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/10/21/277/" class="title">layer关闭的问题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-10-21T11:54:05.000Z" itemprop="datePublished">2020-10-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/09/10/275/" class="title">golang的time使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-09-10T12:44:26.000Z" itemprop="datePublished">2020-09-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/08/31/272/" class="title">Laravel6配合MaatwebsiteExcel实现Excel导出</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-08-31T04:43:01.000Z" itemprop="datePublished">2020-08-31</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-事务隔离级别" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      事务隔离级别
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/08/12/167/" class="article-date">
+	  <time datetime="2018-08-12T07:53:46.000Z" itemprop="datePublished">2018-08-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/mysql/">mysql</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/mysql/" rel="tag">mysql</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/08/12/167/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+         <p><br/></p><p>mysql中定义了4中隔离级别，分别是READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE。</p><p><br/></p><p>下面表格列出了可能出现的问题，Y表示可能出现，N表示几乎不可能出现。</p><table width="615" height="92"><tbody style="margin: 0px; padding: 0px;"><tr style="margin: 0px; padding: 0px;" class="firstRow"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">事务隔离级别</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">脏读</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">不可重复读</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">幻读</span></td></tr><tr style="margin: 0px; padding: 0px;"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">未提交读（read-uncommitted）</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td></tr><tr style="margin: 0px; padding: 0px;"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">不可重复读（read-committed）</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td></tr><tr style="margin: 0px; padding: 0px;"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">可重复读（repeatable-read）</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">Y</td></tr><tr style="margin: 0px; padding: 0px;"><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;"><span style="margin: 0px; padding: 0px;">串行化（serializable）</span></td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td><td style="margin: 0px; padding: 3px; border-color: silver; border-collapse: collapse;">N</td></tr></tbody></table><p style="margin: 10px auto; padding: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);">&nbsp;</p><p><strong>脏读</strong>：(针对未提交的数据)A事务在更新一条记录，未提交前，B事务读到了A事务更新后的记录，那么B事务就读到了脏数据，会产生对A未提交数据的依赖。一旦A事务回滚，那么B事务读到的数据，将是错误的脏数据。</p><p><br/></p><p><strong>不可重复读</strong>：（读取数据本身的对比）A事务在读取某些数据后的一段时间后，再次读取这个数据，发现其读取出来的数据内容已经发生了改变，就是不可重复读。</p><p><br/></p><p><strong>幻读</strong>：（读取结果集条数的对比）A事务按相同的查询条件查询之前检索过的数据，确发现检索出来的结果集条数变多或者减少（由其他事务插入、删除的），类似产生幻觉。</p><p><br/></p><p><br/></p><p>事务的基本要素（ACID）:</p><p>1、原子性（Atomicity）：事务开始后所有操作，要么全部做完，要么全部不做，不可能停滞在中间环节。事务执行过程中出错，会回滚到事务开始前的状态，所有的操作就像没有发生一样。也就是说事务是一个不可分割的整体，就像化学中学过的原子，是物质构成的基本单位。</p><p>2、一致性（Consistency）：事务开始前和结束后，数据库的完整性约束没有被破坏 。比如A向B转账，不可能A扣了钱，B却没收到。<br/></p><p>3、隔离性（Isolation）：同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。比如A正在从一张银行卡中取钱，在A取钱的过程结束前，B不能向这张卡转账。<br/></p><p>4、持久性（Durability）：事务完成后，事务对数据库的所有更新将被保存到数据库，不能回滚。<br/></p><p style="margin: 10px auto; padding: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);">&nbsp;</p><p style="margin: 10px auto; padding: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);">&nbsp;更多可查看mysql手册：<a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html" target="_blank" title="14.5.2.1 Transaction Isolation Levels">事务隔离级别</a></p><p style="margin: 10px auto; padding: 0px; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; white-space: normal; background-color: rgb(255, 255, 255);">&nbsp;</p><p><br/></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://github.13sai.com/2018/08/12/167/" title="事务隔离级别" target="_blank" rel="external">http://github.13sai.com/2018/08/12/167/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/08/31/168/" title="小型商城商品模块设计"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/08/09/165/" title="基于redis的秒杀"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '56020318cc01a9d56fdd',
+    clientSecret: '2fbbfefbb59c1247f4e212b7b83909302553911c',
+    repo: '13sai.github.io',
+    owner: '13sai',
+    admin: ['13sai'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
