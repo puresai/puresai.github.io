@@ -26,7 +26,7 @@
 <meta property="og:site_name" content="13sai blog">
 <meta property="og:description" content="网站不能访问的问题集合">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-01-13T03:48:31.843Z">
+<meta property="og:updated_time" content="2021-01-13T03:50:02.003Z">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
   <link rel="canonical" href="http://github.13sai.com/2021/01/13/302/index.html">
@@ -241,6 +241,7 @@
         <h2 id="https访问不了"><a href="#https访问不了" class="headerlink" title="https访问不了"></a>https访问不了</h2><h4 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h4><p>https访问不了，绑定host可访问，网站无报错</p>
 <h4 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h4><p>ping域名对于ip也正常，telnet 443端口失败</p>
 <h4 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h4><p>开启443端口</p>
+<hr>
 <h2 id="加了CDN的部分页面突然打不开"><a href="#加了CDN的部分页面突然打不开" class="headerlink" title="加了CDN的部分页面突然打不开"></a>加了CDN的部分页面突然打不开</h2><h4 id="现象-1"><a href="#现象-1" class="headerlink" title="现象"></a>现象</h4><p>加了cdn的部分页面打不开，http页面访问正常，绑定host访问也正常</p>
 <p>打不开的情况nginx有报错如： pwritev() “/usr/local/webserver/nginx_new/fastcgi_temp/1/96/0001214961” failed (28: No space left on device) while reading upstream, client: 61.241.120.188, server:<a href="http://www.13sai.com" target="_blank" rel="noopener">www.13sai.com</a>, request: “GET / HTTP/1.1”, upstream: “fastcgi://127.0.0.1:9000”, host: “<a href="http://www.13sai.com&quot;，后又反馈后台文件上传失败" target="_blank" rel="noopener">www.13sai.com&quot;，后又反馈后台文件上传失败</a></p>
 <h4 id="排查-1"><a href="#排查-1" class="headerlink" title="排查"></a>排查</h4><p>去掉cdn能正常访问，挂载磁盘未满，系统盘满，乍一看是cdn和waf问题</p>
