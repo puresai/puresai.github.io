@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>系列文章---基础篇：3.反射 | 13sai的blog</title>
+  <meta name="description" content="PHP的反射">
+<meta name="keywords" content="PHP系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系列文章---基础篇：3.反射">
+<meta property="og:url" content="http:&#x2F;&#x2F;github.13sai.com&#x2F;2020&#x2F;02&#x2F;01&#x2F;233&#x2F;index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="PHP的反射">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-12-09T10:37:30.427Z">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/2020/02/01/233/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="13sai blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13.08px;">CI</a> <a href="/tags/ElementUI/" style="font-size: 13.17px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.42px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/MQ/" style="font-size: 13px;">MQ</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.75px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/Shell/" style="font-size: 13px;">Shell</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.67px;">css</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/elementUI/" style="font-size: 13px;">elementUI</a> <a href="/tags/gin/" style="font-size: 13.08px;">gin</a> <a href="/tags/git/" style="font-size: 13.17px;">git</a> <a href="/tags/go/" style="font-size: 13.67px;">go</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.92px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/mongodb/" style="font-size: 13px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 13.83px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.5px;">nginx</a> <a href="/tags/php/" style="font-size: 13px;">php</a> <a href="/tags/python/" style="font-size: 13px;">python</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rpc/" style="font-size: 13px;">rpc</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.25px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/thinkphp/" style="font-size: 13px;">thinkphp</a> <a href="/tags/vue/" style="font-size: 13.25px;">vue</a> <a href="/tags/web/" style="font-size: 13.58px;">web</a> <a href="/tags/windows/" style="font-size: 13.08px;">windows</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.08px;">算法</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验，qq:957042781</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/MQ/">MQ</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ci/">ci</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/elasticsearch/">elasticsearch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/js/">js</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/life/">life</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/nginx/">nginx</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/php/">php</a><span class="category-list-count">67</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/redis/">redis</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/svn/">svn</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/test/">test</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/web/">web</a><span class="category-list-count">56</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/windows/">windows</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-系列文章-基础篇：3-反射" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      系列文章---基础篇：3.反射
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/02/01/233/" class="article-date">
+	  <time datetime="2020-02-01T10:14:31.000Z" itemprop="datePublished">2020-02-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/php/">php</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/PHP%E7%B3%BB%E5%88%97/" rel="tag">PHP系列</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/02/01/233/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.7k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 7(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a href="https://mp.weixin.qq.com/mp/homepage?__biz=MzI3Njc5Mjc0Mg==&hid=7&sn=ec786eb198002a02d9fb203b31b032b9" target="_blank" rel="noopener">PHP DIY系列–一起手写一个api框架</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>反射，直观理解就是根据到达地找到出发地和来源。 反射指在PHP运行状态中，扩展分析PHP程序，导出或提出关于类、方法、属性、参数等的详细信息，包括注释。这种动态获取信息以及动态调用对象方法的功能称为反射API。</p>
+</blockquote>
+<p>不妨先来看一个demo：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">/**</span><br><span class="line"> * Author: sai</span><br><span class="line"> * Date: 2019/10/21</span><br><span class="line"> * Time: 10:59</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">function p($msg, $var)</span><br><span class="line">&#123;</span><br><span class="line">    echo(&quot;&lt;pre style=&apos;position:relative;</span><br><span class="line">z-index:999;</span><br><span class="line">padding:10px;</span><br><span class="line">border-radius:5px;</span><br><span class="line">background:#f5f5f5;</span><br><span class="line">border:1px solid #aaa;</span><br><span class="line">font-size:14px;</span><br><span class="line">line-height:18px;</span><br><span class="line">opacity:0.8;&apos;&gt;&quot;.$msg.&quot;:&quot;.print_r($var, true).&quot;&lt;/pre&gt;&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Demo</span><br><span class="line">&#123;</span><br><span class="line">    private $id;</span><br><span class="line"></span><br><span class="line">    protected $name;</span><br><span class="line"></span><br><span class="line">    public $skills = [];</span><br><span class="line"></span><br><span class="line">    public function __construct($id, $name, $skills = [])</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;id = $id;</span><br><span class="line">        $this-&gt;name = $name;</span><br><span class="line">        $this-&gt;skills = $skills;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public function getName()</span><br><span class="line">    &#123;</span><br><span class="line">        return $this-&gt;name;</span><br><span class="line">    &#125;</span><br><span class="line">    public function getSkill()</span><br><span class="line">    &#123;</span><br><span class="line">        p(&apos;skill&apos;, $this-&gt;skills);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ref = new ReflectionClass(&apos;Demo&apos;);</span><br><span class="line">if ($ref-&gt;isInstantiable()) &#123;</span><br><span class="line">    p(&apos;检查类是否可实例化isInstantiable&apos;, null );</span><br><span class="line">&#125;</span><br><span class="line">$constructor = $ref-&gt;getConstructor();</span><br><span class="line">p(&apos;获取构造函数getConstructor&apos;, $constructor);</span><br><span class="line"></span><br><span class="line">$parameters = $constructor-&gt;getParameters();</span><br><span class="line">foreach ($parameters as $param) &#123;</span><br><span class="line">    p(&apos;获取参数getParameters&apos;, $param);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if ($ref-&gt;hasProperty(&apos;name&apos;)) &#123;</span><br><span class="line">    $attr = $ref-&gt;getProperty(&apos;name&apos;);</span><br><span class="line">    p(&apos;获取属性getProperty&apos;, $attr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$attributes = $ref-&gt;getProperties();</span><br><span class="line">foreach ($attributes as $row) &#123;</span><br><span class="line">    p(&apos;获取属性列表getProperties&apos;, $row-&gt;getName() );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if ($ref-&gt;hasMethod(&apos;getSkill&apos;)) &#123;</span><br><span class="line">    $method = $ref-&gt;getMethod(&apos;getSkill&apos;);</span><br><span class="line">    p(&apos;获取方法getMethod&apos;, $method);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$methods = $ref-&gt;getMethods();</span><br><span class="line">foreach ($methods as $row) &#123;</span><br><span class="line">    p(&apos;获取方法列表getMethods&apos;, $row-&gt;getName());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$instance = $ref-&gt;newInstanceArgs([1, &apos;sai&apos;, [&apos;php&apos;, &apos;js&apos;]]);</span><br><span class="line">p(&apos;newInstanceArgs&apos;, $instance);</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>检查类是否可实例化isInstantiable:</pre>
+
+<pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取构造函数getConstructor:ReflectionMethod Object
+(
+    [name] => __construct
+    [class] => Demo
+)
+</pre>
+<p></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => id<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => name<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => skills<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取属性getProperty:ReflectionProperty Object<br>(<br>    [name] => name<br>    [class] => Demo<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取属性列表getProperties:id</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取属性列表getProperties:name</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取属性列表getProperties:skills</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取方法getMethod:ReflectionMethod Object<br>(<br>    [name] => getSkill<br>    [class] => Demo<br>)<br></pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取方法列表getMethods:__construct</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取方法列表getMethods:getName</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>获取方法列表getMethods:getSkill</pre><pre style='position:relative;
+z-index:999;
+padding:10px;
+border-radius:5px;
+background:#f5f5f5;
+border:1px solid #aaa;
+font-size:14px;
+line-height:18px;
+opacity:0.8;'>newInstanceArgs:Demo Object<br>(<br>    [id:Demo:private] => 1<br>    [name:protected] => sai<br>    [skills] => Array<br>        (<br>            [0] => php<br>            [1] => js<br>        )</p>
+<p>)<br></pre></p>
+<p>demo里面就有使用了ReflectionClass类，当然ReflectionClass类不止于这些方法。</p>
+<h3 id="更多方法"><a href="#更多方法" class="headerlink" title="更多方法"></a>更多方法</h3><p>ReflectionClass类还有更多方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ReflectionClass::__construct</td>
+<td>初始化 ReflectionClass 类</td>
+</tr>
+<tr>
+<td>ReflectionClass::export</td>
+<td>导出一个类</td>
+</tr>
+<tr>
+<td>ReflectionClass::getConstant</td>
+<td>获取定义过的一个常量</td>
+</tr>
+<tr>
+<td>ReflectionClass::getConstants</td>
+<td>获取一组常量</td>
+</tr>
+<tr>
+<td>ReflectionClass::getConstructor</td>
+<td>获取类的构造函数</td>
+</tr>
+<tr>
+<td>ReflectionClass::getDefaultProperties</td>
+<td>获取默认属性</td>
+</tr>
+<tr>
+<td>ReflectionClass::getDocComment</td>
+<td>获取文档注释</td>
+</tr>
+<tr>
+<td>ReflectionClass::getEndLine</td>
+<td>获取最后一行的行数</td>
+</tr>
+<tr>
+<td>ReflectionClass::getExtension</td>
+<td>根据已定义的类获取所在扩展的 ReflectionExtension 对象</td>
+</tr>
+<tr>
+<td>ReflectionClass::getExtensionName</td>
+<td>获取定义的类所在的扩展的名称</td>
+</tr>
+<tr>
+<td>ReflectionClass::getFileName</td>
+<td>获取定义类的文件名</td>
+</tr>
+<tr>
+<td>ReflectionClass::getInterfaceNames</td>
+<td>获取接口（interface）名称</td>
+</tr>
+<tr>
+<td>ReflectionClass::getInterfaces</td>
+<td>获取接口</td>
+</tr>
+<tr>
+<td>ReflectionClass::getMethod</td>
+<td>获取一个类方法的 ReflectionMethod。</td>
+</tr>
+<tr>
+<td>ReflectionClass::getMethods</td>
+<td>获取方法的数组</td>
+</tr>
+<tr>
+<td>ReflectionClass::getModifiers</td>
+<td>获取类的修饰符</td>
+</tr>
+<tr>
+<td>ReflectionClass::getName</td>
+<td>获取类名</td>
+</tr>
+<tr>
+<td>ReflectionClass::getNamespaceName</td>
+<td>获取命名空间的名称</td>
+</tr>
+<tr>
+<td>ReflectionClass::getParentClass</td>
+<td>获取父类</td>
+</tr>
+<tr>
+<td>ReflectionClass::getProperties</td>
+<td>获取一组属性</td>
+</tr>
+<tr>
+<td>ReflectionClass::getProperty</td>
+<td>获取类的一个属性的 ReflectionProperty</td>
+</tr>
+<tr>
+<td>ReflectionClass::getReflectionConstant</td>
+<td>Gets a ReflectionClassConstant for a class’s constant</td>
+</tr>
+<tr>
+<td>ReflectionClass::getReflectionConstants</td>
+<td>Gets class constants</td>
+</tr>
+<tr>
+<td>ReflectionClass::getShortName</td>
+<td>获取短名</td>
+</tr>
+<tr>
+<td>ReflectionClass::getStartLine</td>
+<td>获取起始行号</td>
+</tr>
+<tr>
+<td>ReflectionClass::getStaticProperties</td>
+<td>获取静态（static）属性</td>
+</tr>
+<tr>
+<td>ReflectionClass::getStaticPropertyValue</td>
+<td>获取静态（static）属性的值</td>
+</tr>
+<tr>
+<td>ReflectionClass::getTraitAliases</td>
+<td>返回 trait 别名的一个数组</td>
+</tr>
+<tr>
+<td>ReflectionClass::getTraitNames</td>
+<td>返回这个类所使用 traits 的名称的数组</td>
+</tr>
+<tr>
+<td>ReflectionClass::getTraits</td>
+<td>返回这个类所使用的 traits 数组</td>
+</tr>
+<tr>
+<td>ReflectionClass::hasConstant</td>
+<td>检查常量是否已经定义</td>
+</tr>
+<tr>
+<td>ReflectionClass::hasMethod</td>
+<td>检查方法是否已定义</td>
+</tr>
+<tr>
+<td>ReflectionClass::hasProperty</td>
+<td>检查属性是否已定义</td>
+</tr>
+<tr>
+<td>ReflectionClass::implementsInterface</td>
+<td>接口的实现</td>
+</tr>
+<tr>
+<td>ReflectionClass::inNamespace</td>
+<td>检查是否位于命名空间中</td>
+</tr>
+<tr>
+<td>ReflectionClass::isAbstract</td>
+<td>检查类是否是抽象类（abstract）</td>
+</tr>
+<tr>
+<td>ReflectionClass::isAnonymous</td>
+<td>检查类是否是匿名类</td>
+</tr>
+<tr>
+<td>ReflectionClass::isCloneable</td>
+<td>返回了一个类是否可复制</td>
+</tr>
+<tr>
+<td>ReflectionClass::isFinal</td>
+<td>检查类是否声明为 final</td>
+</tr>
+<tr>
+<td>ReflectionClass::isInstance</td>
+<td>检查类的实例</td>
+</tr>
+<tr>
+<td>ReflectionClass::isInstantiable</td>
+<td>检查类是否可实例化</td>
+</tr>
+<tr>
+<td>ReflectionClass::isInterface</td>
+<td>检查类是否是一个接口（interface）</td>
+</tr>
+<tr>
+<td>ReflectionClass::isInternal</td>
+<td>检查类是否由扩展或核心在内部定义</td>
+</tr>
+<tr>
+<td>ReflectionClass::isIterable</td>
+<td>Check whether this class is iterable</td>
+</tr>
+<tr>
+<td>ReflectionClass::isIterateable</td>
+<td>检查是否可迭代（iterateable）</td>
+</tr>
+<tr>
+<td>ReflectionClass::isSubclassOf</td>
+<td>检查是否为一个子类</td>
+</tr>
+<tr>
+<td>ReflectionClass::isTrait</td>
+<td>返回了是否为一个 trait</td>
+</tr>
+<tr>
+<td>ReflectionClass::isUserDefined</td>
+<td>检查是否由用户定义的</td>
+</tr>
+<tr>
+<td>ReflectionClass::newInstance</td>
+<td>从指定的参数创建一个新的类实例</td>
+</tr>
+<tr>
+<td>ReflectionClass::newInstanceArgs</td>
+<td>从给出的参数创建一个新的类实例。</td>
+</tr>
+<tr>
+<td>ReflectionClass::newInstanceWithoutConstructor</td>
+<td>创建一个新的类实例而不调用它的构造函数</td>
+</tr>
+<tr>
+<td>ReflectionClass::setStaticPropertyValue</td>
+<td>设置静态属性的值</td>
+</tr>
+<tr>
+<td>ReflectionClass::__toString</td>
+<td>返回 ReflectionClass 对象字符串的表示形式。</td>
+</tr>
+</tbody></table>
+<p>除去强大的ReflectionClass，还有Reflection、ReflectionClassConstant 、ReflectionMethod 、ReflectionFunctionAbstract等等。建议查看手册：</p>
+<ul>
+<li><a href="https://www.php.net/manual/zh/book.reflection.php" target="_blank" rel="noopener">PHP反射</a></li>
+</ul>
+<h3 id="反射的实际应用"><a href="#反射的实际应用" class="headerlink" title="反射的实际应用"></a>反射的实际应用</h3><ol>
+<li>反射可以用于文档、文件生成。可以用它对文件里的类进行扫描，逐个生成描述文档;</li>
+<li>既然反射可以探知类的内部结构，那么可以用它做hook实现插件功能；</li>
+<li>可以用于做动态代理，在未知或者不确定类名的情况下，动态生成和实例化一些类和执行方法；</li>
+<li>依赖注入。对于多次继承的类，我们可以通过多次反射探索到基类的结构，或者采用递归的形式反射，实现实例化所有继承类，这也是PHP依赖注入的原理。</li>
+</ol>
+<h3 id="反射的优点"><a href="#反射的优点" class="headerlink" title="反射的优点"></a>反射的优点</h3><ol>
+<li>支持反射的语言提供了一些在低级语言中难以实现的运行时特性。</li>
+<li>可以在一定程度上避免硬编码，提供灵活性和通用性。</li>
+<li>可以作为一个第一类对象发现并修改源代码的结构（如代码块、类、方法、协议等）。</li>
+<li>可以在运行时像对待源代码语句一样计算符号语法的字符串（类似JavaScript的eval()函数），进而可将跟class或function匹配的字符串转换成class或function的调用或引用。</li>
+<li>可以创建一个新的语言字节码解释器来给编程结构一个新的意义或用途。</li>
+</ol>
+<h3 id="反射的缺点"><a href="#反射的缺点" class="headerlink" title="反射的缺点"></a>反射的缺点</h3><ol>
+<li>学习成本高。面向反射的编程需要较多的高级知识，包括框架、关系映射和对象交互，以利用更通用的代码执行</li>
+<li>同样因为反射的概念和语法都比较抽象，过多地滥用反射技术会使得代码难以被其他人读懂，不利于合作与交流</li>
+<li>反射在提高了代码灵活性的同时，牺牲了一点点运行效率，有一定的消耗</li>
+<li>反射也会破坏类的封装性，把本不该暴露的方法或属性暴露了出来</li>
+</ol>
+<p>在平时的开发中，我们用到反射其实不多，为什么把它拿到这里来说呢？一来是我们后面会使用到反射去实现Ioc容器，二来反射也是PHP核心功能之一，在我们流行的框架中十分常见，理解它是很有必要的。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://github.13sai.com/2020/02/01/233/" title="系列文章---基础篇：3.反射" target="_blank" rel="external">http://github.13sai.com/2020/02/01/233/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">后端开发</small></a></h3>
+        <div></div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/02/02/234/" title="系列文章---框架篇：1.框架目录与辅助"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/02/01/232/" title="系列文章---基础篇：2.composer"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>
