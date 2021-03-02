@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Git知识汇总 | 13sai的blog</title>
+  <meta name="description" content="Git知识汇总">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git知识汇总">
+<meta property="og:url" content="http:&#x2F;&#x2F;github.13sai.com&#x2F;2021&#x2F;02&#x2F;13&#x2F;310&#x2F;index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="Git知识汇总">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-03-02T07:23:52.813Z">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/2021/02/13/310/index.html">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>分享技术知识，不限于PHP、go、MySQL、Redis、linux、MQ、micro service。<br>交流QQ群：965666112<br>微信公众号：程序员涛子。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13.07px;">CI</a> <a href="/tags/Docker/" style="font-size: 13px;">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 13px;">ElasticSearch</a> <a href="/tags/ElementUI/" style="font-size: 13.14px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.43px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/MQ/" style="font-size: 13px;">MQ</a> <a href="/tags/MongoDB/" style="font-size: 13px;">MongoDB</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.79px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/Shell/" style="font-size: 13px;">Shell</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.64px;">css</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elasticsearch/" style="font-size: 13px;">elasticsearch</a> <a href="/tags/elementUI/" style="font-size: 13px;">elementUI</a> <a href="/tags/gin/" style="font-size: 13.07px;">gin</a> <a href="/tags/git/" style="font-size: 13.21px;">git</a> <a href="/tags/go/" style="font-size: 13.71px;">go</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.93px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/mongodb/" style="font-size: 13px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 13.86px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.5px;">nginx</a> <a href="/tags/php/" style="font-size: 13px;">php</a> <a href="/tags/python/" style="font-size: 13px;">python</a> <a href="/tags/redis/" style="font-size: 13.36px;">redis</a> <a href="/tags/rpc/" style="font-size: 13px;">rpc</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.29px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/thinkphp/" style="font-size: 13px;">thinkphp</a> <a href="/tags/vue/" style="font-size: 13.29px;">vue</a> <a href="/tags/web/" style="font-size: 13.57px;">web</a> <a href="/tags/windows/" style="font-size: 13.07px;">windows</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13px;">架构</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13.07px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 13px;">网络</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/02/27/319/" class="title">go的GC机制</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-02-27T13:03:12.000Z" itemprop="datePublished">2021-02-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/02/25/318/" class="title">微服务浅析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-02-25T13:13:35.000Z" itemprop="datePublished">2021-02-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/02/20/314/" class="title">OSI七层协议</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-02-20T02:29:06.000Z" itemprop="datePublished">2021-02-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/git/">git</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/02/13/310/" class="title">Git知识汇总</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-02-13T06:49:23.000Z" itemprop="datePublished">2021-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Docker/">Docker</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/02/10/312/" class="title">Docker基础与常用命令</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-02-10T07:13:35.000Z" itemprop="datePublished">2021-02-10</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Git知识汇总" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Git知识汇总
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/02/13/310/" class="article-date">
+	  <time datetime="2021-02-13T06:49:23.000Z" itemprop="datePublished">2021-02-13</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/git/">git</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/git/" rel="tag">git</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/02/13/310/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><h2 id="4个区"><a href="#4个区" class="headerlink" title="4个区"></a>4个区</h2><p>git之所以令人费解，主要是它相比于svn等等传统的版本管理工具，多引入了一个暂存区(Stage)的概念，就因为多了这一个概念，而使很多人疑惑。其实，在初学者来说，每个区具体怎么工作的，我们完全不需要关心，而只要知道有这么4个区就够了：</p>
+<ul>
+<li>工作区(Working Area)</li>
+<li>暂存区(Stage)</li>
+<li>本地仓库(Local Repository)</li>
+<li>远程仓库(Remote Repository)</li>
+</ul>
+<h2 id="5种状态"><a href="#5种状态" class="headerlink" title="5种状态"></a>5种状态</h2><p>以上4个区，进入每一个区成功之后会产生一个状态，再加上最初始的一个状态，一共是5种状态。以下我们把这5种状态分别命名为：</p>
+<ul>
+<li>未修改(Origin)</li>
+<li>已修改(Modified)</li>
+<li>已暂存(Staged)</li>
+<li>已提交(Committed)</li>
+<li>已推送(Pushed)</li>
+</ul>
+<h2 id="检查修改"><a href="#检查修改" class="headerlink" title="检查修改"></a>检查修改</h2><h3 id="已修改，未暂存"><a href="#已修改，未暂存" class="headerlink" title="已修改，未暂存"></a>已修改，未暂存</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure>
+
+<h3 id="已暂存，未提交"><a href="#已暂存，未提交" class="headerlink" title="已暂存，未提交"></a>已暂存，未提交</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached</span><br></pre></td></tr></table></figure>
+
+<h3 id="已提交，未推送"><a href="#已提交，未推送" class="headerlink" title="已提交，未推送"></a>已提交，未推送</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff master origin/master</span><br></pre></td></tr></table></figure>
+
+<h2 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h2><p>了解清楚如何检查各种修改之后，我们开始尝试各种撤销操作。</p>
+<h3 id="恢复已修改，未暂存"><a href="#恢复已修改，未暂存" class="headerlink" title="恢复已修改，未暂存"></a>恢复已修改，未暂存</h3><p>如果我们只是在编辑器里修改了文件，但还没有执行<code>git add .</code>，这时候我们的文件还在<code>工作区</code>，并没有进入<code>暂存区</code>，我们可以用撤销操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout .</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard</span><br></pre></td></tr></table></figure>
+
+<h3 id="恢复已暂存，未提交"><a href="#恢复已暂存，未提交" class="headerlink" title="恢复已暂存，未提交"></a>恢复已暂存，未提交</h3><p>你已经执行了<code>git add .</code>，但还没有执行<code>git commit -m &quot;comment&quot;</code>。这时候你意识到了错误，想要撤销，你可以执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset</span><br><span class="line">git checkout .</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard</span><br></pre></td></tr></table></figure>
+
+<p><code>git reset</code>只是把修改退回到了<code>git add .</code>之前的状态，也就是说文件本身还处于<code>已修改未暂存</code>状态，你如果想退回<code>未修改</code>状态，还需要执行<code>git checkout .</code>。</p>
+<p>或许你已经注意到了，以上两个步骤都可以用同一个命令<code>git reset --hard</code>来完成。是的，就是这个强大的命令，可以一步到位地把你的修改完全恢复到<code>未修改</code>的状态。</p>
+<h3 id="恢复已提交，未推送"><a href="#恢复已提交，未推送" class="headerlink" title="恢复已提交，未推送"></a>恢复已提交，未推送</h3><p>你的手太快，你既执行了<code>git add .</code>，又执行了<code>git commit</code>，这时候你的代码已经进入了你的<code>本地仓库</code>，然而你后悔了，怎么办？不要着急，还有办法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard origin/master</span><br></pre></td></tr></table></figure>
+
+<p>还是这个<code>git reset --hard</code>命令，只不过这次多了一个参数<code>origin/master</code>，正如我们上面讲过的，<code>origin/master</code>代表<code>远程仓库</code>，既然你已经污染了你的<code>本地仓库</code>，那么就从<code>远程仓库</code>把代码取回来吧。</p>
+<h3 id="已推送"><a href="#已推送" class="headerlink" title="已推送"></a>已推送</h3><p>很不幸，你的手实在是太快了，你既<code>git add</code>了，又<code>git commit</code>了，并且还<code>git push</code>了，这时你的代码已经进入<code>远程仓库</code>。如果你想恢复的话，还好，由于你的<code>本地仓库</code>和<code>远程仓库</code>是等价的，你只需要先恢复<code>本地仓库</code>，再强制<code>push</code>到<code>远程仓库</code>就好了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br><span class="line">git push -f</span><br></pre></td></tr></table></figure>
+
+<p>部分远程仓库设置了禁止强制push，我们可以使用以下方法。</p>
+<h4 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h4><p>git revert用于反转提交。执行revert命令时要求工作树必须是干净的，git revert用一个新提交来消除一个历史提交所做的任何修改。revert 之后你的本地代码会回滚到指定的历史版本，这时你再 git push 就可以把线上的代码更新。</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git clone</td>
+<td>克隆</td>
+</tr>
+<tr>
+<td>git branch (分支名)</td>
+<td>创建分支 -D删除分支</td>
+</tr>
+<tr>
+<td>git checkout (分支名)</td>
+<td>切换分支 -b创建并切换</td>
+</tr>
+<tr>
+<td>git checkout (文件名)</td>
+<td>撤销此文件修改</td>
+</tr>
+<tr>
+<td>git add</td>
+<td>将该文件添加到缓存</td>
+</tr>
+<tr>
+<td>git status</td>
+<td>查看在你上次提交之后是否有修改</td>
+</tr>
+<tr>
+<td>git commit</td>
+<td>将缓存区内容添加到仓库中</td>
+</tr>
+<tr>
+<td>git diff</td>
+<td>来查看执行 git status 的结果的详细信息</td>
+</tr>
+<tr>
+<td>git reset HEAD</td>
+<td>命令用于取消已缓存的内容</td>
+</tr>
+<tr>
+<td>git rm 文件</td>
+<td>删除文件-f强制删除</td>
+</tr>
+<tr>
+<td>git mv</td>
+<td>移动文件</td>
+</tr>
+<tr>
+<td>git merge</td>
+<td>合并分支</td>
+</tr>
+<tr>
+<td>git fetch</td>
+<td>从远程获取最新版本到本地</td>
+</tr>
+<tr>
+<td>git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</td>
+<td>将本地分支的更新，推送到远程主机</td>
+</tr>
+<tr>
+<td>git push origin –delete test</td>
+<td>删除远程分支test</td>
+</tr>
+<tr>
+<td>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</td>
+<td>将远程存储库中的更改合并到本地分支中</td>
+</tr>
+<tr>
+<td>git rebase</td>
+<td>命令在另一个分支基础之上重新应用，用于把一个分支的修改合并到当前分支。</td>
+</tr>
+<tr>
+<td>git log</td>
+<td>命令用于显示提交日志信息。</td>
+</tr>
+<tr>
+<td>git reflog</td>
+<td>显示每一次命令</td>
+</tr>
+<tr>
+<td>git revert</td>
+<td>生成一个新的提交来撤销某次提交，此次提交之前的commit都会被保留</td>
+</tr>
+<tr>
+<td>git reset HEAD <file></td>
+<td>如果发现错误的将不想暂存的文件被git add进入索引之后，想回退取消，则可以使用</td>
+</tr>
+</tbody></table>
+<p>设置用户名邮箱：</p>
+<blockquote>
+<p>git config –global <a href="http://user.name/" target="_blank" rel="noopener">user.name</a> “13sai”</p>
+</blockquote>
+<blockquote>
+<p>git config –global user.email <a href="http://mailto:" target="_blank" rel="noopener"957042781@qq.com/">“957042781@qq.com</a>“</p>
+</blockquote>
+<h3 id="几个常见问题与解决方案"><a href="#几个常见问题与解决方案" class="headerlink" title="几个常见问题与解决方案"></a>几个常见问题与解决方案</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">fatal: No configured push destination.</span><br><span class="line"></span><br><span class="line">解决：</span><br><span class="line">$ git remote add -f -t master -m master origin git://example.com/git.git/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fatal: The current branch test has no upstream branch.</span><br><span class="line">解决：</span><br><span class="line">git push --set-upstream origin test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">模仿 git clone，但只跟踪选定的分支</span><br><span class="line"></span><br><span class="line">$ mkdir project.git</span><br><span class="line">$ cd project.git</span><br><span class="line">$ git init</span><br><span class="line">$ git remote add -f -t master -m master origin git://example.com/git.git/</span><br><span class="line">$ git merge origin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fatal：Unable to create &apos;E:/project/scrm/.git/index.lock&apos;: File exists.</span><br><span class="line"></span><br><span class="line">rm -f ./.git/index.lock</span><br><span class="line">git log</span><br><span class="line">-p 查看差异</span><br><span class="line">-n(n为正整数) 查看最近n次的提交</span><br><span class="line">--pretty        按指定格式显示日志信息,可选项有：oneline,short,medium,full,fuller,email,raw以及format:&lt;string&gt;,默认为medium，可以通过修改配置文件来指定默认的</span><br><span class="line">方式。</span><br><span class="line">e.g. git log (--pretty=)oneline</span><br><span class="line">--stat  列出文件的修改行数</span><br><span class="line">--sortstat      只显示--stat中最后行数修改添加移除的统计</span><br><span class="line">--graph 以简单的图形方式列出提交记录</span><br><span class="line">--abbrev-commit 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符。</span><br><span class="line">--relative-date 使用较短的相对时间显示（比如，“2 weeks ago”）。</span><br><span class="line">--name-only 仅在提交信息后显示已修改的文件清单。</span><br><span class="line">--name-status 显示新增、修改、删除的文件清单。</span><br></pre></td></tr></table></figure>
+
+<h4 id="列出tag"><a href="#列出tag" class="headerlink" title="列出tag"></a>列出tag</h4><blockquote>
+<p>git tag # 在控制台打印出当前仓库的所有tag</p>
+</blockquote>
+<blockquote>
+<p>git tag -l ‘v0.1.*’ # 搜索符合模式的Tag 打tag</p>
+</blockquote>
+<p>git tag分为两种类型：轻量tag和附注tag。轻量tag是指向提交对象的引用，附注Tag则是仓库中的一个独立对象。建议使用附注Tag。</p>
+<h4 id="创建轻量Tag"><a href="#创建轻量Tag" class="headerlink" title="创建轻量Tag"></a>创建轻量Tag</h4><blockquote>
+<p>git tag v0.1.2-light</p>
+</blockquote>
+<h4 id="创建附注Tag"><a href="#创建附注Tag" class="headerlink" title="创建附注Tag"></a>创建附注Tag</h4><blockquote>
+<p>git tag -a v0.1.2 -m “0.1.2版本”</p>
+</blockquote>
+<p>创建轻量Tag不需要传递参数，直接指定Tag名称即可。</p>
+<p>创建附注Tag时，参数a即annotated的缩写，指定Tag类型，后附Tag名。参数m指定Tag说明，说明信息会保存在Tag对象中。</p>
+<h4 id="切换到Tag"><a href="#切换到Tag" class="headerlink" title="切换到Tag"></a>切换到Tag</h4><p>与切换分支命令相同，用</p>
+<blockquote>
+<p>git checkout [tagname]</p>
+</blockquote>
+<h4 id="查看Tag信息"><a href="#查看Tag信息" class="headerlink" title="查看Tag信息"></a>查看Tag信息</h4><p>用git show命令可以查看Tag的版本信息：</p>
+<blockquote>
+<p>git show v0.1.2</p>
+</blockquote>
+<h4 id="删除Tag"><a href="#删除Tag" class="headerlink" title="删除Tag"></a>删除Tag</h4><p>误打或需要修改Tag时，需要先将Tag删除，再打新Tag。</p>
+<blockquote>
+<p>git tag -d v0.1.2 # 删除Tag</p>
+</blockquote>
+<p>参数d即delete的缩写，意为删除其后指定的Tag。</p>
+<p>给指定的commit打Tag 打Tag不必要在head之上，也可在之前的版本上打，这需要你知道某个提交对象的校验和（通过git log获取）。</p>
+<h4 id="补打Tag"><a href="#补打Tag" class="headerlink" title="补打Tag"></a>补打Tag</h4><blockquote>
+<p>git tag -a v0.1.1 9fbc3d0</p>
+</blockquote>
+<p>Tag推送到服务器 通常的git push不会将Tag对象提交到git服务器，我们需要进行显式的操作：</p>
+<blockquote>
+<p>git push origin v0.1.2 # 将v0.1.2 Tag提交到git服务器</p>
+</blockquote>
+<blockquote>
+<p>git push origin –-tags # 将本地所有Tag一次性提交到git服务器</p>
+</blockquote>
+<p>注意：如果想看之前某个Tag状态下的文件，可以这样操作</p>
+<ol>
+<li>git tag 查看当前分支下的Tag</li>
+<li>git checkout v0.21 此时会指向打v0.21 Tag时的代码状态，（但现在处于一个空的分支上）</li>
+</ol>
+<h4 id="删除远程分支和tag"><a href="#删除远程分支和tag" class="headerlink" title="删除远程分支和tag"></a>删除远程分支和tag</h4><p>在Git v1.7.0 之后，可以使用这种语法删除远程分支：</p>
+<blockquote>
+<p>git push origin –delete <branchName></p>
+</blockquote>
+<p>删除tag这么用：</p>
+<blockquote>
+<p>git push origin –delete tag <tagname></p>
+</blockquote>
+<p>否则，可以使用这种语法，推送一个空分支到远程分支，其实就相当于删除远程分支：</p>
+<blockquote>
+<p>git push origin :<branchName></p>
+</blockquote>
+<p>这是删除tag的方法，推送一个空tag到远程tag：</p>
+<blockquote>
+<p>git tag -d <tagname></p>
+</blockquote>
+<blockquote>
+<p>git push origin :refs/tags/<tagname></p>
+</blockquote>
+<h4 id="重命名远程分支"><a href="#重命名远程分支" class="headerlink" title="重命名远程分支"></a>重命名远程分支</h4><p>删除远程分支：</p>
+<blockquote>
+<p>git push –delete origin devel</p>
+</blockquote>
+<p>重命名本地分支：</p>
+<blockquote>
+<p>git branch -m devel develop</p>
+</blockquote>
+<p>推送本地分支：</p>
+<blockquote>
+<p>git push origin develop</p>
+</blockquote>
+<h4 id="把本地tag推送到远程"><a href="#把本地tag推送到远程" class="headerlink" title="把本地tag推送到远程"></a>把本地tag推送到远程</h4><blockquote>
+<p>git push –tags # 推送所有tag</p>
+</blockquote>
+<blockquote>
+<p>git push origin :tag # 推送tag</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://github.13sai.com/2021/02/13/310/" title="Git知识汇总" target="_blank" rel="external">http://github.13sai.com/2021/02/13/310/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">后端开发</small></a></h3>
+        <div>程序员涛子</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/02/20/314/" title="OSI七层协议"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/02/10/312/" title="Docker基础与常用命令"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>
