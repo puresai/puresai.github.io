@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Paxos和Raft协议介绍 | 13sai的blog</title>
+  <meta name="description" content="Paxos和Raft协议">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paxos和Raft协议介绍">
+<meta property="og:url" content="http://github.13sai.com/2021/04/03/326/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="Paxos和Raft协议">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f07e67520">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f07853ddc">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f08b5906d">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/17159191555bd9d5">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f08fb7e30">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f09576e35">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f339c17cf">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f491ce29c">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f4d8fce8c">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f407d2c48">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f4e7ced18">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f6cdd97b9">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f989ec3c1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906fa6c22aad">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906fb6b11fa3">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906fba987040">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906fc66b6b9b">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906fd0bb1914">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906fcaa6a40e">
+<meta property="article:published_time" content="2021-04-03T07:07:37.000Z">
+<meta property="article:modified_time" content="2021-04-07T14:08:56.979Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2020/4/8/1715906f07e67520">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/2021/04/03/326/index.html">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>分享技术知识，不限于PHP、go、MySQL、Redis、linux、MQ、micro service。<br>交流QQ群：965666112<br>微信公众号：程序员涛子。<br>有任何疑问欢迎提<a href="https://github.com/13sai/13sai.github.io/issues" target="_blank">issue</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13px;">CI</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13.15px;">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 13.08px;">ElasticSearch</a> <a href="/tags/ElementUI/" style="font-size: 13.31px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.38px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.54px;">Linux</a> <a href="/tags/MongoDB/" style="font-size: 13px;">MongoDB</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.77px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/RabbitMQ/" style="font-size: 13px;">RabbitMQ</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/ThinkPHP/" style="font-size: 13.46px;">ThinkPHP</a> <a href="/tags/algorithm/" style="font-size: 13px;">algorithm</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/base/" style="font-size: 13px;">base</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.62px;">css</a> <a href="/tags/gin/" style="font-size: 13.31px;">gin</a> <a href="/tags/git/" style="font-size: 13.23px;">git</a> <a href="/tags/go/" style="font-size: 13.69px;">go</a> <a href="/tags/gulp/" style="font-size: 13px;">gulp</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.92px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/mongodb/" style="font-size: 13px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 13.85px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.38px;">nginx</a> <a href="/tags/note/" style="font-size: 13.15px;">note</a> <a href="/tags/python/" style="font-size: 13px;">python</a> <a href="/tags/redis/" style="font-size: 13.54px;">redis</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.15px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/swoole/" style="font-size: 13px;">swoole</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wamp/" style="font-size: 13.08px;">wamp</a> <a href="/tags/web/" style="font-size: 13.46px;">web</a> <a href="/tags/windows/" style="font-size: 13px;">windows</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13px;">架构</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 13px;">网络</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/DDD/">DDD</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/10/345/" class="title">领域驱动设计</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-10T05:06:19.000Z" itemprop="datePublished">2021-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/03/343/" class="title">技术管理痛点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-03T11:50:49.000Z" itemprop="datePublished">2021-06-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/01/342/" class="title">管理三板斧</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-01T11:50:49.000Z" itemprop="datePublished">2021-06-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/31/341/" class="title">技术人三要素</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-31T06:47:22.000Z" itemprop="datePublished">2021-05-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/27/340/" class="title">Protobuf语法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-27T09:39:07.000Z" itemprop="datePublished">2021-05-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Paxos和Raft协议介绍" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Paxos和Raft协议介绍
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/04/03/326/" class="article-date">
+	  <time datetime="2021-04-03T07:07:37.000Z" itemprop="datePublished">2021-04-03</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/04/03/326/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.8k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<p>文章来源: <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/xNf8SBbxxMYGYoq8k0rXUA">陶老师运维笔记- 微信公众号</a></p>
+</blockquote>
+<h1 id="1-背景介绍"><a href="#1-背景介绍" class="headerlink" title="1. 背景介绍"></a>1. 背景介绍</h1><h2 id="1-1-分布式事务"><a href="#1-1-分布式事务" class="headerlink" title="1.1 分布式事务"></a>1.1 分布式事务</h2><p>分布式事务指事务的操作位于不同的分布式系统节点上，需要保证事务的 AICD 特性。 分布式事务处理的难点是必须有一种方法可以知道事务在任何地方所做的所有动作，<strong>提交或回滚事务的决定必须产生统一的结果（全部提交或全部回滚）</strong></p>
+<p>解决这种分布式一致性问题：其中比较著名的有二阶提交协议（Two Phase Commitment Protocol）、三阶提交协议（Tree Phase Commitment Protocol）和Paxos算法。</p>
+<h2 id="1-2-二阶段提交"><a href="#1-2-二阶段提交" class="headerlink" title="1.2 二阶段提交"></a>1.2 二阶段提交</h2><p>在分布式系统中，每个节点虽然可以知晓自己的操作时成功或者失败，却无法知道其他节点的操作的成功或失败。当一个事务跨越多个节点时，为了保持事务的ACID特性，需要引入一个作为协调者的组件来统一掌控所有节点(称作参与者)的操作结果并最终指示这些节点是否要把操作结果进行真正的提交(比如将更新后的数据写入磁盘等等)。</p>
+<p>因此，二阶段提交的算法思路可以概括为： <strong>参与者将操作成败通知协调者，再由协调者根据所有参与者的反馈情报决定各参与者是否要提交操作还是中止操作。</strong> 2PC顾名思义分为两个阶段，其实施思路可概括为：</p>
+<ul>
+<li>投票阶段（voting phase）：参与者将操作结果通知协调者；</li>
+<li>提交阶段（commit phase）：收到参与者的通知后，协调者再向参与者发出通知，根据反馈情况决定各参与者是否要提交还是回滚；</li>
+</ul>
+<h1 id="2-Paxos协议"><a href="#2-Paxos协议" class="headerlink" title="2. Paxos协议"></a>2. Paxos协议</h1><p>PAXOS可以用来解决<strong>分布式环境下，设置某一个值的问题。</strong> 分布式系统中有多个节点就会存在节点间通信的问题，Paxos是基于消息传递的通讯模型的。它的<strong>假设前提</strong>是，在分布式系统中进程之间的通信会出现丢失、延迟、重复等现象，但不会出现传错的现象。<strong>Paxos算法就是为了保证在这样的系统中进程间基于消息传递就某个值达成一致。</strong></p>
+<h2 id="2-1-角色"><a href="#2-1-角色" class="headerlink" title="2.1 角色"></a>2.1 角色</h2><p>Paxos是第一个被证明的共识算法，原理基于两阶段提交并进行扩展。算法中将节点分为三种类型：</p>
+<ul>
+<li>倡议者proposer：提交一个提案，等待大家批准为结案，往往是客户端担任。提案信息包括提案编号和提议的value。</li>
+<li>接受者acceptor：负责对提案进行投票，往往服务器担任。若提案获得多数Acceptors的接受，则称该提案被批准（chosen）。</li>
+<li>学习者learner：被告知提案结果，只能“学习”被批准的提案。不参与投票过程。客户端和服务端都可担任。</li>
+</ul>
+<p>每个节点在协议中可以担任多个角色。</p>
+<h2 id="2-2-Paxos算法"><a href="#2-2-Paxos算法" class="headerlink" title="2.2  Paxos算法"></a>2.2  Paxos算法</h2><blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000005717258">segmentfault.com/a/119000000…</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hzmark/p/paxos.html">www.cnblogs.com/hzmark/p/pa…</a></li>
+</ul>
+</blockquote>
+<p><strong>Paxos的特点：</strong></p>
+<ul>
+<li>一个或多个节点可以提出提议</li>
+<li>系统针对所有提案中的某个提案必须达成一致</li>
+<li>最多只能对一个确定的提案达成一致</li>
+<li>只要超过半数的节点存活且可互相通信，整个系统一定能达成一致状态</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f07e67520" alt="Paxos基本算法"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f07853ddc" alt="Paxos表决过程"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f08b5906d" alt="Paxos表决过程"></p>
+<h3 id="2-2-1-Paxos表决"><a href="#2-2-1-Paxos表决" class="headerlink" title="2.2.1 Paxos表决"></a>2.2.1 Paxos表决</h3><ul>
+<li>首先proposers将value发送给Acceptors。</li>
+<li>Acceptors对value进行接受（accept）。acceptor可以回应接受或拒绝。</li>
+<li>一旦节点中的大多数回应接受，共识就能达成，接受的value成为正式的决议（称为“批准”决议）。</li>
+</ul>
+<p>整个过程（一个事务或一个Round）<strong>分为两个阶段：</strong></p>
+<ul>
+<li><strong>phase1（准备阶段）</strong> a) Proposer向超过半数（n/2+1）Acceptor发起prepare消息(发送编号) b)如果prepare符合协议规则Acceptor回复promise消息，否则拒绝</li>
+<li><strong>phase2（决议阶段或投票阶段）</strong> a) 如果超过半数Acceptor回复promise，Proposer向Acceptor发送accept消息(此时包含真实的值) b)Acceptor检查accept消息是否符合规则，消息符合则批准accept请求</li>
+</ul>
+<p>根据上述过程当一个proposer发现存在编号更大的提案时将终止提案。这意味着提出一个编号更大的提案会终止之前的提案过程。有可能陷入活锁，违背了Progress的要求。这种情况下的解决方案是选举出一个leader，仅允许leader提出提案。注意一个learner可能兼任proposer。</p>
+<h3 id="2-2-2-决议的发布"><a href="#2-2-2-决议的发布" class="headerlink" title="2.2.2 决议的发布"></a>2.2.2 决议的发布</h3><p>一个显而易见的方法是当acceptors批准一个value时，将这个消息发送给所有learner。但是这个方法会导致消息量过大。可将accept消息发送给learners的一个子集，然后由这些learners去通知所有learners。</p>
+<p>但是由于消息传递的不确定性，可能会没有任何learner获得了决议批准的消息。当learners需要了解决议通过情况时，可以让一个proposer重新进行一次提案。</p>
+<h2 id="2-3-Paxos与2PC"><a href="#2-3-Paxos与2PC" class="headerlink" title="2.3 Paxos与2PC"></a>2.3 Paxos与2PC</h2><p>在Paxos算法中，如果我们指定集群中同一时间只能有一个leader，并且要求所有节点都要投票呢？是的，我们就得到了2PC。<a target="_blank" rel="noopener" href="http://research.microsoft.com/pubs/64636/tr-2003-96.pdf">2PC是Paxos的一个特例</a></p>
+<p>两个阶段分别是准备（prepare）和提交（commit）。准备阶段解决大家对哪个提案进行投票的问题，提交阶段解决确认最终值的问题。</p>
+<h1 id="3-Raft协议"><a href="#3-Raft协议" class="headerlink" title="3. Raft协议"></a>3. Raft协议</h1><blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://raft.github.io/raft.pdf">raft.github.io/raft.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="http://thesecretlivesofdata.com/raft/">thesecretlivesofdata.com/raft/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/MaggieLXC/p/7512399.html">www.cnblogs.com/MaggieLXC/p…</a></li>
+</ul>
+</blockquote>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/17159191555bd9d5" alt="raft"></p>
+<h2 id="3-1-Raft角色"><a href="#3-1-Raft角色" class="headerlink" title="3.1 Raft角色"></a>3.1 Raft角色</h2><p>Raft算法是Paxos算法的一种简化实现。<strong>包括三种角色：leader，candidate和follower。</strong></p>
+<ul>
+<li>follower: 所有节点都以follower的状态开始，如果没有收到leader消息则会变成candidate状态。</li>
+<li>candidate: 会向其他节点拉选票，如果得到大部分的票则成为leader，这个过程是Leader选举。</li>
+<li>leader: 所有对系统的修改都会先经过leader。</li>
+</ul>
+<h2 id="3-2-Raft算法"><a href="#3-2-Raft算法" class="headerlink" title="3.2 Raft算法"></a>3.2 Raft算法</h2><p>Raft有两个基本过程：</p>
+<ul>
+<li><strong>Leader选举：</strong> 每个candidate随机经过一定时间都会提出选举方案，最近阶段中的票最多者被选为leader。</li>
+<li><strong>同步log：</strong> leader会找到系统中log（各种事件的发生记录）最新的记录，并强制所有的follow来刷新到这个记录。</li>
+</ul>
+<blockquote>
+<p><strong>Raft算法过程:</strong> 有三种状态：leader，candidate和follower。</p>
+<ol>
+<li>最开始都是follower状态.</li>
+<li>followers没有听到leader就变成candidate</li>
+<li>candidate then requests votes from other nodes</li>
+<li>nodes will reply with their vote</li>
+<li>Candidate becomes the leader if it gets votes from a majority of nodes</li>
+<li>This process is called Leader Election.</li>
+<li>All changes to the system now go through the leader.</li>
+<li>Each change is added as an entry in the node’s log.</li>
+<li>This log entry is currently uncommitted so it won’t update the node’s value.</li>
+<li>To commit the entry the node first replicates it to the follower nodes…</li>
+<li>then the leader waits until a majority of nodes have written the entry.</li>
+<li>The entry is now committed on the leader node and the node state is “5”.</li>
+<li>The leader then notifies the followers that the entry is committed.</li>
+<li>The cluster has now come to consensus about the system state.</li>
+<li>This process is called Log Replication.</li>
+</ol>
+</blockquote>
+<h3 id="3-2-1-Leader-Election"><a href="#3-2-1-Leader-Election" class="headerlink" title="3.2.1 Leader Election"></a>3.2.1 Leader Election</h3><p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f08fb7e30" alt="All our nodes start in the follower state."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f09576e35" alt="If followers don&#39;t hear from a leader then they can become a candidate."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f339c17cf" alt="The candidate then requests votes from other nodes."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f491ce29c" alt="The candidate becomes the leader if it gets votes from a majority of nodes."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f4d8fce8c" alt="Leader Election"></p>
+<h3 id="3-2-2-Log-Replication"><a href="#3-2-2-Log-Replication" class="headerlink" title="3.2.2 Log Replication"></a>3.2.2 Log Replication</h3><p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f407d2c48" alt="All changes to the system now go through the leader"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f4e7ced18" alt="All changes to the system now go through the leader"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f6cdd97b9" alt="Each change is added as an entry in the node&#39;s log."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906f989ec3c1" alt="This log entry is currently uncommitted so it won&#39;t update the node&#39;s value."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906fa6c22aad" alt="To commit the entry the node first replicates it to the follower nodes..."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906fb6b11fa3" alt="then the leader waits until a majority of nodes have written the entry."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906fba987040" alt="The entry is now committed on the leader node and the node state is"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906fc66b6b9b" alt="The leader then notifies the followers that the entry is committed."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906fd0bb1914" alt="The cluster has now come to consensus about the system state."></p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/8/1715906fcaa6a40e" alt="This process is called Log Replication."></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://github.13sai.com/2021/04/03/326/" title="Paxos和Raft协议介绍" target="_blank" rel="external">http://github.13sai.com/2021/04/03/326/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">后端开发</small></a></h3>
+        <div>程序员涛子</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/04/05/328/" title="进程间通信"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/04/02/325/" title="进程、线程和协程"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

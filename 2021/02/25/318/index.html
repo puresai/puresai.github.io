@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>微服务浅析 | 13sai的blog</title>
+  <meta name="description" content="微服务浅析，服务端架构的演进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务浅析">
+<meta property="og:url" content="http://github.13sai.com/2021/02/25/318/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="微服务浅析，服务端架构的演进">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s0.lgstatic.com/i/image/M00/2E/C8/Ciqc1F8Fm4CAYtDPAAFWVKWmvC4501.png">
+<meta property="og:image" content="https://s0.lgstatic.com/i/image/M00/2E/D3/CgqCHl8Fm4-AZvB4AACtVYg97fg534.png">
+<meta property="og:image" content="https://s0.lgstatic.com/i/image/M00/2E/C8/Ciqc1F8Fm5yASdIsAAEo0SG1StQ659.png">
+<meta property="og:image" content="https://s0.lgstatic.com/i/image/M00/2E/D3/CgqCHl8Fm6qAMVxQAAH6kUWDsQU912.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/650581/202007/650581-20200713193558436-2023891645.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/650581/202007/650581-20200714192039539-1038488973.png">
+<meta property="article:published_time" content="2021-02-25T13:13:35.000Z">
+<meta property="article:modified_time" content="2021-03-02T07:17:49.410Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s0.lgstatic.com/i/image/M00/2E/C8/Ciqc1F8Fm4CAYtDPAAFWVKWmvC4501.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/2021/02/25/318/index.html">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>分享技术知识，不限于PHP、go、MySQL、Redis、linux、MQ、micro service。<br>交流QQ群：965666112<br>微信公众号：程序员涛子。<br>有任何疑问欢迎提<a href="https://github.com/13sai/13sai.github.io/issues" target="_blank">issue</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13px;">CI</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13.15px;">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 13.08px;">ElasticSearch</a> <a href="/tags/ElementUI/" style="font-size: 13.31px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.38px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.54px;">Linux</a> <a href="/tags/MongoDB/" style="font-size: 13px;">MongoDB</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.77px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/RabbitMQ/" style="font-size: 13px;">RabbitMQ</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/ThinkPHP/" style="font-size: 13.46px;">ThinkPHP</a> <a href="/tags/algorithm/" style="font-size: 13px;">algorithm</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/base/" style="font-size: 13px;">base</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.62px;">css</a> <a href="/tags/gin/" style="font-size: 13.31px;">gin</a> <a href="/tags/git/" style="font-size: 13.23px;">git</a> <a href="/tags/go/" style="font-size: 13.69px;">go</a> <a href="/tags/gulp/" style="font-size: 13px;">gulp</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.92px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/mongodb/" style="font-size: 13px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 13.85px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.38px;">nginx</a> <a href="/tags/note/" style="font-size: 13.15px;">note</a> <a href="/tags/python/" style="font-size: 13px;">python</a> <a href="/tags/redis/" style="font-size: 13.54px;">redis</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.15px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/swoole/" style="font-size: 13px;">swoole</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wamp/" style="font-size: 13.08px;">wamp</a> <a href="/tags/web/" style="font-size: 13.46px;">web</a> <a href="/tags/windows/" style="font-size: 13px;">windows</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13px;">架构</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 13px;">网络</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/DDD/">DDD</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/10/345/" class="title">领域驱动设计</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-10T05:06:19.000Z" itemprop="datePublished">2021-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/03/343/" class="title">技术管理痛点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-03T11:50:49.000Z" itemprop="datePublished">2021-06-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/01/342/" class="title">管理三板斧</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-01T11:50:49.000Z" itemprop="datePublished">2021-06-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/31/341/" class="title">技术人三要素</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-31T06:47:22.000Z" itemprop="datePublished">2021-05-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/27/340/" class="title">Protobuf语法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-27T09:39:07.000Z" itemprop="datePublished">2021-05-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-微服务浅析" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      微服务浅析
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/02/25/318/" class="article-date">
+	  <time datetime="2021-02-25T13:13:35.000Z" itemprop="datePublished">2021-02-25</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag">架构</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/02/25/318/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.9k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 9(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="服务端架构的演进"><a href="#服务端架构的演进" class="headerlink" title="服务端架构的演进"></a>服务端架构的演进</h2><p>一般来说，早期的软件大多数是单体架构，接着使用分层技术演化为垂直架构，然后 SOA 面向服务架构和微服务架构相继登场，最终随着云技术的应用和推广而孕育出云原生架构的思想。下面我们就来一一介绍这些架构设计的基础理念和优缺点。</p>
+<h3 id="单体架构"><a href="#单体架构" class="headerlink" title="单体架构"></a>单体架构</h3><p>在 Web 应用程序发展的早期，大部分工程是将所有的服务端功能模块打包成单个巨石型（Monolith）应用，譬如很多企业的 Java 应用程序打包为 war 包，最终会形成如下图所示的架构。</p>
+<p><img src="https://s0.lgstatic.com/i/image/M00/2E/C8/Ciqc1F8Fm4CAYtDPAAFWVKWmvC4501.png" alt="单体架构的应用程序"></p>
+<p>单体架构的应用开发简单，技术单一，测试、部署相对简单明了。但其缺陷也是非常明显的，进行局部改动就需要重新部署，而且编译时间过长。除此之外，单体架构的技术栈也不易扩展，只能不断地在原有基础上进行局部优化，比如说应用的某一场景需要处理高并发，使用 Go 语言较为合适，但是单体架构并不支持多语言技术栈，这时也就只好作罢。</p>
+<h3 id="垂直分层架构"><a href="#垂直分层架构" class="headerlink" title="垂直分层架构"></a>垂直分层架构</h3><p>单体架构在系统用户访问量逐渐增大的情况下，若仅仅依靠扩展物理机配置或者增加机器来优化系统的性能，往往收效甚微。单体架构中不同业务模块的差异就会显现，比如有些模块是 IO 密集型，有些是计算密集型。这些模块所需要的机器数量和性能各有差异，这时为了提升机器利用率和性能，垂直分层架构就诞生了。</p>
+<p>垂直分层架构是将大应用拆分成一个个单体结构的应用。换句话说，垂直架构就是彼此存在依赖关系的组件组成的架构，比如分层——用户界面层依赖业务逻辑，而业务逻辑依赖数据库访问（如下图所示）。垂直分层是一个典型的对复杂系统进行结构化思考和抽象聚合的通用性方法。</p>
+<p><img src="https://s0.lgstatic.com/i/image/M00/2E/D3/CgqCHl8Fm4-AZvB4AACtVYg97fg534.png" alt="垂直分层架构的应用程序"></p>
+<p>这样处理后，垂直分层架构就解决了很多问题：将系统拆分实现了流量分担，解决了部分并发问题；拆分之后，服务间相互独立；性能方面，可以针对单个服务模块进行优化；易于水平扩展，多实例提升容错率。</p>
+<p>但其缺点也是明显的，垂直分层架构的系统拆分，使得集群搭建变得复杂；涉及的服务间调用，服务之间耦合度变高，调用关系错综复杂，难以维护调用关系。</p>
+<h3 id="SOA-面向服务架构"><a href="#SOA-面向服务架构" class="headerlink" title="SOA 面向服务架构"></a>SOA 面向服务架构</h3><p>当垂直架构拆分的应用越来越多时，就会出现多个应用都依赖的业务逻辑组件，并且各个应用进行交互的需要也越来越频繁。此时，就需要将部分通用的业务组件独立出来，并定义好服务间交互的接口，向外提供能力，让其他服务调用。SOA 面向服务架构这就“应运而生”了。</p>
+<p>SOA 面向服务架构是一种软件体系结构，它将应用程序的不同服务通过定义良好的接口和契约联系起来，这些接口独立定义，不依赖实现服务的编程语言、操作系统。应用程序的不同组件通过网络上的通信协议向其他组件提供服务。通信可以是简单的数据传递，也可以是两个或多个服务彼此协调连接。</p>
+<p><img src="https://s0.lgstatic.com/i/image/M00/2E/C8/Ciqc1F8Fm5yASdIsAAEo0SG1StQ659.png" alt="SOA 面向服务架构"></p>
+<p>SOA 面向服务架构中主要有两个角色：服务提供者和使用者。如上图所示，服务消费者可以通过发送消息来调用订单、购买、账号的服务，这些消息由服务总线转换后发送给对应的服务，实现 SOA 服务之间的交互通信。</p>
+<p>SOA 面向服务架构主要适用于大型软件服务企业对外提供服务的场景，至于一般业务场景就并不适用了，因为其服务的定义、注册和调用都需要较为烦琐的编码或者配置实现，并且业务总线也容易导致系统的单点风险并拖累整体性能。</p>
+<h3 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h3><p>随着互联网浪潮的来临，越来越多的中小微企业推出面向普通大众的网站或者应用。这些企业不同于大型软件服务企业，没有能力也无须构建 SOA 所依赖的 ESB 企业服务总线。于是继承 SOA 众多优点和理念的微服务架构于 2014 年由 Matrin Fowler 提出，其理念是将业务系统彻底地组件化和服务化，形成多个可以独立开发、部署和维护的服务或者应用的集合，以应对更快的需求变更和更短的开发迭代周期。</p>
+<p>微服务也是一种架构风格，它提倡将大型复杂软件应用划分成多个微服务，这些服务之间互相协调、配合，可独立部署；服务之间松耦合，每个服务代表着一个小的业务能力（如下图所示）。</p>
+<p><img src="https://s0.lgstatic.com/i/image/M00/2E/D3/CgqCHl8Fm6qAMVxQAAH6kUWDsQU912.png" alt="常见的微服务架构图"></p>
+<p>总体来说，微服务架构有如下的特点：</p>
+<ul>
+<li>微服务遵循单一原则，每个微服务负责一个独立上下文边界；</li>
+<li>微服务架构提供的服务之间采用 RESTful 等轻量协议传输，相比 ESB 更轻量；</li>
+<li>每个服务都有自己独立的业务开发活动和周期；</li>
+<li>微服务一般使用容器技术独立部署，运行在自己的独立进程中，合理分配其所需的系统资源，这样开发者就可以更加方便地制定每个服务的优化方案，提高系统可维护性。</li>
+</ul>
+<p>但是，微服务架构也会遇到这样或那样的问题。比如，微服务架构拆分的服务实例过多的话，服务治理成本将会极大升高，不利于系统维护；服务之间相互依赖，有可能形成复杂的依赖链条，往往单个服务异常，其他服务都会受到影响，出现服务雪崩效应；服务实例之间交互需要处理分布式事务、调用幂等性和重试等问题，开发成本高，对团队挑战大。</p>
+<h2 id="微服务有哪些优势与劣势"><a href="#微服务有哪些优势与劣势" class="headerlink" title="微服务有哪些优势与劣势"></a>微服务有哪些优势与劣势</h2><h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ol>
+<li>应用小，可快速编译部署</li>
+<li>单个微服务维护性变高，修改容易，因为每个团队独立负责一块功能。新功能交付变快，可以快速开发交付</li>
+<li>扩展性变高，根据业务规模可以随时缩减/增加服务器规模</li>
+<li>可靠性变强，可以部署很多独立的服务</li>
+<li>业务解耦，按照业务边界拆分为多个独立的服务模块</li>
+<li>提升研发效率，业务拆分后，服务模块变小，在一个团队内就可以独立编写、测试、发布，加快研发效率。</li>
+</ol>
+<p>微服务有这么多优势，那微服务是“银弹”吗？微服务不是银弹，它带来了很多优势，同时也带来了很多劣势（问题）。</p>
+<h2 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h2><ol>
+<li>整体复杂度变高，从哪些方面来管理这种复杂度？</li>
+<li>运维变得复杂：微服务变多，怎么监控所有微服务，保证服务稳定？出了问题，怎么定位问题？</li>
+<li>服务管理：微服务变多，管理复杂度变高，治理变得复杂</li>
+<li>测试方面的挑战：你需要结合其他的微服务来进行集成测试</li>
+<li>分布式问题：分布式数据一致性、分布式事务</li>
+<li>服务保障：一个服务出了问题，如何才能不影响其他服务？</li>
+</ol>
+<h2 id="总体架构图"><a href="#总体架构图" class="headerlink" title="总体架构图"></a>总体架构图</h2><p><img src="https://img2020.cnblogs.com/blog/650581/202007/650581-20200713193558436-2023891645.png" alt="微服务架构图"></p>
+<p>上面的总体架构图一共分了6层</p>
+<ul>
+<li><strong>接入层</strong><br>也可以叫负载均衡层，把外部的流量引入到系统中来。一般负载均衡软件有nginx，lvs，还有各大云服务厂商自己的负载均衡服务。</li>
+<li><strong>网关层</strong><br>内部接口的一些认证、安全、鉴权、过滤、限流等服务，一般处于这一层。这一层把内部的服务接口做一层安全隔离，保护内部服务，同时也可以实现一些其他需求，比如前面讲的鉴权、黑名单过滤等等需求。所以这一层在微服务架构中是很重要的一层。</li>
+<li><strong>业务服务层</strong><br>基础服务和聚合服务<ul>
+<li>基础服务：根据业务特点又可以分为核心基础服务、公共服务、中间层服务等。</li>
+<li>聚合服务：把下面细粒度的基础服务再进一步封装、关联，组合成新的服务，供上层调用。这一层可以实现多变的需求。<br>上面的这种划分是根据逻辑来划分，各个公司可以根据自己实际的业务需求来进行划分。</li>
+</ul>
+</li>
+<li><strong>支撑服务层</strong><br>微服务能够成功实施落地，这一层与下一层CI/CD的配套设施是非常重要。微服务不是把上面的业务服务写完就完事了，在服务治理的过程中需要很多配套设置支持。<br>这一层包括注册服务中心，配置中心，监控报警服务，日志聚合服务，调用链监控几大服务，后台服务涉及的服务有消息队列，定时任务，数据访问等内容。</li>
+<li><strong>平台服务层</strong><br>这一层是实施业务弹性治理的关键。集群的资源调度：扩展和减少。业务量上来时，可以弹性增加资源。<br>在微服务建设过程中，可能会遇到一些突发事件。比如微博明星热点事件，会导致访问量暴增，这就需要能实时增加服务资源应对这种突发情况，热点过后，又要减少资源。<br>镜像管理和发布系统配合使用可以应对出现的这种情况。所以很多团队后面会引入docker+k8s，容器，镜像管理，容器服务编排。此外，基于CI/CD的DevOps也是构建在这一层能力。</li>
+<li><strong>基础设施层</strong><br>这个是最底层的基础设施，网络，存储，硬盘，IDC的部分。<br>laas 这个概念就是针对这一层。</li>
+</ul>
+<h2 id="微服务技术体系"><a href="#微服务技术体系" class="headerlink" title="微服务技术体系"></a>微服务技术体系</h2><p><img src="https://img2020.cnblogs.com/blog/650581/202007/650581-20200714192039539-1038488973.png" alt="技术体系"></p>
+<h2 id="Golang微服务技术栈"><a href="#Golang微服务技术栈" class="headerlink" title="Golang微服务技术栈"></a>Golang微服务技术栈</h2><h3 id="微服务框架"><a href="#微服务框架" class="headerlink" title="微服务框架"></a>微服务框架</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/micro/go-micro">go-micro</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/go-kit/kit">go-kit</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/go-kratos/kratos">kratos</a> bilibili出品</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/douyu/jupiter">jupiter</a> 斗鱼出品</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/jiujuan/go-collection#go-zero">go-zero</a> 好未来</p>
+</li>
+</ul>
+<h3 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Kong/kong">kong</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nginx/nginx">nginx</a>+lua</li>
+<li><a target="_blank" rel="noopener" href="https://docs.traefik.io/">traefik</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/apache/incubator-apisix">apisix</a></li>
+</ul>
+<h3 id="服务注册和发现"><a href="#服务注册和发现" class="headerlink" title="服务注册和发现"></a>服务注册和发现</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/hashicorp/consul">consul</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/etcd-io/etcd">etcd</a></li>
+<li><a target="_blank" rel="noopener" href="https://zookeeper.apache.org/">zookeeper</a></li>
+</ul>
+<h3 id="配置中心"><a href="#配置中心" class="headerlink" title="配置中心"></a>配置中心</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ctripcorp/apollo">Apollo</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/alibaba/Nacos">Nacos</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/etcd-io/etcd">etcd</a></li>
+</ul>
+<h3 id="服务治理"><a href="#服务治理" class="headerlink" title="服务治理"></a>服务治理</h3><p>断路器：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/afex/hystrix-go">hystrix-go</a></li>
+</ul>
+<p>流量控制：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/alibaba/sentinel-golang">sentinel-golang</a>-从限流、流量整形、熔断降级、系统负载保护等多个维度来帮助您保障微服务的稳定性。</li>
+</ul>
+<h3 id="链路监控"><a href="#链路监控" class="headerlink" title="链路监控"></a>链路监控</h3><p>zipkin，pinpoint，skywalking，jaeger</p>
+<h3 id="日志、业务、系统监控"><a href="#日志、业务、系统监控" class="headerlink" title="日志、业务、系统监控"></a>日志、业务、系统监控</h3><p><a target="_blank" rel="noopener" href="https://prometheus.io/">prometheus</a><br><a target="_blank" rel="noopener" href="https://www.elastic.co/">ELK</a></p>
+<h3 id="CI-CD"><a href="#CI-CD" class="headerlink" title="CI/CD"></a>CI/CD</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jenkins.io/">jenkins</a></li>
+<li><a target="_blank" rel="noopener" href="https://drone.io/">drone</a></li>
+</ul>
+<p>内容来自:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://kaiwu.lagou.com/course/courseInfo.htm?courseId=287#/content">《Go 微服务实战 38 讲》</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiujuan/p/13295147.html">微服务架构学习与思考(03)：微服务总体架构图解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiujuan/p/13301055.html">微服务架构学习与思考(04)：微服务技术体系</a></li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://github.13sai.com/2021/02/25/318/" title="微服务浅析" target="_blank" rel="external">http://github.13sai.com/2021/02/25/318/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">后端开发</small></a></h3>
+        <div>程序员涛子</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/02/27/319/" title="go的GC机制"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/02/20/314/" title="OSI七层协议"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

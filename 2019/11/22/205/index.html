@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Nginx配置常用参数，看这一篇就够了 | 13sai的blog</title>
+  <meta name="description" content="Nginx内嵌变量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx配置常用参数，看这一篇就够了">
+<meta property="og:url" content="http://github.13sai.com/2019/11/22/205/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="Nginx内嵌变量">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-22T02:25:01.000Z">
+<meta property="article:modified_time" content="2021-04-13T07:33:54.947Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="nginx">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/2019/11/22/205/index.html">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>分享技术知识，不限于PHP、go、MySQL、Redis、linux、MQ、micro service。<br>交流QQ群：965666112<br>微信公众号：程序员涛子。<br>有任何疑问欢迎提<a href="https://github.com/13sai/13sai.github.io/issues" target="_blank">issue</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13px;">CI</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13.15px;">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 13.08px;">ElasticSearch</a> <a href="/tags/ElementUI/" style="font-size: 13.31px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.38px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.54px;">Linux</a> <a href="/tags/MongoDB/" style="font-size: 13px;">MongoDB</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.77px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/RabbitMQ/" style="font-size: 13px;">RabbitMQ</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/ThinkPHP/" style="font-size: 13.46px;">ThinkPHP</a> <a href="/tags/algorithm/" style="font-size: 13px;">algorithm</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/base/" style="font-size: 13px;">base</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.62px;">css</a> <a href="/tags/gin/" style="font-size: 13.31px;">gin</a> <a href="/tags/git/" style="font-size: 13.23px;">git</a> <a href="/tags/go/" style="font-size: 13.69px;">go</a> <a href="/tags/gulp/" style="font-size: 13px;">gulp</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.92px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/mongodb/" style="font-size: 13px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 13.85px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.38px;">nginx</a> <a href="/tags/note/" style="font-size: 13.15px;">note</a> <a href="/tags/python/" style="font-size: 13px;">python</a> <a href="/tags/redis/" style="font-size: 13.54px;">redis</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.15px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/swoole/" style="font-size: 13px;">swoole</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wamp/" style="font-size: 13.08px;">wamp</a> <a href="/tags/web/" style="font-size: 13.46px;">web</a> <a href="/tags/windows/" style="font-size: 13px;">windows</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13px;">架构</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 13px;">网络</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/DDD/">DDD</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/10/345/" class="title">领域驱动设计</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-10T05:06:19.000Z" itemprop="datePublished">2021-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/03/343/" class="title">技术管理痛点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-03T11:50:49.000Z" itemprop="datePublished">2021-06-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/01/342/" class="title">管理三板斧</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-01T11:50:49.000Z" itemprop="datePublished">2021-06-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/31/341/" class="title">技术人三要素</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-31T06:47:22.000Z" itemprop="datePublished">2021-05-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/27/340/" class="title">Protobuf语法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-27T09:39:07.000Z" itemprop="datePublished">2021-05-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Nginx配置常用参数，看这一篇就够了" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx配置常用参数，看这一篇就够了
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/11/22/205/" class="article-date">
+	  <time datetime="2019-11-22T02:25:01.000Z" itemprop="datePublished">2019-11-22</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/nginx/">nginx</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/nginx/" rel="tag">nginx</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/11/22/205/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.7k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 10(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <blockquote>
+<p>最近在全面学习Nginx，当作笔记了，如有错误，欢迎指出或深入交流。</p>
+</blockquote>
+<h2 id="主模块"><a href="#主模块" class="headerlink" title="主模块"></a>主模块</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 配置用户或者组，默认为nobody nobody。</span><br><span class="line">#user www www;  </span><br><span class="line"></span><br><span class="line"> #Nginx开启的worker进程数，建议为CPU的核数</span><br><span class="line">#worker_processes 2; </span><br><span class="line"></span><br><span class="line">#指定nginx进程运行文件存放地址</span><br><span class="line">#pid /nginx/pid/nginx.pid;</span><br><span class="line"></span><br><span class="line">#指定日志路径，级别。这个设置可以放入全局块、http块、server块，级别以此为：debug|info|notice|warn|error|crit|alert|emerg</span><br><span class="line">error_log log/error.log debug; </span><br><span class="line"></span><br><span class="line">#可以在任意地方使用include指令实现配置文件的包含，类似于apache中的include方法，可减少主配置文件长度。</span><br><span class="line">include vhosts/*.conf;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="事件模块"><a href="#事件模块" class="headerlink" title="事件模块"></a>事件模块</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">events &#123;</span><br><span class="line">    #设置网路连接序列化，防止惊群现象发生，默认为on</span><br><span class="line">    accept_mutex on; </span><br><span class="line">    </span><br><span class="line">    #默认: 500ms 如果一个进程没有互斥锁，它将延迟至少多长时间。默认情况下，延迟是500ms 。</span><br><span class="line">    accept_mutex_delay 100ms; </span><br><span class="line">    </span><br><span class="line">    #设置一个进程是否同时接受多个网络连接，默认为off</span><br><span class="line">    multi_accept on;</span><br><span class="line">    </span><br><span class="line">    #事件驱动模型，select|poll|kqueue|epoll|resig|/dev/poll|eventport，不建议设置，nginx会自行选择</span><br><span class="line">    #use epoll;</span><br><span class="line">    </span><br><span class="line">    #最大连接数，默认为512</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="http部分"><a href="#http部分" class="headerlink" title="http部分"></a>http部分</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    #文件扩展名与文件类型映射表</span><br><span class="line">    include       mime.types;</span><br><span class="line">    </span><br><span class="line">    # 默认文件类型，默认为text/plain</span><br><span class="line">    default_type  application/octet-stream; </span><br><span class="line">    </span><br><span class="line">    #取消服务日志 </span><br><span class="line">    #access_log off; </span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    #允许sendfile方式传输文件，默认为off，可以在http块，server块，location块。</span><br><span class="line">    sendfile on;   </span><br><span class="line">    </span><br><span class="line">    #每个进程每次调用传输数量不能大于设定的值，默认为0，即不设上限。</span><br><span class="line">    sendfile_max_chunk 100k;  </span><br><span class="line">    </span><br><span class="line">    #连接超时时间，默认为75s，可以在http，server，location块。</span><br><span class="line">    keepalive_timeout 65;  </span><br><span class="line">    </span><br><span class="line">    #开启gzip资源压缩</span><br><span class="line">    gzip  on; </span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    # 负载均衡，详细可看了一篇文章：https://learnku.com/articles/36737</span><br><span class="line">    upstream blog &#123;   </span><br><span class="line">        server 192.167.20.19:8081;</span><br><span class="line">        server 192.168.10.121:8080 weight=5;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    #设定请求缓冲</span><br><span class="line">    client_header_buffer_size    128k;</span><br><span class="line">    large_client_header_buffers  4 128k;</span><br><span class="line">    </span><br><span class="line">    #上传文件的大小限制  默认1m</span><br><span class="line">    client_max_body_size 8m;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        #单连接请求上限次数。</span><br><span class="line">        keepalive_requests 120;</span><br><span class="line">        </span><br><span class="line">        #监听端口</span><br><span class="line">        listen       80;   </span><br><span class="line">        </span><br><span class="line">        #监听地址</span><br><span class="line">        server_name  blog.13sai.com;  </span><br><span class="line">        </span><br><span class="line">        #设定日志格式</span><br><span class="line">        log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">                      &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">                      &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line">                      </span><br><span class="line">        access_log  /data/logs/access.log  main;</span><br><span class="line">        </span><br><span class="line">        # 根目录</span><br><span class="line">        root /www/web/public; </span><br><span class="line">        </span><br><span class="line">        # 定义错误提示页面</span><br><span class="line">        error_page   500 502 503 504 /50x.html;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        location /static/ &#123;</span><br><span class="line">            #root与alias主要区别在于nginx如何解释location后面的uri，这会使两者分别以不同的方式将请求映射到服务器文件上。</span><br><span class="line">            #root的处理结果是：root路径＋location路径</span><br><span class="line">            #alias的处理结果是：使用alias路径替换location路径</span><br><span class="line">            alias /www/static/;</span><br><span class="line">            </span><br><span class="line">            #过期30天，静态文件不怎么更新，过期可以设大一点,如果频繁更新，则可以设置得小一点。</span><br><span class="line">            expires 30d;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        # 处理php请求到fpm端口</span><br><span class="line">        location ~ \.php$ &#123;</span><br><span class="line">            fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">            fastcgi_index  index.php;</span><br><span class="line">            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;</span><br><span class="line">            include        fastcgi_params;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        location / &#123;</span><br><span class="line">            proxy_set_header Host $host;</span><br><span class="line">            proxy_set_header  X-Real-IP  $remote_addr;</span><br><span class="line">            proxy_pass  http://blog;  #请求转向blog 定义的服务器列表 </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        #禁止访问文件</span><br><span class="line">        location ~ /.git &#123;</span><br><span class="line">            deny all;</span><br><span class="line">            allow 127.0.0.1; #允许的ip </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<h2 id="部分参数详细说明"><a href="#部分参数详细说明" class="headerlink" title="部分参数详细说明"></a>部分参数详细说明</h2><h4 id="server-name"><a href="#server-name" class="headerlink" title="server_name"></a>server_name</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.首先选择所有字符串完全匹配的server_name，如 blog.13sai.com 。</span><br><span class="line">2.其次选择通配符在前面的server_name，如 *.13sai.com。</span><br><span class="line">3.再次选择通配符在后面的server_name，如www.13sai.* 。 </span><br><span class="line">4.最后选择使用正则表达式才匹配的server_name，如 ~^\.sai\.com$</span><br><span class="line"></span><br><span class="line">如果都不匹配</span><br><span class="line">1、优先选择listen配置项后有default或default_server的 </span><br><span class="line">2、找到匹配listen端口的第一个server块</span><br></pre></td></tr></table></figure>
+
+<h4 id="location"><a href="#location" class="headerlink" title="location"></a>location</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location</span><br><span class="line">语法: location[=|~|~*|^~|@]/uri/&#123;...&#125;</span><br><span class="line">配置块: server location会尝试根据用户请求中的URI来匹配上面的/uri表达式，如果可以匹配，就选择 location&#123;&#125;块中的配置来处理用户请求。</span><br></pre></td></tr></table></figure>
+
+<p>location表达式类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~ 表示执行一个正则匹配，区分大小写;</span><br><span class="line">~* 表示执行一个正则匹配，不区分大小写;</span><br><span class="line">^~ 表示普通字符匹配。使用前缀匹配。如果匹配成功，则不再匹配其他location; </span><br><span class="line">= 进行普通字符精确匹配。也就是完全匹配;</span><br><span class="line">@ 它定义一个命名的 location，使用在内部定向时，例如 error_page, try_files</span><br></pre></td></tr></table></figure>
+
+<p>优先级:</p>
+<ul>
+<li>等号类型(=)的优先级最高。一旦匹配成功，则不再查找其他匹配项 </li>
+<li>前缀普通匹配(^~)优先级次之。不支持正则表达式。使用前缀匹配，如果有多个location匹配的话，则使用表达式最长的那个 </li>
+<li>正则表达式类型(~ ~*)的优先级次之。一旦匹配成功，则不再查找其他匹配项 </li>
+<li>常规字符串匹配，如果有多个location匹配的话，则使用表达式最长的那个</li>
+</ul>
+<blockquote>
+<p>(location =) &gt; (location 完整路径) &gt; (location ^~ 路径) &gt; (location <del>,</del>* 正则顺序) &gt; (location 部分起始路径)</p>
+</blockquote>
+<h4 id="return"><a href="#return" class="headerlink" title="return"></a>return</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">语法:return code [text] return code URL;</span><br><span class="line">return URL;</span><br><span class="line">配置块:server，location，if</span><br><span class="line">该指令用于结束规则的执行并返回状态吗给客户端。</span><br><span class="line">状态码包括:</span><br><span class="line">204(No Content)、</span><br><span class="line">400(Bad Request)、</span><br><span class="line">402(Payment Required)、</span><br><span class="line">403(Forbidden) </span><br><span class="line">404(Not Found)、</span><br><span class="line">405(Method Not Allowed)、</span><br><span class="line">406(Not Acceptable)、 </span><br><span class="line">408(Request Timeout)、</span><br><span class="line">410(Gone)、</span><br><span class="line">411(Length Required)、</span><br><span class="line">413(Request Entity Too Large)、</span><br><span class="line">416(Requested Range Not Satisfiable)、 500(Internal Server Error)、</span><br><span class="line">501(Not Implemented)、</span><br><span class="line">502(Bad Gateway)、 </span><br><span class="line">503(Service Unavailable)</span><br><span class="line">504(Gateway Timeout)。</span><br><span class="line"></span><br><span class="line">例如，示例，如果访问的URL以.sh .bash 结尾，返回状态码403 </span><br><span class="line">location ~ .*\.(sh|bash)?$ &#123;</span><br><span class="line">	return 403;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="rewrite"><a href="#rewrite" class="headerlink" title="rewrite"></a>rewrite</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">执行顺序：</span><br><span class="line">1. 执行server块的rewrite指令(这里的块指的是server关键字后&#123;&#125;包围的区域，其它xx块类似)</span><br><span class="line">2. 执行location匹配</span><br><span class="line">3. 执行选定的location中的rewrite指令</span><br><span class="line">如果其中某步URI被重写，则重新循环执行1-3，直到找到真实存在的文件</span><br><span class="line"></span><br><span class="line">如果循环超过10次，则返回500 Internal Server Error错误</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">语法:rewrite regex replacement [flag]; </span><br><span class="line">默认值:—</span><br><span class="line">配置块:server, location, if</span><br><span class="line">rewrite是实现URL重写的关键指令，根据regex(正则表达式)部分内容，重定向到replacement，结尾是flag标记。 正则:perl兼容正则表达式语句进行规则匹配</span><br><span class="line">替代内容:将正则匹配的内容替换成replacement</span><br><span class="line">flag标记:rewrite支持的flag标记</span><br></pre></td></tr></table></figure>
+<h6 id="if指令"><a href="#if指令" class="headerlink" title="if指令"></a>if指令</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">语法：if(condition)&#123;...&#125;</span><br><span class="line">默认值：无</span><br><span class="line">配置块：server,location</span><br><span class="line">对给定的条件condition进行判断。如果为真，大括号内的rewrite指令将被执行。</span><br><span class="line">if条件(conditon)可以是如下任何内容:</span><br><span class="line"></span><br><span class="line">一个变量名；false如果这个变量是空字符串或者以0开始的字符串；</span><br><span class="line">使用= ,!= 比较的一个变量和字符串</span><br><span class="line">是用~， ~*与正则表达式匹配的变量，如果这个正则表达式中包含&#125;，;则整个表达式需要用&quot; 或&#x27; 包围</span><br><span class="line">使用-f ，!-f 检查一个文件是否存在</span><br><span class="line">使用-d, !-d 检查一个目录是否存在</span><br><span class="line">使用-e ，!-e 检查一个文件、目录、符号链接是否存在</span><br><span class="line">使用-x ， !-x 检查一个文件是否可执行</span><br></pre></td></tr></table></figure>
+
+<h6 id="if实例"><a href="#if实例" class="headerlink" title="if实例"></a>if实例</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">if ($http_user_agent~*(mobile|nokia|iphone|ipad|android|samsung|htc|blackberry)) &#123;</span><br><span class="line">    rewrite ^.+ /mobile last; ＃跳转到手机站</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if ($request_method = POST) &#123;</span><br><span class="line">    return 405;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if ($slow) &#123;</span><br><span class="line">    limit_rate 10k;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if ($invalid_referer) &#123;</span><br><span class="line">    return 403;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="last-amp-break"><a href="#last-amp-break" class="headerlink" title="last &amp; break"></a>last &amp; break</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">（1）last 和 break 当出现在location 之外时，两者的作用是一致的没有任何差异。</span><br><span class="line">注意一点就是，他们会跳过所有的在他们之后的rewrite 模块中的指令，去选择自己匹配的location</span><br><span class="line">（2）last 和 break 当出现在location 内部时，两者就存在了差异</span><br><span class="line">-- last: 使用了last 指令，rewrite 后会跳出location 作用域，重新开始再走一次刚刚的行为</span><br><span class="line">-- break: 使用了break 指令，rewrite后不会跳出location 作用域。它的生命也在这个location中终结。</span><br><span class="line"></span><br><span class="line">解释通俗易懂：</span><br><span class="line"></span><br><span class="line">last：</span><br><span class="line">        重新将rewrite后的地址在server标签中执行</span><br><span class="line">break：</span><br><span class="line">        将rewrite后的地址在当前location标签中执行</span><br></pre></td></tr></table></figure>
+
+
+<h6 id="permanent-amp-redirect"><a href="#permanent-amp-redirect" class="headerlink" title="permanent &amp; redirect:"></a>permanent &amp; redirect:</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">permanent: 永久性重定向。请求日志中的状态码为301</span><br><span class="line">redirect:临时重定向。请求日志中的状态码为302</span><br></pre></td></tr></table></figure>
+
+<p>从实现功能的角度上去看，permanent 和 redirect 是一样的。不存在好坏。也不存在什么性能上的问题。但是对seo会有影响，这里要根据需要做出选择<br>在 permanent 和 redirect  中提到了 状态码 301 和 302。 </p>
+<p>记住：last 和 break 想对于的访问日志的请求状态码为200</p>
+<p>当你打开一个网页，同时打开debug 模式时，会发现301 和 302 时的行为是这样的。</p>
+<p>第一个请求301 或者 302 后，浏览器重新获取了一个新的URL ，然后会对这个新的URL 重新进行访问。所以当你配置的是permanent 和 redirect ,你对一个URL 的访问请求，落到服务器上至少为2次；而当你配置了last 或者是break 时，你最终的URL 确定下来后，不会将这个URL返回给浏览器，而是将其扔给了fastcgi_pass或者是proxy_pass指令去处理。请求一个URL ，落到服务器上的次数就为1次。</p>
+<p>注意：配置last 在跨域的时候效果和redirect一致，都是返回302状态码，请求地址也发生改变</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h4 id="估算并发"><a href="#估算并发" class="headerlink" title="估算并发"></a>估算并发</h4><p>nginx作为http服务器的时候：</p>
+<pre><code>max_clients = worker_processes * worker_connections/2
+</code></pre>
+<p>nginx作为反向代理服务器的时候：</p>
+<pre><code>max_clients = worker_processes * worker_connections/4  
+</code></pre>
+<h4 id="限制每个IP的并发连接数"><a href="#限制每个IP的并发连接数" class="headerlink" title="限制每个IP的并发连接数"></a>限制每个IP的并发连接数</h4><p>demo:定义一个叫“two”的记录区，总容量为 10M（超过大小将请求失败，以变量 $binary_remote_addr 作为会话的判断基准（即一个地址一个会话）。 限制 /download/ 目录下，一个会话只能进行一个连接。 简单点，就是限制 /download/ 目录下，一个IP只能发起一个连接，多过一个，一律503。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    ...</span><br><span class="line">    limit_conn_zone $binary_remote_addr zone=two:10m;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">        location /download &#123;</span><br><span class="line">            limit_conn   two  1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h4><p>demo:定义一个叫“one”的记录区，占用空间大小为10m（超过大小将请求失败），平均处理的请求频率不能超过每秒一次，也可以设置分钟速率</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    limit_req_zone  $binary_remote_addr  zone=one:10m  rate=1r/s;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">        location / &#123;</span><br><span class="line">            #缓存区队列burst=5个,nodelay表示不延期(超过的请求失败)，即每秒最多可处理rate+burst个,同时处理rate个。</span><br><span class="line">            limit_req zone=one burst=5 nodelay; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="白名单"><a href="#白名单" class="headerlink" title="白名单"></a>白名单</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    #判断客户端的ip地址是否在白名单列表当中,如果返回为0,则在白名单列表当中,否则返回为1</span><br><span class="line">    geo $whiteIpList &#123;</span><br><span class="line">        default  1;</span><br><span class="line">        118.24.109.254 0;</span><br><span class="line">        47.98.147.0/24 1;</span><br><span class="line">        #可以引入一些白名单配置</span><br><span class="line">        include &#x27;whiteIP.conf&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    #如果不在白名单之内,返回客户端的二进制的ip地址</span><br><span class="line">    map $whiteIpList  $limit &#123;</span><br><span class="line">        default  &quot;&quot;;</span><br><span class="line">        1   $binary_remote_addr;</span><br><span class="line">        0   &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    #如果返回的是空字符串那么速率限制会失效</span><br><span class="line">    limit_req_zone $limit zone=test:2m rate=1r/m;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="防盗链"><a href="#防盗链" class="headerlink" title="防盗链"></a>防盗链</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        ...</span><br><span class="line">        </span><br><span class="line">        location ~* \.(gif|jpg|png|swf|flv)$ &#123;</span><br><span class="line">            valid_referers none blocked *.13sai.com;</span><br><span class="line">            if ($invalid_referer) &#123;</span><br><span class="line">                rewrite ^/ blog.13sai.com</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://github.13sai.com/2019/11/22/205/" title="Nginx配置常用参数，看这一篇就够了" target="_blank" rel="external">http://github.13sai.com/2019/11/22/205/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">后端开发</small></a></h3>
+        <div>程序员涛子</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2019/11/26/210/" title="TCP三次握手和四次挥手"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/11/22/208/" title="Nginx代理缓存"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

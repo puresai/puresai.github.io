@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>系列文章---应用篇：2.延时任务 | 13sai的blog</title>
+  <meta name="description" content="使用redis的有序集合实现延时任务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系列文章---应用篇：2.延时任务">
+<meta property="og:url" content="http://github.13sai.com/2020/02/22/244/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="使用redis的有序集合实现延时任务">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-22T06:35:57.000Z">
+<meta property="article:modified_time" content="2021-04-26T03:43:55.127Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="PHP系列">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/2020/02/22/244/index.html">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>分享技术知识，不限于PHP、go、MySQL、Redis、linux、MQ、micro service。<br>交流QQ群：965666112<br>微信公众号：程序员涛子。<br>有任何疑问欢迎提<a href="https://github.com/13sai/13sai.github.io/issues" target="_blank">issue</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13px;">CI</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13.15px;">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 13.08px;">ElasticSearch</a> <a href="/tags/ElementUI/" style="font-size: 13.31px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.38px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.54px;">Linux</a> <a href="/tags/MongoDB/" style="font-size: 13px;">MongoDB</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.77px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/RabbitMQ/" style="font-size: 13px;">RabbitMQ</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/ThinkPHP/" style="font-size: 13.46px;">ThinkPHP</a> <a href="/tags/algorithm/" style="font-size: 13px;">algorithm</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/base/" style="font-size: 13px;">base</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.62px;">css</a> <a href="/tags/gin/" style="font-size: 13.31px;">gin</a> <a href="/tags/git/" style="font-size: 13.23px;">git</a> <a href="/tags/go/" style="font-size: 13.69px;">go</a> <a href="/tags/gulp/" style="font-size: 13px;">gulp</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.92px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/mongodb/" style="font-size: 13px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 13.85px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.38px;">nginx</a> <a href="/tags/note/" style="font-size: 13.15px;">note</a> <a href="/tags/python/" style="font-size: 13px;">python</a> <a href="/tags/redis/" style="font-size: 13.54px;">redis</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.15px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/swoole/" style="font-size: 13px;">swoole</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wamp/" style="font-size: 13.08px;">wamp</a> <a href="/tags/web/" style="font-size: 13.46px;">web</a> <a href="/tags/windows/" style="font-size: 13px;">windows</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13px;">架构</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 13px;">网络</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/DDD/">DDD</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/10/345/" class="title">领域驱动设计</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-10T05:06:19.000Z" itemprop="datePublished">2021-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/03/343/" class="title">技术管理痛点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-03T11:50:49.000Z" itemprop="datePublished">2021-06-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/01/342/" class="title">管理三板斧</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-01T11:50:49.000Z" itemprop="datePublished">2021-06-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/31/341/" class="title">技术人三要素</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-31T06:47:22.000Z" itemprop="datePublished">2021-05-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/27/340/" class="title">Protobuf语法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-27T09:39:07.000Z" itemprop="datePublished">2021-05-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-系列文章-应用篇：2-延时任务" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      系列文章---应用篇：2.延时任务
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/02/22/244/" class="article-date">
+	  <time datetime="2020-02-22T06:35:57.000Z" itemprop="datePublished">2020-02-22</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/php/">php</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/PHP%E7%B3%BB%E5%88%97/" rel="tag">PHP系列</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/02/22/244/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 939(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/13sai/saiAPI" title="git项目地址">git项目地址</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/mp/homepage?__biz=MzI3Njc5Mjc0Mg==&hid=7&sn=ec786eb198002a02d9fb203b31b032b9">PHP DIY系列–一起手写一个api框架</a></li>
+</ul>
+<hr>
+<blockquote>
+<p>延时任务有别于定时任务，定时任务往往是固定周期的，有明确的触发时间。而延时任务一般没有固定的开始时间，它常常是由一个事件触发的，而在这个事件触发之后的一段时间内触发另一个事件。</p>
+</blockquote>
+<p>我们不妨来设定一个实际的场景，电商系统下单成功之后如果15分钟未支付成功，就系统自动取消订单。</p>
+<p>我们先来实现代码，然后再来详细说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">// 我们定义一个abstract，定义两个方法，startAfter和startAt</span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">abstract class DelayTask</span><br><span class="line">&#123;</span><br><span class="line">    const DELAY_TASK = &#x27;delayTask&#x27;;</span><br><span class="line">    /**</span><br><span class="line">     * 延时时间，在触发时间后多久执行</span><br><span class="line">     * @param $pushDelayTime</span><br><span class="line">     */</span><br><span class="line">    public function startAfter(int $pushDelayTime)</span><br><span class="line">    &#123;</span><br><span class="line">        RedisManager::getRedis()-&gt;zAdd(self::DELAY_TASK, time() + $pushDelayTime, serialize($this));</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * 定时时间，在未来某时刻执行</span><br><span class="line">     * @param $pushDelayAt</span><br><span class="line">     */</span><br><span class="line">    public function startAt(int $pushDelayAt)</span><br><span class="line">    &#123;</span><br><span class="line">        RedisManager::getRedis()-&gt;zAdd(self::DELAY_TASK, $pushDelayAt, serialize($this));</span><br><span class="line">    &#125;</span><br><span class="line">    abstract function run();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class TestDelayTask extends DelayTask</span><br><span class="line">&#123;</span><br><span class="line">    public function __construct($id)</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;id = $id;</span><br><span class="line">    &#125;</span><br><span class="line">    public function run()</span><br><span class="line">    &#123;</span><br><span class="line">        $file  = &#x27;text.txt&#x27;;//要写入文件的文件名（可以是任意文件名），如果文件不存在，将会创建一个</span><br><span class="line">        $content = &quot;写入的内容&quot;.time().&quot;\n&quot;;</span><br><span class="line">        if($f = file_put_contents($file, $content,FILE_APPEND))&#123;// 这个函数支持版本(PHP 5)</span><br><span class="line">            echo &quot;写入成功。&lt;br /&gt;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RedisManager是封装的一个单例模式实现的redis类，我们也贴出代码，然后再对上面的代码做一些说明。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class RedisManager</span><br><span class="line">&#123;</span><br><span class="line">    private static $instance = null;</span><br><span class="line">    private function __construct()</span><br><span class="line">    &#123;</span><br><span class="line">        self::$instance = new \Redis();</span><br><span class="line">        $config = require &#x27;redis.config.php&#x27;;</span><br><span class="line">        self::$instance-&gt;connect($config[&#x27;host&#x27;], $config[&#x27;port&#x27;], $config[&#x27;timeout&#x27;]);</span><br><span class="line">        if (isset($config[&#x27;password&#x27;])) &#123;</span><br><span class="line">            self::$instance-&gt;auth($config[&#x27;password&#x27;]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * 获取静态实例</span><br><span class="line">     */</span><br><span class="line">    public static function getRedis()</span><br><span class="line">    &#123;</span><br><span class="line">        if (!self::$instance) &#123;</span><br><span class="line">            new self;</span><br><span class="line">        &#125;</span><br><span class="line">        return self::$instance;</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * 禁止clone</span><br><span class="line">     */</span><br><span class="line">    private function __clone()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; ZADD saif 1 redis</span><br><span class="line">(integer) 1</span><br><span class="line">redis 127.0.0.1:6379&gt; ZADD saif 2 mongodb</span><br><span class="line">(integer) 1</span><br><span class="line">redis 127.0.0.1:6379&gt; ZADD saif 4 mysql</span><br><span class="line">(integer) 0</span><br><span class="line">redis 127.0.0.1:6379&gt; ZRANGE saif 0 10 WITHSCORES</span><br><span class="line"></span><br><span class="line">1) &quot;redis&quot;</span><br><span class="line">2) &quot;1&quot;</span><br><span class="line">3) &quot;mongodb&quot;</span><br><span class="line">4) &quot;2&quot;</span><br><span class="line">5) &quot;mysql&quot;</span><br><span class="line">6) &quot;4&quot;</span><br></pre></td></tr></table></figure>
+
+<p>如果你有redis可视化工具，你会发现有序集合存储的结构是这样：</p>
+<table>
+<thead>
+<tr>
+<th>row</th>
+<th>value</th>
+<th>score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>redis</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>mongodb</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>mysql</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<p>我们再来看一下代码，我们使用时间戳作为分值，使用对象作为值，存储到Redis有序集合。</p>
+<blockquote>
+<p>file_put_contents ( string $filename , mixed $data [, int $flags = 0 [, resource $context ]] ) : int   — 将一个字符串写入文件</p>
+</blockquote>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">我们先尝试写入任务：</span><br><span class="line"></span><br><span class="line">(new TestDelayTask(4))-&gt;startAfter(900);</span><br><span class="line">(new TestDelayTask(4))-&gt;startAfter(120);</span><br><span class="line">(new TestDelayTask(4))-&gt;startAfter(600);</span><br><span class="line">(new TestDelayTask(3))-&gt;startAt(158120384);</span><br><span class="line">(new TestDelayTask(3))-&gt;startAt(158420380);</span><br><span class="line">(new TestDelayTask(3))-&gt;startAt(158120900);</span><br></pre></td></tr></table></figure>
+
+<p>执行代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class DelayTaskTask</span><br><span class="line">&#123;</span><br><span class="line">    const QueneName = &#x27;delayTask&#x27;;</span><br><span class="line">    private $currentTime;</span><br><span class="line">    private $once = 5;</span><br><span class="line">    public function run()</span><br><span class="line">    &#123;</span><br><span class="line">        $this-&gt;currentTime = time();</span><br><span class="line">        error_reporting(error_reporting() &amp; ~E_WARNING);</span><br><span class="line">        while (true) &#123;</span><br><span class="line">            // 每次取出5条</span><br><span class="line">            $list = RedisManager::getRedis()-&gt;zRange(self::QueneName, 0, $this-&gt;once, true);</span><br><span class="line">            if (!empty($list)) &#123;</span><br><span class="line">                foreach ($list as $val=&gt;$score) &#123;</span><br><span class="line">                    if ($score &lt; $this-&gt;currentTime) &#123;</span><br><span class="line">                        unserialize($val)-&gt;run();</span><br><span class="line">                        RedisManager::getRedis()-&gt;zDelete(self::QueneName, $val);</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        break 2;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">(new DelayTaskTask())-&gt;run();</span><br></pre></td></tr></table></figure>
+
+<p>我们可以设置一个定时任务，每分钟执行一次上述代码。</p>
+<p>我们执行之后，会发现一旦过了我们设定的时间，text.txt就不断有文字写入了。</p>
+<p>代码比较杂，我有一个demo代码，大家可以查看。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/13sai/wheels/tree/master/DelayTask-%E5%9F%BA%E4%BA%8Eredis%E7%9A%84%E5%BB%B6%E6%97%B6%E4%BB%BB%E5%8A%A1">DelayTask-基于redis的延时任务</a></p>
+<p>这样，我们就利用Redis有序集合，完成了一个很基础的延时任务。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ul>
+<li>加入run方法代码执行时间过长，一分钟执行一次有什么问题吗？</li>
+<li>每分钟执行一次，间隔有点长，能不能优化呢？</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://github.13sai.com/2020/02/22/244/" title="系列文章---应用篇：2.延时任务" target="_blank" rel="external">http://github.13sai.com/2020/02/22/244/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">后端开发</small></a></h3>
+        <div>程序员涛子</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/02/27/228/" title="ElementUI多图拖拽"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/02/22/243/" title="系列文章---应用篇：1.分布式锁"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

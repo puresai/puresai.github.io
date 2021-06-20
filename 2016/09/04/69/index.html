@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>一键登录（qq,weibo） | 13sai的blog</title>
+  <meta name="description" content="基于ThinkPHP的一键登录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一键登录（qq,weibo）">
+<meta property="og:url" content="http://github.13sai.com/2016/09/04/69/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="基于ThinkPHP的一键登录。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-09-04T07:44:48.000Z">
+<meta property="article:modified_time" content="2021-04-13T07:28:51.349Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://github.13sai.com/2016/09/04/69/index.html">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>分享技术知识，不限于PHP、go、MySQL、Redis、linux、MQ、micro service。<br>交流QQ群：965666112<br>微信公众号：程序员涛子。<br>有任何疑问欢迎提<a href="https://github.com/13sai/13sai.github.io/issues" target="_blank">issue</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13px;">CI</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13.15px;">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 13.08px;">ElasticSearch</a> <a href="/tags/ElementUI/" style="font-size: 13.31px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/Laravel/" style="font-size: 13.38px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.54px;">Linux</a> <a href="/tags/MongoDB/" style="font-size: 13px;">MongoDB</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/PHP%E7%B3%BB%E5%88%97/" style="font-size: 13.77px;">PHP系列</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/RabbitMQ/" style="font-size: 13px;">RabbitMQ</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/ThinkPHP/" style="font-size: 13.46px;">ThinkPHP</a> <a href="/tags/algorithm/" style="font-size: 13px;">algorithm</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/base/" style="font-size: 13px;">base</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.62px;">css</a> <a href="/tags/gin/" style="font-size: 13.31px;">gin</a> <a href="/tags/git/" style="font-size: 13.23px;">git</a> <a href="/tags/go/" style="font-size: 13.69px;">go</a> <a href="/tags/gulp/" style="font-size: 13px;">gulp</a> <a href="/tags/html/" style="font-size: 13px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.92px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/k8s/" style="font-size: 13px;">k8s</a> <a href="/tags/mongodb/" style="font-size: 13px;">mongodb</a> <a href="/tags/mysql/" style="font-size: 13.85px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.38px;">nginx</a> <a href="/tags/note/" style="font-size: 13.15px;">note</a> <a href="/tags/python/" style="font-size: 13px;">python</a> <a href="/tags/redis/" style="font-size: 13.54px;">redis</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.15px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/swoole/" style="font-size: 13px;">swoole</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/test/" style="font-size: 13px;">test</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wamp/" style="font-size: 13.08px;">wamp</a> <a href="/tags/web/" style="font-size: 13.46px;">web</a> <a href="/tags/windows/" style="font-size: 13px;">windows</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13px;">架构</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 13px;">网络</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/DDD/">DDD</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/10/345/" class="title">领域驱动设计</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-10T05:06:19.000Z" itemprop="datePublished">2021-06-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/03/343/" class="title">技术管理痛点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-03T11:50:49.000Z" itemprop="datePublished">2021-06-03</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/06/01/342/" class="title">管理三板斧</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-06-01T11:50:49.000Z" itemprop="datePublished">2021-06-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/note/">note</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/31/341/" class="title">技术人三要素</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-31T06:47:22.000Z" itemprop="datePublished">2021-05-31</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/go/">go</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/05/27/340/" class="title">Protobuf语法</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-05-27T09:39:07.000Z" itemprop="datePublished">2021-05-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-一键登录（qq,weibo）" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一键登录（qq,weibo）
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/09/04/69/" class="article-date">
+	  <time datetime="2016-09-04T07:44:48.000Z" itemprop="datePublished">2016-09-04</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/php/">php</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/PHP/" rel="tag">PHP</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/09/04/69/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 4.3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 26(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+         <p>首先需要去qq，weibo申请密钥，然后会得到<span style="color: rgb(51, 51, 51); font-family: &#39;Microsoft Yahei&#39;, 微软雅黑, arial, 宋体, sans-serif; line-height: 28px; text-align: justify; background-color: rgb(255, 255, 255);">APPID和APPKEY</span>，然后一步步操作，都有提示。成功后把配置写在common函数以便后期调用。</p><pre class="brush:php;toolbar:false">&lt;?php
+
+<p>//qq一键登录</p>
+<p>function&nbsp;qqlogin_config(){<br>&nbsp;&nbsp;&nbsp;&nbsp;define(&quot;QQDEBUG&quot;,&nbsp;false);<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(defined(&quot;QQDEBUG&quot;)&nbsp;&amp;&amp;&nbsp;QQDEBUG)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ini_set(&quot;error_reporting&quot;,&nbsp;E_ALL);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ini_set(&quot;display_errors&quot;,&nbsp;TRUE);<br>&nbsp;&nbsp;&nbsp;&nbsp;}else{<br>&nbsp;&nbsp;&nbsp;&nbsp;    error_reporting(E_ALL^E_NOTICE);<br>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;session_start();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;//申请到的appid<br>&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&quot;appid&quot;]&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&#39;&#39;;&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;//申请到的appkey<br>&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&quot;appkey&quot;]&nbsp;&nbsp;&nbsp;=&nbsp;&quot;&quot;;&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;//QQ登录成功后跳转的地址,请确保地址真实可用，否则会导致登录失败。&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;//一定要注意回调地址<br>&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&quot;callback&quot;]&nbsp;=&nbsp;&quot;http://&quot;&nbsp;.&nbsp;$_SERVER[&#39;SERVER_NAME&#39;]&nbsp;.&nbsp;&quot;/index.php/Home/OAuth/qqCallback&quot;;&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;//QQ授权api接口.按需调用<br>&nbsp;&nbsp;&nbsp;&nbsp;//$_SESSION[&quot;scope&quot;]&nbsp;=&nbsp;&quot;get_user_info,add_share,list_album,add_album,upload_pic,add_topic,add_one_blog,add_weibo&quot;;<br>&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&quot;scope&quot;]&nbsp;=&nbsp;&quot;get_user_info&quot;;<br>}</p>
+<p>function&nbsp;qqlogin_do_post($url,&nbsp;$data)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;$ch&nbsp;=&nbsp;curl_init();<br>&nbsp;&nbsp;&nbsp;&nbsp;curl_setopt($ch,&nbsp;CURLOPT_RETURNTRANSFER,&nbsp;TRUE);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;curl_setopt($ch,&nbsp;CURLOPT_POST,&nbsp;TRUE);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;curl_setopt($ch,&nbsp;CURLOPT_POSTFIELDS,&nbsp;$data);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;curl_setopt($ch,&nbsp;CURLOPT_URL,&nbsp;$url);<br>&nbsp;&nbsp;&nbsp;&nbsp;$ret&nbsp;=&nbsp;curl_exec($ch);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;curl_close($ch);<br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$ret;<br>}<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>/<em>———————————————-<br>&nbsp;</em>&nbsp;<br>&nbsp;<em>&nbsp;微博一键登录<br>&nbsp;</em><br>&nbsp;<em>———————————————-</em>/<br>&nbsp;<br>/**<br>&nbsp;<em>&nbsp;微博一键登录&nbsp;-&nbsp;配置<br>&nbsp;</em>/<br>function&nbsp;weibo_config(){<br>&nbsp;&nbsp;&nbsp;&nbsp;define(&nbsp;&quot;WB_AKEY&quot;&nbsp;,&nbsp;&#39;4002186908&#39;&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;define(&nbsp;&quot;WB_SKEY&quot;&nbsp;,&nbsp;&#39;dd81902ee3460eba972f46487aac41e2&#39;&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;define(&nbsp;&quot;WB_CALLBACK_URL&quot;&nbsp;,&nbsp;&#39;<a target="_blank" rel="noopener" href="http://www.ayanglao.org.cn&/#39;&nbsp;&nbsp;.&nbsp;U(&#39;Home/OAuth/weiboCallback&#39;)">http://www.ayanglao.org.cn&#39;&nbsp;&nbsp;.&nbsp;U(&#39;Home/OAuth/weiboCallback&#39;)</a>);<br>}</pre><p>然后就是OAuthAction</p><pre class="brush:php;toolbar:false">&lt;?php</p>
+<p>class&nbsp;OAuthAction&nbsp;extends&nbsp;AppbaseAction&nbsp;{</p>
+<pre><code>public&amp;nbsp;function&amp;nbsp;qqLogin()&#123;
+</code></pre>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//….<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qqlogin_config();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&#39;state&#39;]&nbsp;=&nbsp;md5(uniqid(rand(),&nbsp;TRUE));&nbsp;//CSRF&nbsp;protection<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$login_url&nbsp;=&nbsp;&quot;<a target="_blank" rel="noopener" href="https://graph.qq.com/oauth2.0/authorize?response_type=code&amp;client_id=">https://graph.qq.com/oauth2.0/authorize?response_type=code&amp;client_id=</a>&quot;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;$_SESSION[&quot;appid&quot;]&nbsp;.&nbsp;&quot;&amp;redirect_uri=&quot;&nbsp;.&nbsp;urlencode($_SESSION[&quot;callback&quot;])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&quot;&amp;state=&quot;&nbsp;.&nbsp;$_SESSION[&#39;state&#39;]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&quot;&amp;scope=&quot;.$_SESSION[&quot;scope&quot;];<br>&nbsp;&nbsp;&nbsp;&nbsp;    //echo&nbsp;$login_url;<br>&nbsp;&nbsp;&nbsp;&nbsp;    //print_r($_SESSION);<br>&nbsp;&nbsp;&nbsp;&nbsp;    //die();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header(&quot;Location:$login_url&quot;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;qqCallback(){</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qqlogin_config();<br>        //var_dump($_SESSION);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>&nbsp;获取token<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if($_REQUEST[&#39;state&#39;]&nbsp;==&nbsp;$_SESSION[&#39;state&#39;])&nbsp;//csrf<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$token_url&nbsp;=&nbsp;&quot;<a target="_blank" rel="noopener" href="https://graph.qq.com/oauth2.0/token?grant_type=authorization_code">https://graph.qq.com/oauth2.0/token?grant_type=authorization_code</a>&amp;&quot;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&quot;client_id=&quot;&nbsp;.&nbsp;$_SESSION[&quot;appid&quot;].&nbsp;&quot;&amp;redirect_uri=&quot;&nbsp;.&nbsp;urlencode($_SESSION[&quot;callback&quot;])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&quot;&amp;client_secret=&quot;&nbsp;.&nbsp;$_SESSION[&quot;appkey&quot;].&nbsp;&quot;&amp;code=&quot;&nbsp;.&nbsp;$_REQUEST[&quot;code&quot;];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$response&nbsp;=&nbsp;file_get_contents($token_url);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(strpos($response,&nbsp;&quot;callback&quot;)&nbsp;!==&nbsp;false)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$lpos&nbsp;=&nbsp;strpos($response,&nbsp;&quot;(&quot;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$rpos&nbsp;=&nbsp;strrpos($response,&nbsp;&quot;)&quot;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$response&nbsp;&nbsp;=&nbsp;substr($response,&nbsp;$lpos&nbsp;+&nbsp;1,&nbsp;$rpos&nbsp;-&nbsp;$lpos&nbsp;-1);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$msg&nbsp;=&nbsp;json_decode($response);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset($msg-&gt;error))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;&lt;h3&gt;error-token:&lt;/h3&gt;&quot;&nbsp;.&nbsp;$msg-&gt;error;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;&lt;h3&gt;msg&nbsp;&nbsp;:&lt;/h3&gt;&quot;&nbsp;.&nbsp;$msg-&gt;error_description;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$params&nbsp;=&nbsp;array();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parse_str($response,&nbsp;$params);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//debug<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//print_r($params);die();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//set&nbsp;access&nbsp;token&nbsp;to&nbsp;session<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&quot;access_token&quot;]&nbsp;=&nbsp;$params[&quot;access_token&quot;];</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo(&quot;The&nbsp;state&nbsp;does&nbsp;not&nbsp;match.&nbsp;You&nbsp;may&nbsp;be&nbsp;a&nbsp;victim&nbsp;of&nbsp;CSRF.&quot;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>&nbsp;获取open_id<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>/</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$graph_url&nbsp;=&nbsp;&quot;<a target="_blank" rel="noopener" href="https://graph.qq.com/oauth2.0/me?access_token=">https://graph.qq.com/oauth2.0/me?access_token=</a>&quot;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;$_SESSION[&#39;access_token&#39;];</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$str&nbsp;&nbsp;=&nbsp;file_get_contents($graph_url);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(strpos($str,&nbsp;&quot;callback&quot;)&nbsp;!==&nbsp;false)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$lpos&nbsp;=&nbsp;strpos($str,&nbsp;&quot;(&quot;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$rpos&nbsp;=&nbsp;strrpos($str,&nbsp;&quot;)&quot;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$str&nbsp;&nbsp;=&nbsp;substr($str,&nbsp;$lpos&nbsp;+&nbsp;1,&nbsp;$rpos&nbsp;-&nbsp;$lpos&nbsp;-1);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$user&nbsp;=&nbsp;json_decode($str);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset($user-&gt;error))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;&lt;h3&gt;error-openid:&lt;/h3&gt;&quot;&nbsp;.&nbsp;$user-&gt;error;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&quot;&lt;h3&gt;msg&nbsp;&nbsp;:&lt;/h3&gt;&quot;&nbsp;.&nbsp;$user-&gt;error_description;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//debug<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//echo(&quot;Hello&nbsp;&quot;&nbsp;.&nbsp;$user-&gt;openid);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//set&nbsp;openid&nbsp;to&nbsp;session<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$_SESSION[&quot;openid&quot;]&nbsp;=&nbsp;$user-&gt;openid;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;todo:&nbsp;进行登录与注册的判断</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>&nbsp;获取用户信息<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em>/</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$graph_url&nbsp;=&nbsp;&quot;<a target="_blank" rel="noopener" href="https://graph.qq.com/user/get_user_info">https://graph.qq.com/user/get_user_info</a>&quot;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    .&nbsp;&#39;?access_token=&#39;&nbsp;.&nbsp;$_SESSION[&#39;access_token&#39;]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    .&nbsp;&#39;&amp;oauth_consumer_key=&#39;&nbsp;.&nbsp;$_SESSION[&#39;appid&#39;]<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&#39;&amp;openid=&#39;&nbsp;.&nbsp;$_SESSION[&quot;openid&quot;];</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$str&nbsp;&nbsp;=&nbsp;file_get_contents($graph_url);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$json_result&nbsp;=&nbsp;json_decode($str);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if($json_result-&gt;ret&nbsp;==&nbsp;&#39;0&#39;){<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;$nickname&nbsp;=&nbsp;$json_result-&gt;nickname;&nbsp;//昵称<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;$avatar&nbsp;=&nbsp;$json_result-&gt;figureurl_qq_2;&nbsp;//40*40的qq头像<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;$gender&nbsp;=&nbsp;$json_result-&gt;gender;&nbsp;//性别<br>&nbsp;&nbsp;&nbsp;&nbsp;        //echo&nbsp;&#39;&lt;meta&nbsp;charset=&quot;utf-8&quot;&nbsp;/&gt;&#39;;<br>&nbsp;&nbsp;&nbsp;&nbsp;        //echo&nbsp;&quot;昵称：$nickname&lt;br&gt;性别：$gender&lt;br&gt;QQ头像：&lt;img&nbsp;src=$figureurl_qq_1&nbsp;/&gt;&quot;;die();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;        $row&nbsp;=&nbsp;M(&quot;member&quot;)-&gt;where(&quot;m_qq_openid=&#39;%s&#39;&quot;,$<em>SESSION[&quot;openid&quot;])-&gt;find();<br>&nbsp;&nbsp;&nbsp;&nbsp;        if($row){<br>            &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;m_id&#39;,$row[&#39;m_id&#39;]);<br>            &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;m_nick_name&#39;,$row[&#39;m_nick_name&#39;]);<br>            &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;m_login_name&#39;,$row[&#39;m_login_name&#39;]);<br>            &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;is_org&#39;,-1);<br>            &nbsp;&nbsp;&nbsp;&nbsp;//U(&#39;Home/Home/index&#39;,null,true,true);<br>            &nbsp;&nbsp;&nbsp;&nbsp;if(session(&#39;shebei&#39;)&nbsp;==&nbsp;1){<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;//echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&/#39;.U(&#39;Wap/Home/index&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&#39;.U(&#39;Wap/Home/index&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39</a>;;<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;&lt;script&gt;window.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&/#39;.U(&#39;Wap/Home/index&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&#39;.U(&#39;Wap/Home/index&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39</a>;;<br>            &nbsp;&nbsp;&nbsp;&nbsp;}else{<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&quot;;&lt;/script&gt;&amp;#39</a>;;<br>            &nbsp;&nbsp;&nbsp;&nbsp;}<br>            &nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;        }else{<br>&nbsp;&nbsp;&nbsp;&nbsp;            //&nbsp;创建新用户<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$count&nbsp;=&nbsp;M(&quot;member&quot;)-&gt;max(&#39;m_id&#39;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$count++;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$rand&nbsp;=&nbsp;mt_rand(1000,9999);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    //$data[&#39;gender&#39;]&nbsp;&nbsp;=&nbsp;$gender;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    $data[&#39;m_avatar&#39;]&nbsp;&nbsp;=&nbsp;$avatar;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    $data[&#39;m_nick_name&#39;]&nbsp;&nbsp;=&nbsp;mb_substr($nickname,0,6,&quot;utf-8&quot;)&nbsp;.&nbsp;$count;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;$data[&#39;m_login_name&#39;]&nbsp;=&nbsp;&#39;qq</em>&#39;.$rand.&#39;&#39;.$count;<br>&nbsp;&nbsp;&nbsp;&nbsp;        &nbsp;&nbsp;&nbsp;&nbsp;$data[&#39;m_password&#39;]&nbsp;=&nbsp;md5(md5(time()));<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    $data[&#39;m_qq_openid&#39;]&nbsp;&nbsp;=&nbsp;$_SESSION[&quot;openid&quot;];&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;        &nbsp;&nbsp;&nbsp;&nbsp;$data[&#39;from&#39;]&nbsp;=&nbsp;&#39;qq&#39;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;        &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;kj_object&#39;,$data);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    if(session(&#39;shebei&#39;)&nbsp;==&nbsp;1){<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;//echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&/#39;.U(&#39;Wap/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&#39;.U(&#39;Wap/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39</a>;;<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;&lt;script&gt;window.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&/#39;.U(&#39;Wap/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&#39;.U(&#39;Wap/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39</a>;;<br>            &nbsp;&nbsp;&nbsp;&nbsp;}else{<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&/#39;.U(&#39;Home/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&#39;.U(&#39;Home/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39</a>;;<br>            &nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    //echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&quot;;&lt;/script&gt;&amp;#39</a>;;<br>&nbsp;&nbsp;&nbsp;&nbsp;        }<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}else{<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;111&#39;.$str;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;//微博一键登录（登录）<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;weiboLogin(){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_start();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weibo_config();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vendor(&#39;Weibo.saetv2ex&#39;);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$o&nbsp;=&nbsp;new&nbsp;SaeTOAuthV2(&nbsp;WB_AKEY&nbsp;,&nbsp;WB_SKEY&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$code_url&nbsp;=&nbsp;$o-&gt;getAuthorizeURL(&nbsp;WB_CALLBACK_URL&nbsp;);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header(&quot;Location:&nbsp;&quot;&nbsp;.&nbsp;$code_url);<br>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;//微博一键登录（回调）<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;weiboCallback(){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_start();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_reporting(E_ERROR);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weibo_config();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vendor(&#39;Weibo.saetv2ex&#39;);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$o&nbsp;=&nbsp;new&nbsp;SaeTOAuthV2(&nbsp;WB_AKEY&nbsp;,&nbsp;WB_SKEY&nbsp;);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset($_REQUEST[&#39;code&#39;]))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $keys&nbsp;=&nbsp;array();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $keys[&#39;code&#39;]&nbsp;=&nbsp;$_REQUEST[&#39;code&#39;];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $keys[&#39;redirect_uri&#39;]&nbsp;=&nbsp;WB_CALLBACK_URL;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        $token&nbsp;=&nbsp;$o-&gt;getAccessToken(&nbsp;&#39;code&#39;,&nbsp;$keys&nbsp;)&nbsp;;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    }&nbsp;catch&nbsp;(OAuthException&nbsp;$e)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;($token)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $<em>SESSION[&#39;token&#39;]&nbsp;=&nbsp;$token;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    setcookie(&nbsp;&#39;weibojs</em>&#39;.$o-&gt;client_id,&nbsp;http_build_query($token)&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $c&nbsp;=&nbsp;new&nbsp;SaeTClientV2(&nbsp;WB_AKEY&nbsp;,&nbsp;WB_SKEY&nbsp;,&nbsp;$_SESSION[&#39;token&#39;][&#39;access_token&#39;]&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $ms&nbsp;&nbsp;=&nbsp;$c-&gt;home_timeline();&nbsp;//&nbsp;done<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $uid_get&nbsp;=&nbsp;$c-&gt;get_uid();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $uid&nbsp;=&nbsp;$uid_get[&#39;uid&#39;];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $user_message&nbsp;=&nbsp;$c-&gt;show_user_by_id(&nbsp;$uid);//根据ID获取用户等基本信息<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //保存几个基本信息<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $openid&nbsp;=&nbsp;$user_message[&#39;id&#39;];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $nickname&nbsp;=&nbsp;$user_message[&#39;screen_name&#39;];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $avatar&nbsp;=&nbsp;$user_message[&#39;profile_image_url&#39;];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $gender&nbsp;=&nbsp;$user_message[&#39;gender&#39;];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $gender&nbsp;=&nbsp;($gender==&#39;m&#39;)?&#39;男&#39;:&#39;女&#39;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    /<em>以下为写本地数据库</em>/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //通过&nbsp;$openid&nbsp;检查用户是否存在<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //if(存在){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //}else{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        //&nbsp;创建新用户<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        //&nbsp;设置登录状态<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //dump($user_message);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    $row&nbsp;=&nbsp;M(&quot;member&quot;)-&gt;where(&quot;m_weibo_openid=&#39;%s&#39;&quot;,$openid)-&gt;find();<br>&nbsp;&nbsp;&nbsp;&nbsp;        if($row){<br>            &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;m_id&#39;,$row[&#39;m_id&#39;]);<br>            &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;m_nick_name&#39;,$row[&#39;m_nick_name&#39;]);<br>            &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;m_login_name&#39;,$row[&#39;m_login_name&#39;]);<br>            &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;is_org&#39;,-1);<br>            &nbsp;&nbsp;&nbsp;&nbsp;//U(&#39;Home/Home/index&#39;,null,true,true);<br>            &nbsp;&nbsp;&nbsp;&nbsp;if(session(&#39;shebei&#39;)&nbsp;==&nbsp;1){<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&/#39;.U(&#39;Wap/Home/index&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&#39;.U(&#39;Wap/Home/index&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39</a>;;<br>            &nbsp;&nbsp;&nbsp;&nbsp;}else{<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&quot;;&lt;/script&gt;&amp;#39</a>;;<br>            &nbsp;&nbsp;&nbsp;&nbsp;}<br>            &nbsp;&nbsp;&nbsp;&nbsp;//echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&quot;;&lt;/script&gt;&amp;#39</a>;;<br>&nbsp;&nbsp;&nbsp;&nbsp;        }else{<br>&nbsp;&nbsp;&nbsp;&nbsp;            //&nbsp;创建新用户<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$count&nbsp;=&nbsp;M(&quot;member&quot;)-&gt;max(&#39;m_id&#39;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$count++;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$rand&nbsp;=&nbsp;mt_rand(1000,9999);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    //$data[&#39;gender&#39;]&nbsp;&nbsp;=&nbsp;$gender;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    $data[&#39;m_avatar&#39;]&nbsp;&nbsp;=&nbsp;$avatar;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    $data[&#39;m_nick_name&#39;]&nbsp;&nbsp;=&nbsp;mb_substr($nickname,0,6,&quot;utf-8&quot;)&nbsp;.&nbsp;$count;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;$data[&#39;m_login_name&#39;]&nbsp;=&nbsp;&#39;wb_&#39;.$rand.&#39;&#39;.$count;<br>&nbsp;&nbsp;&nbsp;&nbsp;        &nbsp;&nbsp;&nbsp;&nbsp;$data[&#39;m_password&#39;]&nbsp;=&nbsp;md5(md5(time()));<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    $data[&#39;m_weibo_openid&#39;]&nbsp;&nbsp;=&nbsp;$openid;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;        &nbsp;&nbsp;&nbsp;&nbsp;$data[&#39;from&#39;]&nbsp;=&nbsp;&#39;weibo&#39;;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;        &nbsp;&nbsp;&nbsp;&nbsp;session(&#39;kj_object&#39;,$data);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    if(session(&#39;shebei&#39;)&nbsp;==&nbsp;1){<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&/#39;.U(&#39;Wap/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&#39;.U(&#39;Wap/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39</a>;;<br>            &nbsp;&nbsp;&nbsp;&nbsp;}else{<br>&nbsp;&nbsp;&nbsp;&nbsp;            &nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&#39;&lt;script&gt;window.close();window.opener.location.href=&quot;<a target="_blank" rel="noopener" href="http://www.13sai.com&/#39;.U(&#39;Home/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39">http://www.13sai.com&#39;.U(&#39;Home/Guide/binding&#39;).&#39;&quot;;&lt;/script&gt;&amp;#39</a>;;<br>            &nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;    </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    //跳转到会员中心</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    echo&nbsp;&#39;授权失败&#39;;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+<p>}</pre><p>前台调用比较简单</p><pre class="brush:html;toolbar:false">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;class=&quot;yijian&nbsp;wd-center&quot;&gt;<br>        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&nbsp;class=&quot;wd-left&quot;&gt;使用其他账号登录&lt;/p&gt;<br>        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a&nbsp;onclick=&quot;toQzoneLogin()&quot;&nbsp;class=&quot;other_login&nbsp;other_login_qq&quot;&gt;&lt;img&nbsp;src=&quot;/webui/home/images/Q.png&quot;&gt;&lt;/a&gt;<br>        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a&nbsp;onclick=&quot;toWeiboLogin()&quot;&gt;&lt;img&nbsp;src=&quot;/webui/home/images/weibo.png&quot;&gt;&lt;/a&gt;</p>
+<pre><code>    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;lt;/div&amp;gt;
+    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+</code></pre>
+<p>&lt;script&gt;<br>function&nbsp;toQzoneLogin()<br>{<br>    var&nbsp;A=window.open(&quot;<a href="http://www.ayanglao.org.cn{:U(&#39;Home/OAuth/qqLogin&#39;,&#39;&#39;,false)}/&quot;+Math.random(),&quot;TencentLogin&quot;,&quot;width=600,height=480,menubar=0,scrollbars=1,&nbsp;resizable=1,status=1,titlebar=0,toolbar=0,location=1">http://www.ayanglao.org.cn{:U(&#39;Home/OAuth/qqLogin&#39;,&#39;&#39;,false)}/&quot;+Math.random(),&quot;TencentLogin&quot;,&quot;width=600,height=480,menubar=0,scrollbars=1,&nbsp;resizable=1,status=1,titlebar=0,toolbar=0,location=1</a>&quot;);<br>}</p>
+<p>function&nbsp;toWeiboLogin()<br>{<br>    var&nbsp;A=window.open(&quot;<a href="http://www.ayanglao.org.cn{:U(&#39;Home/OAuth/weiboLogin&#39;,&#39;&#39;,false)}/&quot;+Math.random(),&quot;WeiboLogin&quot;,&quot;width=450,height=320,menubar=0,scrollbars=1,&nbsp;resizable=1,status=1,titlebar=0,toolbar=0,location=1">http://www.ayanglao.org.cn{:U(&#39;Home/OAuth/weiboLogin&#39;,&#39;&#39;,false)}/&quot;+Math.random(),&quot;WeiboLogin&quot;,&quot;width=450,height=320,menubar=0,scrollbars=1,&nbsp;resizable=1,status=1,titlebar=0,toolbar=0,location=1</a>&quot;);<br>}<br>&lt;/script&gt;</pre><p>这样就ok了。下次说说微信登录。<br/></p></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://github.13sai.com/2016/09/04/69/" title="一键登录（qq,weibo）" target="_blank" rel="external">http://github.13sai.com/2016/09/04/69/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">后端开发</small></a></h3>
+        <div>程序员涛子</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/09/04/70/" title="微信登录"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/09/04/68/" title="解决ThinkPHP多文件上传重名的问题"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>
