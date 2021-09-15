@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>bookmark | 13sai的blog</title>
+  <meta name="description" content="书签栏tools在线工具 - 程序员的工具箱 Unix时间戳(Unix timestamp)转换工具 - 站长工具 Speedtest by Ookla - The Global Broadband Speed Test TEST 在线JSON校验格式化工具（Be JSON） 在线文本比较工具 - 众人搜索网 HMAC计算、HMAC-MD5、HMAC-SHA1、HMAC-SHA256、HMAC-S">
+<meta property="og:type" content="website">
+<meta property="og:title" content="bookmark">
+<meta property="og:url" content="https://github.13sai.com/bookmark/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="书签栏tools在线工具 - 程序员的工具箱 Unix时间戳(Unix timestamp)转换工具 - 站长工具 Speedtest by Ookla - The Global Broadband Speed Test TEST 在线JSON校验格式化工具（Be JSON） 在线文本比较工具 - 众人搜索网 HMAC计算、HMAC-MD5、HMAC-SHA1、HMAC-SHA256、HMAC-S">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-15T12:41:09.000Z">
+<meta property="article:modified_time" content="2021-09-15T12:41:43.576Z">
+<meta property="article:author" content="13sai">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://github.13sai.com/bookmark/index.html">
+  
+  
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/13sai" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">13sai</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">后端开发</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 杭州</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/bookmark">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">书签</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>分享技术知识，不限于golang、PHP、MySQL、Redis、k8s、MQ、micro service。<br>交流QQ群：965666112<br>微信公众号：程序员涛子。<br>有任何疑问欢迎提<a href="https://github.com/13sai/13sai.github.io/issues" target="_blank">issue</a>或者email sai0556@qq.com</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CI/" style="font-size: 13px;">CI</a> <a href="/tags/CSV/" style="font-size: 13px;">CSV</a> <a href="/tags/DDD/" style="font-size: 13px;">DDD</a> <a href="/tags/Docker/" style="font-size: 13.21px;">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 13.07px;">ElasticSearch</a> <a href="/tags/ElementUI/" style="font-size: 13.29px;">ElementUI</a> <a href="/tags/LNMP/" style="font-size: 13px;">LNMP</a> <a href="/tags/LRU/" style="font-size: 13px;">LRU</a> <a href="/tags/Laravel/" style="font-size: 13.43px;">Laravel</a> <a href="/tags/Linux/" style="font-size: 13.57px;">Linux</a> <a href="/tags/MongoDB/" style="font-size: 13.07px;">MongoDB</a> <a href="/tags/Nginx/" style="font-size: 13px;">Nginx</a> <a href="/tags/PHP/" style="font-size: 14px;">PHP</a> <a href="/tags/Protobuf/" style="font-size: 13px;">Protobuf</a> <a href="/tags/RPC/" style="font-size: 13px;">RPC</a> <a href="/tags/RabbitMQ/" style="font-size: 13px;">RabbitMQ</a> <a href="/tags/SLB/" style="font-size: 13.07px;">SLB</a> <a href="/tags/SVN/" style="font-size: 13px;">SVN</a> <a href="/tags/ThinkPHP/" style="font-size: 13.5px;">ThinkPHP</a> <a href="/tags/algorithm/" style="font-size: 13px;">algorithm</a> <a href="/tags/api/" style="font-size: 13px;">api</a> <a href="/tags/asp/" style="font-size: 13px;">asp</a> <a href="/tags/boltdb/" style="font-size: 13px;">boltdb</a> <a href="/tags/cache/" style="font-size: 13.14px;">cache</a> <a href="/tags/consul/" style="font-size: 13px;">consul</a> <a href="/tags/css/" style="font-size: 13.64px;">css</a> <a href="/tags/curl/" style="font-size: 13px;">curl</a> <a href="/tags/design/" style="font-size: 13px;">design</a> <a href="/tags/gin/" style="font-size: 13.29px;">gin</a> <a href="/tags/git/" style="font-size: 13.21px;">git</a> <a href="/tags/github/" style="font-size: 13px;">github</a> <a href="/tags/go/" style="font-size: 13.79px;">go</a> <a href="/tags/gogs/" style="font-size: 13px;">gogs</a> <a href="/tags/gulp/" style="font-size: 13px;">gulp</a> <a href="/tags/html/" style="font-size: 13.21px;">html</a> <a href="/tags/jenkins/" style="font-size: 13px;">jenkins</a> <a href="/tags/js/" style="font-size: 13.93px;">js</a> <a href="/tags/jwt/" style="font-size: 13px;">jwt</a> <a href="/tags/k8ss/" style="font-size: 13px;">k8ss</a> <a href="/tags/kubernetes/" style="font-size: 13px;">kubernetes</a> <a href="/tags/lock/" style="font-size: 13.07px;">lock</a> <a href="/tags/lua/" style="font-size: 13px;">lua</a> <a href="/tags/makedown/" style="font-size: 13px;">makedown</a> <a href="/tags/mysql/" style="font-size: 13.86px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13.43px;">nginx</a> <a href="/tags/nsq/" style="font-size: 13px;">nsq</a> <a href="/tags/python/" style="font-size: 13px;">python</a> <a href="/tags/redis/" style="font-size: 13.71px;">redis</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/sql/" style="font-size: 13.14px;">sql</a> <a href="/tags/svn/" style="font-size: 13px;">svn</a> <a href="/tags/swoole/" style="font-size: 13px;">swoole</a> <a href="/tags/tcp/" style="font-size: 13px;">tcp</a> <a href="/tags/ueditor/" style="font-size: 13px;">ueditor</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/wamp/" style="font-size: 13.07px;">wamp</a> <a href="/tags/web/" style="font-size: 13.36px;">web</a> <a href="/tags/windows/" style="font-size: 13.21px;">windows</a> <a href="/tags/wrk/" style="font-size: 13px;">wrk</a> <a href="/tags/%E4%BA%8B%E5%8A%A1/" style="font-size: 13.07px;">事务</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 13px;">架构</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 13px;">爬虫</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 13px;">算法</a> <a href="/tags/%E7%AE%A1%E7%90%86/" style="font-size: 13.14px;">管理</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 13px;">网络</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 13px;">设计模式</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 13px;">面试</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="page-" class="article article-type-page" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      bookmark
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/bookmark/index.html" class="article-date">
+	  <time datetime="2021-09-15T12:41:09.000Z" itemprop="datePublished">2021-09-15</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/bookmark/index.html#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 8(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="书签栏"><a href="#书签栏" class="headerlink" title="书签栏"></a>书签栏</h3><h3 id="tools"><a href="#tools" class="headerlink" title="tools"></a>tools</h3><p><a target="_blank" rel="noopener" href="https://tool.lu/">在线工具 - 程序员的工具箱</a></p>
+<p><a target="_blank" rel="noopener" href="http://tool.chinaz.com/Tools/unixtime.aspx">Unix时间戳(Unix timestamp)转换工具 - 站长工具</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.speedtest.net/zh-Hans/?ref=support.qiniu.com">Speedtest by Ookla - The Global Broadband Speed Test</a></p>
+<p><a target="_blank" rel="noopener" href="http://netools.qiniucdn.com/dns.html">TEST</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.bejson.com/">在线JSON校验格式化工具（Be JSON）</a></p>
+<p><a target="_blank" rel="noopener" href="http://wenbenbijiao.renrensousuo.com/">在线文本比较工具 - 众人搜索网</a></p>
+<p><a target="_blank" rel="noopener" href="https://1024tools.com/hmac">HMAC计算、HMAC-MD5、HMAC-SHA1、HMAC-SHA256、HMAC-SHA512在线计算 - 1024Tools</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitmind.cn/">GitMind - 在线免费思维导图软件</a></p>
+<p><a target="_blank" rel="noopener" href="https://oktools.net/json2go">JSON转Golang Struct - 在线工具 - OKTools</a></p>
+<p><a target="_blank" rel="noopener" href="http://tool.liumingye.cn/">刘明野的工具箱 | 刘明野的工具箱提供好用、易用的工具，还在不断添加中，欢迎访问！</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html">MySQL :: MySQL 5.7 Reference Manual :: 14.13.1 Online DDL Operations</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.devtool.com/sql2go.html">sql生成go结构体 - 在线开发工具 | 程序猿在线工具箱 - devtool.com</a></p>
+<h3 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h3><p><a target="_blank" rel="noopener" href="http://www.xiladaili.com/">西拉ip代理官网 - 免费ip代理，代理服务器ip,普通web在线网页代理，高匿http系列产品</a></p>
+<p><a target="_blank" rel="noopener" href="http://ip.yqie.com/ipproxy.htm">免费代理IP_HTTP代理服务器IP_隐藏IP_QQ代理_国内外代理_ip.yqie.com</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.xiaopiu.com/project?proid=5abf5af75c86c5736d422f29">xiaopiu-在线APP原型设计</a></p>
+<h3 id="mac"><a href="#mac" class="headerlink" title="mac"></a>mac</h3><p><a target="_blank" rel="noopener" href="https://www.macdown.com/">Mac软件下载-macdown软件下载-素材库-mac软件资源下载站-Mac下载</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.macwk.com/special/novice">面向 macOS新手 的最佳mac应用软件</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bejson.com/">在线JSON校验格式化工具（Be JSON）</a></p>
+<h3 id="hobby"><a href="#hobby" class="headerlink" title="hobby"></a>hobby</h3><p><a target="_blank" rel="noopener" href="http://baijiahao.baidu.com/s?id=1604434618695846985&wfr=spider&for=pc">拍出牛逼的照片，摄影师可以靠这些网站出售摄影照片来赚钱？</a></p>
+<p><a target="_blank" rel="noopener" href="https://jerryc.me/posts/21cfbf15/#%E5%8D%9A%E5%AE%A2%E5%B9%B4%E4%BB%BD">hexo-theme-butterfly安裝文檔 | JerryC</a></p>
+<p><a target="_blank" rel="noopener" href="https://book-consul-guide.vnzmi.com/">Introduction · Consul入门指南</a></p>
+<h3 id="魏晋风流"><a href="#魏晋风流" class="headerlink" title="魏晋风流"></a>魏晋风流</h3><p><a target="_blank" rel="noopener" href="http://www.xtylj.com/wenzhang/10276.html">后汉书_列传郑孔荀列传译文翻译和赏析_邢台诗词网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.gushiwen.org/guwen/shishuo.aspx">世说新语全文|翻译_古诗文网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/113f827c1b49">额妹子嘤！看了这个教程，就没有找不到的电子书 - 简书</a></p>
+<h3 id="website"><a href="#website" class="headerlink" title="website"></a>website</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/">Stack Overflow - Where Developers Learn, Share, &amp; Build Careers</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/timeline">掘金</a></p>
+<h3 id="blog"><a href="#blog" class="headerlink" title="blog"></a>blog</h3><p><a target="_blank" rel="noopener" href="https://www.flysnow.org/">飞雪无情的博客 | 专注于Android、Java、Go语言(golang)、移动互联网、项目管理、软件架构</a></p>
+<p><a target="_blank" rel="noopener" href="https://tech.meituan.com/">美团技术团队</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.to/">DEV Community 👩‍💻👨‍💻</a></p>
+<h3 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h3><p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzI2NDY1MTA3OQ==&hid=5&sn=cfc0b96a399267c2ed839c5a7062b1c3&scene=18#wechat_redirect">mp.weixin.qq.com/mp/homepage?__biz=MzI2NDY1MTA3OQ==&amp;hid=5&amp;sn=cfc0b96a399267c2ed839c5a7062b1c3&amp;scene=18#wechat_redirect</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/9jWLWJHjYqFh5sYUMq_kpA">铭毅天下</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/cn/kibana/current/settings.html">配置 Kibana | Kibana 用户手册 | Elastic</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/laoyang360/deep_elasticsearch/wiki/%E3%80%8A%E6%AD%BB%E7%A3%95Elasticsearch%E6%96%B9%E6%B3%95%E8%AE%BA%E3%80%8B%E2%80%94%E2%80%94%E9%93%AD%E6%AF%85%E5%A4%A9%E4%B8%8B%E5%87%BA%E5%93%81">《死磕Elasticsearch方法论》——铭毅天下出品 · laoyang360/deep_elasticsearch Wiki</a></p>
+<p>[ILM Actions | Curator Reference <a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/client/curator/current/ilm-actions.html">5.8] | Elastic</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jingping/p/9448099.html">ElasticSearch-6.3.2 linux 安装 - jingping - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/woxpp/p/6061073.html">Elasticsearch5.0 安装问题集锦 - 释迦苦僧 - 博客园</a></p>
+<h3 id="1234tv"><a href="#1234tv" class="headerlink" title="1234tv"></a>1234tv</h3><p><a target="_blank" rel="noopener" href="https://admin.9ox.cn/v1/admin/home.html">admin</a></p>
+<p><a target="_blank" rel="noopener" href="https://axure-docs.testing.qe9.cn/">原型</a></p>
+<p><a target="_blank" rel="noopener" href="https://git.uvod.cn/">gitlab</a></p>
+<p><a target="_blank" rel="noopener" href="https://kuboard.9ox.cn/namespace/default/configmap">Kuboard-testing</a></p>
+<p><a target="_blank" rel="noopener" href="https://kuboard.9ox.cn/namespace/default">m</a></p>
+<p><a target="_blank" rel="noopener" href="https://admin.9ox.cn/v1/admin/home.html">admin</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.uvod.cn/openapi/">OpenAPI 接入文档 - 1234TV 文档</a></p>
+<p><a target="_blank" rel="noopener" href="https://kb.testing.qe9.cn/dashboard">Kuboard-prod</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/277380?utm_source=cnblog&utm_medium=bbs-ex&utm_campaign=other&utm_content=content">Kubernetes中部署ES集群及运维-云社区-华为云</a></p>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><p><a target="_blank" rel="noopener" href="https://juejin.im/post/598ba1d06fb9a03c4d6464ab#heading-17">关于 TCP/IP，必知必会的十个问题 - 掘金</a></p>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><p><a target="_blank" rel="noopener" href="https://juejin.im/post/5ad93c63518825673a20178c#heading-4">漫谈进程和线程 - 掘金</a></p>
+<h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><p><a target="_blank" rel="noopener" href="http://www.syyong.com/linux/6-communication-modes-between-processes-in-Linux.html">linux 中进程间6种通信方式 - syyong.x</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LiuChunfu/p/8052890.html">Linux软件安装中RPM与YUM 区别和联系 - LiuChunfu - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wlwl/p/10291397.html">Linux五大网络IO模型图解 - 吴磊的 - 博客园</a></p>
+<h3 id="gateway"><a href="#gateway" class="headerlink" title="gateway"></a>gateway</h3><h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><p><a target="_blank" rel="noopener" href="http://tengine.taobao.org/book/chapter_02.html">nginx平台初探(100%) — Nginx开发从入门到精通</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/PGBI/kong-dashboard">PGBI/kong-dashboard: Dashboard for managing Kong gateway</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.nginx.cn/doc/">Nginx中文文档</a></p>
+<p><a target="_blank" rel="noopener" href="http://tengine.taobao.org/book/index.html">Nginx开发从入门到精通 — Nginx开发从入门到精通</a></p>
+<p><a target="_blank" rel="noopener" href="https://openresty.org/cn/getting-started.html">OpenResty - Getting Started</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016698475#articleHeader7">kong系列：admin-api使用 - - SegmentFault 思否</a></p>
+<h3 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h3><h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hanpeiyu1995/article/details/90044300">（3）redolog和binlog的区别与联系 - hanpeiyu1995的博客 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/115539">03 | 事务隔离：为什么你改了我还看不见？ | 极客时间</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/boothsun/p/8970952.html#autoid-0-0-0">MySQL索引底层实现原理 - 做个有梦想的咸鱼 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yueminghai/p/6563998.html">mysql proxy 读写分离 - 逆疯~ - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.7/en/programs.html">MySQL 5.7 手册</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.fordba.com/">For DBA | For dbas</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/gulibao/p/5416245.html">MySQL类型float double decimal的区别 - Gulibao - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3110e279e679">MySQL读写分离实战 - 简书</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/songwenjie/p/9376719.html">MySQL主从复制——主库已有数据的解决方案 - CoderFocus - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gxhacx/article/details/78813337">【ThinkPHP】ThinkPHP主从读写分离+MySQL底层配置半自动复制同步 - 李查德的专栏 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/cy_93/article/details/51170043">Windows安装MySQL5.7 - 老木头 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/MyCATApache/Mycat-Server/wiki/2.0-Mycat%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8">2.0 Mycat安装与使用 · MyCATApache/Mycat-Server Wiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Alight/p/3718536.html">分表分库方法总结 - 一束光 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/annsshadow/p/5037667.html">步步深入：MySQL架构总览-&gt;查询执行流程-&gt;SQL解析顺序 - AnnsShadoW - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kevingrace/p/5685355.html">MySQL存储引擎之Myisam和Innodb总结性梳理 - 散尽浮华 - 博客园</a></p>
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p><a target="_blank" rel="noopener" href="http://doc.redisfans.com/">Redis 命令参考 — Redis 命令参考</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c869feb5581d">Redis集群的原理和搭建 - 简书</a></p>
+<p><a target="_blank" rel="noopener" href="http://doc.redisfans.com/topic/persistence.html">持久化（persistence） — Redis 命令参考</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/mrhgw/p/6278619.html">redis 数据类型详解 以及 redis适用场景场合 - 有容乃大 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011983531/article/details/79598671">Redis容量评估 - 根号三 - CSDN博客</a></p>
+<h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><h3 id="c"><a href="#c" class="headerlink" title="c"></a>c</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/bat67/article/details/81268581">Visual Studio Code (vscode) 配置C、C++环境/编写运行C、C++（Windows）【真正的小白版】 - 以梦为码，莫负韶华。 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.dotcpp.com/course/c/10201.html">C语言第一个简单实例 - C语言教程 - C语言网</a></p>
+<h3 id="java"><a href="#java" class="headerlink" title="java"></a>java</h3><p><a target="_blank" rel="noopener" href="http://yun.itheima.com/course/7.html">毕向东Java基础教程（适合初学者入门的Java基础视频）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.codewars.com/">Train with Programming Challenges/Kata | Codewars</a></p>
+<h3 id="php"><a href="#php" class="headerlink" title="php"></a>php</h3><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000013696265">PHP面试知识梳理 - 劝君惜取少年时 - SegmentFault 思否</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.imshuai.cn/topics/326/php7-underlying-source-code-string-copy-gdb-debugging-process">php7底层源码-字符串写时复制-gdb调试过程 - 陈帅同学博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/Special/70.htm">php socket用法_专题_脚本之家</a></p>
+<p><a target="_blank" rel="noopener" href="http://php.net/manual/zh/migration70.php">PHP: 从PHP 5.6.x 移植到 PHP 7.0.x - Manual</a></p>
+<p><a target="_blank" rel="noopener" href="http://php.net/manual/zh/migration70.new-features.php">PHP: 新特性 - Manual</a></p>
+<p><a target="_blank" rel="noopener" href="https://getcomposer.org/doc/00-intro.md">Composer</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.php.net/manual/zh/">PHP 手册</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.php-fig.org/psr/">PSR</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/devcjq/articles/4024041.html">php 正则匹配中文 - stma - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.phpcomposer.com/04-schema.html#JSON-schema">Composer 中文文档</a></p>
+<p><a target="_blank" rel="noopener" href="http://psr.phphub.org/">PHP 标准规范中文版</a></p>
+<p>[Laravel Facade——Facade 门面源码分析 · laravel 源码解析](<a target="_blank" rel="noopener" href="https://leoyang90.gitbooks.io/laravel-source-analysis/content/Laravel">https://leoyang90.gitbooks.io/laravel-source-analysis/content/Laravel</a> Facade——Facade 门面源码分析.html)</p>
+<p><a target="_blank" rel="noopener" href="https://php.golaravel.com/function.socket-write.html">Socket 函数 « PHP Manual | PHP 中文手册</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.liangzl.com/get-article-detail-17488.html">用Swoole4 打造高并发的PHP协程Mysql连接池丶一个站在Java后端设计之路的男青年个人博客网站</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zybuluo.com/phper/note/89081">php-fpm的配置和优化 - 作业部落 Cmd Markdown 编辑阅读器</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20694204">深入理解PHP之：Nginx 与 FPM 的工作机制 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.weste.net/2013/7-17/92743.html">PHPMailer错误SMTP Error: Could not connect to SMTP host的解决办法_PHP_西部e网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.helloweba.net/php/581.html">Swoole实验室：2-使用Swoole发送邮件_Helloweba</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/Special/495.htm">PHP网络编程_专题_脚本之家</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5c09d783e51d455fc5426031">PHP7中php.ini、php-fpm和www.conf 配置 - 掘金</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bo56.com/php7%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%8D%E6%96%AD%E6%9B%B4%E6%96%B0%EF%BC%89/?spm=a2c4e.11153940.blogcont69521.12.745cdae5Qnw7ww">PHP7源码阅读笔记（不断更新） - 博学无忧</a></p>
+<p><a target="_blank" rel="noopener" href="https://wiki.php.net/internals/windows/stepbystepbuild">PHP: internals:windows:stepbystepbuild</a></p>
+<p><a target="_blank" rel="noopener" href="https://my.oschina.net/u/1030865/blog/1930607">解决Windows上编译PHP7.1拓展的错误 - tlanyan的个人空间 - 开源中国</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zendstudio.net/archives/booklist-for-the-phper/">一个很不错的适合PHPER们书单，推荐给大家【转】 - Zend Studio</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.php-internals.com/">首页 | TIPI: 深入理解PHP内核</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011957758/article/details/72513935">菜鸟学php扩展 之 详解扩展函数的传参(如何获取参数)(三) - 咖啡色的羊驼 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/catcrazy/p/6289446.html">PHP抽象类与接口的区别 - cat_crazy - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/studyLog-share/p/4691250.html">面向对象的3个要素，5个原则 和 6视点 - 时空穿越者 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fanchangfa/p/4158046.html">php面向对象的简单总结 $this $parent self - 范长法@三月软件 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014948542">深入解析 composer 的自动加载原理 - 一步一个脚印 - SegmentFault 思否</a></p>
+<h3 id="rust"><a href="#rust" class="headerlink" title="rust"></a>rust</h3><p><a target="_blank" rel="noopener" href="https://crates.io/">crates.io</a></p>
+<p><a target="_blank" rel="noopener" href="https://kaisery.github.io/trpl-zh-cn/ch02-00-guessing-game-tutorial.html">猜猜看游戏教程 - Rust 程序设计语言 简体中文版</a></p>
+<p><a target="_blank" rel="noopener" href="https://crates.io/crates/rand">rand - crates.io: Rust Package Registry</a></p>
+<h3 id="go"><a href="#go" class="headerlink" title="go"></a>go</h3><p><a target="_blank" rel="noopener" href="https://www.golangtc.com/t/56d65bafb09ecc66b9000003">Go如何使用 github包？ - Golang中国</a></p>
+<p><a target="_blank" rel="noopener" href="https://books.studygolang.com/go-rpc-programming-guide/">Go RPC开发简介 · Go RPC编程指南</a></p>
+<p><a target="_blank" rel="noopener" href="https://studygolang.com/pkgdoc">Go语言标准库文档中文版 | Go语言中文网 | Golang中文社区 | Golang中国</a></p>
+<p><a target="_blank" rel="noopener" href="https://gin-gonic.com/zh-cn/docs/">文档 | Gin Web Framework</a></p>
+<p><a target="_blank" rel="noopener" href="http://gorm.book.jasperxu.com/">1.1. 快速开始 · GORM 中文文档</a></p>
+<p><a target="_blank" rel="noopener" href="https://tour.go-zh.org/basics/1">Go 语言之旅</a></p>
+<p><a target="_blank" rel="noopener" href="https://books.studygolang.com/The-Golang-Standard-Library-by-Example/chapter13/13.1.html">flag - 命令行参数解析 · Go语言标准库</a></p>
+<p><a target="_blank" rel="noopener" href="https://gocn.vip/question/1999">Go 微服务实战汇总 - Go中国技术社区 - golang</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.kancloud.cn/xiaohuamao/go100/1075644">第四例 聊天室 · GO100例 · 看云</a></p>
+<p><a target="_blank" rel="noopener" href="https://golang.design/under-the-hood/zh-cn/part1basic/ch05sync/mem/">5.9 内存一致模型 | Go 语言原本</a></p>
+<p><a target="_blank" rel="noopener" href="http://gorm.io/zh_CN/docs/index.html">GORM 指南 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</a></p>
+<p><a target="_blank" rel="noopener" href="https://studygolang.com/subject/2">Go 系列教程（Golang tutorial series） - 专栏 - Go语言中文网 - Golang中文社区</a></p>
+<p><a target="_blank" rel="noopener" href="http://xiaorui.cc/category/golang/page/3/">Golang – 峰云就她了 - Page 3</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/golang/go/wiki/Modules#quick-start">Modules · golang/go Wiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://studygolang.com/articles/21952">如何用 Go 实现热重启 - Go语言中文网 - Golang中文社区</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019668233">grpc的Go服务端和PHP客户端实现 - golang开发笔记 - SegmentFault 思否</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.codercto.com/a/30019.html">基于Go Micro的微服务架构本地实战 | 码农网</a></p>
+<p><a target="_blank" rel="noopener" href="https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-channel/#%E5%85%88%E5%85%A5%E5%85%88%E5%87%BA">Go 语言 Channel 实现原理精要 | Go 语言设计与实现</a></p>
+<p><a target="_blank" rel="noopener" href="https://golang.design/under-the-hood/zh-cn/part2runtime/ch06sched/schedule/">6.4 调度循环 | Go 语言原本</a></p>
+<p><a target="_blank" rel="noopener" href="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/page/4/#board">分类 - Go进阶训练营 - Mohuishou</a></p>
+<p><a target="_blank" rel="noopener" href="https://developers.google.cn/protocol-buffers/docs/proto3#updating">Language Guide (proto3) | Protocol Buffers | Google Developers</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zoeou/article/details/86739528">go-micro微服务框架使用–golang_zoeou的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/github.com/meilisearch/meilisearch-go@v0.15.0#section-readme">meilisearch · pkg.go.dev</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/go-mysql-org/go-mysql/blob/2a68c0ee612adac92132cf2a82f921eabb83e82a/canal/canal_test.go">go-mysql/canal_test.go at 2a68c0ee612adac92132cf2a82f921eabb83e82a · go-mysql-org/go-mysql</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zoeou/article/details/86739528">go-micro微服务框架使用–golang_zoeou的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="http://c.biancheng.net/shell/">Shell脚本：Linux Shell脚本学习指南（超详细）</a></p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p><a target="_blank" rel="noopener" href="https://www.yuque.com/baxiang/leetcode/miav17">堆排序 · 语雀</a></p>
+<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><h3 id="consul"><a href="#consul" class="headerlink" title="consul"></a>consul</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/github_26672553/article/details/80595270">编码方式向Consul注册我们的Swoole服务 - 学习笔记666 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bossma/p/9756809.html">使用Consul做服务发现的若干姿势 - 波斯马 - 博客园</a></p>
+<h3 id="k8s"><a href="#k8s" class="headerlink" title="k8s"></a>k8s</h3><h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p><a target="_blank" rel="noopener" href="https://fluentbit.io/">Fluent Bit</a></p>
+<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><h3 id="vue"><a href="#vue" class="headerlink" title="vue"></a>vue</h3><p><a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/advanced/data-fetching.html#%E5%AF%BC%E8%88%AA%E5%AE%8C%E6%88%90%E5%90%8E%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE">数据获取 | Vue Router</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016919340">vue-cli 打包后提交到线上出现 “Uncaught SyntaxError:Unexpected token &lt;” 报错 - 个人文章 - SegmentFault 思否</a></p>
+<h3 id="RN"><a href="#RN" class="headerlink" title="RN"></a>RN</h3><p><a target="_blank" rel="noopener" href="http://blog.csdn.net/u010123643/article/details/52776682">最详细的Windows版本搭建安装React Native环境配置 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/quanqinyang/article/details/52215641">React Native布局详细指南 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fa0874be0827">给所有开发者的React Native详细入门指南 - 简书</a></p>
+<p><a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.51/getting-started.html#content">搭建开发环境 - React Native 中文网</a></p>
+<h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><h3 id="MQ"><a href="#MQ" class="headerlink" title="MQ"></a>MQ</h3><p><a target="_blank" rel="noopener" href="https://www.kancloud.cn/longxuan/rabbitmq-arron/117512">轻松搞定RabbitMQ（一）——RabbitMQ基础知识+HelloWorld · 轻松搞定RabbitMQ · 看云</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://github.13sai.com/bookmark/index.html" title="bookmark" target="_blank" rel="external">https://github.13sai.com/bookmark/index.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/13sai" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/13sai" target="_blank"><span class="text-dark">13sai</span><small class="ml-1x">后端开发</small></a></h3>
+        <div>程序员涛子</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechat.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/13sai" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://www.zhihu.com/column/thesai" target="_blank" title="Zhihu" data-toggle=tooltip data-placement=top><i class="icon icon-zhihu"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2021 13sai
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+
+</body>
+</html>
