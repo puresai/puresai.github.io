@@ -1,0 +1,995 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="Nginx,代理缓存">
+  
+    <meta name="description" content="Nginx配置参数，Nginx代理缓存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx代理缓存">
+<meta property="og:url" content="https://github.13sai.com/2019/11/22/Nginx1/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="Nginx配置参数，Nginx代理缓存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.13sai.com/images/post/nginx.jpeg">
+<meta property="article:published_time" content="2019-11-22T02:24:50.000Z">
+<meta property="article:modified_time" content="2022-03-19T15:27:24.350Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/nginx.jpeg">
+  
+  
+  <title>Nginx代理缓存 - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Nginx代理缓存</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-11-22 10:24" pubdate>
+          2019年11月22日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          32 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Nginx"
+        id="heading-62e0b5b350c9e3d2c19aa801d9442ba9" role="tab" data-toggle="collapse" href="#collapse-62e0b5b350c9e3d2c19aa801d9442ba9"
+        aria-expanded="true"
+      >
+        Nginx
+        <span class="list-group-count">(10)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-62e0b5b350c9e3d2c19aa801d9442ba9"
+           role="tabpanel" aria-labelledby="heading-62e0b5b350c9e3d2c19aa801d9442ba9">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2022/03/19/Nginx2/" title="Nginx负载均衡"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx负载均衡</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/12/20/Nginx3/" title="Nginx工作模式和进程模型"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx工作模式和进程模型</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/12/01/212/" title="利用consul+nginx-upsync实现动态负载"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">利用consul+nginx-upsync实现动态负载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/11/22/Nginx6/" title="Nginx配置常用参数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx配置常用参数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/11/22/Nginx1/" title="Nginx代理缓存"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">Nginx代理缓存</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/11/22/Nginx5/" title="Nginx内嵌变量"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx内嵌变量</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/11/20/Nginx9/" title="Nginx添加lua-nginx模块"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx添加lua-nginx模块</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/07/23/Nginx8/" title="nginx日志按日配置"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">nginx日志按日配置</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/04/16/Nginx7/" title="nginx配置根据url指向不同的目录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">nginx配置根据url指向不同的目录</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2018/10/19/Nginx4/" title="nginx健康检查"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">nginx健康检查</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Nginx代理缓存</h1>
+            
+            <div class="markdown-body">
+              
+              <p>Nginx的缓存可以简单分成web缓存和代理缓存，本篇文章主要介绍代理缓存。</p>
+<h2 id="web缓存"><a href="#web缓存" class="headerlink" title="web缓存"></a>web缓存</h2><p>Nginx提供了expires、etag、if-modified-since指令来实现浏览器缓存控制。</p>
+<p>这个配置比较简单，一般可以缓存一些js、css等静态文件。</p>
+<p>对于这几个不想做过多说明，大家可以看两张图，简单理解下。</p>
+<p><img src="https://cdn.learnku.com/uploads/images/201911/19/41489/ZEbgycTmrL.png!/fw/1240" srcset="/img/loading.gif" lazyload alt="浏览器缓存"></p>
+<p><img src="https://cdn.learnku.com/uploads/images/201911/20/41489/Vo6VBgbiUr.png!/fw/1240" srcset="/img/loading.gif" lazyload alt="Nginx 代理缓存"></p>
+<h2 id="代理缓存"><a href="#代理缓存" class="headerlink" title="代理缓存"></a>代理缓存</h2><p>代理缓存主要用到proxy模块中的proxy_cache。我们来看一个demo。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">upstream</span> 13sai&#123;<br>    <span class="hljs-attribute">server</span> <span class="hljs-number">127.0.0.1:9501</span> weight=<span class="hljs-number">10</span>;<br>&#125;<br><br><br><span class="hljs-comment">#自定义缓存目录,缓存文件大小</span><br><span class="hljs-attribute">proxy_cache_path</span>  /usr/local/etc/nginx/cache  levels=<span class="hljs-number">1</span>:<span class="hljs-number">2</span>  keys_zone=sai_cache:<span class="hljs-number">10m</span>  max_size=<span class="hljs-number">200m</span> inactive=<span class="hljs-number">10m</span>  use_temp_path=<span class="hljs-literal">off</span>;<br><br><span class="hljs-section">server</span> &#123;<br>    <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;<br>    <span class="hljs-attribute">server_name</span>  nginx-t.com;<br><br><br>    <span class="hljs-attribute">location</span> / &#123;<br>        <span class="hljs-attribute">proxy_next_upstream</span> <span class="hljs-literal">error</span> http_503;<br>        <span class="hljs-attribute">proxy_pass</span> http://13sai;<br><br>        <span class="hljs-comment">#启用缓存sai_cache</span><br>        <span class="hljs-attribute">proxy_cache</span> sai_cache; <br><br>        <span class="hljs-comment">#定义如何生成缓存的键</span><br>        <span class="hljs-attribute">proxy_cache_key</span> $scheme$proxy_host$uri$is_args$args;<br><br>        <span class="hljs-comment">#针对多种请求方法缓存，默认GET HEAD</span><br>        <span class="hljs-attribute">proxy_cache_methods</span> GET HEAD POST; <br><br>        <span class="hljs-comment">#为不同的响应状态码设置不同的缓存时间。</span><br>        <span class="hljs-attribute">proxy_cache_valid</span> <span class="hljs-number">200</span> <span class="hljs-number">302</span> <span class="hljs-number">10m</span>;<br>        <span class="hljs-attribute">proxy_cache_valid</span> <span class="hljs-number">404</span>      <span class="hljs-number">1m</span>;<br><br><br>        <span class="hljs-comment">#设置响应被缓存的最小请求次数,最少2次才会缓存</span><br>        <span class="hljs-attribute">proxy_cache_min_uses</span> <span class="hljs-number">1</span>;<br><br>        <span class="hljs-comment">#开启此功能时，对于相同的请求，同时只允许一个请求发往后端</span><br>        <span class="hljs-attribute">proxy_cache_lock</span> <span class="hljs-literal">on</span>; <br><br>        <span class="hljs-comment">#为proxy_cache_lock指令设置锁的超时5s</span><br>        <span class="hljs-attribute">proxy_cache_lock_timeout</span> <span class="hljs-number">5s</span>;<br><br>        <span class="hljs-comment">#忽略服务器不缓存的要求</span><br>        <span class="hljs-attribute">proxy_ignore_headers</span> Cache-Control; <br>    &#125;<br><br><br>    <span class="hljs-attribute">error_page</span>   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /50x.html;<br>    <span class="hljs-attribute">location</span> = /50x.html &#123;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="测试效果"><a href="#测试效果" class="headerlink" title="测试效果"></a>测试效果</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// server1.php</span><br><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$http</span> = <span class="hljs-keyword">new</span> Swoole\Http\Server(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">9501</span>);<br><span class="hljs-variable">$http</span>-&gt;on(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-variable">$response</span></span>) </span>&#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;no cache&quot;</span>.PHP_EOL;<br>    <span class="hljs-variable">$response</span>-&gt;end(<span class="hljs-string">&quot;&lt;h1&gt;9501&lt;/h1&gt;&quot;</span>);<br>&#125;);<br><span class="hljs-variable">$http</span>-&gt;start();<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>php server1.php #查看控制台输出</p>
+</blockquote>
+<p>发送get和post请求</p>
+<blockquote>
+<p>ab -n10 -c10 <a target="_blank" rel="noopener" href="http://nginx-t.com/v/=get">http://nginx-t.com/v\=get</a></p>
+</blockquote>
+<blockquote>
+<p>ab -p ‘data.json’ -n10 -c10 <a target="_blank" rel="noopener" href="http://nginx-t.com/v/=post">http://nginx-t.com/v\=post</a></p>
+</blockquote>
+<p>重复提交几次put请求</p>
+<blockquote>
+<p>curl -X PUT <a target="_blank" rel="noopener" href="http://nginx-t.com/v/=put">http://nginx-t.com/v\=put</a> </p>
+</blockquote>
+<p>下面是我的测试结果截图（为了方便查看，我在get和post请求之前敲了几个空行）</p>
+<p><img src="https://cdn.learnku.com/uploads/images/201911/20/41489/StGI2M5SyZ.png!/fw/1240" srcset="/img/loading.gif" lazyload alt="Nginx 缓存"></p>
+<p>下面说明几个参数：</p>
+<h4 id="proxy-cache-path"><a href="#proxy-cache-path" class="headerlink" title="proxy_cache_path"></a>proxy_cache_path</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">语法:	proxy_cache_path path [<span class="hljs-attribute">levels</span>=levels] <span class="hljs-attribute">keys_zone</span>=name:size [<span class="hljs-attribute">inactive</span>=time] [<span class="hljs-attribute">max_size</span>=size] [<span class="hljs-attribute">loader_files</span>=number] [<span class="hljs-attribute">loader_sleep</span>=time] [<span class="hljs-attribute">loader_threshold</span>=time];<br>默认值:	—<br>上下文:	http<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>path：缓存数据是保存在文件中的，缓存的键和文件名都是在代理URL上执行MD5的结果。</li>
+<li>levels：定义了缓存的层次结构 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-comment">#当levels=1:2时，表示是两级目录，1和2表示用1位和2位16进制来命名目录名称。在此例中，第一级目录用1位16进制命名，如b；第二级目录用2位16进制命名，如2c。所以此例中一级目录有16个，二级目录有16*16=256个：</span><br><span class="hljs-attribute">cache</span>/b/<span class="hljs-number">2</span>c/c<span class="hljs-number">75</span>ad<span class="hljs-number">5</span>e<span class="hljs-number">343</span>f<span class="hljs-number">042</span>f<span class="hljs-number">52</span>e<span class="hljs-number">875343425</span>e<span class="hljs-number">51</span>b<br></code></pre></td></tr></table></figure></li>
+<li>key_zone:在共享内存中设置一块存储区域来存放缓存的key和metadata(类似使用次数)，这样nginx可以快速判断一个request是否命中或者未命中缓 存，1m可以存储8000个key，10m可以存储80000个key。</li>
+<li>max_size:最大cache空间，如果不指定，会使用掉所有disk space，如果超过max_size参数设置的最大值，使用LRU算法移除缓存数据</li>
+<li>inactive:未被访问文件在缓存中保留时间，默认是10分钟。指定时间内未被访问的缓存文件将被删除。</li>
+<li>loader_files:每次最多加载的数量</li>
+<li>loader_sleeps:每次加载的延时</li>
+<li>loader_threshold:指定每次加载执行的时间</li>
+</ul>
+<h4 id="proxy-cache-lock"><a href="#proxy-cache-lock" class="headerlink" title="proxy_cache_lock"></a>proxy_cache_lock</h4><p>开启此功能时，对于相同的请求，同时只允许一个请求发往后端，并根据proxy_cache_key指令的设置在缓存中植入一个新条目。其他请求相同条目的请求将一直等待，直到缓存中出现相应的内容，或者锁在proxy_cache_lock_timeout指令设置的超时后被释放。</p>
+<h4 id="proxy-cache-valid"><a href="#proxy-cache-valid" class="headerlink" title="proxy_cache_valid"></a>proxy_cache_valid</h4><p>如果仅仅指定了time，</p>
+<blockquote>
+<p>proxy_cache_valid 5m;</p>
+</blockquote>
+<p>那么只有状态码为200、300和302的响应会被缓存。</p>
+<p>如果使用了any参数，那么就可以缓存任何响应：</p>
+<blockquote>
+<p>proxy_cache_valid any 1m;</p>
+</blockquote>
+<h4 id="proxy-ignore-headers"><a href="#proxy-ignore-headers" class="headerlink" title="proxy_ignore_headers"></a>proxy_ignore_headers</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">语法:	proxy_ignore_headers field ...;</span><br><span class="hljs-section">默认值:	—</span><br><span class="hljs-section">上下文:	http, server, location</span><br></code></pre></td></tr></table></figure>
+
+<p>不处理后端服务器返回的指定响应头。下面的响应头可以被设置： “X-Accel-Redirect”，“X-Accel-Expires”，“X-Accel-Limit-Rate” ，“X-Accel-Buffering” ， “X-Accel-Charset”，“Expires”，“Cache-Control”，和“Set-Cookie” 。</p>
+<blockquote>
+<p>此参数不建议设置，原则上这些缓存应当后端代码处理。</p>
+</blockquote>
+<h4 id="proxy-cache-use-stale"><a href="#proxy-cache-use-stale" class="headerlink" title="proxy_cache_use_stale"></a>proxy_cache_use_stale</h4><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs coq">语法:	proxy_cache_use_stale error | <span class="hljs-type">timeout</span> | <span class="hljs-type">invalid_header</span> | <span class="hljs-type">updating</span> | <span class="hljs-type">http_500</span> | <span class="hljs-type">http_502</span> | <span class="hljs-type">http_503</span> | <span class="hljs-type">http_504</span> | <span class="hljs-type">http_404</span> | <span class="hljs-type">off</span> ...;<br>默认值:	<br>proxy_cache_use_stale off;<br>上下文:	http, server, location<br></code></pre></td></tr></table></figure>
+
+<p>如果后端服务器出现状况，nginx是可以使用过期的响应缓存的。这条指令就是定义何种条件下允许开启此机制。这条指令的参数与proxy_next_upstream指令的参数相同。</p>
+<h4 id="proxy-cache-bypass与proxy-no-cache"><a href="#proxy-cache-bypass与proxy-no-cache" class="headerlink" title="proxy_cache_bypass与proxy_no_cache"></a>proxy_cache_bypass与proxy_no_cache</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">语法:	proxy_cache_bypass string ...;</span><br><span class="hljs-section">默认值:	—</span><br><span class="hljs-section">上下文:	http, server, location</span><br></code></pre></td></tr></table></figure>
+<p>定义nginx不从缓存取响应的条件。如果至少一个字符串条件非空而且非“0”，nginx就不会从缓存中去取响应：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs autoit">proxy_cache_bypass $cookie_nocache $arg_nocache$arg_comment<span class="hljs-comment">;</span><br>proxy_cache_bypass $http_pragma    $http_authorization<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<p>本指令可和与proxy_no_cache一起使用。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">语法:	proxy_no_cache string ...;</span><br><span class="hljs-section">默认值:	—</span><br><span class="hljs-section">上下文:	http, server, location</span><br></code></pre></td></tr></table></figure>
+<p>定义nginx不将响应写入缓存的条件。如果至少一个字符串条件非空而且非“0”，nginx就不将响应存入缓存：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs autoit">proxy_no_cache $cookie_nocache $arg_nocache$arg_comment<span class="hljs-comment">;</span><br>proxy_no_cache $http_pragma    $http_authorization<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+
+<h4 id="proxy-cache-methods"><a href="#proxy-cache-methods" class="headerlink" title="proxy_cache_methods"></a>proxy_cache_methods</h4><p>该指令用于设置缓存哪些HTTP方法,默认缓存HTTP GET/HEAD方法,不缓存HTTP POST 方法。</p>
+<p>有了代理缓存，那么清除缓存如何操作呢？</p>
+<h2 id="清除缓存"><a href="#清除缓存" class="headerlink" title="清除缓存"></a>清除缓存</h2><ol>
+<li>删除缓存目录的文件</li>
+<li>使用ngx_cache_purge模块，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Eivll0m/p/4921829.html">可查看这篇文章Nginx缓存配置及nginx ngx_cache_purge模块的使用</a></li>
+</ol>
+<p>推荐第二种方法。</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Nginx/" class="category-chain-item">Nginx</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Nginx/">#Nginx</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Nginx代理缓存</div>
+      <div>https://github.13sai.com/2019/11/22/Nginx1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/11/22/Nginx6/" title="Nginx配置常用参数">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Nginx配置常用参数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/11/22/Nginx5/" title="Nginx内嵌变量">
+                        <span class="hidden-mobile">Nginx内嵌变量</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

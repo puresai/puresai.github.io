@@ -1,0 +1,1032 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="go,golang,go源码,上下文,标准库,context">
+  
+    <meta name="description" content="go上下文context">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go源码之context">
+<meta property="og:url" content="https://github.13sai.com/2021/01/06/context/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="go上下文context">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-06T12:31:36.000Z">
+<meta property="article:modified_time" content="2022-03-19T15:22:15.710Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="gosourcecode">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>go源码之context - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">go源码之context</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-01-06 20:31" pubdate>
+          2021年1月6日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="gosourcecode"
+        id="heading-63e3bfe78bbdc2873f6cc9323f3dcafa" role="tab" data-toggle="collapse" href="#collapse-63e3bfe78bbdc2873f6cc9323f3dcafa"
+        aria-expanded="true"
+      >
+        gosourcecode
+        <span class="list-group-count">(5)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-63e3bfe78bbdc2873f6cc9323f3dcafa"
+           role="tabpanel" aria-labelledby="heading-63e3bfe78bbdc2873f6cc9323f3dcafa">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2022/02/13/atomic/" title="atomic"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">atomic</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/06/syncOnce/" title="sync.Once"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">sync.Once</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/06/syncMap/" title="sync.Map"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">sync.Map</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/01/06/context/" title="go源码之context"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">go源码之context</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/01/06/rate/" title="x/rate/limit"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">x/rate/limit</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">go源码之context</h1>
+            
+            <div class="markdown-body">
+              
+              <h1 id="定义说明"><a href="#定义说明" class="headerlink" title="定义说明"></a>定义说明</h1><blockquote>
+<p>Package context defines the Context type, which carries deadlines, cancelation signals, and other request-scoped values across API boundaries and between processes.<br>Incoming requests to a server should create a Context, and outgoing calls to servers should accept a Context. The chain of function calls between them must propagate the Context, optionally replacing it with a derived Context created using WithCancel, WithDeadline, WithTimeout, or WithValue. When a Context is canceled, all Contexts derived from it are also canceled.</p>
+</blockquote>
+<p>粗略翻译一下就是：</p>
+<p>context定义了上下文类型，它携带跨越API边界和进程之间的deadlines、取消信号和其他请求范围的值。对服务器的传入请求应该创建上下文，对服务器的传出调用应该接受上下文。它们之间的函数调用链必须传播上下文，可以选择用使用WithCancel、WithDeadline、WithTimeout或WithValue创建的派生上下文替换它。当一个上下文被取消时，所有从它派生的上下文也被取消。</p>
+<h1 id="源码结构"><a href="#源码结构" class="headerlink" title="源码结构"></a>源码结构</h1><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Context</td>
+<td>interface</td>
+<td>定义了 Context 接口的四个方法Deadline、Done、Err、Value</td>
+</tr>
+<tr>
+<td>emptyCtx</td>
+<td>int</td>
+<td>注意：emptyCtx永远不会取消，没有值，也没有截止日期。这里使用的是类型等价定义，emptyCtx等价于int类型。并且定义上面的四个方法和String方法。</td>
+</tr>
+<tr>
+<td>Background</td>
+<td>func</td>
+<td>返回new(emptyCtx)</td>
+</tr>
+<tr>
+<td>TODO</td>
+<td>func</td>
+<td>返回new(emptyCtx)</td>
+</tr>
+<tr>
+<td>CancelFunc</td>
+<td>func</td>
+<td>CancelFunc告诉操作放弃其工作，不等待工作停止。多个goroutine可以同时调用CancelFunc。在第一个调用之后，对CancelFunc的后续调用将不执行任何操作。</td>
+</tr>
+<tr>
+<td>WithCancel</td>
+<td>func</td>
+<td>WithCancel返回一个带有新的Done通道的parent副本。当返回的cancel函数被调用时，上下文的Done通道被关闭或者当父上下文的Done通道关闭时，无论哪个先发生。取消此上下文将释放与之相关的资源，代码也应该如此在此上下文中运行的操作一完成，就调用cancel。</td>
+</tr>
+<tr>
+<td>newCancelCtx</td>
+<td>func</td>
+<td>返回一个初始化的cancelCtx</td>
+</tr>
+<tr>
+<td>propagateCancel</td>
+<td>func</td>
+<td>propagateCancel在父元素被取消时取消子元素，这里有用到原子锁</td>
+</tr>
+<tr>
+<td>parentCancelCtx</td>
+<td>func</td>
+<td>找到第一个可取消的父节点</td>
+</tr>
+<tr>
+<td>removeChild</td>
+<td>func</td>
+<td>移除父节点的子节点</td>
+</tr>
+<tr>
+<td>canceler</td>
+<td>interface</td>
+<td>取消者，定义了cancel和Done两个方法</td>
+</tr>
+<tr>
+<td>init</td>
+<td>func</td>
+<td>初始化方法</td>
+</tr>
+<tr>
+<td>cancelCtx</td>
+<td>struct</td>
+<td>一个可以取消的 Context</td>
+</tr>
+<tr>
+<td>contextName</td>
+<td>func</td>
+<td>返回上下文名称</td>
+</tr>
+<tr>
+<td>WithDeadline</td>
+<td>func</td>
+<td>创建一个有 deadline 的 context</td>
+</tr>
+<tr>
+<td>timerCtx</td>
+<td>struct</td>
+<td>timerCtx带有timeout 和deadline 。它将cancelCtx嵌入到实现Done和Err。它通过停止计时器来实现取消，然后委托给cancelCtx.cancel。</td>
+</tr>
+<tr>
+<td>WithTimeout</td>
+<td>func</td>
+<td>创建一个有 timeout 的 context</td>
+</tr>
+<tr>
+<td>WithValue</td>
+<td>func</td>
+<td>创建一个存储 k-v 对的 context</td>
+</tr>
+<tr>
+<td>valueCtx</td>
+<td>struct</td>
+<td>存储k-v，配合WithValue使用</td>
+</tr>
+<tr>
+<td>stringify</td>
+<td>func</td>
+<td>接口类型返回字符串</td>
+</tr>
+</tbody></table>
+<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">type</span> Context interface &#123;<br>	<span class="hljs-comment">// 获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求；第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消</span><br>	<span class="hljs-constructor">Deadline()</span> (deadline time.Time, ok <span class="hljs-built_in">bool</span>)<br><br>	<span class="hljs-comment">// 返回一个只读的chan，类型为struct&#123;&#125;，我们在goroutine中，如果该方法返回的chan可以读取，则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。</span><br>	<span class="hljs-constructor">Done()</span> &lt;-chan <span class="hljs-keyword">struct</span>&#123;&#125;<br><br>	<span class="hljs-comment">// 在 channel Done 关闭后，返回 context 取消原因</span><br>	<span class="hljs-constructor">Err()</span> error<br><br>	<span class="hljs-comment">// 获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是并发安全的</span><br>	<span class="hljs-constructor">Value(<span class="hljs-params">key</span> <span class="hljs-params">interface</span>&#123;&#125;)</span> interface&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="canceler"><a href="#canceler" class="headerlink" title="canceler"></a>canceler</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> canceler <span class="hljs-keyword">interface</span> &#123;<br>	cancel(removeFromParent <span class="hljs-keyword">bool</span>, err error)<br>	Done() &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">struct</span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>实现了上面定义的两个方法的 Context，就表明该 Context 是可取消的。源码中有两个类型实现了 canceler 接口：*cancelCtx 和 *timerCtx。注意是加了 * 号的，是这两个结构体的指针实现了 canceler 接口。</p>
+<p>接口设计成这个样子的原因：</p>
+<ul>
+<li>“取消”操作应该是建议性，而非强制性</li>
+<li>“取消”操作应该可传递</li>
+</ul>
+<h2 id="emptyCtx"><a href="#emptyCtx" class="headerlink" title="emptyCtx"></a>emptyCtx</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> emptyCtx <span class="hljs-keyword">int</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Deadline</span><span class="hljs-params">()</span> <span class="hljs-params">(deadline time.Time, ok <span class="hljs-keyword">bool</span>)</span></span> &#123;<br>	<span class="hljs-keyword">return</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Done</span><span class="hljs-params">()</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">struct</span></span>&#123;&#125; &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Err</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Value</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">interface</span></span>&#123;&#125; &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *emptyCtx)</span> <span class="hljs-title">String</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;<br>	<span class="hljs-keyword">switch</span> e &#123;<br>	<span class="hljs-keyword">case</span> background:<br>		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;context.Background&quot;</span><br>	<span class="hljs-keyword">case</span> todo:<br>		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;context.TODO&quot;</span><br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;unknown empty Context&quot;</span><br>&#125;<br>cancelCtx<br><span class="hljs-keyword">type</span> cancelCtx <span class="hljs-keyword">struct</span> &#123;<br>	Context<br><br>	mu       sync.Mutex            <span class="hljs-comment">// 互斥锁</span><br>	done     <span class="hljs-keyword">chan</span> <span class="hljs-keyword">struct</span>&#123;&#125;        <br>	children <span class="hljs-keyword">map</span>[canceler]<span class="hljs-keyword">struct</span>&#123;&#125; <br>	err      error <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们重点看一下这个方法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *cancelCtx)</span> <span class="hljs-title">cancel</span><span class="hljs-params">(removeFromParent <span class="hljs-keyword">bool</span>, err error)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;context: internal error: missing cancel error&quot;</span>)<br>	&#125;<br>	c.mu.Lock()<br>	<span class="hljs-keyword">if</span> c.err != <span class="hljs-literal">nil</span> &#123;<br>		c.mu.Unlock()<br>		<span class="hljs-keyword">return</span> <span class="hljs-comment">// 已经被其他协程取消</span><br>	&#125;<br>	<span class="hljs-comment">// 给 err 字段赋值</span><br>	c.err = err<br>	<span class="hljs-comment">// 关闭 channel，通知其他协程</span><br>	<span class="hljs-keyword">if</span> c.done == <span class="hljs-literal">nil</span> &#123;<br>		c.done = closedchan<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-built_in">close</span>(c.done)<br>	&#125;<br>	<br>	<span class="hljs-comment">// 遍历它的所有子节点</span><br>	<span class="hljs-keyword">for</span> child := <span class="hljs-keyword">range</span> c.children &#123;<br>                <span class="hljs-comment">// 递归地取消所有子节点</span><br>		child.cancel(<span class="hljs-literal">false</span>, err)<br>	&#125;<br>	<span class="hljs-comment">// 将子节点置空</span><br>	c.children = <span class="hljs-literal">nil</span><br>	c.mu.Unlock()<br><br>	<span class="hljs-keyword">if</span> removeFromParent &#123;<br>	        <span class="hljs-comment">// 从父节点中移除自己 </span><br>		removeChild(c.Context, c)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>cancel()方法的功能就是关闭 channel：c.done；递归地取消它的所有子节点；从父节点从删除自己。达到的效果是通过关闭 channel，将取消信号传递给了它的所有子节点。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">func <span class="hljs-constructor">WithCancel(<span class="hljs-params">parent</span> Context)</span> (ctx Context, cancel CancelFunc)<br>func <span class="hljs-constructor">WithDeadline(<span class="hljs-params">parent</span> Context, <span class="hljs-params">deadline</span> <span class="hljs-params">time</span>.Time)</span> (Context, CancelFunc)<br>func <span class="hljs-constructor">WithTimeout(<span class="hljs-params">parent</span> Context, <span class="hljs-params">timeout</span> <span class="hljs-params">time</span>.Duration)</span> (Context, CancelFunc)<br>func <span class="hljs-constructor">WithValue(<span class="hljs-params">parent</span> Context, <span class="hljs-params">key</span>, <span class="hljs-params">val</span> <span class="hljs-params">interface</span>&#123;&#125;)</span> Context<br></code></pre></td></tr></table></figure>
+
+<p>上面四个可以理解为Context的继承衍生。</p>
+<p>对于我们日常使用来说，学会Context的继承的4个方法和Background、TODO基本就够了。</p>
+<h1 id="Context使用场景"><a href="#Context使用场景" class="headerlink" title="Context使用场景"></a>Context使用场景</h1><ol>
+<li><p>超时请求</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs css">package <span class="hljs-selector-tag">main</span><br><br>import (<br>    &quot;context&quot;<br>    &quot;fmt&quot;<br>    &quot;<span class="hljs-selector-tag">time</span>&quot;<br>)<br><br>func <span class="hljs-selector-tag">main</span>() &#123;<br>    ctx, cancel := context.<span class="hljs-built_in">WithTimeout</span>(context.<span class="hljs-built_in">Background</span>(), <span class="hljs-number">50</span>*time.Millisecond)<br>    defer <span class="hljs-built_in">cancel</span>()<br><br>    select &#123;<br>    case &lt;-time.<span class="hljs-built_in">After</span>(<span class="hljs-number">1</span> * time.Second):<br>        fmt.<span class="hljs-built_in">Println</span>(<span class="hljs-string">&quot;overslept&quot;</span>)<br>    case &lt;-ctx.<span class="hljs-built_in">Done</span>():<br>        fmt.<span class="hljs-built_in">Println</span>(ctx.<span class="hljs-built_in">Err</span>()) // prints <span class="hljs-string">&quot;context deadline exceeded&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>共享数据</p>
+</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	ctx := context.Background()<br>	process(ctx)<br><br>	ctx = context.WithValue(ctx, <span class="hljs-string">&quot;traceId&quot;</span>, <span class="hljs-string">&quot;qcrao-2019&quot;</span>)<br>	process(ctx)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">process</span><span class="hljs-params">(ctx context.Context)</span></span> &#123;<br>	traceId, ok := ctx.Value(<span class="hljs-string">&quot;traceId&quot;</span>).(<span class="hljs-keyword">string</span>)<br>	<span class="hljs-keyword">if</span> ok &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;process over. trace_id=%s\n&quot;</span>, traceId)<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;process over. no trace_id\n&quot;</span>)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这个在web开发中很实用，传递session、token等信息。</p>
+<ol start="3">
+<li>防止 goroutine 泄漏<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;time&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">gen</span><span class="hljs-params">()</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">int</span></span> &#123;<br>	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">var</span> n <span class="hljs-keyword">int</span><br>		<span class="hljs-keyword">for</span> &#123;<br>			ch &lt;- n<br>			n++<br>			time.Sleep(time.Second)<br>		&#125;<br>	&#125;()<br>	<span class="hljs-keyword">return</span> ch<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> n := <span class="hljs-keyword">range</span> gen() &#123;<br>		fmt.Println(n)<br>		<span class="hljs-keyword">if</span> n == <span class="hljs-number">5</span> &#123;<br>			<span class="hljs-keyword">break</span><br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>当 n = 5 的时候，直接 break 。但是 gen 的协程就会执行无限循环，永远不会停下来。发生了 goroutine 泄漏。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;time&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;context&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">gen</span><span class="hljs-params">(ctx context.Context)</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">int</span></span> &#123;<br>	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">var</span> n <span class="hljs-keyword">int</span><br>		<span class="hljs-keyword">for</span> &#123;<br>			<span class="hljs-keyword">select</span> &#123;<br>			<span class="hljs-keyword">case</span> &lt;-ctx.Done():<br>				<span class="hljs-keyword">return</span><br>			<span class="hljs-keyword">case</span> ch &lt;- n:<br>				n++<br>				time.Sleep(time.Second)<br>			&#125;<br>		&#125;<br>	&#125;()<br>	<span class="hljs-keyword">return</span> ch<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	ctx, cancel := context.WithCancel(context.Background())<br>	<span class="hljs-keyword">defer</span> cancel() <span class="hljs-comment">// 避免其他地方忘记 cancel，且重复调用不影响</span><br><br>	<span class="hljs-keyword">for</span> n := <span class="hljs-keyword">range</span> gen(ctx) &#123;<br>		fmt.Println(n)<br>		<span class="hljs-keyword">if</span> n == <span class="hljs-number">5</span> &#123;<br>			cancel()<br>			<span class="hljs-keyword">break</span><br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="Context-使用原则"><a href="#Context-使用原则" class="headerlink" title="Context 使用原则"></a>Context 使用原则</h1><p>最后记住几个主要的使用原则：</p>
+<ul>
+<li>不要将 Context 塞到结构体里。直接将 Context 类型作为函数的第一参数，而且一般都命名为 ctx。</li>
+<li>不要向函数传入一个 nil 的 context，如果你实在不知道传什么，标准库给你准备好了一个 context：todo。</li>
+<li>不要把本应该作为函数参数的类型塞到 context 中，context 存储的应该是一些共同的数据。例如：登陆的 session、cookie 等。</li>
+<li>同一个 context 可能会被传递到多个 goroutine，别担心，context 是并发安全的。</li>
+</ul>
+<p>参考文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qcrao-2018/p/11007503.html">深度解密Go语言之context</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.flysnow.org/2017/05/12/go-in-action-go-context.html">Go语言实战笔记（二十）| Go Context</a>​</li>
+</ul>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/gosourcecode/" class="category-chain-item">gosourcecode</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/gosourcecode/">#gosourcecode</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>go源码之context</div>
+      <div>https://github.13sai.com/2021/01/06/context/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/13/302/" title="网站不能访问的问题集合">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">网站不能访问的问题集合</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/06/rate/" title="x/rate/limit">
+                        <span class="hidden-mobile">x/rate/limit</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

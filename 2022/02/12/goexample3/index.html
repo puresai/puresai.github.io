@@ -1,0 +1,966 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="go,golang,gin,go-redis,cron">
+  
+    <meta name="description" content="通过例子学习go-防止漏打卡，利用gin和cron来做一个智能提醒">
+<meta property="og:type" content="article">
+<meta property="og:title" content="防止漏打卡，利用gin和cron来做一个智能提醒">
+<meta property="og:url" content="https://github.13sai.com/2022/02/12/goexample3/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="通过例子学习go-防止漏打卡，利用gin和cron来做一个智能提醒">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.13sai.com/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png">
+<meta property="article:published_time" content="2022-02-12T13:48:20.000Z">
+<meta property="article:modified_time" content="2022-03-19T15:18:31.752Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="goexample">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png">
+  
+  
+  <title>防止漏打卡，利用gin和cron来做一个智能提醒 - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">防止漏打卡，利用gin和cron来做一个智能提醒</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-12 21:48" pubdate>
+          2022年2月12日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          14k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          119 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="goexample"
+        id="heading-bbf4bcbc3b6c234b840e985b0b467701" role="tab" data-toggle="collapse" href="#collapse-bbf4bcbc3b6c234b840e985b0b467701"
+        aria-expanded="true"
+      >
+        goexample
+        <span class="list-group-count">(10)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-bbf4bcbc3b6c234b840e985b0b467701"
+           role="tabpanel" aria-labelledby="heading-bbf4bcbc3b6c234b840e985b0b467701">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2022/02/12/goexample1/" title="搭建http server"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">搭建http server</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample10/" title="go+MongoDB实现附近的人"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go+MongoDB实现附近的人</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample2/" title="利用gin搭建一个api框架"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">利用gin搭建一个api框架</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">防止漏打卡，利用gin和cron来做一个智能提醒</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample4/" title="gRPC"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">gRPC</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample5/" title="go面向对象"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go面向对象</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample6/" title="go-kit"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go-kit</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample7/" title="docker-compose整合go-kit和mysql、redis"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">docker-compose整合go-kit和mysql、redis</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample8/" title="goruntine和channel"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">goruntine和channel</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/02/12/goexample9/" title="golang限流器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">golang限流器</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">防止漏打卡，利用gin和cron来做一个智能提醒</h1>
+            
+            <div class="markdown-body">
+              
+              <p>目标：</p>
+<ul>
+<li>每天10点提醒我打卡</li>
+<li>查询杭州天气</li>
+</ul>
+<p>使用的库：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/robfig/cron">github.com/robfig/cron</a></li>
+</ul>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>round2里面我们做了个框架，我们不妨以此为基础，来完成这个demo。我们通过解析不同时段的提醒任务，规律地存储到redis的有序集合，10s去查询一次有没有需要提醒的任务，如有发送到钉钉。</p>
+<blockquote>
+<p>(代码额外说明：redis我更新成了v8版本，命令前需要加上下文，注意一下)</p>
+</blockquote>
+<h2 id="接入钉钉机器人"><a href="#接入钉钉机器人" class="headerlink" title="接入钉钉机器人"></a>接入钉钉机器人</h2><p><a target="_blank" rel="noopener" href="https://ding-doc.dingtalk.com/doc%23/serverapi2/qf2nxq">钉钉机器人文档</a></p>
+<p>按照文档在群里新建机器人即可。我开启的是webhook自定义机器人，outgoing提送地址就是项目接收信息地址，比如：<a target="_blank" rel="noopener" href="https://cron.13sai.com/dingdingPost">http://cron.13sai.com/dingdingPost</a></p>
+<blockquote>
+<p>建议设置成加签或ip限制，以防被恶意攻击</p>
+</blockquote>
+<h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs text">// util/common.go<br>// 就列了一些常见的，可自行扩展<br>func UpdateKeywords() &#123;<br>	redis := model.RedisClient.Pipeline()<br>	key := KeyWords<br>	redis.HSet(model.Ctx, key, &quot;分钟后&quot;, &quot;1|60&quot;)<br>	redis.HSet(model.Ctx, key, &quot;时后&quot;, &quot;1|3600&quot;)<br>	redis.HSet(model.Ctx, key, &quot;天后&quot;, &quot;1|86400&quot;)<br>	redis.HSet(model.Ctx, key, &quot;每天&quot;, &quot;-1|1&quot;)<br>	redis.HSet(model.Ctx, key, &quot;每周一&quot;, &quot;2|0&quot;)<br>	redis.HSet(model.Ctx, key, &quot;每周二&quot;, &quot;2|1&quot;)<br>	redis.HSet(model.Ctx, key, &quot;每周三&quot;, &quot;2|2&quot;)<br>	redis.HSet(model.Ctx, key, &quot;每周四&quot;, &quot;2|3&quot;)<br>	redis.HSet(model.Ctx, key, &quot;每周五&quot;, &quot;2|4&quot;)<br>	redis.HSet(model.Ctx, key, &quot;每周六&quot;, &quot;2|5&quot;)<br>	redis.HSet(model.Ctx, key, &quot;每周日&quot;, &quot;2|6&quot;)<br>	redis.HSet(model.Ctx, key, &quot;周一&quot;, &quot;3|0&quot;)<br>	redis.HSet(model.Ctx, key, &quot;周二&quot;, &quot;3|1&quot;)<br>	redis.HSet(model.Ctx, key, &quot;周三&quot;, &quot;3|2&quot;)<br>	redis.HSet(model.Ctx, key, &quot;周四&quot;, &quot;3|3&quot;)<br>	redis.HSet(model.Ctx, key, &quot;周五&quot;, &quot;3|4&quot;)<br>	redis.HSet(model.Ctx, key, &quot;周六&quot;, &quot;3|5&quot;)<br>	...<br>	redis.HSet(model.Ctx, key, &quot;今天&quot;, &quot;4|0&quot;)<br>	redis.HSet(model.Ctx, key, &quot;明天&quot;, &quot;4|1&quot;)<br>	redis.HSet(model.Ctx, key, &quot;后天&quot;, &quot;4|2&quot;)<br>	redis.HSet(model.Ctx, key, &quot;取消&quot;, &quot;0|0&quot;)<br>	redis.Exec(model.Ctx)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>关键字，可以自行扩展，可能会有覆盖的情况，这里需要抉择，是匹配第一个还是匹配字数最多的，我此处选择后者的。</p>
+<h3 id="解析内容"><a href="#解析内容" class="headerlink" title="解析内容"></a><strong>解析内容</strong></h3><p>钉钉文档的outgoing说明不全，或者是藏在哪里我没找到，可以使用@机器人接收信息打印看一下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs text">//关注senderId发送人id，text发送内容，senderNick发送人昵称即可<br><br>&#123;<br>    &quot;conversationId&quot;:&quot;xxx&quot;,<br>    &quot;atUsers&quot;:[<br>        &#123;<br>            &quot;dingtalkId&quot;:&quot;xxx&quot;<br>        &#125;],<br>    &quot;chatbotUserId&quot;:&quot;xxx&quot;,<br>    &quot;msgId&quot;:&quot;xxx&quot;,<br>    &quot;senderNick&quot;:&quot;sai0556&quot;,<br>    &quot;isAdmin&quot;:false,<br>    &quot;sessionWebhookExpiredTime&quot;:1594978626787,<br>    &quot;createAt&quot;:1594973226742,<br>    &quot;conversationType&quot;:&quot;2&quot;,<br>    &quot;senderId&quot;:&quot;xxx&quot;,<br>    &quot;conversationTitle&quot;:&quot;智能备忘录&quot;,<br>    &quot;isInAtList&quot;:true,<br>    &quot;sessionWebhook&quot;:&quot;xxx&quot;,<br>    &quot;text&quot;:&#123;<br>        &quot;content&quot;:&quot; hello gin-frame&quot;<br>    &#125;,<br>    &quot;msgtype&quot;:&quot;text&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>定义一个struct，接收消息</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> DingDingMsgContent <span class="hljs-keyword">struct</span> &#123;<br>	SenderNick <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;senderNick&quot;`</span><br>	SenderId <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;senderId&quot;`</span><br>	Text <span class="hljs-keyword">struct</span> &#123;<br>		Content <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;content&quot;`</span><br>	&#125; <span class="hljs-string">`json:&quot;text&quot;`</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">DingDing</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>	data, _ := ioutil.ReadAll(c.Request.Body)<br>	form := DingDingMsgContent&#123;&#125;<br>	err := json.Unmarshal([]<span class="hljs-keyword">byte</span>(data), &amp;form)<br>	<span class="hljs-comment">// err := c.ShouldBindJSON(&amp;form)</span><br>	<span class="hljs-keyword">if</span>  err != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	....<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>解析，注意定义了一些特殊情况，比如绑定手机，取消任务等，做对应的特殊处理，绑定手机是为了@ 某人，否则消息容易被忽略。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">parseContent</span><span class="hljs-params">(form DingDingMsgContent)</span> <span class="hljs-params">(err error)</span></span> &#123;<br>	str := form.Text.Content<br>	redis := db.RedisClient<br>	fmt.Println(str)<br><br>	<span class="hljs-comment">// 要先绑定哟，不然无法@到对应的人</span><br>	index := strings.Index(str, <span class="hljs-string">&quot;绑定手机&quot;</span>)<br>	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;<br>		reg := regexp.MustCompile(<span class="hljs-string">&quot;1[0-9]&#123;10&#125;&quot;</span>)<br>		res := reg.FindAllString(str, <span class="hljs-number">1</span>)<br>		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &lt; <span class="hljs-number">1</span> || res[<span class="hljs-number">0</span>] == <span class="hljs-string">&quot;&quot;</span> &#123;<br>			err = errors.New(<span class="hljs-string">&quot;手机格式不正确&quot;</span>)<br>			<span class="hljs-keyword">return</span><br>		&#125;<br>		redis.HSet(db.Ctx, util.KeyDingDingID, form.SenderId, res[<span class="hljs-number">0</span>])<br>		util.SendDD(<span class="hljs-string">&quot;绑定成功&quot;</span>)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	hExist := redis.HExists(db.Ctx, util.KeyDingDingID, form.SenderId)<br>	<span class="hljs-keyword">if</span> !hExist.Val() &#123;<br>		err = errors.New(<span class="hljs-string">&quot;绑定手机号才能精确提醒哦，发送--绑定手机 13456567878--@我即可&quot;</span>)<br>		<span class="hljs-keyword">return</span> <br>	&#125;<br><br>	index = strings.Index(util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;我的提醒&quot;</span>)<br>	fmt.Println(index, <span class="hljs-string">&quot;---&quot;</span>, util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>))<br>	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;<br>		www := util.QueryAllQueue(form.SenderId);<br>		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(www) &lt; <span class="hljs-number">1</span> &#123;<br>			err = errors.New(<span class="hljs-string">&quot;暂无任务&quot;</span>)<br>			<span class="hljs-keyword">return</span><br>		&#125; <br>		msg := <span class="hljs-string">&quot;&quot;</span><br>		<span class="hljs-keyword">for</span> key,value := <span class="hljs-keyword">range</span> www &#123;<br>			fmt.Println(strings.Index(value, <span class="hljs-string">&quot;@&quot;</span>))<br>			value := value[<span class="hljs-number">0</span>:strings.Index(value, <span class="hljs-string">&quot;@&quot;</span>)]<br>			fmt.Println(value)<br>			msg = util.StrCombine(msg, <span class="hljs-string">&quot;任务id：&quot;</span>, key, <span class="hljs-string">&quot;，任务内容：&quot;</span>, value, <span class="hljs-string">&quot;&#123;br&#125;&quot;</span>)<br>		&#125;<br>		err = errors.New(msg)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	index = strings.Index(util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;查看任务&quot;</span>)<br>	fmt.Println(index, <span class="hljs-string">&quot;---&quot;</span>, util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>))<br>	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;<br>		www := util.QueryAllQueue(form.SenderId);<br>		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(www) &lt; <span class="hljs-number">1</span> &#123;<br>			err = errors.New(<span class="hljs-string">&quot;暂无任务&quot;</span>)<br>			<span class="hljs-keyword">return</span><br>		&#125; <br>		msg := <span class="hljs-string">&quot;&quot;</span><br>		<span class="hljs-keyword">for</span> key,value := <span class="hljs-keyword">range</span> www &#123;<br>			fmt.Println(strings.Index(value, <span class="hljs-string">&quot;@&quot;</span>))<br>			value := value[<span class="hljs-number">0</span>:strings.Index(value, <span class="hljs-string">&quot;@&quot;</span>)]<br>			fmt.Println(value)<br>			msg = util.StrCombine(msg, <span class="hljs-string">&quot;任务id：&quot;</span>, key, <span class="hljs-string">&quot;，任务内容：&quot;</span>, value, <span class="hljs-string">&quot;&#123;br&#125;&quot;</span>)<br>		&#125;<br>		err = errors.New(msg)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	index = strings.Index(util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;取消所有任务&quot;</span>)<br>	fmt.Println(index, <span class="hljs-string">&quot;---&quot;</span>, util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>))<br>	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;<br>		<span class="hljs-keyword">if</span> er := util.CancelAllQueue(form.SenderId); er != <span class="hljs-literal">nil</span> &#123;<br>			err = er<br>			<span class="hljs-keyword">return</span><br>		&#125;<br>		err = errors.New(<span class="hljs-string">&quot;取消成功&quot;</span>)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	index = strings.Index(util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;取消&quot;</span>)<br>	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;<br>		reg := regexp.MustCompile(<span class="hljs-string">&quot;[a-z0-9]&#123;32&#125;&quot;</span>)<br>		res := reg.FindAllString(str, <span class="hljs-number">1</span>)<br>		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &lt; <span class="hljs-number">1</span> &#123;<br>			err = errors.New(<span class="hljs-string">&quot;任务id不正确&quot;</span>)<br>			<span class="hljs-keyword">return</span><br>		&#125;<br>		<span class="hljs-keyword">if</span> er := util.CancelQueue(res[<span class="hljs-number">0</span>], form.SenderId); er != <span class="hljs-literal">nil</span> &#123;<br>			err = er<br>			<span class="hljs-keyword">return</span><br>		&#125;<br>		err = errors.New(<span class="hljs-string">&quot;取消成功&quot;</span>)<br>		<span class="hljs-keyword">return</span><br><br>	&#125;<br><br>	<span class="hljs-keyword">return</span><br>&#125;<br><br><span class="hljs-comment">// 提醒内容</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tips</span><span class="hljs-params">(form DingDingMsgContent)</span> <span class="hljs-params">(err error)</span></span>  &#123;<br>	rd := db.RedisClient<br>	str := form.Text.Content<br><br>	mobile := rd.HGet(db.Ctx, util.KeyDingDingID, form.SenderId).Val()<br>	key := util.KeyWords<br>	list, _ := rd.HGetAll(db.Ctx, key).Result()<br>	now := time.Now().Unix()<br>	tipsType := <span class="hljs-number">1</span><br>	k := <span class="hljs-string">&quot;&quot;</span><br>	v := <span class="hljs-string">&quot;&quot;</span><br>	fmt.Println(<span class="hljs-string">&quot;str&quot;</span>, str)<br><br>	index := <span class="hljs-number">0</span><br><br>	<span class="hljs-keyword">for</span> key, value := <span class="hljs-keyword">range</span> list &#123;<br>		index = util.UnicodeIndex(str, key)<br>		<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &amp;&amp; util.StrLen(key) &gt; util.StrLen(k) &#123;<br>			fmt.Println(<span class="hljs-string">&quot;index&quot;</span>, index, str, key, value)<br>			k = key<br>			v = value<br>		&#125;<br>	&#125;<br><br>	msg := <span class="hljs-string">&quot;&quot;</span><br>	<span class="hljs-keyword">var</span> score <span class="hljs-keyword">int64</span><br>	<span class="hljs-keyword">if</span> k != <span class="hljs-string">&quot;&quot;</span> &#123;<br>		kLen := util.StrLen(k)<br>		msg = util.StrSub(str, index+kLen)<br><br>		val := strings.Split(v, <span class="hljs-string">&quot;|&quot;</span>)<br>		unit := val[<span class="hljs-number">1</span>]<br>		units,_ := strconv.Atoi(unit)<br><br>		<span class="hljs-keyword">switch</span> val[<span class="hljs-number">0</span>] &#123;<br>			<span class="hljs-comment">// 多少时间后</span><br>			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;1&quot;</span>:<br>				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)<br>				res := reg.FindAllString(str, <span class="hljs-number">1</span>)<br>				minute, _ := strconv.Atoi(res[<span class="hljs-number">0</span>])<br>				score = now + <span class="hljs-keyword">int64</span>(units*minute)<br>			<span class="hljs-comment">// 每周</span><br>			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;2&quot;</span>:<br>				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)<br>				res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)<br>				hour := <span class="hljs-number">9</span><br>				minute := <span class="hljs-number">0</span><br>				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span> &#123;<br>					hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])<br>				&#125;<br>				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;<br>					minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])<br>				&#125;<br>				now = util.GetWeekTS(<span class="hljs-keyword">int64</span>(units))<br>				score = now + <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour)<br>				tipsType = <span class="hljs-number">2</span><br>				<br>			<span class="hljs-comment">// 下周</span><br>			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;3&quot;</span>:<br>				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)<br>				res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)<br>				hour := <span class="hljs-number">9</span><br>				minute := <span class="hljs-number">0</span><br>				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span> &#123;<br>					hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])<br>				&#125;<br>				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;<br>					minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])<br>				&#125;<br>				now = util.TodayTS()<br>				score = now + <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour + units*<span class="hljs-number">86400</span>)<br>			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;4&quot;</span>:<br>				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)<br>				res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)<br>				hour := <span class="hljs-number">9</span><br>				minute := <span class="hljs-number">0</span><br>				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span> &#123;<br>					hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])<br>				&#125;<br>				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;<br>					minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])<br>				&#125;<br>				now = util.TodayTS() + <span class="hljs-number">86400</span>*<span class="hljs-keyword">int64</span>(units)<br>				score = now + <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour)<br>			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;-1&quot;</span>: <br>				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,10&#125;&quot;</span>)<br>				res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)<br>				fmt.Println(<span class="hljs-string">&quot;res&quot;</span>, res)<br>				hour := <span class="hljs-number">9</span><br>				minute := <span class="hljs-number">0</span><br>				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span> &#123;<br>					hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])<br>				&#125;<br>				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;<br>					minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])<br>				&#125;<br>				now = util.TodayTS() + <span class="hljs-number">86400</span><br>				score = now + <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour)<br>				fmt.Println(now, score, minute, hour)<br>				tipsType = <span class="hljs-number">3</span><br>			<span class="hljs-keyword">default</span>:<br>		&#125;<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		reg := regexp.MustCompile(<span class="hljs-string">&quot;(([0-9]&#123;4&#125;)[-|/|年])?([0-9]&#123;1,2&#125;)[-|/|月]([0-9]&#123;1,2&#125;)日?&quot;</span>)<br>		pi := reg.FindAllStringSubmatch(str, <span class="hljs-number">-1</span>)<br>		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">len</span>(pi) &gt; <span class="hljs-number">0</span> ) &#123;<br>			date := pi[<span class="hljs-number">0</span>]<br>			<span class="hljs-keyword">if</span> date[<span class="hljs-number">2</span>] == <span class="hljs-string">&quot;&quot;</span> &#123;<br>				date[<span class="hljs-number">2</span>] = <span class="hljs-string">&quot;2020&quot;</span><br>			&#125;<br>			location, _ := time.LoadLocation(<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>)<br>			tm2, _ := time.ParseInLocation(<span class="hljs-string">&quot;2006/01/02&quot;</span>, fmt.Sprintf(<span class="hljs-string">&quot;%s/%s/%s&quot;</span>, date[<span class="hljs-number">2</span>], date[<span class="hljs-number">3</span>], date[<span class="hljs-number">4</span>]), location)<br>			score = util.GetZeroTime(tm2).Unix()<br><br>			msg = reg.ReplaceAllString(str, <span class="hljs-string">&quot;&quot;</span>)<br>			fmt.Println(msg)<br>			<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			msg = str<br>			score = util.TodayTS()<br>		&#125;<br>		<br>		reg = regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,10&#125;&quot;</span>)<br>		res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)<br>		fmt.Println(<span class="hljs-string">&quot;res&quot;</span>, res)<br>		hour := <span class="hljs-number">9</span><br>		minute := <span class="hljs-number">0</span><br>		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt;= <span class="hljs-number">1</span> &#123;<br>			hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])<br>			fmt.Println(<span class="hljs-string">&quot;hour&quot;</span>, hour, minute)<br>		&#125;<br>		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;<br>			minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])<br>		&#125;<br>		score += <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour)<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> msg == <span class="hljs-string">&quot;&quot;</span> &#123;<br>		err = errors.New(<span class="hljs-string">&quot;你说啥&quot;</span>)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	index = util.UnicodeIndex(msg, <span class="hljs-string">&quot;提醒我&quot;</span>)<br>	index2 := util.UnicodeIndex(msg, <span class="hljs-string">&quot;提醒&quot;</span>)<br>	<span class="hljs-keyword">if</span> index2 &lt; <span class="hljs-number">0</span> &#123;<br>		err = errors.New(<span class="hljs-string">&quot;大哥，要我提醒你干啥呢？请发送--下周一13点提醒我写作业&quot;</span>)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	<span class="hljs-keyword">if</span> index &lt; <span class="hljs-number">0</span> &amp;&amp; index2 &gt; <span class="hljs-number">-1</span> &#123;<br>		msg = util.StrSub(msg, index2+<span class="hljs-number">2</span>)<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		msg = util.StrSub(msg, index+<span class="hljs-number">3</span>)<br>	&#125;<br> <br>	fmt.Println(msg, mobile)<br>	msg = util.StrCombine(msg, <span class="hljs-string">&quot;@&quot;</span>, mobile)<br><br>	fmt.Println(score, msg, tipsType, err)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		util.SendDD(err.Error())<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	member := util.StrCombine(strconv.Itoa(tipsType), msg)<br>	rd.ZAdd(db.Ctx, util.KeyCrontab, &amp;redis.Z&#123;<br>		Score: <span class="hljs-keyword">float64</span>(score),<br>		Member: member,<br>	&#125;)<br><br>	uniqueKey := util.Md5(member)<br>	rd.HSet(db.Ctx, util.StrCombine(util.KeyUserCron, form.SenderId), uniqueKey, member)<br>	util.SendDD(fmt.Sprintf(<span class="hljs-string">&quot;设置成功(取消请回复：取消任务%s)--%s提醒您%s&quot;</span>, uniqueKey, time.Unix(score, <span class="hljs-number">0</span>).Format(<span class="hljs-string">&quot;2006/01/02 15:04:05&quot;</span>), msg))<br>	<span class="hljs-keyword">return</span> <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="发送钉钉消息"><a href="#发送钉钉消息" class="headerlink" title="发送钉钉消息"></a><strong>发送钉钉消息</strong></h3><p>这里就是对接钉钉接口，解析给需要提醒的人就行，就不做过多说明了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SendDD</span><span class="hljs-params">(msg <span class="hljs-keyword">string</span>)</span></span> &#123;<br>        <span class="hljs-comment">// 打印出来看看是个啥</span><br>	fmt.Println(<span class="hljs-string">&quot;dingding-----------&quot;</span>)<br>	fmt.Println(msg)<br>	tips := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;)<br>	content := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;)<br>	tips[<span class="hljs-string">&quot;msgtype&quot;</span>] = <span class="hljs-string">&quot;markdown&quot;</span><br>    <span class="hljs-comment">// @ 是用来提醒群里对应的人</span><br>	arr := strings.Split(msg, <span class="hljs-string">&quot;@&quot;</span>)<br>    <span class="hljs-comment">// [提醒]是机器人关键字，个人建议设置机器人限制ip或使用token，比较靠谱</span><br>	content[<span class="hljs-string">&quot;text&quot;</span>] = fmt.Sprintf(<span class="hljs-string">&quot;%s&quot;</span>, strings.Replace(arr[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;&#123;br&#125;&quot;</span>, <span class="hljs-string">&quot; \n\n&quot;</span>, <span class="hljs-number">-1</span>))<br>	content[<span class="hljs-string">&quot;title&quot;</span>] = <span class="hljs-string">&quot;鹅鹅鹅&quot;</span><br><br>	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &gt; <span class="hljs-number">1</span> &#123;<br>		mobile := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">string</span>, <span class="hljs-number">0</span>)<br>		at := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;)<br>		mobile = <span class="hljs-built_in">append</span>(mobile, arr[<span class="hljs-number">1</span>])<br>		at[<span class="hljs-string">&quot;atMobiles&quot;</span>] = mobile<br>		tips[<span class="hljs-string">&quot;at&quot;</span>] = at<br>		content[<span class="hljs-string">&quot;text&quot;</span>] = fmt.Sprintf(<span class="hljs-string">&quot;%s @%s&quot;</span>, content[<span class="hljs-string">&quot;text&quot;</span>], arr[<span class="hljs-number">1</span>])<br>	&#125;<br><br>    tips[<span class="hljs-string">&quot;markdown&quot;</span>] = content<br><br>    bytesData, err := json.Marshal(tips)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        fmt.Println(err.Error() )<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    reader := bytes.NewReader(bytesData)<br>    url := viper.GetString(<span class="hljs-string">&quot;dingding_url&quot;</span>)<br>    request, err := http.NewRequest(<span class="hljs-string">&quot;POST&quot;</span>, url, reader)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    request.Header.Set(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;application/json;charset=UTF-8&quot;</span>)<br>    client := http.Client&#123;&#125;<br>    _, err = client.Do(request)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        fmt.Println(err.Error())<br>        <span class="hljs-keyword">return</span><br>	&#125;<br>	<span class="hljs-comment">// 偷懒不重试了</span><br>    <span class="hljs-comment">// respBytes, err := ioutil.ReadAll(resp.Body)</span><br>    <span class="hljs-comment">// if err != nil &#123;</span><br>    <span class="hljs-comment">//     fmt.Println(err.Error())</span><br>    <span class="hljs-comment">//     return</span><br>    <span class="hljs-comment">// &#125;</span><br>    <span class="hljs-comment">// //byte数组直接转成string，优化内存</span><br>    <span class="hljs-comment">// str := (*string)(unsafe.Pointer(&amp;respBytes))</span><br>    <span class="hljs-comment">// fmt.Println(*str)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="定时发送与任务取消"><a href="#定时发送与任务取消" class="headerlink" title="定时发送与任务取消"></a><strong>定时发送与任务取消</strong></h2><p>这就是发送提醒的核心代码了，详细使用说明可以看下：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuzhongchao/p/9521897.html">Golang cron 定时任务使用</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Cron</span><span class="hljs-params">()</span></span> &#123;<br>    c := cron.New()<br>    spec := <span class="hljs-string">&quot;*/10 * * * * ?&quot;</span><br>    c.AddJob(spec, Queue&#123;&#125;)<br>    c.Start()<br>&#125;<br><br><span class="hljs-keyword">type</span> Queue <span class="hljs-keyword">struct</span> &#123;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(q Queue)</span> <span class="hljs-title">Run</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now().Unix()<br>	rd := model.RedisClient<br>	op := &amp;redis.ZRangeBy&#123;<br>        Min: <span class="hljs-string">&quot;0&quot;</span>,<br>        Max: strconv.FormatInt(now, <span class="hljs-number">10</span>),<br>    &#125;<br>    ret, err := rd.ZRangeByScoreWithScores(model.Ctx, KeyCrontab, op).Result()<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        fmt.Printf(<span class="hljs-string">&quot;zrangebyscore failed, err:%v\n&quot;</span>, err)<br>        <span class="hljs-keyword">return</span><br>	&#125;<br>    <span class="hljs-keyword">for</span> _, z := <span class="hljs-keyword">range</span> ret &#123;<br>		fmt.Println(z.Member.(<span class="hljs-keyword">string</span>), z.Score)<br>		QueueDo(z.Member.(<span class="hljs-keyword">string</span>), z.Score)<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">QueueDo</span><span class="hljs-params">(msg <span class="hljs-keyword">string</span>, score <span class="hljs-keyword">float64</span>)</span></span> &#123;<br>	msgType := msg[<span class="hljs-number">0</span>:<span class="hljs-number">1</span>]<br>	SendDD(msg[<span class="hljs-number">1</span>:])<br>	rd := model.RedisClient<br>	rd.ZRem(model.Ctx, KeyCrontab, msg)<br><br>	<span class="hljs-keyword">switch</span> msgType &#123;<br>		<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;2&quot;</span>:<br>			rd.ZAdd(model.Ctx, KeyCrontab, &amp;redis.Z&#123;<br>				Score: score + <span class="hljs-number">7</span>*<span class="hljs-number">86400</span>,<br>				Member: msg,<br>			&#125;)<br>		<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;3&quot;</span>:<br>			rd.ZAdd(model.Ctx, KeyCrontab, &amp;redis.Z&#123;<br>				Score: score + <span class="hljs-number">86400</span>,<br>				Member: msg,<br>			&#125;)<br>		<span class="hljs-keyword">default</span>:<br>			rd.ZRem(model.Ctx, KeyCrontab, msg)<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// 取消提醒</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CancelQueue</span><span class="hljs-params">(uniqueKey <span class="hljs-keyword">string</span>, SenderId <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(err error)</span></span> &#123;<br>	rd := model.RedisClient<br>	member := rd.HGet(model.Ctx, StrCombine(KeyUserCron, SenderId), uniqueKey).Val()<br>	<span class="hljs-keyword">if</span> member == <span class="hljs-string">&quot;&quot;</span> &#123;<br>		fmt.Println(StrCombine(KeyUserCron, SenderId), uniqueKey)<br>		err = errors.New(<span class="hljs-string">&quot;没有此任务&quot;</span>)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	fmt.Println(member, <span class="hljs-string">&quot;member&quot;</span>)<br>	rd.ZRem(model.Ctx, KeyCrontab, member)<br>	rd.HDel(model.Ctx, StrCombine(KeyUserCron, SenderId), uniqueKey)<br>	err = errors.New(<span class="hljs-string">&quot;取消成功&quot;</span>)<br>	<span class="hljs-keyword">return</span> <br>&#125;<br><br><span class="hljs-comment">// 取消所有</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CancelAllQueue</span><span class="hljs-params">(SenderId <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(err error)</span></span> &#123;<br>	rd := model.RedisClient<br>	list, _ := rd.HGetAll(model.Ctx, StrCombine(KeyUserCron, SenderId)).Result()<br>	<span class="hljs-keyword">for</span> _, value := <span class="hljs-keyword">range</span> list &#123;<br>		rd.ZRem(model.Ctx, KeyCrontab, value)<br>	&#125;<br>	<br>	rd.Del(model.Ctx, StrCombine(KeyUserCron, SenderId))<br>	err = errors.New(<span class="hljs-string">&quot;已经取消所有提醒任务&quot;</span>)<br>	<span class="hljs-keyword">return</span> <br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">QueryAllQueue</span><span class="hljs-params">(SenderId <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>)</span></span> &#123;<br>	rd := model.RedisClient<br>	list, _ := rd.HGetAll(model.Ctx, StrCombine(KeyUserCron, SenderId)).Result()<br>	<span class="hljs-comment">// fmt.Println(list)</span><br>	<span class="hljs-keyword">return</span> list<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>天气与聊天给你是接了一个免费智能接口，有兴趣可查看github配置文件。</p>
+<p>来看看效果</p>
+<p><img src="/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个demo其实主要点就是解析钉钉推送内容做对应的处理，因关键字过多，代码其实有点啰嗦，你可以自行优化，对接智能接口和钉钉接口，还是定时任务其实都是相对简单的，当然，这只是很基础的功能，你可以自行扩展。另外，这次之列出了主要代码，没有做十分详尽的说明，有兴趣可以查看源码。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/13sai/go-example/tree/main/demo3-dingding">查看github源码</a></p>
+<h2 id="啰嗦"><a href="#啰嗦" class="headerlink" title="啰嗦"></a>啰嗦</h2><p>这个demo的起初也是我们几个同事老忘记打卡，有了这个demo，起初只能提醒打卡，后面陆续加入了取消、查看、查询天气等功能，大家学习技术的时候也可以考虑应用到生活场景当中，这样学习起来也比较有有趣，实践中也会发现很多想不到的问题，最后，祝大家工作愉快，不忘打卡。</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/goexample/" class="category-chain-item">goexample</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/goexample/">#goexample</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>防止漏打卡，利用gin和cron来做一个智能提醒</div>
+      <div>https://github.13sai.com/2022/02/12/goexample3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/12/goexample2/" title="利用gin搭建一个api框架">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">利用gin搭建一个api框架</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/12/goexample4/" title="gRPC">
+                        <span class="hidden-mobile">gRPC</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
