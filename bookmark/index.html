@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  
+    <meta name="description" content="书签栏tools在线工具 - 程序员的工具箱 Unix时间戳(Unix timestamp)转换工具 - 站长工具 Speedtest by Ookla - The Global Broadband Speed Test TEST 在线JSON校验格式化工具（Be JSON） 在线文本比较工具 - 众人搜索网 HMAC计算、HMAC-MD5、HMAC-SHA1、HMAC-SHA256、HMAC-S">
+<meta property="og:type" content="website">
+<meta property="og:title" content="bookmark">
+<meta property="og:url" content="https://github.13sai.com/bookmark/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="书签栏tools在线工具 - 程序员的工具箱 Unix时间戳(Unix timestamp)转换工具 - 站长工具 Speedtest by Ookla - The Global Broadband Speed Test TEST 在线JSON校验格式化工具（Be JSON） 在线文本比较工具 - 众人搜索网 HMAC计算、HMAC-MD5、HMAC-SHA1、HMAC-SHA256、HMAC-S">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-15T12:41:09.000Z">
+<meta property="article:modified_time" content="2022-03-19T14:35:21.964Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="13sai,golang,Redis,Redis,Linux,MQ">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>bookmark - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">bookmark</span>
+          
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <h3 id="书签栏"><a href="#书签栏" class="headerlink" title="书签栏"></a>书签栏</h3><h3 id="tools"><a href="#tools" class="headerlink" title="tools"></a>tools</h3><p><a target="_blank" rel="noopener" href="https://tool.lu/">在线工具 - 程序员的工具箱</a></p>
+<p><a target="_blank" rel="noopener" href="http://tool.chinaz.com/Tools/unixtime.aspx">Unix时间戳(Unix timestamp)转换工具 - 站长工具</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.speedtest.net/zh-Hans/?ref=support.qiniu.com">Speedtest by Ookla - The Global Broadband Speed Test</a></p>
+<p><a target="_blank" rel="noopener" href="http://netools.qiniucdn.com/dns.html">TEST</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.bejson.com/">在线JSON校验格式化工具（Be JSON）</a></p>
+<p><a target="_blank" rel="noopener" href="http://wenbenbijiao.renrensousuo.com/">在线文本比较工具 - 众人搜索网</a></p>
+<p><a target="_blank" rel="noopener" href="https://1024tools.com/hmac">HMAC计算、HMAC-MD5、HMAC-SHA1、HMAC-SHA256、HMAC-SHA512在线计算 - 1024Tools</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitmind.cn/">GitMind - 在线免费思维导图软件</a></p>
+<p><a target="_blank" rel="noopener" href="https://oktools.net/json2go">JSON转Golang Struct - 在线工具 - OKTools</a></p>
+<p><a target="_blank" rel="noopener" href="http://tool.liumingye.cn/">刘明野的工具箱 | 刘明野的工具箱提供好用、易用的工具，还在不断添加中，欢迎访问！</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html">MySQL :: MySQL 5.7 Reference Manual :: 14.13.1 Online DDL Operations</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.devtool.com/sql2go.html">sql生成go结构体 - 在线开发工具 | 程序猿在线工具箱 - devtool.com</a></p>
+<h3 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h3><p><a target="_blank" rel="noopener" href="http://www.xiladaili.com/">西拉ip代理官网 - 免费ip代理，代理服务器ip,普通web在线网页代理，高匿http系列产品</a></p>
+<p><a target="_blank" rel="noopener" href="http://ip.yqie.com/ipproxy.htm">免费代理IP_HTTP代理服务器IP_隐藏IP_QQ代理_国内外代理_ip.yqie.com</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.xiaopiu.com/project?proid=5abf5af75c86c5736d422f29">xiaopiu-在线APP原型设计</a></p>
+<h3 id="mac"><a href="#mac" class="headerlink" title="mac"></a>mac</h3><p><a target="_blank" rel="noopener" href="https://www.macdown.com/">Mac软件下载-macdown软件下载-素材库-mac软件资源下载站-Mac下载</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.macwk.com/special/novice">面向 macOS新手 的最佳mac应用软件</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bejson.com/">在线JSON校验格式化工具（Be JSON）</a></p>
+<h3 id="hobby"><a href="#hobby" class="headerlink" title="hobby"></a>hobby</h3><p><a target="_blank" rel="noopener" href="http://baijiahao.baidu.com/s?id=1604434618695846985&wfr=spider&for=pc">拍出牛逼的照片，摄影师可以靠这些网站出售摄影照片来赚钱？</a></p>
+<p><a target="_blank" rel="noopener" href="https://jerryc.me/posts/21cfbf15/#%E5%8D%9A%E5%AE%A2%E5%B9%B4%E4%BB%BD">hexo-theme-butterfly安裝文檔 | JerryC</a></p>
+<p><a target="_blank" rel="noopener" href="https://book-consul-guide.vnzmi.com/">Introduction · Consul入门指南</a></p>
+<h3 id="魏晋风流"><a href="#魏晋风流" class="headerlink" title="魏晋风流"></a>魏晋风流</h3><p><a target="_blank" rel="noopener" href="http://www.xtylj.com/wenzhang/10276.html">后汉书_列传郑孔荀列传译文翻译和赏析_邢台诗词网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.gushiwen.org/guwen/shishuo.aspx">世说新语全文|翻译_古诗文网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/113f827c1b49">额妹子嘤！看了这个教程，就没有找不到的电子书 - 简书</a></p>
+<h3 id="website"><a href="#website" class="headerlink" title="website"></a>website</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/">Stack Overflow - Where Developers Learn, Share, &amp; Build Careers</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/timeline">掘金</a></p>
+<h3 id="blog"><a href="#blog" class="headerlink" title="blog"></a>blog</h3><p><a target="_blank" rel="noopener" href="https://www.flysnow.org/">飞雪无情的博客 | 专注于Android、Java、Go语言(golang)、移动互联网、项目管理、软件架构</a></p>
+<p><a target="_blank" rel="noopener" href="https://tech.meituan.com/">美团技术团队</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.to/">DEV Community 👩‍💻👨‍💻</a></p>
+<h3 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h3><p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/mp/homepage?__biz=MzI2NDY1MTA3OQ==&hid=5&sn=cfc0b96a399267c2ed839c5a7062b1c3&scene=18#wechat_redirect">mp.weixin.qq.com/mp/homepage?__biz=MzI2NDY1MTA3OQ==&amp;hid=5&amp;sn=cfc0b96a399267c2ed839c5a7062b1c3&amp;scene=18#wechat_redirect</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/9jWLWJHjYqFh5sYUMq_kpA">铭毅天下</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/cn/kibana/current/settings.html">配置 Kibana | Kibana 用户手册 | Elastic</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/laoyang360/deep_elasticsearch/wiki/%E3%80%8A%E6%AD%BB%E7%A3%95Elasticsearch%E6%96%B9%E6%B3%95%E8%AE%BA%E3%80%8B%E2%80%94%E2%80%94%E9%93%AD%E6%AF%85%E5%A4%A9%E4%B8%8B%E5%87%BA%E5%93%81">《死磕Elasticsearch方法论》——铭毅天下出品 · laoyang360/deep_elasticsearch Wiki</a></p>
+<p>[ILM Actions | Curator Reference <a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/client/curator/current/ilm-actions.html">5.8] | Elastic</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jingping/p/9448099.html">ElasticSearch-6.3.2 linux 安装 - jingping - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/woxpp/p/6061073.html">Elasticsearch5.0 安装问题集锦 - 释迦苦僧 - 博客园</a></p>
+<h3 id="1234tv"><a href="#1234tv" class="headerlink" title="1234tv"></a>1234tv</h3><p><a target="_blank" rel="noopener" href="https://admin.9ox.cn/v1/admin/home.html">admin</a></p>
+<p><a target="_blank" rel="noopener" href="https://axure-docs.testing.qe9.cn/">原型</a></p>
+<p><a target="_blank" rel="noopener" href="https://git.uvod.cn/">gitlab</a></p>
+<p><a target="_blank" rel="noopener" href="https://kuboard.9ox.cn/namespace/default/configmap">Kuboard-testing</a></p>
+<p><a target="_blank" rel="noopener" href="https://kuboard.9ox.cn/namespace/default">m</a></p>
+<p><a target="_blank" rel="noopener" href="https://admin.9ox.cn/v1/admin/home.html">admin</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.uvod.cn/openapi/">OpenAPI 接入文档 - 1234TV 文档</a></p>
+<p><a target="_blank" rel="noopener" href="https://kb.testing.qe9.cn/dashboard">Kuboard-prod</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/277380?utm_source=cnblog&utm_medium=bbs-ex&utm_campaign=other&utm_content=content">Kubernetes中部署ES集群及运维-云社区-华为云</a></p>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><p><a target="_blank" rel="noopener" href="https://juejin.im/post/598ba1d06fb9a03c4d6464ab#heading-17">关于 TCP/IP，必知必会的十个问题 - 掘金</a></p>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><p><a target="_blank" rel="noopener" href="https://juejin.im/post/5ad93c63518825673a20178c#heading-4">漫谈进程和线程 - 掘金</a></p>
+<h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><p><a target="_blank" rel="noopener" href="http://www.syyong.com/linux/6-communication-modes-between-processes-in-Linux.html">linux 中进程间6种通信方式 - syyong.x</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/LiuChunfu/p/8052890.html">Linux软件安装中RPM与YUM 区别和联系 - LiuChunfu - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wlwl/p/10291397.html">Linux五大网络IO模型图解 - 吴磊的 - 博客园</a></p>
+<h3 id="gateway"><a href="#gateway" class="headerlink" title="gateway"></a>gateway</h3><h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><p><a target="_blank" rel="noopener" href="http://tengine.taobao.org/book/chapter_02.html">nginx平台初探(100%) — Nginx开发从入门到精通</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/PGBI/kong-dashboard">PGBI/kong-dashboard: Dashboard for managing Kong gateway</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.nginx.cn/doc/">Nginx中文文档</a></p>
+<p><a target="_blank" rel="noopener" href="http://tengine.taobao.org/book/index.html">Nginx开发从入门到精通 — Nginx开发从入门到精通</a></p>
+<p><a target="_blank" rel="noopener" href="https://openresty.org/cn/getting-started.html">OpenResty - Getting Started</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016698475#articleHeader7">kong系列：admin-api使用 - - SegmentFault 思否</a></p>
+<h3 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h3><h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hanpeiyu1995/article/details/90044300">（3）redolog和binlog的区别与联系 - hanpeiyu1995的博客 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/115539">03 | 事务隔离：为什么你改了我还看不见？ | 极客时间</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/boothsun/p/8970952.html#autoid-0-0-0">MySQL索引底层实现原理 - 做个有梦想的咸鱼 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yueminghai/p/6563998.html">mysql proxy 读写分离 - 逆疯~ - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.7/en/programs.html">MySQL 5.7 手册</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.fordba.com/">For DBA | For dbas</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/gulibao/p/5416245.html">MySQL类型float double decimal的区别 - Gulibao - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3110e279e679">MySQL读写分离实战 - 简书</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/songwenjie/p/9376719.html">MySQL主从复制——主库已有数据的解决方案 - CoderFocus - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/gxhacx/article/details/78813337">【ThinkPHP】ThinkPHP主从读写分离+MySQL底层配置半自动复制同步 - 李查德的专栏 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/cy_93/article/details/51170043">Windows安装MySQL5.7 - 老木头 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/MyCATApache/Mycat-Server/wiki/2.0-Mycat%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8">2.0 Mycat安装与使用 · MyCATApache/Mycat-Server Wiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Alight/p/3718536.html">分表分库方法总结 - 一束光 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/annsshadow/p/5037667.html">步步深入：MySQL架构总览-&gt;查询执行流程-&gt;SQL解析顺序 - AnnsShadoW - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kevingrace/p/5685355.html">MySQL存储引擎之Myisam和Innodb总结性梳理 - 散尽浮华 - 博客园</a></p>
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p><a target="_blank" rel="noopener" href="http://doc.redisfans.com/">Redis 命令参考 — Redis 命令参考</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c869feb5581d">Redis集群的原理和搭建 - 简书</a></p>
+<p><a target="_blank" rel="noopener" href="http://doc.redisfans.com/topic/persistence.html">持久化（persistence） — Redis 命令参考</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/mrhgw/p/6278619.html">redis 数据类型详解 以及 redis适用场景场合 - 有容乃大 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011983531/article/details/79598671">Redis容量评估 - 根号三 - CSDN博客</a></p>
+<h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><h3 id="c"><a href="#c" class="headerlink" title="c"></a>c</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/bat67/article/details/81268581">Visual Studio Code (vscode) 配置C、C++环境/编写运行C、C++（Windows）【真正的小白版】 - 以梦为码，莫负韶华。 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.dotcpp.com/course/c/10201.html">C语言第一个简单实例 - C语言教程 - C语言网</a></p>
+<h3 id="java"><a href="#java" class="headerlink" title="java"></a>java</h3><p><a target="_blank" rel="noopener" href="http://yun.itheima.com/course/7.html">毕向东Java基础教程（适合初学者入门的Java基础视频）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.codewars.com/">Train with Programming Challenges/Kata | Codewars</a></p>
+<h3 id="php"><a href="#php" class="headerlink" title="php"></a>php</h3><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000013696265">PHP面试知识梳理 - 劝君惜取少年时 - SegmentFault 思否</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.imshuai.cn/topics/326/php7-underlying-source-code-string-copy-gdb-debugging-process">php7底层源码-字符串写时复制-gdb调试过程 - 陈帅同学博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/Special/70.htm">php socket用法_专题_脚本之家</a></p>
+<p><a target="_blank" rel="noopener" href="http://php.net/manual/zh/migration70.php">PHP: 从PHP 5.6.x 移植到 PHP 7.0.x - Manual</a></p>
+<p><a target="_blank" rel="noopener" href="http://php.net/manual/zh/migration70.new-features.php">PHP: 新特性 - Manual</a></p>
+<p><a target="_blank" rel="noopener" href="https://getcomposer.org/doc/00-intro.md">Composer</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.php.net/manual/zh/">PHP 手册</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.php-fig.org/psr/">PSR</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/devcjq/articles/4024041.html">php 正则匹配中文 - stma - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.phpcomposer.com/04-schema.html#JSON-schema">Composer 中文文档</a></p>
+<p><a target="_blank" rel="noopener" href="http://psr.phphub.org/">PHP 标准规范中文版</a></p>
+<p>[Laravel Facade——Facade 门面源码分析 · laravel 源码解析](<a target="_blank" rel="noopener" href="https://leoyang90.gitbooks.io/laravel-source-analysis/content/Laravel">https://leoyang90.gitbooks.io/laravel-source-analysis/content/Laravel</a> Facade——Facade 门面源码分析.html)</p>
+<p><a target="_blank" rel="noopener" href="https://php.golaravel.com/function.socket-write.html">Socket 函数 « PHP Manual | PHP 中文手册</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.liangzl.com/get-article-detail-17488.html">用Swoole4 打造高并发的PHP协程Mysql连接池丶一个站在Java后端设计之路的男青年个人博客网站</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zybuluo.com/phper/note/89081">php-fpm的配置和优化 - 作业部落 Cmd Markdown 编辑阅读器</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20694204">深入理解PHP之：Nginx 与 FPM 的工作机制 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.weste.net/2013/7-17/92743.html">PHPMailer错误SMTP Error: Could not connect to SMTP host的解决办法_PHP_西部e网</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.helloweba.net/php/581.html">Swoole实验室：2-使用Swoole发送邮件_Helloweba</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jb51.net/Special/495.htm">PHP网络编程_专题_脚本之家</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.im/post/5c09d783e51d455fc5426031">PHP7中php.ini、php-fpm和www.conf 配置 - 掘金</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bo56.com/php7%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%8D%E6%96%AD%E6%9B%B4%E6%96%B0%EF%BC%89/?spm=a2c4e.11153940.blogcont69521.12.745cdae5Qnw7ww">PHP7源码阅读笔记（不断更新） - 博学无忧</a></p>
+<p><a target="_blank" rel="noopener" href="https://wiki.php.net/internals/windows/stepbystepbuild">PHP: internals:windows:stepbystepbuild</a></p>
+<p><a target="_blank" rel="noopener" href="https://my.oschina.net/u/1030865/blog/1930607">解决Windows上编译PHP7.1拓展的错误 - tlanyan的个人空间 - 开源中国</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zendstudio.net/archives/booklist-for-the-phper/">一个很不错的适合PHPER们书单，推荐给大家【转】 - Zend Studio</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.php-internals.com/">首页 | TIPI: 深入理解PHP内核</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011957758/article/details/72513935">菜鸟学php扩展 之 详解扩展函数的传参(如何获取参数)(三) - 咖啡色的羊驼 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/catcrazy/p/6289446.html">PHP抽象类与接口的区别 - cat_crazy - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/studyLog-share/p/4691250.html">面向对象的3个要素，5个原则 和 6视点 - 时空穿越者 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fanchangfa/p/4158046.html">php面向对象的简单总结 $this $parent self - 范长法@三月软件 - 博客园</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014948542">深入解析 composer 的自动加载原理 - 一步一个脚印 - SegmentFault 思否</a></p>
+<h3 id="rust"><a href="#rust" class="headerlink" title="rust"></a>rust</h3><p><a target="_blank" rel="noopener" href="https://crates.io/">crates.io</a></p>
+<p><a target="_blank" rel="noopener" href="https://kaisery.github.io/trpl-zh-cn/ch02-00-guessing-game-tutorial.html">猜猜看游戏教程 - Rust 程序设计语言 简体中文版</a></p>
+<p><a target="_blank" rel="noopener" href="https://crates.io/crates/rand">rand - crates.io: Rust Package Registry</a></p>
+<h3 id="go"><a href="#go" class="headerlink" title="go"></a>go</h3><p><a target="_blank" rel="noopener" href="https://www.golangtc.com/t/56d65bafb09ecc66b9000003">Go如何使用 github包？ - Golang中国</a></p>
+<p><a target="_blank" rel="noopener" href="https://books.studygolang.com/go-rpc-programming-guide/">Go RPC开发简介 · Go RPC编程指南</a></p>
+<p><a target="_blank" rel="noopener" href="https://studygolang.com/pkgdoc">Go语言标准库文档中文版 | Go语言中文网 | Golang中文社区 | Golang中国</a></p>
+<p><a target="_blank" rel="noopener" href="https://gin-gonic.com/zh-cn/docs/">文档 | Gin Web Framework</a></p>
+<p><a target="_blank" rel="noopener" href="http://gorm.book.jasperxu.com/">1.1. 快速开始 · GORM 中文文档</a></p>
+<p><a target="_blank" rel="noopener" href="https://tour.go-zh.org/basics/1">Go 语言之旅</a></p>
+<p><a target="_blank" rel="noopener" href="https://books.studygolang.com/The-Golang-Standard-Library-by-Example/chapter13/13.1.html">flag - 命令行参数解析 · Go语言标准库</a></p>
+<p><a target="_blank" rel="noopener" href="https://gocn.vip/question/1999">Go 微服务实战汇总 - Go中国技术社区 - golang</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.kancloud.cn/xiaohuamao/go100/1075644">第四例 聊天室 · GO100例 · 看云</a></p>
+<p><a target="_blank" rel="noopener" href="https://golang.design/under-the-hood/zh-cn/part1basic/ch05sync/mem/">5.9 内存一致模型 | Go 语言原本</a></p>
+<p><a target="_blank" rel="noopener" href="http://gorm.io/zh_CN/docs/index.html">GORM 指南 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</a></p>
+<p><a target="_blank" rel="noopener" href="https://studygolang.com/subject/2">Go 系列教程（Golang tutorial series） - 专栏 - Go语言中文网 - Golang中文社区</a></p>
+<p><a target="_blank" rel="noopener" href="http://xiaorui.cc/category/golang/page/3/">Golang – 峰云就她了 - Page 3</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/golang/go/wiki/Modules#quick-start">Modules · golang/go Wiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://studygolang.com/articles/21952">如何用 Go 实现热重启 - Go语言中文网 - Golang中文社区</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019668233">grpc的Go服务端和PHP客户端实现 - golang开发笔记 - SegmentFault 思否</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.codercto.com/a/30019.html">基于Go Micro的微服务架构本地实战 | 码农网</a></p>
+<p><a target="_blank" rel="noopener" href="https://draveness.me/golang/docs/part3-runtime/ch06-concurrency/golang-channel/#%E5%85%88%E5%85%A5%E5%85%88%E5%87%BA">Go 语言 Channel 实现原理精要 | Go 语言设计与实现</a></p>
+<p><a target="_blank" rel="noopener" href="https://golang.design/under-the-hood/zh-cn/part2runtime/ch06sched/schedule/">6.4 调度循环 | Go 语言原本</a></p>
+<p><a target="_blank" rel="noopener" href="https://lailin.xyz/categories/Go%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/page/4/#board">分类 - Go进阶训练营 - Mohuishou</a></p>
+<p><a target="_blank" rel="noopener" href="https://developers.google.cn/protocol-buffers/docs/proto3#updating">Language Guide (proto3) | Protocol Buffers | Google Developers</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zoeou/article/details/86739528">go-micro微服务框架使用–golang_zoeou的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://pkg.go.dev/github.com/meilisearch/meilisearch-go@v0.15.0#section-readme">meilisearch · pkg.go.dev</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/go-mysql-org/go-mysql/blob/2a68c0ee612adac92132cf2a82f921eabb83e82a/canal/canal_test.go">go-mysql/canal_test.go at 2a68c0ee612adac92132cf2a82f921eabb83e82a · go-mysql-org/go-mysql</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zoeou/article/details/86739528">go-micro微服务框架使用–golang_zoeou的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="http://c.biancheng.net/shell/">Shell脚本：Linux Shell脚本学习指南（超详细）</a></p>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p><a target="_blank" rel="noopener" href="https://www.yuque.com/baxiang/leetcode/miav17">堆排序 · 语雀</a></p>
+<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><h3 id="consul"><a href="#consul" class="headerlink" title="consul"></a>consul</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/github_26672553/article/details/80595270">编码方式向Consul注册我们的Swoole服务 - 学习笔记666 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bossma/p/9756809.html">使用Consul做服务发现的若干姿势 - 波斯马 - 博客园</a></p>
+<h3 id="k8s"><a href="#k8s" class="headerlink" title="k8s"></a>k8s</h3><h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p><a target="_blank" rel="noopener" href="https://fluentbit.io/">Fluent Bit</a></p>
+<h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><h3 id="vue"><a href="#vue" class="headerlink" title="vue"></a>vue</h3><p><a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/advanced/data-fetching.html#%E5%AF%BC%E8%88%AA%E5%AE%8C%E6%88%90%E5%90%8E%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE">数据获取 | Vue Router</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016919340">vue-cli 打包后提交到线上出现 “Uncaught SyntaxError:Unexpected token &lt;” 报错 - 个人文章 - SegmentFault 思否</a></p>
+<h3 id="RN"><a href="#RN" class="headerlink" title="RN"></a>RN</h3><p><a target="_blank" rel="noopener" href="http://blog.csdn.net/u010123643/article/details/52776682">最详细的Windows版本搭建安装React Native环境配置 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/quanqinyang/article/details/52215641">React Native布局详细指南 - CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fa0874be0827">给所有开发者的React Native详细入门指南 - 简书</a></p>
+<p><a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.51/getting-started.html#content">搭建开发环境 - React Native 中文网</a></p>
+<h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><h3 id="MQ"><a href="#MQ" class="headerlink" title="MQ"></a>MQ</h3><p><a target="_blank" rel="noopener" href="https://www.kancloud.cn/longxuan/rabbitmq-arron/117512">轻松搞定RabbitMQ（一）——RabbitMQ基础知识+HelloWorld · 轻松搞定RabbitMQ · 看云</a></p>
+
+
+  
+
+</article>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

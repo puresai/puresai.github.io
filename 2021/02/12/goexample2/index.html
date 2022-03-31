@@ -1,0 +1,1079 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="go,golang,gin,gorm,go-redis,框架">
+  
+    <meta name="description" content="通过例子学习go-利用gin搭建一个api框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用gin搭建一个api框架">
+<meta property="og:url" content="https://github.13sai.com/2021/02/12/goexample2/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="通过例子学习go-利用gin搭建一个api框架">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.13sai.com/images/post/v2-9a3fa5680e78075596feedcc5f9669c6_1440w.png">
+<meta property="article:published_time" content="2021-02-12T13:48:20.000Z">
+<meta property="article:modified_time" content="2022-03-30T11:30:52.906Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="goexample">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/v2-9a3fa5680e78075596feedcc5f9669c6_1440w.png">
+  
+  
+  <title>利用gin搭建一个api框架 - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">利用gin搭建一个api框架</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-02-12 21:48" pubdate>
+          2021年2月12日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          14k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          121 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="goexample"
+        id="heading-bbf4bcbc3b6c234b840e985b0b467701" role="tab" data-toggle="collapse" href="#collapse-bbf4bcbc3b6c234b840e985b0b467701"
+        aria-expanded="true"
+      >
+        goexample
+        <span class="list-group-count">(10)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-bbf4bcbc3b6c234b840e985b0b467701"
+           role="tabpanel" aria-labelledby="heading-bbf4bcbc3b6c234b840e985b0b467701">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/02/12/goexample1/" title="搭建http server"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">搭建http server</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go+MongoDB实现附近的人</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">利用gin搭建一个api框架</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">防止漏打卡，利用gin和cron来做一个智能提醒</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample5/" title="go面向对象"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go面向对象</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample6/" title="go-kit"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go-kit</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、redis"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">docker-compose整合go-kit和mysql、redis</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample4/" title="gRPC"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">gRPC</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">golang限流器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">goruntine和channel</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">利用gin搭建一个api框架</h1>
+            
+            <div class="markdown-body">
+              
+              <p>在demo1中，我们简单使用了net/http搭建了一个server，其实在日常开发中，比较少去使用标准库去直接写api，更多的是使用前人搭建好的轮子（我呢，是个不太喜欢重复造轮子的开发者，有开源的靠谱的，直接用就好，自己调整成自己需要的即可），那么说的go的框架，不得不说gin了。</p>
+<p>对于gin的介绍，是github上star最多的go框架了，其他不多说，我们上手写起来吧！</p>
+<h2 id="目标："><a href="#目标：" class="headerlink" title="目标："></a>目标：</h2><ul>
+<li>自定义配置</li>
+<li>整合mysql和redis</li>
+<li>独立路由管理</li>
+<li>日志</li>
+<li>平滑重启</li>
+<li>脚本打包</li>
+</ul>
+<h2 id="使用到的库："><a href="#使用到的库：" class="headerlink" title="使用到的库："></a>使用到的库：</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://github.com/fsnotify/fsnotify">github.com/fsnotify/fsnotify</a></li>
+<li><a target="_blank" rel="noopener" href="http://github.com/gin-gonic/gin">github.com/gin-gonic/gin</a></li>
+<li><a target="_blank" rel="noopener" href="http://github.com/go-redis/redis">github.com/go-redis/redis</a></li>
+<li><a target="_blank" rel="noopener" href="http://github.com/jinzhu/gorm">github.com/jinzhu/gorm</a></li>
+<li><a target="_blank" rel="noopener" href="http://github.com/lestrrat-go/file-rotatelogs">http://github.com/lestrrat-go/file-rotatelogs</a></li>
+<li><a target="_blank" rel="noopener" href="http://go.uber.org/zap">http://go.uber.org/zap</a></li>
+<li><a target="_blank" rel="noopener" href="http://github.com/spf13/pflag">github.com/spf13/pflag</a></li>
+<li><a target="_blank" rel="noopener" href="http://github.com/spf13/viper">github.com/spf13/viper</a></li>
+</ul>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>modules的引入之后，我们就可以不必使用gopath去管理项目目录了，对于modules的基本使用，建议看文章：</p>
+<p><a href="https://github.13sai.com/2019/12/27/219/#modules">gomodules</a></p>
+<p>我们开始：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">go</span> mod init sai0556/demo2-gin-frame<br></code></pre></td></tr></table></figure>
+
+<p>因为我们暂时本地开发：</p>
+<p><em>PS：当时理解有误，其实无需做local.com替换，import直接使用sai0556/demo2-gin-frame即可，这里有点多余</em></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 使用本地module</span><br><span class="hljs-keyword">go</span> mod edit -require=local.com/sai0556/demo2-gin-frame@v1<span class="hljs-number">.0</span><span class="hljs-number">.0</span><br><span class="hljs-keyword">go</span> mod edit -replace=local.com/sai0556/demo2-gin-frame@v1<span class="hljs-number">.0</span><span class="hljs-number">.0</span>=$PWD<br></code></pre></td></tr></table></figure>
+
+<p>可以看到go.mod已生成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs text">module sai0556/demo2-gin-frame<br><br>go 1.13<br><br>require local.com/sai0556/demo2-gin-frame v1.0.0<br><br>replace local.com/sai0556/demo2-gin-frame v1.0.0 =&gt; /Users/@/Work/golang/go-example/demo2-gin-frame<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>/Users/@/Work/golang/go-example/demo2-gin-frame 此目录就是项目目录，视具体情况不一</p>
+</blockquote>
+<h2 id="自定义配置与读取："><a href="#自定义配置与读取：" class="headerlink" title="自定义配置与读取："></a>自定义配置与读取：</h2><p>在我们使用redis和mysql之前，我们先来读取一下配置，配置呢我们使用常见的yaml，当然你也可以使用其他，比如env等。</p>
+<p>新建config目录，用来读取与监听配置文件(config.yaml)：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> config<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/fsnotify/fsnotify&quot;</span><br>    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> Config <span class="hljs-keyword">struct</span> &#123;<br>    Name <span class="hljs-keyword">string</span><br>&#125;<br><br><span class="hljs-comment">// 对外的初始化配置方法</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Run</span><span class="hljs-params">(cfg <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">error</span></span> &#123;<br>    c := Config&#123;<br>        Name: cfg,<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> err := c.init(); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br><br>    c.watchConfig()<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Config)</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;<br>    <span class="hljs-keyword">if</span> c.Name != <span class="hljs-string">&quot;&quot;</span> &#123;<br>        viper.SetConfigFile(c.Name)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 默认配置文件是./config.yaml</span><br>        viper.AddConfigPath(<span class="hljs-string">&quot;.&quot;</span>)<br>        viper.SetConfigName(<span class="hljs-string">&quot;config&quot;</span>)<br>    &#125;<br><br>    viper.SetConfigType(<span class="hljs-string">&quot;yaml&quot;</span>)<br>    <span class="hljs-comment">// viper解析配置文件</span><br>    err := viper.ReadInConfig() <br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(fmt.Errorf(<span class="hljs-string">&quot;Fatal error config file: %s \n&quot;</span>, err))<br>    &#125;<br><br>	<span class="hljs-comment">// 简单打印下配置</span><br>    fmt.Println(viper.GetString(<span class="hljs-string">&quot;name&quot;</span>))<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Config)</span> <span class="hljs-title">watchConfig</span><span class="hljs-params">()</span></span> &#123;<br>    viper.WatchConfig()<br>    viper.OnConfigChange(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(e fsnotify.Event)</span></span> &#123;<br>        fmt.Println(<span class="hljs-string">&quot;Config file changed:&quot;</span>, e.Name)<br>    &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>main:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span><br><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    pflag.Parse()<br><br>    <span class="hljs-comment">// 初始化配置</span><br>    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(err)<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里有用到大牛spf13的两个包，pflag和viper，命令行参数解析包pflag可以看作flag的进阶版本，在我们这里可以用来指定配置文件，viper是读取配置文件的包，配合fsnotify可以实现配置的热更新。（spf13大神还有其他有用的包，相信在你的go编码生涯会用到的）</p>
+<p>写完我们可以运行一下：</p>
+<blockquote>
+<p>go run main.go -c ./config.yaml</p>
+</blockquote>
+<p>可以看到有打印出我们配置的name。</p>
+<h2 id="整合mysql与redis"><a href="#整合mysql与redis" class="headerlink" title="整合mysql与redis"></a>整合mysql与redis</h2><p>mysql包我们就选用gorm，redis的使用比较多的是redigo和go-redis，redigo曾在我使用中出现过问题，因而我们选择后者，后者也支持连接池。</p>
+<p>mysql：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> db<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>    <span class="hljs-string">&quot;sync&quot;</span><br>    <span class="hljs-string">&quot;errors&quot;</span><br><br>    orm <span class="hljs-string">&quot;github.com/jinzhu/gorm&quot;</span><br>    _ <span class="hljs-string">&quot;github.com/jinzhu/gorm/dialects/mysql&quot;</span><br>    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> MySqlPool <span class="hljs-keyword">struct</span> &#123;&#125;<br><br><span class="hljs-keyword">var</span> instance *MySqlPool<br><span class="hljs-keyword">var</span> once sync.Once<br><br><span class="hljs-keyword">var</span> db *orm.DB<br><span class="hljs-keyword">var</span> err error <br><br><span class="hljs-comment">// 单例模式</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetInstance</span><span class="hljs-params">()</span> *<span class="hljs-title">MySqlPool</span></span> &#123;<br>    once.Do(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>        instance = &amp;MySqlPool&#123;&#125;<br>    &#125;)<br><br>    <span class="hljs-keyword">return</span> instance<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(pool *MySqlPool)</span> <span class="hljs-title">InitPool</span><span class="hljs-params">()</span> <span class="hljs-params">(isSuc <span class="hljs-keyword">bool</span>)</span></span> &#123;<br>	<span class="hljs-comment">// 这里有一种常见的拼接字符串的方式</span><br>    dsn := fmt.Sprintf(<span class="hljs-string">&quot;%s:%s@tcp(%s)/%s?charset=%s&quot;</span>, viper.GetString(<span class="hljs-string">&quot;db.username&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.password&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.host&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.name&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.charset&quot;</span>))<br>    db, err = orm.Open(<span class="hljs-string">&quot;mysql&quot;</span>, dsn)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;mysql连接失败&quot;</span>))<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    &#125;<br><br>    <span class="hljs-comment">// 连接数配置也可以写入配置，在此读取</span><br>    db.DB().SetMaxIdleConns(viper.GetInt(<span class="hljs-string">&quot;db.MaxIdleConns&quot;</span>))<br>    db.DB().SetMaxOpenConns(viper.GetInt(<span class="hljs-string">&quot;db.MaxOpenConns&quot;</span>))<br>    <span class="hljs-comment">// db.LogMode(true)</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>后面获取连接池就可以直接使用 db.GetInstance()</p>
+</blockquote>
+<p>redis：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs text">package db<br><br>import (<br>    &quot;fmt&quot;<br><br>    &quot;github.com/spf13/viper&quot;<br>    &quot;github.com/go-redis/redis&quot;<br>)<br><br>var RedisClient *redis.Client<br><br>func InitRedis() &#123;<br>    RedisClient = redis.NewClient(&amp;redis.Options&#123;<br>        Addr:     fmt.Sprintf(&quot;%s:%s&quot;, viper.GetString(&quot;redis.host&quot;), viper.GetString(&quot;redis.port&quot;)),<br>        Password: viper.GetString(&quot;redis.auth&quot;),<br>        DB:       0,<br>    &#125;)<br><br>    _, err := RedisClient.Ping().Result()<br>    if err != nil &#123;<br>        panic(&quot;redis ping error&quot;)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>RedisClient就是我们后面可以用的redis连接池。</p>
+<p>在main中加入初始化连接池的代码即可：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 连接mysql数据库</span><br>btn := db.GetInstance().InitPool()<br><span class="hljs-keyword">if</span> !btn &#123;<br>    log.Println(<span class="hljs-string">&quot;init database pool failure...&quot;</span>)<br>    <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;init database pool failure&quot;</span>))<br>&#125;<br><br><span class="hljs-comment">// redis</span><br>db.InitRedis()<br></code></pre></td></tr></table></figure>
+
+<h2 id="路由与控制器"><a href="#路由与控制器" class="headerlink" title="路由与控制器"></a>路由与控制器</h2><p>为了方便路由，我们把路由管理单独到router。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> router<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;net/http&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/controller&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Load</span><span class="hljs-params">(g *gin.Engine)</span> *<span class="hljs-title">gin</span>.<span class="hljs-title">Engine</span></span> &#123;<br>    g.Use(gin.Recovery())<br>    <span class="hljs-comment">// 404</span><br>    g.NoRoute(<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *gin.Context)</span></span>  &#123;<br>        c.String(http.StatusNotFound, <span class="hljs-string">&quot;404 not found&quot;</span>);<br>    &#125;)<br><br>    g.GET(<span class="hljs-string">&quot;/&quot;</span>, controller.Index)<br><br>    <span class="hljs-keyword">return</span> g<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>controller:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> controller<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;net/http&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br>)<br><br><span class="hljs-comment">// 返回</span><br><span class="hljs-keyword">type</span> Response <span class="hljs-keyword">struct</span> &#123;<br>    Code <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;code&quot;`</span><br>    Message <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;message&quot;`</span><br>    Data <span class="hljs-keyword">interface</span>&#123;&#125; <span class="hljs-string">`json:&quot;data&quot;`</span><br>&#125;<br><br><span class="hljs-comment">// api返回结构</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ApiResponse</span><span class="hljs-params">(c *gin.Context, code <span class="hljs-keyword">int</span>, message <span class="hljs-keyword">string</span>, data <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>    c.JSON(http.StatusOK, Response&#123;<br>        Code: code,<br>        Message: message,<br>        Data: data,<br>    &#125;)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Index</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>    ApiResponse(c, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;success&quot;</span>, <span class="hljs-literal">nil</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>到这呢，基本也就差不多了。</p>
+<p>我们来看下完整的main：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-comment">// import 这里我习惯把官方库，开源库，本地module依次分开列出</span><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;log&quot;</span><br>    <span class="hljs-string">&quot;errors&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span><br>    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/db&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/router&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    pflag.Parse()<br><br>    <span class="hljs-comment">// 初始化配置</span><br>    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	<br>	<span class="hljs-comment">// 连接mysql数据库</span><br>    btn := db.GetInstance().InitPool()<br>    <span class="hljs-keyword">if</span> !btn &#123;<br>        log.Println(<span class="hljs-string">&quot;init database pool failure...&quot;</span>)<br>        <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;init database pool failure&quot;</span>))<br>    &#125;<br><br>    <span class="hljs-comment">// redis</span><br>    db.InitRedis()<br><br>    gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))<br>    g := gin.New()<br>    g = router.Load(g)<br>    g.Run(viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="整合日志"><a href="#整合日志" class="headerlink" title="整合日志"></a>整合日志</h2><p>这里我们先定义下log：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">log:<br>  level: debug # 日志级别，info，debug，error<br>  file_format: &quot;%Y%m%d&quot; # 文件格式<br>  max_save_days: 30 # 保存天数<br>  file_type: one # one, level 单文件存储还是以level级别存储<br></code></pre></td></tr></table></figure>
+
+
+
+<p>整合logger：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><code class="hljs text">package logger<br><br>import (<br>	&quot;io&quot;<br>	&quot;log&quot;<br>	&quot;time&quot;<br><br>	&quot;github.com/lestrrat-go/file-rotatelogs&quot;<br>	&quot;go.uber.org/zap&quot;<br>	&quot;go.uber.org/zap/zapcore&quot;<br>        &quot;github.com/spf13/viper&quot;<br>)<br><br>var Logger *zap.Logger <br>var LogLevel string<br>var FileFormat string<br><br>// 初始化日志 logger<br>func init() &#123;<br>	// 设置一些基本日志格式<br>	config := zapcore.EncoderConfig&#123;<br>		MessageKey:  &quot;msg&quot;,<br>		LevelKey:    &quot;level&quot;,<br>		EncodeLevel: zapcore.CapitalLevelEncoder,<br>		TimeKey:     &quot;ts&quot;,<br>		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) &#123;<br>			enc.AppendString(t.Format(&quot;2006-01-02 15:04:05&quot;))<br>		&#125;,<br>		CallerKey:    &quot;file&quot;,<br>		EncodeCaller: zapcore.ShortCallerEncoder,<br>		EncodeDuration: func(d time.Duration, enc zapcore.PrimitiveArrayEncoder) &#123;<br>			enc.AppendInt64(int64(d) / 1000000)<br>		&#125;,<br>	&#125;<br>	encoder := zapcore.NewConsoleEncoder(config)<br><br>	FileFormat, saveType, LogLevel := &quot;%Y%m%d&quot;, &quot;one&quot;, &quot;info&quot;<br><br>	if viper.IsSet(&quot;log.file_format&quot;) &#123;<br>		FileFormat = viper.GetString(&quot;log.file_format&quot;)<br>	&#125;<br><br>	if viper.IsSet(&quot;log.level&quot;) &#123;<br>		LogLevel = viper.GetString(&quot;log.level&quot;)<br>	&#125;<br><br>	if viper.IsSet(&quot;log.save_type&quot;) &#123;<br>		saveType = viper.GetString(&quot;log.save_type&quot;)<br>	&#125;<br><br>	logLevel := zap.DebugLevel<br>	switch LogLevel &#123;<br>		case &quot;debug&quot;:<br>			logLevel = zap.DebugLevel<br>		case &quot;info&quot;:<br>			logLevel = zap.InfoLevel<br>		case &quot;error&quot;:<br>			logLevel = zap.ErrorLevel<br>		default:<br>			logLevel = zap.InfoLevel<br>	&#125;<br><br>	switch saveType &#123;<br>		case &quot;level&quot;:<br>			Logger = getLevelLogger(encoder, logLevel, FileFormat)<br>		default:<br>			Logger = getOneLogger(encoder, logLevel, FileFormat)<br>	&#125;<br><br>	<br>&#125;<br><br>func getLevelLogger(encoder zapcore.Encoder, logLevel zapcore.Level, fileFormat string) *zap.Logger &#123;<br>	infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;<br>		return lvl == zapcore.InfoLevel &amp;&amp; lvl &gt;= logLevel<br>	&#125;)<br><br>	debugLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;<br>		return lvl == zapcore.DebugLevel &amp;&amp; lvl &gt;= logLevel<br>	&#125;)<br><br>	errorLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;<br>		return lvl &gt;= zapcore.ErrorLevel &amp;&amp; lvl &gt;= logLevel<br>	&#125;)<br>	// 获取 info、warn日志文件的io.Writer 抽象 getLoggerWriter() 在下方实现<br>	infoWriter := getLoggerWriter(&quot;./log/info&quot;, fileFormat)<br>	errorWriter := getLoggerWriter(&quot;./log/error&quot;, fileFormat)<br>	debugWriter := getLoggerWriter(&quot;./log/debug&quot;, fileFormat)<br><br>	// 最后创建具体的Logger<br>	core := zapcore.NewTee(<br>		zapcore.NewCore(encoder, zapcore.AddSync(debugWriter), debugLevel),<br>		zapcore.NewCore(encoder, zapcore.AddSync(infoWriter), infoLevel),<br>		zapcore.NewCore(encoder, zapcore.AddSync(errorWriter), errorLevel),<br>	)<br>	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.WarnLevel))<br>&#125;<br><br>func getOneLogger(encoder zapcore.Encoder, logLevel zapcore.Level, fileFormat string) *zap.Logger &#123;<br>	infoWriter := getLoggerWriter(&quot;./log/info&quot;, fileFormat)<br><br>	infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;<br>		return lvl == zapcore.InfoLevel &amp;&amp; lvl &gt;= logLevel<br>	&#125;)<br><br>	core := zapcore.NewTee(<br>		zapcore.NewCore(encoder, zapcore.AddSync(infoWriter), infoLevel),<br>	)<br>	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.WarnLevel))<br>&#125;<br><br>func getLoggerWriter(filename, fileFormat string) io.Writer &#123;<br>	// 生成rotatelogs的Logger 实际生成的文件名 file_YYmmddHH.log<br>	hook, err := rotatelogs.New(<br>		filename+fileFormat+&quot;.log&quot;,<br>		rotatelogs.WithLinkName(filename),<br>		// 保存天数<br>		rotatelogs.WithMaxAge(time.Hour*24*30),<br>		// 切割频率24小时<br>		rotatelogs.WithRotationTime(time.Hour*24),<br>	)<br>	if err != nil &#123;<br>		log.Println(&quot;日志启动异常&quot;)<br>		panic(err)<br>	&#125;<br>	return hook<br>&#125;<br><br>func Debug(format string, v ...interface&#123;&#125;) &#123;<br>	Logger.Sugar().Debugf(format, v...)<br>&#125;<br><br>func Info(format string, v ...interface&#123;&#125;) &#123;<br>	Logger.Sugar().Infof(format, v...)<br>&#125;<br><br>func Error(format string, v ...interface&#123;&#125;) &#123;<br>	Logger.Sugar().Errorf(format, v...)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这里注意init函数，我们直接调用logger其中函数即可，程序加载包的过程中会自动执行init函数。关于init有以下说明：</p>
+<ol>
+<li>init函数是用于程序执行前做包的初始化的函数，比如初始化包里的变量等</li>
+<li>每个包可以拥有多个init函数</li>
+<li>包的每个源文件也可以拥有多个init函数</li>
+<li>同一个包中多个init函数的执行顺序go语言没有明确的定义(说明)</li>
+<li>不同包的init函数按照包导入的依赖关系决定该初始化函数的执行顺序</li>
+<li>init函数不能被其他函数调用，而是在main函数执行之前，自动被调用</li>
+</ol>
+<p>我们直接使用：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go">logger.Info(<span class="hljs-string">&quot;i&#x27;m log123-----Info&quot;</span>)<br>logger.Error(<span class="hljs-string">&quot;i&#x27;m log123-----Error&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p><img src="/images/post/v2-9a3fa5680e78075596feedcc5f9669c6_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="平滑重启"><a href="#平滑重启" class="headerlink" title="平滑重启"></a>平滑重启</h2><p>当程序在线上稳定运行后，我们可能会去更新一些功能，但发布代码的同时，假如有用户正在使用，盲目发布代码可能会造成用户短暂失真，这时候平滑重启就来了。</p>
+<p>对于平滑重启，其实有很多方案，这里我们只从自身代码级别来完成，而即便是代码级别，目前也有多种实现方案，比如第三方库endless这种，我这里主要参考了</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/kuangchanglang/graceful">https://github.com/kuangchanglang/gracefulgithub.com/kuangchanglang/graceful</a></p>
+<p>简单说明下处理步骤：</p>
+<ol>
+<li>监听信号（USR2，可自定义其他信号）</li>
+<li>收到信号时fork子进程（使用相同的启动命令），将服务监听的socket文件描述符传递给子进程</li>
+<li>子进程监听父进程的socket，这个时候父进程和子进程都可以接收请求</li>
+<li>子进程启动成功之后，父进程停止接收新的连接，等待旧连接处理完成（或超时）</li>
+<li>父进程退出，重启完成</li>
+</ol>
+<p>详细分析可看底部参考-Golang服务器热重启、热升级、热更新。</p>
+<h2 id="启动检查"><a href="#启动检查" class="headerlink" title="启动检查"></a>启动检查</h2><p>结合上面的优雅重启，我们在启动时配置上启动健康检查：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-comment">// import 这里我习惯把官方库，开源库，本地module依次分开列出</span><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br>	<span class="hljs-string">&quot;errors&quot;</span><br>	<span class="hljs-string">&quot;net/http&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span><br>    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/db&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/router&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/logger&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/graceful&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    pflag.Parse()<br><br>    <span class="hljs-comment">// 初始化配置</span><br>    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(err)<br>	&#125;<br><br>	<span class="hljs-comment">// logger.Info(&quot;i&#x27;m log123-----Info&quot;)</span><br>	<span class="hljs-comment">// logger.Error(&quot;i&#x27;m log123-----Error&quot;)</span><br><br>	<br>	<span class="hljs-comment">// 连接mysql数据库</span><br>	DB := db.GetDB()<br>	<span class="hljs-keyword">defer</span> db.CloseDB(DB)<br><br>	<span class="hljs-comment">// redis</span><br>	db.InitRedis()<br><br>	gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))<br>	g := gin.New()<br>	g = router.Load(g)<br><br>	<span class="hljs-comment">// g.Run(viper.GetString(&quot;addr&quot;))</span><br><br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">if</span> err := pingServer(); err != <span class="hljs-literal">nil</span> &#123;<br>			fmt.Println(<span class="hljs-string">&quot;fail:健康检测失败&quot;</span>, err)<br>		&#125;<br>		fmt.Println(<span class="hljs-string">&quot;success:健康检测成功&quot;</span>)<br>	&#125;()<br><br>	logger.Info(<span class="hljs-string">&quot;启动http服务端口%s\n&quot;</span>, viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>))<br><br>	<span class="hljs-keyword">if</span> err := graceful.ListenAndServe(viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>), g); err != <span class="hljs-literal">nil</span> &amp;&amp; err != http.ErrServerClosed &#123;<br>		logger.Error(<span class="hljs-string">&quot;fail:http服务启动失败: %s\n&quot;</span>, err)<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// 健康检查</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">pingServer</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; viper.GetInt(<span class="hljs-string">&quot;max_ping_count&quot;</span>); i++ &#123;<br>		url := fmt.Sprintf(<span class="hljs-string">&quot;%s%s%s&quot;</span>, <span class="hljs-string">&quot;http://127.0.0.1&quot;</span>, viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>), viper.GetString(<span class="hljs-string">&quot;healthCheck&quot;</span>))<br>		fmt.Println(url)<br>		resp, err := http.Get(url)<br>		<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &amp;&amp; resp.StatusCode == <span class="hljs-number">200</span> &#123;<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>		&#125;<br>		time.Sleep(time.Second)<br>	&#125;<br>	<span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">&quot;健康检测404&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>这里就比较简单，另外启动一个协程，去ping健康检测的url即可。</p>
+<h2 id="打包脚本"><a href="#打包脚本" class="headerlink" title="打包脚本"></a>打包脚本</h2><p>shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br>SERVER=<span class="hljs-string">&quot;demo2-gin-frame&quot;</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">status</span></span>() <br>&#123;<br>	<span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;`pgrep <span class="hljs-variable">$SERVER</span> -u <span class="hljs-variable">$UID</span>`&quot;</span> != <span class="hljs-string">&quot;&quot;</span> ];<span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-variable">$SERVER</span> is running<br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-variable">$SERVER</span> is not running<br>	<span class="hljs-keyword">fi</span><br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">build</span></span>() <br>&#123;<br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;build...&quot;</span><br><br>    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./<span class="hljs-variable">$SERVER</span> main.go<br>    <span class="hljs-keyword">if</span> [ $? -ne <span class="hljs-string">&quot;0&quot;</span> ];<span class="hljs-keyword">then</span>  <br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built error!!!&quot;</span><br>        <span class="hljs-built_in">return</span> <br>    <span class="hljs-keyword">fi</span>  <br><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built success!&quot;</span><br>&#125;<br><br><br><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;<span class="hljs-variable">$1</span>&quot;</span> <span class="hljs-keyword">in</span><br>	<span class="hljs-string">&#x27;status&#x27;</span>)<br>	status<br>	;; <br>    <span class="hljs-string">&#x27;build&#x27;</span>)<br>	build<br>	;;  <br>	*)  <br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;unknown, please: <span class="hljs-variable">$0</span> &#123;status or build&#125;&quot;</span><br>	<span class="hljs-built_in">exit</span> 1<br>	;;  <br><span class="hljs-keyword">esac</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>bat</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;build...&quot;</span><br><span class="hljs-built_in">SET</span> CGO_ENABLED=<span class="hljs-number">0</span><br><span class="hljs-built_in">SET</span> GOOS=linux<br>go build <span class="hljs-literal">-o</span> demo2<span class="hljs-literal">-gin</span><span class="hljs-literal">-frame</span><br><span class="hljs-keyword">if</span> %errorlevel% == <span class="hljs-number">0</span> (<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built successfully&quot;</span><br>) <span class="hljs-keyword">else</span> (<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built fail!!!&quot;</span><br>)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>对于程序的重启和保活，建议配合supervisor使用。</p>
+<p>好，到这里我们的round 2就结束了。下一轮我们来玩玩钉钉智能机器人。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/13sai/go-example/tree/main/demo2-gin-frame">点击直达完整代码</a></p>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://studygolang.com/articles/26642">golang zap 日志库使用（含文件切割、分级别存储和全局使用等）</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/book/6844733730678898702">基于Go语言构建企业级的 RESTful API 服务</a></li>
+<li><a target="_blank" rel="noopener" href="https://studygolang.com/articles/16671">golang init函数 - Go语言中文网 - Golang中文社区</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sunsky303/p/9778466.html">Golang服务器热重启、热升级、热更新(safe and graceful hot-restart/reload http server)详解</a></li>
+</ul>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/goexample/" class="category-chain-item">goexample</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/goexample/">#goexample</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>利用gin搭建一个api框架</div>
+      <div>https://github.13sai.com/2021/02/12/goexample2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">go+MongoDB实现附近的人</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒">
+                        <span class="hidden-mobile">防止漏打卡，利用gin和cron来做一个智能提醒</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

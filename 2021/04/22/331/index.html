@@ -1,0 +1,942 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  
+    <meta name="description" content="使用缓存的正确姿势">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用缓存的正确姿势">
+<meta property="og:url" content="https://github.13sai.com/2021/04/22/331/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="使用缓存的正确姿势">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/5/11/1634fc331a4e2137">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/5/11/1634fc3319beda97">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/5/11/1634fc3319a4ddb5">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/5/11/1634fc331997574e">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/5/11/1634fc331a6f8980">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/5/11/1634fc3319c1b374">
+<meta property="article:published_time" content="2021-04-22T04:38:28.000Z">
+<meta property="article:modified_time" content="2022-03-19T14:35:21.856Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="cache">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/5/11/1634fc331a4e2137">
+  
+  
+  <title>使用缓存的正确姿势 - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">使用缓存的正确姿势</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-04-22 12:38" pubdate>
+          2021年4月22日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="cache"
+        id="heading-0fea6a13c52b4d4725368f24b045ca84" role="tab" data-toggle="collapse" href="#collapse-0fea6a13c52b4d4725368f24b045ca84"
+        aria-expanded="true"
+      >
+        cache
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-0fea6a13c52b4d4725368f24b045ca84"
+           role="tabpanel" aria-labelledby="heading-0fea6a13c52b4d4725368f24b045ca84">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2021/04/22/331/" title="使用缓存的正确姿势"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">使用缓存的正确姿势</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/03/17/322/" title="缓存知识"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">缓存知识</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2017/09/19/134/" title="初识memcache"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">初识memcache</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">使用缓存的正确姿势</h1>
+            
+            <div class="markdown-body">
+              
+              <p>Form: <a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903604998914055">使用缓存的正确姿势</a></p>
+<p>缓存是现在系统中必不可少的模块，并且已经成为了高并发高性能架构的一个关键组件。这篇博客我们来分析一下使用缓存的正确姿势。</p>
+<h2 id="缓存能解决的问题"><a href="#缓存能解决的问题" class="headerlink" title="缓存能解决的问题"></a>缓存能解决的问题</h2><ul>
+<li><p>提升性能</p>
+<p>绝大多数情况下，select 是出现性能问题最大的地方。一方面，select 会有很多像 join、group、order、like 等这样丰富的语义，而这些语义是非常耗性能的；另一方面，大多数应用都是读多写少，所以加剧了慢查询的问题。</p>
+<p>分布式系统中远程调用也会耗很多性能，因为有网络开销，会导致整体的响应时间下降。为了挽救这样的性能开销，在业务允许的情况（不需要太实时的数据）下，使用缓存是非常必要的事情。</p>
+</li>
+<li><p>缓解数据库压力</p>
+<p>当用户请求增多时，数据库的压力将大大增加，通过缓存能够大大降低数据库的压力。</p>
+</li>
+</ul>
+<h2 id="缓存的适用场景"><a href="#缓存的适用场景" class="headerlink" title="缓存的适用场景"></a>缓存的适用场景</h2><ul>
+<li><p>对于数据实时性要求不高</p>
+<p>对于一些经常访问但是很少改变的数据，读明显多于写，适用缓存就很有必要。比如一些网站配置项。</p>
+</li>
+<li><p>对于性能要求高</p>
+<p>比如一些秒杀活动场景。</p>
+</li>
+</ul>
+<h2 id="缓存三种模式"><a href="#缓存三种模式" class="headerlink" title="缓存三种模式"></a>缓存三种模式</h2><p>一般来说，缓存有以下三种模式：</p>
+<ul>
+<li>Cache Aside 更新模式</li>
+<li>Read/Write Through 更新模式</li>
+<li>Write Behind Caching 更新模式</li>
+</ul>
+<p>通俗一点来讲就是，同时更新缓存和数据库（Cache Aside 更新模式）；先更新缓存，缓存负责同步更新数据库（Read/Write Through 更新模式）；先更新缓存，缓存定时异步更新数据库（Write Behind Caching 更新模式）。这三种模式各有优劣，可以根据业务场景选择使用。</p>
+<h2 id="Cache-Aside-更新模式"><a href="#Cache-Aside-更新模式" class="headerlink" title="Cache Aside 更新模式"></a>Cache Aside 更新模式</h2><p>这是最常用的缓存模式了，具体的流程是：</p>
+<ul>
+<li><strong>失效</strong>：应用程序先从 cache 取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。</li>
+<li><strong>命中</strong>：应用程序从 cache 中取数据，取到后返回。</li>
+<li><strong>更新</strong>：先把数据存到数据库中，成功后，再让缓存<strong>失效</strong>。</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2018/5/11/1634fc331a4e2137" srcset="/img/loading.gif" lazyload alt="Cache Aside 更新模式流程图"></p>
+<p>​      </p>
+<p>注意我们上面所提到的，缓存更新时先更新数据库，然后在让缓存失效。那么为什么不是直接更新缓存呢？这里有一些缓存更新的坑，我们需要避免入坑。</p>
+<h3 id="避坑指南一"><a href="#避坑指南一" class="headerlink" title="避坑指南一"></a>避坑指南一</h3><p>**先更新数据库，再更新缓存。**这种做法最大的问题就是**两个并发的写操作导致脏数据**。如下图（以Redis和Mysql为例），两个并发更新操作，数据库先更新的反而后更新缓存，数据库后更新的反而先更新缓存。这样就会造成数据库和缓存中的数据不一致，应用程序中读取的都是脏数据。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/5/11/1634fc3319beda97" srcset="/img/loading.gif" lazyload alt="mark"></p>
+<h3 id="避坑指南二"><a href="#避坑指南二" class="headerlink" title="避坑指南二"></a>避坑指南二</h3><p>**先删除缓存，再更新数据库。**这个逻辑是错误的，因为两个并发的读和写操作导致脏数据****。如下图（以Redis和Mysql为例）。假设更新操作先删除了缓存，此时正好有一个并发的读操作，没有命中缓存后从数据库中取出老数据并且更新回缓存，这个时候更新操作也完成了数据库更新。此时，数据库和缓存中的数据不一致，应用程序中读取的都是原来的数据（脏数据）。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/5/11/1634fc3319a4ddb5" srcset="/img/loading.gif" lazyload alt="mark"></p>
+<h3 id="避坑指南三"><a href="#避坑指南三" class="headerlink" title="避坑指南三"></a>避坑指南三</h3><p><strong>先更新数据库，再删除缓存。</strong>这种做法其实不能算是坑，在实际的系统中也推荐使用这种方式。但是这种方式理论上还是可能存在问题。如下图（以Redis和Mysql为例），查询操作没有命中缓存，然后查询出数据库的老数据。此时有一个并发的更新操作，更新操作在读操作之后更新了数据库中的数据并且删除了缓存中的数据。然而读操作将从数据库中读取出的老数据更新回了缓存。这样就会造成数据库和缓存中的数据不一致，应用程序中读取的都是原来的数据（脏数据）。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/5/11/1634fc331997574e" srcset="/img/loading.gif" lazyload alt="mark"></p>
+<p>但是，仔细想一想，这种并发的概率极低。因为这个条件需要发生在读缓存时缓存失效，而且有一个并发的写操作。实际上数据库的写操作会比读操作慢得多，而且还要加锁，而读操作必需在写操作前进入数据库操作，又要晚于写操作更新缓存，所有这些条件都具备的概率并不大。但是为了避免这种极端情况造成脏数据所产生的影响，我们还是要为缓存设置过期时间。</p>
+<h2 id="Read-Write-Through-更新模式"><a href="#Read-Write-Through-更新模式" class="headerlink" title="Read/Write Through 更新模式"></a>Read/Write Through 更新模式</h2><p>在上面的 Cache Aside 更新模式中，应用代码需要维护两个数据存储，一个是缓存（Cache），一个是数据库（Repository）。而在Read/Write Through 更新模式中，应用程序只需要维护缓存，数据库的维护工作由缓存代理了。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/5/11/1634fc331a6f8980" srcset="/img/loading.gif" lazyload alt="Read/Write Through 更新模式流程图"></p>
+<h3 id="Read-Through"><a href="#Read-Through" class="headerlink" title="Read Through"></a>Read Through</h3><p>Read Through 模式就是在查询操作中更新缓存，也就是说，当缓存失效的时候，Cache Aside 模式是由调用方负责把数据加载入缓存，而 Read Through 则用缓存服务自己来加载。</p>
+<h3 id="Write-Through"><a href="#Write-Through" class="headerlink" title="Write Through"></a>Write Through</h3><p>Write Through 模式和 Read Through 相仿，不过是在更新数据时发生。当有数据更新的时候，如果没有命中缓存，直接更新数据库，然后返回。如果命中了缓存，则更新缓存，然后由缓存自己更新数据库（这是一个同步操作）。</p>
+<h2 id="Write-Behind-Caching-更新模式"><a href="#Write-Behind-Caching-更新模式" class="headerlink" title="Write Behind Caching 更新模式"></a>Write Behind Caching 更新模式</h2><p>Write Behind Caching 更新模式就是在更新数据的时候，只更新缓存，不更新数据库，而我们的缓存会异步地批量更新数据库。这个设计的好处就是直接操作内存速度快。因为异步，Write Behind Caching 更新模式还可以合并对同一个数据的多次操作到数据库，所以性能的提高是相当可观的。</p>
+<p>但其带来的问题是，数据不是强一致性的，而且可能会丢失。另外，Write Behind Caching 更新模式实现逻辑比较复杂，因为它需要确认有哪些数据是被更新了的，哪些数据需要刷到持久层上。只有在缓存需要失效的时候，才会把它真正持久起来。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/5/11/1634fc3319c1b374" srcset="/img/loading.gif" lazyload alt="Write Behind Caching 更新模式流程图"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>三种缓存模式的优缺点：</p>
+<ul>
+<li>Cache Aside 更新模式实现起来比较简单，但是需要维护两个数据存储，一个是缓存（Cache），一个是数据库（Repository）。</li>
+<li>Read/Write Through 更新模式只需要维护一个数据存储（缓存），但是实现起来要复杂一些。</li>
+<li>Write Behind Caching 更新模式和Read/Write Through 更新模式类似，区别是Write Behind Caching 更新模式的数据持久化操作是异步的，但是Read/Write Through 更新模式的数据持久化操作是同步的。优点是直接操作内存速度快，多次操作可以合并持久化到数据库。缺点是数据可能会丢失，例如系统断电等。</li>
+</ul>
+<p><strong>缓存是通过牺牲强一致性来提高性能的。所以使用缓存提升性能，就是会有数据更新的延迟。这需要我们在设计时结合业务仔细思考是否适合用缓存。然后缓存一定要设置过期时间，这个时间太短太长都不好，太短的话请求可能会比较多的落到数据库上，这也意味着失去了缓存的优势。太长的话缓存中的脏数据会使系统长时间处于一个延迟的状态，而且系统中长时间没有人访问的数据一直存在内存中不过期，浪费内存。</strong>            </p>
+<p>​             </p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/cache/" class="category-chain-item">cache</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/cache/">#cache</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>使用缓存的正确姿势</div>
+      <div>https://github.13sai.com/2021/04/22/331/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/04/26/332/" title="Docker核心技术与实现原理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Docker核心技术与实现原理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/04/03/326/" title="Paxos和Raft协议介绍">
+                        <span class="hidden-mobile">Paxos和Raft协议介绍</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

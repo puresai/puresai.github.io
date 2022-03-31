@@ -1,0 +1,1022 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  
+    <meta name="description" content="利用consul+nginx-upsync实现动态负载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用consul+nginx-upsync实现动态负载">
+<meta property="og:url" content="https://github.13sai.com/2019/12/01/212/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="利用consul+nginx-upsync实现动态负载">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-01T01:53:29.000Z">
+<meta property="article:modified_time" content="2022-03-19T14:35:21.884Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="consul">
+<meta property="article:tag" content="SLB">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>利用consul+nginx-upsync实现动态负载 - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">利用consul+nginx-upsync实现动态负载</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-12-01 09:53" pubdate>
+          2019年12月1日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Nginx"
+        id="heading-62e0b5b350c9e3d2c19aa801d9442ba9" role="tab" data-toggle="collapse" href="#collapse-62e0b5b350c9e3d2c19aa801d9442ba9"
+        aria-expanded="true"
+      >
+        Nginx
+        <span class="list-group-count">(10)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-62e0b5b350c9e3d2c19aa801d9442ba9"
+           role="tabpanel" aria-labelledby="heading-62e0b5b350c9e3d2c19aa801d9442ba9">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2019/12/21/Nginx2/" title="Nginx负载均衡"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx负载均衡</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/12/20/Nginx3/" title="Nginx工作模式和进程模型"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx工作模式和进程模型</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/12/01/212/" title="利用consul+nginx-upsync实现动态负载"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">利用consul+nginx-upsync实现动态负载</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/11/22/Nginx6/" title="Nginx配置常用参数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx配置常用参数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/11/22/Nginx1/" title="Nginx代理缓存"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx代理缓存</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/11/22/Nginx5/" title="Nginx内嵌变量"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx内嵌变量</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/11/20/Nginx9/" title="Nginx添加lua-nginx模块"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Nginx添加lua-nginx模块</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/07/23/Nginx8/" title="nginx日志按日配置"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">nginx日志按日配置</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/04/16/Nginx7/" title="nginx配置根据url指向不同的目录"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">nginx配置根据url指向不同的目录</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2018/10/19/Nginx4/" title="nginx健康检查"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">nginx健康检查</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">利用consul+nginx-upsync实现动态负载</h1>
+            
+            <div class="markdown-body">
+              
+              <p>这是前一段时间学习的课程上面的，自己实际操作了一下，详细操作及说明如下。</p>
+<hr>
+<p>如果Nginx遇到大流量和高负载，修改配置文件重启可能并不总是那么方便，因为恢复Nginx并重载配置会进一步增加系统负载，并很可能暂时降低性能。而一个个修改配置文件也是很容易出错和费时间的操作。</p>
+<p>这时候不妨试试consul+nginx-upsync-module实现Nginx的动态负载。</p>
+<h2 id="nginx-upsync-module"><a href="#nginx-upsync-module" class="headerlink" title="nginx-upsync-module"></a>nginx-upsync-module</h2><p>nginx-upsync-module 提供了动态的负载均衡，它可以从consul或etcd同步upstreams，动态修改后端服务器属性（weight，max_fails，down…），而不需要重新加载nginx。这样我们通过它实现平滑伸缩，而不严重地影响性能。</p>
+<h4 id="利用docker安装"><a href="#利用docker安装" class="headerlink" title="利用docker安装"></a>利用docker安装</h4><p>我已经基于centos7构建了一个镜像 13sai/nginx-lua-upsync ，你可以使用下面的命令启动一个容器</p>
+<blockquote>
+<p>docker run -itd –name=nginx-upsync -p 8008:80 -p 9501:9501 -p 9502:9502 -p 9503:9503 -p 8500:8500 13sai/nginx-lua-upsync</p>
+</blockquote>
+<p>当然，你也可以不使用docker自行搭建，添加nginx-upsync-module模块可以参考<a target="_blank" rel="noopener" href="https://learnku.com/articles/36567">nginx模块lua模块</a>。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/weibocom/nginx-upsync-module#installation">nginx-upsync-module的git地址</a></li>
+</ul>
+<h4 id="进入容器配置"><a href="#进入容器配置" class="headerlink" title="进入容器配置"></a>进入容器配置</h4><blockquote>
+<p>docker exec -it nginx-upsync /bin/bash</p>
+</blockquote>
+<blockquote>
+<p>cd /usr/local/nginx/conf</p>
+</blockquote>
+<blockquote>
+<p>echo “server host.docker.internal:9501 weight=1 fail_timeout=10 max_fails=3;” &gt;&gt; servers.conf</p>
+</blockquote>
+<blockquote>
+<p>vi nginx.conf</p>
+</blockquote>
+ <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs awk"> <span class="hljs-comment">#nginx.conf 主要配置</span><br> ...<br> <br> upstream <span class="hljs-number">13</span>sai&#123;<br>    upsync <span class="hljs-number">192.168</span>.<span class="hljs-number">65.2</span>:<span class="hljs-number">8500</span><span class="hljs-regexp">/v1/</span>kv<span class="hljs-regexp">/upstreams/</span>test-server upsync_timeout=<span class="hljs-number">6</span>m upsync_interval=<span class="hljs-number">500</span>ms upsync_type=consul strong_dependency=off;<br>    upsync_dump_path <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/servers.conf;<br>    include <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/servers.conf;<br>&#125;<br><br><br>server &#123;<br>    listen       <span class="hljs-number">80</span>;<br><br>    location / &#123;<br>		proxy_pass http:<span class="hljs-regexp">//</span><span class="hljs-number">13</span>sai;<br>    &#125;<br><br><br>    ...<br>    <br>&#125;<br><br>...<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="upsync语法说明"><a href="#upsync语法说明" class="headerlink" title="upsync语法说明"></a>upsync语法说明</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs routeros">语法：syntax: upsync <span class="hljs-variable">$consul</span>/etcd.api.com:<span class="hljs-variable">$port</span>/v1/kv/upstreams/<span class="hljs-variable">$upstream_name</span>/ [<span class="hljs-attribute">upsync_type</span>=consul/etcd] [<span class="hljs-attribute">upsync_interval</span>=second/minutes] [<span class="hljs-attribute">upsync_timeout</span>=second/minutes] [<span class="hljs-attribute">strong_dependency</span>=off/on]<br>默认值：无，如果省略参数，则默认参数为upsync_interval = 5s upsync_timeout = 6m strong_dependency = off<br>描述：从 consul/etcd 中拉取upstreams<br><br>upsync 定义从consul/etcd拉取最新的upstream信息并存到本地的操作<br>upsync_timeout 定义从consul/etcd拉取配置的超时时间<br>upsync_interval 定义从consul/etc拉取配置的间隔时间<br>upsync_type 定义使用配置服务类型<br>strong_dependency 启动时是否强制依赖配置服务器，如果配置为on,则拉取失败，nginx同样会启用失败<br>upsync_dump_path 定义从consul/etcd拉取配置后持久化到的本地的文件路径，这样即使 consul/etcd出问题了，本地同样会有备份文件<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意下面这个文件必须要有，文件路径和名称可以自定义，nginx-upsync-module会将负载信息缓存到此文件，否则Nginx启动会报错。</p>
+</blockquote>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment">#servers.conf，192.168.x.xxx是我的宿主机ip</span><span class="hljs-built_in"></span><br><span class="hljs-built_in">server </span>192.168.x.xxx:9501 <span class="hljs-attribute">weight</span>=20 <span class="hljs-attribute">max_fails</span>=1 <span class="hljs-attribute">fail_timeout</span>=5s;<br></code></pre></td></tr></table></figure>
+
+
+<p>重启nginx</p>
+<blockquote>
+<p>/usr/local/nginx/sbin/nginx -t</p>
+</blockquote>
+<blockquote>
+<p>/usr/local/nginx/sbin/nginx -s reload</p>
+</blockquote>
+<p>这里虽然我们还未启动consul，但没有什么影响，upsync会去拉取，也必然会失败，servers.conf就不会更新，Nginx的error日志会有信息。</p>
+<h2 id="利用swoole启动3个http服务"><a href="#利用swoole启动3个http服务" class="headerlink" title="利用swoole启动3个http服务"></a>利用swoole启动3个http服务</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 可启动3个server，端口分别为9501，9502，9503，输出也做对应修改</span><br><span class="hljs-variable">$http</span> = <span class="hljs-keyword">new</span> Swoole\Http\Server(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">9501</span>);<br><span class="hljs-variable">$http</span>-&gt;on(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-variable">$response</span></span>) </span>&#123;<br>    <span class="hljs-variable">$response</span>-&gt;end(<span class="hljs-string">&quot;9501&quot;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+
+<h2 id="consul安装"><a href="#consul安装" class="headerlink" title="consul安装"></a>consul安装</h2><blockquote>
+<p>这里consul只做一个kv存储，我自己也是第一次用，就不去做过多介绍了。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.consul.io/downloads.html">下载地址</a></p>
+<p>解压到你需要的目录，主要也就是一个consul可执行文件。（这里我装在我的电脑，而不是刚才的docker容器）</p>
+<p>命令可看文档：<a target="_blank" rel="noopener" href="https://book-consul-guide.vnzmi.com/">Consul 简介和快速入门</a></p>
+<h4 id="启动："><a href="#启动：" class="headerlink" title="启动："></a>启动：</h4><blockquote>
+<p>nohup ./consul agent -dev &amp;</p>
+</blockquote>
+<p>为了方便，我们也没有启动集群，生产环境建议使用consul集群。</p>
+<h4 id="UI查看"><a href="#UI查看" class="headerlink" title="UI查看"></a>UI查看</h4><blockquote>
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1:8500/">http://127.0.0.1:8500/</a></p>
+</blockquote>
+<h4 id="查看节点"><a href="#查看节点" class="headerlink" title="查看节点"></a>查看节点</h4><blockquote>
+<p>./consul members</p>
+</blockquote>
+<blockquote>
+<p>curl 127.0.0.1:8500/v1/catalog/nodes</p>
+</blockquote>
+<h4 id="查看kv值"><a href="#查看kv值" class="headerlink" title="查看kv值"></a>查看kv值</h4><blockquote>
+<p>curl -v <a target="_blank" rel="noopener" href="http://127.0.0.1:8500/v1/kv//?recurse">http://127.0.0.1:8500/v1/kv/\?recurse</a></p>
+</blockquote>
+<h4 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h4><blockquote>
+<p>curl -X PUT -d ‘{“weight”:20,”max_fails”:2,”fail_timeout”:5}’ <a target="_blank" rel="noopener" href="http://127.0.0.1:8500/v1/kv/upstreams/test-server/192.168.x.xxx:9502">http://127.0.0.1:8500/v1/kv/upstreams/test-server/192.168.x.xxx:9502</a></p>
+</blockquote>
+<p>此处192.168.x.xxx是因为我创建的docker容器的宿主机ip。</p>
+<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><blockquote>
+<p>curl -X DELETE <a target="_blank" rel="noopener" href="http://127.0.0.1:8500/v1/kv/upstreams/test-server/192.168.x.xxx:9502">http://127.0.0.1:8500/v1/kv/upstreams/test-server/192.168.x.xxx:9502</a></p>
+</blockquote>
+<hr>
+<p>我们可以通过添加和删除来测试，查看<a target="_blank" rel="noopener" href="http://127.0.0.1:8008/%E6%9D%A5%E6%9F%A5%E7%9C%8B%E8%BE%93%E5%87%BA%EF%BC%8C%E4%B9%9F%E5%8F%AF%E4%BB%A5%E7%9C%8B%E7%9C%8BNginx%E9%87%8C%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6servers.conf%EF%BC%8C%E4%BD%A0%E4%BC%9A%E7%9C%8B%E5%88%B0%E4%BD%A0%E6%93%8D%E4%BD%9Cconsul%EF%BC%8C%E4%BC%9A%E5%8A%A8%E6%80%81%E6%94%B9%E5%8F%98Nginx%E7%9A%84upstream%EF%BC%8C%E8%BF%99%E6%A0%B7%E5%B0%B1%E5%AE%9E%E7%8E%B0%E4%BA%86Nginx%E7%9A%84%E5%8A%A8%E6%80%81%E6%89%A9%E5%AE%B9%E3%80%82">http://127.0.0.1:8008/来查看输出，也可以看看Nginx里的配置文件servers.conf，你会看到你操作consul，会动态改变Nginx的upstream，这样就实现了Nginx的动态扩容。</a></p>
+<hr>
+<p>对consul和docker的学习还不够深入，文中如有错误，欢迎指正交流。</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Nginx/" class="category-chain-item">Nginx</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/consul/">#consul</a>
+      
+        <a href="/tags/SLB/">#SLB</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>利用consul+nginx-upsync实现动态负载</div>
+      <div>https://github.13sai.com/2019/12/01/212/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/12/08/214/" title="docker安装gogs">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">docker安装gogs</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/11/26/210/" title="TCP三次握手和四次挥手">
+                        <span class="hidden-mobile">TCP三次握手和四次挥手</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

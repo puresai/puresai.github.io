@@ -1,0 +1,1083 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  
+    <meta name="description" content="go的GC机制，三色标记法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go的GC机制">
+<meta property="og:url" content="https://github.13sai.com/2021/02/27/319/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="go的GC机制，三色标记法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.13sai.com/images/post/9905654-922225af024f386c.png">
+<meta property="article:published_time" content="2021-02-27T13:03:12.000Z">
+<meta property="article:modified_time" content="2022-03-19T14:35:21.707Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="go">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/9905654-922225af024f386c.png">
+  
+  
+  <title>go的GC机制 - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">go的GC机制</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-02-27 21:03" pubdate>
+          2021年2月27日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="go"
+        id="heading-34d1f91fb2e514b8576fab1a75a89a6b" role="tab" data-toggle="collapse" href="#collapse-34d1f91fb2e514b8576fab1a75a89a6b"
+        aria-expanded="true"
+      >
+        go
+        <span class="list-group-count">(17)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-34d1f91fb2e514b8576fab1a75a89a6b"
+           role="tabpanel" aria-labelledby="heading-34d1f91fb2e514b8576fab1a75a89a6b">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2022/01/29/385/" title="go性能工具pprof"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go性能工具pprof</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/01/16/383/" title="go实现LRU"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go实现LRU</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/01/11/382/" title="go有缓冲channel和无缓冲channel"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go有缓冲channel和无缓冲channel</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/10/30/375/" title="go使用私有module"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go使用私有module</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/09/15/372/" title="go局部变量:=要注意作用域"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go局部变量:=要注意作用域</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/05/27/340/" title="Protobuf语法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Protobuf语法</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/05/23/338/" title="Go错误处理最佳实践"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Go错误处理最佳实践</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/04/29/335/" title="golang的单引号双引号反引号"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">golang的单引号双引号反引号</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/03/19/323/" title="goroutine"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">goroutine</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/27/319/" title="go的GC机制"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">go的GC机制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/11/21/283/" title="go的并发模型"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go的并发模型</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/09/10/275/" title="golang的time使用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">golang的time使用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/07/20/261/" title="最近使用gin的总结"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">最近使用gin的总结</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/03/29/243/" title="go的类型转换"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">go的类型转换</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/12/27/219/" title="gomodules"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">gomodules</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/12/20/215/" title="gRPC初体验"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">gRPC初体验</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/08/25/195/" title="学习go遇到的一些问题和概念汇总"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">学习go遇到的一些问题和概念汇总</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">go的GC机制</h1>
+            
+            <div class="markdown-body">
+              
+              <h2 id="Golang的标记清除"><a href="#Golang的标记清除" class="headerlink" title="Golang的标记清除"></a>Golang的标记清除</h2><p>如下图所示，通过gcmarkBits位图标记span的块是否被引用。对应内存分配中的bitmap区。</p>
+<h3 id="三色标记"><a href="#三色标记" class="headerlink" title="三色标记"></a>三色标记</h3><ul>
+<li><p>白色：对象未被标记，gcmarkBits对应的位为0（该对象将会在本次GC中被清理）</p>
+</li>
+<li><p>灰色：对象已被标记，但这个对象包含的子对象未标记</p>
+</li>
+<li><p>黑色：对象已被标记，且这个对象包含的子对象也已标记，gcmarkBits对应的位为1（该对象不会在本次GC中被清理）</p>
+</li>
+</ul>
+<p>例如，当前内存中有A~F一共6个对象，根对象a,b本身为栈上分配的局部变量，根对象a、b分别引用了对象A、B, 而B对象又引用了对象D，则GC开始前各对象的状态如下图所示:</p>
+<ol>
+<li>初始状态下所有对象都是白色的。</li>
+<li>接着开始扫描根对象a、b; 由于根对象引用了对象A、B,那么A、B变为灰色对象，接下来就开始分析灰色对象，分析A时，A没有引用其他对象很快就转入黑色，B引用了D，则B转入黑色的同时还需要将D转为灰色，进行接下来的分析。</li>
+<li>灰色对象只有D，由于D没有引用其他对象，所以D转入黑色。标记过程结束</li>
+<li>最终，黑色的对象会被保留下来，白色对象会被回收掉。</li>
+</ol>
+<p><img src="/images/post/9905654-922225af024f386c.png" srcset="/img/loading.gif" lazyload alt="gc"></p>
+<h3 id="GC的触发"><a href="#GC的触发" class="headerlink" title="GC的触发"></a>GC的触发</h3><ul>
+<li>阈值：默认内存扩大一倍，启动gc</li>
+<li>定期：默认2min触发一次gc，src/runtime/proc.go:forcegcperiod</li>
+<li>手动：runtime.gc()</li>
+</ul>
+<h3 id="STW"><a href="#STW" class="headerlink" title="STW"></a>STW</h3><p>stop the world是gc的最大性能问题，对于gc而言，需要停止所有的内存变化，即停止所有的goroutine，等待gc结束之后才恢复。</p>
+<p>标记-清除(mark and sweep)算法的STW(stop the world)操作，就是runtime把所有的线程全部冻结掉，所有的线程全部冻结意味着用户逻辑是暂停的。这样所有的对象都不会被修改了，这时候去扫描是绝对安全的。</p>
+<p>Go如何减短这个过程呢？标记-清除(mark and sweep)算法包含两部分逻辑：标记和清除。</p>
+<p>我们知道Golang三色标记法中最后只剩下的黑白两种对象，黑色对象是程序恢复后接着使用的对象，如果不碰触黑色对象，只清除白色的对象，肯定不会影响程序逻辑。所以： <code>清除操作和用户逻辑可以并发。</code></p>
+<p>标记操作和用户逻辑也是并发的，用户逻辑会时常生成对象或者改变对象的引用，那么标记和用户逻辑如何并发呢？这里就让说到golang的写屏障了。</p>
+<h3 id="GC流程"><a href="#GC流程" class="headerlink" title="GC流程"></a>GC流程</h3><ol>
+<li>Sweep Termination: 对未清扫的span进行清扫, 只有上一轮的GC的清扫工作完成才可以开始新一轮的GC</li>
+<li>Mark: 扫描所有根对象, 和根对象可以到达的所有对象, 标记它们不被回收</li>
+<li>Mark Termination: 完成标记工作, 重新扫描部分根对象(要求STW)</li>
+<li>Sweep: 按标记结果清扫span</li>
+</ol>
+<p>目前整个GC流程会进行两次STW(Stop The World), 第一次是Mark阶段的开始, 第二次是Mark Termination阶段.</p>
+<ul>
+<li>第一次STW会准备根对象的扫描, 启动写屏障(Write Barrier)和辅助GC(mutator assist).</li>
+<li>第二次STW会重新扫描部分根对象, 禁用写屏障(Write Barrier)和辅助GC(mutator assist).</li>
+</ul>
+<p>需要注意的是, 不是所有根对象的扫描都需要STW, 例如扫描栈上的对象只需要停止拥有该栈的G.<br>从go 1.9开始, 写屏障的实现使用了Hybrid Write Barrier, 大幅减少了第二次STW的时间.</p>
+<h3 id="写屏障"><a href="#写屏障" class="headerlink" title="写屏障"></a>写屏障</h3><p>因为go支持<strong>并行GC</strong>， GC的扫描和go代码可以同时运行，这样带来的问题是GC扫描的过程中go代码有可能改变了对象的依赖树。</p>
+<p>例如开始扫描时发现根对象A和B，B拥有C的指针。</p>
+<ol>
+<li>GC先扫描A，A放入黑色</li>
+<li>B把C的指针交给A</li>
+<li>GC再扫描B，B放入黑色</li>
+<li>C在白色，会回收；但是A其实引用了C。</li>
+</ol>
+<p>为了避免这个问题, go在GC的标记阶段会启用写屏障(Write Barrier).</p>
+<p>启用了写屏障(Write Barrier)后，</p>
+<ol>
+<li>GC先扫描A，A放入黑色</li>
+<li>B把C的指针交给A</li>
+<li>由于A在黑色，所以C放入灰色</li>
+<li>C没有子对象，放入黑色</li>
+<li>扫描B，B没有子对象，放入黑色</li>
+</ol>
+<p>即使A可能会在稍后丢掉C, 那么C就在下一轮回收。</p>
+<p>开启写屏障之后，当指针发生改变, GC会认为在这一轮的扫描中这个指针是<strong>存活</strong>的, 所以放入<strong>灰色</strong>。</p>
+<h2 id="其他常见gc机制"><a href="#其他常见gc机制" class="headerlink" title="其他常见gc机制"></a>其他常见gc机制</h2><ul>
+<li>引用计数</li>
+<li>复制收集</li>
+<li>分代收集</li>
+</ul>
+<h2 id="GC-的触发时机的两种形式"><a href="#GC-的触发时机的两种形式" class="headerlink" title="GC 的触发时机的两种形式"></a>GC 的触发时机的两种形式</h2><ol>
+<li><strong>主动触发</strong>，通过调用 runtime.GC 来触发 GC，此调用阻塞式地等待当前 GC 运行完毕。</li>
+<li><strong>被动触发</strong>，分为两种方式：<ul>
+<li>使用系统监控，当超过两分钟没有产生任何 GC 时，强制触发 GC。</li>
+<li>使用步调（Pacing）算法，其核心思想是控制内存增长的比例。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zj420255586/p/14261834.html">Golang GC(垃圾回收机制)</a></li>
+<li>[11. 触发 GC 的时机是什么？](<a target="_blank" rel="noopener" href="https://www.bookstack.cn/read/qcrao-Go-Questions/spilt.11.GC-GC.md#11">https://www.bookstack.cn/read/qcrao-Go-Questions/spilt.11.GC-GC.md#11</a>. 触发 GC 的时机是什么？)</li>
+</ul>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/go/" class="category-chain-item">go</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/go/">#go</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>go的GC机制</div>
+      <div>https://github.13sai.com/2021/02/27/319/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/02/28/quick/" title="Redis使用单线程为什么这么快">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Redis使用单线程为什么这么快</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/02/25/318/" title="微服务浅析">
+                        <span class="hidden-mobile">微服务浅析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

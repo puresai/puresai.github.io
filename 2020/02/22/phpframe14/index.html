@@ -1,0 +1,1035 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="PHP,api,手写框架,PSR,composer">
+  
+    <meta name="description" content="一起手写一个php-api框架,使用redis的有序集合实现延时任务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="应用篇：2.延时任务">
+<meta property="og:url" content="https://github.13sai.com/2020/02/22/phpframe14/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="一起手写一个php-api框架,使用redis的有序集合实现延时任务">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-22T06:35:57.000Z">
+<meta property="article:modified_time" content="2022-03-19T15:25:58.839Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="phpframe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>应用篇：2.延时任务 - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">应用篇：2.延时任务</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-02-22 14:35" pubdate>
+          2020年2月22日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="phpframe"
+        id="heading-3a09ba88d8fac01f2b239b8b51421bf4" role="tab" data-toggle="collapse" href="#collapse-3a09ba88d8fac01f2b239b8b51421bf4"
+        aria-expanded="true"
+      >
+        phpframe
+        <span class="list-group-count">(14)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-3a09ba88d8fac01f2b239b8b51421bf4"
+           role="tabpanel" aria-labelledby="heading-3a09ba88d8fac01f2b239b8b51421bf4">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2020/02/22/phpframe14/" title="应用篇：2.延时任务"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">应用篇：2.延时任务</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/22/phpframe13/" title="应用篇：1.分布式锁"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">应用篇：1.分布式锁</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/16/phpframe12/" title="框架篇：9.设计模式"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：9.设计模式</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/15/phpframe11/" title="框架篇：8.依赖注入与控制反转"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：8.依赖注入与控制反转</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/15/phpframe10/" title="框架篇：7.使用redis加速session读写"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：7.使用redis加速session读写</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/13/phpframe09/" title="框架篇：6.简单测试"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：6.简单测试</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/09/phpframe08/" title="框架篇：5.自定义配置与路由"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：5.自定义配置与路由</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/08/phpframe07/" title="框架篇：4.入口文件"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：4.入口文件</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/08/phpframe06/" title="框架篇：3.路由解析"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：3.路由解析</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/04/phpframe05/" title="框架篇：2.请求与输出"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：2.请求与输出</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/02/phpframe04/" title="框架篇：1.框架目录与辅助"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">框架篇：1.框架目录与辅助</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/01/phpframe03/" title="基础篇：3.反射"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">基础篇：3.反射</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/01/phpframe02/" title="基础篇：2.composer"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">基础篇：2.composer</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/01/phpframe01/" title="基础篇：1.PSR"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">基础篇：1.PSR</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">应用篇：2.延时任务</h1>
+            
+            <div class="markdown-body">
+              
+              <p>PHP DIY系列–一起手写一个api框架</p>
+<hr>
+<blockquote>
+<p>延时任务有别于定时任务，定时任务往往是固定周期的，有明确的触发时间。而延时任务一般没有固定的开始时间，它常常是由一个事件触发的，而在这个事件触发之后的一段时间内触发另一个事件。</p>
+</blockquote>
+<p>我们不妨来设定一个实际的场景，电商系统下单成功之后如果15分钟未支付成功，就系统自动取消订单。</p>
+<p>我们先来实现代码，然后再来详细说明：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 我们定义一个abstract，定义两个方法，startAfter和startAt</span><br><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DelayTask</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">const</span> DELAY_TASK = <span class="hljs-string">&#x27;delayTask&#x27;</span>;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 延时时间，在触发时间后多久执行</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $pushDelayTime</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startAfter</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-variable">$pushDelayTime</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        RedisManager::getRedis()-&gt;zAdd(<span class="hljs-built_in">self</span>::DELAY_TASK, time() + <span class="hljs-variable">$pushDelayTime</span>, serialize(<span class="hljs-keyword">$this</span>));<br>    &#125;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 定时时间，在未来某时刻执行</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $pushDelayAt</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startAt</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-variable">$pushDelayAt</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        RedisManager::getRedis()-&gt;zAdd(<span class="hljs-built_in">self</span>::DELAY_TASK, <span class="hljs-variable">$pushDelayAt</span>, serialize(<span class="hljs-keyword">$this</span>));<br>    &#125;<br>    <span class="hljs-keyword">abstract</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span>;<br>&#125;<br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestDelayTask</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">DelayTask</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;id = <span class="hljs-variable">$id</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$file</span>  = <span class="hljs-string">&#x27;text.txt&#x27;</span>;<span class="hljs-comment">//要写入文件的文件名（可以是任意文件名），如果文件不存在，将会创建一个</span><br>        <span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;写入的内容&quot;</span>.time().<span class="hljs-string">&quot;\n&quot;</span>;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$f</span> = file_put_contents(<span class="hljs-variable">$file</span>, <span class="hljs-variable">$content</span>,FILE_APPEND))&#123;<span class="hljs-comment">// 这个函数支持版本(PHP 5)</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;写入成功。&lt;br /&gt;&quot;</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>RedisManager是封装的一个单例模式实现的redis类，我们也贴出代码，然后再对上面的代码做一些说明。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisManager</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$instance</span> = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span> = <span class="hljs-keyword">new</span> \Redis();<br>        <span class="hljs-variable">$config</span> = <span class="hljs-keyword">require</span> <span class="hljs-string">&#x27;redis.config.php&#x27;</span>;<br>        <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>-&gt;connect(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;host&#x27;</span>], <span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;port&#x27;</span>], <span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;timeout&#x27;</span>]);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;password&#x27;</span>])) &#123;<br>            <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>-&gt;auth(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;password&#x27;</span>]);<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取静态实例</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRedis</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>) &#123;<br>            <span class="hljs-keyword">new</span> <span class="hljs-built_in">self</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>;<br>    &#125;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 禁止clone</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__clone</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">redis</span> <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">1</span> redis<br>(integer) <span class="hljs-number">1</span><br>redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">2</span> mongodb<br>(integer) <span class="hljs-number">1</span><br>redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">4</span> mysql<br>(integer) <span class="hljs-number">0</span><br>redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZRANGE saif <span class="hljs-number">0</span> <span class="hljs-number">10</span> WITHSCORES<br><br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;redis&quot;</span><br><span class="hljs-number">2</span>) <span class="hljs-string">&quot;1&quot;</span><br><span class="hljs-number">3</span>) <span class="hljs-string">&quot;mongodb&quot;</span><br><span class="hljs-number">4</span>) <span class="hljs-string">&quot;2&quot;</span><br><span class="hljs-number">5</span>) <span class="hljs-string">&quot;mysql&quot;</span><br><span class="hljs-number">6</span>) <span class="hljs-string">&quot;4&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>如果你有redis可视化工具，你会发现有序集合存储的结构是这样：</p>
+<table>
+<thead>
+<tr>
+<th>row</th>
+<th>value</th>
+<th>score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>redis</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>mongodb</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>mysql</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<p>我们再来看一下代码，我们使用时间戳作为分值，使用对象作为值，存储到Redis有序集合。</p>
+<blockquote>
+<p>file_put_contents ( string $filename , mixed $data [, int $flags = 0 [, resource $context ]] ) : int   — 将一个字符串写入文件</p>
+</blockquote>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs livescript">我们先尝试写入任务：<br><br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">900</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">120</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">600</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158120384</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158420380</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158120900</span>);<br></code></pre></td></tr></table></figure>
+
+<p>执行代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DelayTaskTask</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">const</span> QueneName = <span class="hljs-string">&#x27;delayTask&#x27;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$currentTime</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$once</span> = <span class="hljs-number">5</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;currentTime = time();<br>        error_reporting(error_reporting() &amp; ~E_WARNING);<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>            <span class="hljs-comment">// 每次取出5条</span><br>            <span class="hljs-variable">$list</span> = RedisManager::getRedis()-&gt;zRange(<span class="hljs-built_in">self</span>::QueneName, <span class="hljs-number">0</span>, <span class="hljs-keyword">$this</span>-&gt;once, <span class="hljs-literal">true</span>);<br>            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$list</span>)) &#123;<br>                <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$list</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$val</span>=&gt;<span class="hljs-variable">$score</span>) &#123;<br>                    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$score</span> &lt; <span class="hljs-keyword">$this</span>-&gt;currentTime) &#123;<br>                        unserialize(<span class="hljs-variable">$val</span>)-&gt;run();<br>                        RedisManager::getRedis()-&gt;zDelete(<span class="hljs-built_in">self</span>::QueneName, <span class="hljs-variable">$val</span>);<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        <span class="hljs-keyword">break</span> <span class="hljs-number">2</span>;<br>                    &#125;<br>                &#125;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br>(<span class="hljs-keyword">new</span> DelayTaskTask())-&gt;run();<br></code></pre></td></tr></table></figure>
+
+<p>我们可以设置一个定时任务，每分钟执行一次上述代码。</p>
+<p>我们执行之后，会发现一旦过了我们设定的时间，text.txt就不断有文字写入了。</p>
+<p>代码比较杂，我有一个demo代码，大家可以查看。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/13sai/wheels/tree/master/DelayTask-%E5%9F%BA%E4%BA%8Eredis%E7%9A%84%E5%BB%B6%E6%97%B6%E4%BB%BB%E5%8A%A1">DelayTask-基于redis的延时任务</a></p>
+<p>这样，我们就利用Redis有序集合，完成了一个很基础的延时任务。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ul>
+<li>加入run方法代码执行时间过长，一分钟执行一次有什么问题吗？</li>
+<li>每分钟执行一次，间隔有点长，能不能优化呢？</li>
+</ul>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/phpframe/" class="category-chain-item">phpframe</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/phpframe/">#phpframe</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>应用篇：2.延时任务</div>
+      <div>https://github.13sai.com/2020/02/22/phpframe14/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/27/228/" title="ElementUI多图拖拽">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ElementUI多图拖拽</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/22/phpframe13/" title="应用篇：1.分布式锁">
+                        <span class="hidden-mobile">应用篇：1.分布式锁</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  
+    <meta name="description" content="ElementUI多图拖拽,vuedraggable">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ElementUI多图拖拽">
+<meta property="og:url" content="https://github.13sai.com/2020/02/27/228/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="ElementUI多图拖拽,vuedraggable">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-27T01:33:48.000Z">
+<meta property="article:modified_time" content="2022-03-19T14:35:21.582Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="ElementUI">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  <title>ElementUI多图拖拽 - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/bookmark/">
+                <i class="iconfont icon-bookmark"></i>
+                书签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">ElementUI多图拖拽</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-02-27 09:33" pubdate>
+          2020年2月27日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          6.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          58 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="vue"
+        id="heading-951c1f757a9f918f0624cd5cb90b890d" role="tab" data-toggle="collapse" href="#collapse-951c1f757a9f918f0624cd5cb90b890d"
+        aria-expanded="true"
+      >
+        vue
+        <span class="list-group-count">(5)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-951c1f757a9f918f0624cd5cb90b890d"
+           role="tabpanel" aria-labelledby="heading-951c1f757a9f918f0624cd5cb90b890d">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2020/07/14/262/" title="使用vue-element-admin的一些总结"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">使用vue-element-admin的一些总结</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/05/04/250/" title="利用ElementUI的table和calendar制作一个价格日历"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">利用ElementUI的table和calendar制作一个价格日历</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/04/29/247/" title="ElementUI中table表格自定义表头Tooltip文字提示"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">ElementUI中table表格自定义表头Tooltip文字提示</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/27/228/" title="ElementUI多图拖拽"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">ElementUI多图拖拽</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/01/08/222/" title="ElementUI整合编辑器vue-quill-editor"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">ElementUI整合编辑器vue-quill-editor</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ElementUI多图拖拽</h1>
+            
+            <div class="markdown-body">
+              
+              <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><blockquote>
+<p>yarn add vuedraggable<br>or<br>npm i -S vuedraggable</p>
+</blockquote>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">el-row</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;margin-top: 20px;&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">el-col</span> <span class="hljs-attr">:span</span>=<span class="hljs-string">&quot;20&quot;</span> <span class="hljs-attr">:offset</span>=<span class="hljs-string">&quot;2&quot;</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">el-form-item</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;预览&quot;</span> <span class="hljs-attr">prop</span>=<span class="hljs-string">&quot;desc&quot;</span>&gt;</span><br>                        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;image-list&quot;</span>&gt;</span><br>                        <span class="hljs-tag">&lt;<span class="hljs-name">draggable</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;showImgList&quot;</span>  @<span class="hljs-attr">change</span>=<span class="hljs-string">&quot;dragChange&quot;</span>&gt;</span><br>                            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;(image, index) in showImgList&quot;</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;index&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;image-wrap&quot;</span>&gt;</span><br>                                <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">:src</span>=<span class="hljs-string">&quot;image&quot;</span> <span class="hljs-attr">:style</span>=<span class="hljs-string">&quot;imgStyle&quot;</span> /&gt;</span><br>                                <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;icon-wrap&quot;</span> @<span class="hljs-attr">click.stop</span>=<span class="hljs-string">&quot;removeFile(index)&quot;</span>&gt;</span><br>                                <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;el-icon-delete&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span><br>                                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>                            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>                            <span class="hljs-tag">&lt;<span class="hljs-name">el-upload</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;imageListUpload&quot;</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">:action</span>=<span class="hljs-string">&quot;$uploadPicUrl&quot;</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">:headers</span>=<span class="hljs-string">&quot;header&quot;</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">:before-upload</span>=<span class="hljs-string">&quot;beforeUpload&quot;</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">:on-success</span>=<span class="hljs-string">&quot;uploadSuccess&quot;</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;image-uploader&quot;</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">:on-error</span>=<span class="hljs-string">&quot;onError&quot;</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">multiple</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">:show-file-list</span>=<span class="hljs-string">&quot;false&quot;</span></span><br><span class="hljs-tag">                                <span class="hljs-attr">accept</span>=<span class="hljs-string">&quot;image/*&quot;</span>&gt;</span><br>                                <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;loading ? &#x27;el-icon-loading&#x27; : &#x27;el-icon-plus&#x27;&quot;</span> <span class="hljs-attr">:style</span>=<span class="hljs-string">&quot;imgStyle&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span><br>                            <span class="hljs-tag">&lt;/<span class="hljs-name">el-upload</span>&gt;</span><br>                        <span class="hljs-tag">&lt;/<span class="hljs-name">draggable</span>&gt;</span><br>                        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>                    <span class="hljs-tag">&lt;/<span class="hljs-name">el-form-item</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">el-col</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">el-row</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css"></span><br><span class="css"><span class="hljs-selector-class">.ql-container</span> <span class="hljs-selector-class">.ql-editor</span>&#123;</span><br><span class="css">    <span class="hljs-attribute">height</span>:<span class="hljs-number">400px</span>;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.avatar-uploader</span> <span class="hljs-selector-class">.el-upload</span> &#123;</span><br><span class="css">    <span class="hljs-attribute">height</span>: <span class="hljs-number">180px</span>;</span><br><span class="css">    <span class="hljs-attribute">width</span>: <span class="hljs-number">180px</span>;</span><br><span class="css">    <span class="hljs-attribute">overflow</span>: hidden;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.avatar-uploader</span> <span class="hljs-selector-tag">img</span> &#123;</span><br><span class="css">    <span class="hljs-attribute">height</span>: <span class="hljs-number">180px</span>;</span><br><span class="css">    <span class="hljs-attribute">width</span>: <span class="hljs-number">180px</span>;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.avatar-uploader</span> <span class="hljs-selector-class">.avatar-uploader-icon</span> &#123;</span><br><span class="css">    <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> dashed <span class="hljs-number">#d9d9d9</span>;</span><br><span class="css">    <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">6px</span>;</span><br><span class="css">    <span class="hljs-attribute">cursor</span>: pointer;</span><br><span class="css">    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">28px</span>;</span><br><span class="css">    <span class="hljs-attribute">color</span>: <span class="hljs-number">#8c939d</span>;</span><br><span class="css">    <span class="hljs-attribute">width</span>: <span class="hljs-number">178px</span>;</span><br><span class="css">    <span class="hljs-attribute">height</span>: <span class="hljs-number">178px</span>;</span><br><span class="css">    <span class="hljs-attribute">line-height</span>: <span class="hljs-number">178px</span>;</span><br><span class="css">    <span class="hljs-attribute">text-align</span>: center;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-id">#video</span> <span class="hljs-selector-class">.video</span> &#123;</span><br><span class="css">    <span class="hljs-attribute">max-width</span>: <span class="hljs-number">300px</span>;</span><br><span class="css">    <span class="hljs-attribute">max-height</span>: <span class="hljs-number">200px</span>;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.avatar</span> &#123;</span><br><span class="css"> <span class="hljs-attribute">width</span>: <span class="hljs-number">178px</span>;</span><br><span class="css"> <span class="hljs-attribute">height</span>: <span class="hljs-number">178px</span>;</span><br><span class="css"> <span class="hljs-attribute">display</span>: block;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.avatar-uploader</span> <span class="hljs-selector-tag">img</span> &#123;</span><br><span class="css">   <span class="hljs-attribute">height</span>: <span class="hljs-number">180px</span>;</span><br><span class="css">   <span class="hljs-attribute">width</span>: <span class="hljs-number">180px</span>;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.ql-editor</span>&#123;</span><br><span class="css">    <span class="hljs-attribute">height</span>:<span class="hljs-number">400px</span>;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.ql-snow</span> <span class="hljs-selector-class">.ql-picker</span> &#123;</span><br><span class="css">      <span class="hljs-attribute">height</span>: auto;</span><br><span class="css">&#125;</span><br><span class="css"></span><br><span class="css"><span class="hljs-selector-class">.image-list</span>,</span><br><span class="css"><span class="hljs-selector-class">.image-item</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">display</span>: flex;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-list</span> <span class="hljs-selector-class">.image-wrap</span>,</span><br><span class="css"><span class="hljs-selector-class">.image-item</span> <span class="hljs-selector-class">.image-wrap</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">position</span>: relative;</span><br><span class="css">  <span class="hljs-attribute">display</span>: inline-block;</span><br><span class="css">  <span class="hljs-attribute">box-sizing</span>: content-box;</span><br><span class="css">  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> <span class="hljs-number">8px</span> <span class="hljs-number">8px</span> <span class="hljs-number">0</span>;</span><br><span class="css">  <span class="hljs-attribute">vertical-align</span>: top;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-list</span> <span class="hljs-selector-class">.image-wrap</span><span class="hljs-selector-pseudo">:hover</span> <span class="hljs-selector-class">.icon-wrap</span>,</span><br><span class="css"><span class="hljs-selector-class">.image-item</span> <span class="hljs-selector-class">.image-wrap</span><span class="hljs-selector-pseudo">:hover</span> <span class="hljs-selector-class">.icon-wrap</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-list</span> <span class="hljs-selector-class">.image-wrap</span> <span class="hljs-selector-class">.icon-wrap</span>,</span><br><span class="css"><span class="hljs-selector-class">.image-item</span> <span class="hljs-selector-class">.image-wrap</span> <span class="hljs-selector-class">.icon-wrap</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">position</span>: absolute;</span><br><span class="css">  <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;</span><br><span class="css">  <span class="hljs-attribute">bottom</span>: <span class="hljs-number">0</span>;</span><br><span class="css">  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;</span><br><span class="css">  <span class="hljs-attribute">height</span>: <span class="hljs-number">30px</span>;</span><br><span class="css">  <span class="hljs-attribute">cursor</span>: default;</span><br><span class="css">  <span class="hljs-attribute">text-align</span>: center;</span><br><span class="css">  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;</span><br><span class="css">  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;</span><br><span class="css">  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">20px</span>;</span><br><span class="css">  <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.7</span>);</span><br><span class="css">  <span class="hljs-attribute">transition</span>: opacity .<span class="hljs-number">3s</span>;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-list</span> <span class="hljs-selector-class">.image-wrap</span> <span class="hljs-selector-class">.icon-wrap</span> <span class="hljs-selector-class">.el-icon-zoom-in</span>,</span><br><span class="css"><span class="hljs-selector-class">.image-item</span> <span class="hljs-selector-class">.image-wrap</span> <span class="hljs-selector-class">.icon-wrap</span> <span class="hljs-selector-class">.el-icon-zoom-in</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">cursor</span>: pointer;</span><br><span class="css">  <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">8px</span>;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-list</span> <span class="hljs-selector-class">.image-wrap</span> <span class="hljs-selector-class">.icon-wrap</span> <span class="hljs-selector-class">.el-icon-delete</span>,</span><br><span class="css"><span class="hljs-selector-class">.image-item</span> <span class="hljs-selector-class">.image-wrap</span> <span class="hljs-selector-class">.icon-wrap</span> <span class="hljs-selector-class">.el-icon-delete</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">cursor</span>: pointer;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-item</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">display</span>: inline-flex;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-uploader</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">display</span>: inline-block;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-uploader</span> <span class="hljs-selector-class">.el-upload</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> dashed <span class="hljs-number">#d9d9d9</span>;</span><br><span class="css">  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">6px</span>;</span><br><span class="css">  <span class="hljs-attribute">cursor</span>: pointer;</span><br><span class="css">  <span class="hljs-attribute">position</span>: relative;</span><br><span class="css">  <span class="hljs-attribute">overflow</span>: hidden;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-uploader</span> <span class="hljs-selector-class">.el-upload</span> <span class="hljs-selector-attr">[class^=<span class="hljs-string">&quot;el-icon&quot;</span>]</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">28px</span>;</span><br><span class="css">  <span class="hljs-attribute">color</span>: <span class="hljs-number">#8c939d</span>;</span><br><span class="css">  <span class="hljs-attribute">text-align</span>: center;</span><br><span class="css">&#125;</span><br><span class="css"><span class="hljs-selector-class">.image-uploader</span> <span class="hljs-selector-class">.el-upload</span><span class="hljs-selector-pseudo">:hover</span> &#123;</span><br><span class="css">  <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#409EFF</span>;</span><br><span class="css">&#125;</span><br><span class="css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">import</span> draggable <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuedraggable&#x27;</span></span><br><span class="javascript"></span><br><span class="javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span><br><span class="javascript">    <span class="hljs-attr">components</span>: &#123;</span><br><span class="javascript">        draggable,</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">        <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">            <span class="hljs-attr">showImgList</span>: [],</span><br><span class="javascript">            <span class="hljs-attr">loading</span>: <span class="hljs-literal">false</span>,</span><br><span class="javascript">        &#125;</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">created</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.$route.params.id &gt; <span class="hljs-number">0</span>) &#123;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.getInfo(<span class="hljs-built_in">this</span>.$route.params.id)</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.goodsForm.id = <span class="hljs-built_in">this</span>.$route.params.id;</span><br><span class="javascript">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.responseVisible = <span class="hljs-literal">false</span>;</span><br><span class="javascript">        &#125;</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-attr">computed</span>: &#123;</span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">imgStyle</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-keyword">return</span> &#123;</span><br><span class="javascript">                <span class="hljs-attr">width</span>: <span class="hljs-string">&#x27;180px&#x27;</span>, </span><br><span class="javascript">                <span class="hljs-attr">height</span>: <span class="hljs-string">&#x27;180px&#x27;</span>,</span><br><span class="javascript">                <span class="hljs-attr">lineHeight</span>: <span class="hljs-string">&#x27;180px&#x27;</span>,</span><br><span class="javascript">            &#125;</span><br><span class="javascript">        &#125;</span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">        <span class="hljs-comment">// 为图片ICON绑定事件  getModule 为编辑器的内部属性</span></span><br><span class="javascript">        <span class="hljs-comment">// this.$refs.myQuillEditor.quill.getModule(&#x27;toolbar&#x27;).addHandler(&#x27;image&#x27;, this.imgHandler)</span></span><br><span class="javascript">        <span class="hljs-comment">// this.$refs.myQuillEditor.quill.getModule(&#x27;toolbar&#x27;).addHandler(&#x27;video&#x27;, this.insertVideo) // 为视频ICON绑定事件</span></span><br><span class="javascript">    &#125;,</span><br><span class="javascript">    <span class="hljs-attr">methods</span>: &#123;</span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">beforeUpload</span>(<span class="hljs-params">file</span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-keyword">if</span> (file.type.split(<span class="hljs-string">&#x27;/&#x27;</span>)[<span class="hljs-number">0</span>] === <span class="hljs-string">&#x27;image&#x27;</span>) &#123;</span><br><span class="javascript">                <span class="hljs-keyword">let</span> tempSize = file.size / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span> / <span class="hljs-number">2</span>;</span><br><span class="javascript">                <span class="hljs-keyword">if</span> (tempSize &gt; <span class="hljs-number">1</span>) &#123;</span><br><span class="javascript">                    <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;图片尺寸不得大于2M！&#x27;</span>);</span><br><span class="javascript">                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span><br><span class="javascript">                &#125;</span><br><span class="javascript">            &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="javascript">                <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;请上传图片格式（jpg、png、gif）&#x27;</span>);</span><br><span class="javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span><br><span class="javascript">            &#125;</span><br><span class="javascript">        &#125;,</span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">getInfo</span>(<span class="hljs-params">id</span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-keyword">var</span> _self = <span class="hljs-built_in">this</span>;</span><br><span class="javascript">            projectInfo(id).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>)</span>&#123;</span><br><span class="javascript">                _self.goodsForm = res.data.data;</span><br><span class="javascript">                _self.goodsForm.start_time = timestampToDate(_self.goodsForm.start_time);</span><br><span class="javascript">                _self.goodsForm.over_time = timestampToDate(_self.goodsForm.over_time);</span><br><span class="javascript">                _self.showImgList = _self.goodsForm.desc.split(<span class="hljs-string">&quot;|&quot;</span>);</span><br><span class="javascript">                _self.responseVisible = <span class="hljs-literal">false</span>;</span><br><span class="javascript">            &#125;).catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>)</span>&#123;</span><br><span class="javascript">                <span class="hljs-built_in">console</span>.log(error);</span><br><span class="javascript">            &#125;)</span><br><span class="javascript">        &#125;,</span><br><span class="javascript">        </span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">handleRemove</span>(<span class="hljs-params">file, fileList</span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-built_in">console</span>.log(file, fileList);</span><br><span class="javascript">        &#125;,</span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">uploadSuccess</span>(<span class="hljs-params">response, file, fileList</span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-keyword">try</span> &#123;</span><br><span class="javascript">                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> fileInfo <span class="hljs-keyword">of</span> fileList) &#123;</span><br><span class="javascript">                    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.type === <span class="hljs-string">&#x27;image&#x27;</span>) &#123;</span><br><span class="javascript">                        <span class="hljs-built_in">this</span>.imgUrl = response.key</span><br><span class="javascript">                        <span class="hljs-built_in">this</span>.$emit(<span class="hljs-string">&#x27;update:data&#x27;</span>, response.key)</span><br><span class="javascript">                    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="javascript">                        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.showImgList.length &gt;= <span class="hljs-built_in">this</span>.limit) &#123; <span class="hljs-comment">// 限制图片张数</span></span><br><span class="javascript">                            <span class="hljs-built_in">this</span>.showImgList.length = <span class="hljs-built_in">this</span>.limit</span><br><span class="javascript">                            <span class="hljs-keyword">throw</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`最多上传 <span class="hljs-subst">$&#123;<span class="hljs-built_in">this</span>.limit&#125;</span> 张图片`</span>))</span><br><span class="javascript">                        &#125;</span><br><span class="javascript">                        <span class="hljs-built_in">this</span>.showImgList.push(response.data.filepath)</span><br><span class="javascript">                        <span class="hljs-built_in">this</span>.$emit(<span class="hljs-string">&#x27;update:data&#x27;</span>, <span class="hljs-built_in">this</span>.showImgList)</span><br><span class="javascript">                    &#125;</span><br><span class="javascript">                &#125;</span><br><span class="javascript">            &#125; <span class="hljs-keyword">catch</span> (error) &#123;</span><br><span class="javascript">                <span class="hljs-built_in">this</span>.$message.error(error.message)</span><br><span class="javascript">            &#125; <span class="hljs-keyword">finally</span> &#123;</span><br><span class="javascript">                <span class="hljs-built_in">this</span>.loading = <span class="hljs-literal">false</span></span><br><span class="javascript">                <span class="hljs-built_in">this</span>.$refs.imageListUpload &amp;&amp; <span class="hljs-built_in">this</span>.$refs.imageListUpload.clearFiles()</span><br><span class="javascript">                <span class="hljs-built_in">this</span>.$refs.imageUpload &amp;&amp; <span class="hljs-built_in">this</span>.$refs.imageUpload.clearFiles()</span><br><span class="javascript">            &#125;</span><br><span class="javascript">        &#125;,</span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">removeFile</span>(<span class="hljs-params">index</span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.$confirm(<span class="hljs-string">&#x27;确定删除该图片吗?&#x27;</span>, <span class="hljs-string">&#x27;提示&#x27;</span>, &#123;</span><br><span class="javascript">                <span class="hljs-attr">confirmButtonText</span>: <span class="hljs-string">&#x27;确定&#x27;</span>,</span><br><span class="javascript">                <span class="hljs-attr">cancelButtonText</span>: <span class="hljs-string">&#x27;取消&#x27;</span>,</span><br><span class="javascript">                <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;warning&#x27;</span></span><br><span class="javascript">            &#125;).then(<span class="hljs-function">() =&gt;</span> &#123;</span><br><span class="javascript">                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.type === <span class="hljs-string">&#x27;image&#x27;</span>) &#123;</span><br><span class="javascript">                    <span class="hljs-built_in">this</span>.$emit(<span class="hljs-string">&#x27;update:data&#x27;</span>, <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">this</span>.data === <span class="hljs-string">&#x27;object&#x27;</span> ? &#123;&#125; : <span class="hljs-string">&#x27;&#x27;</span>)</span><br><span class="javascript">                &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="javascript">                    <span class="hljs-built_in">this</span>.showImgList.splice(index, <span class="hljs-number">1</span>)</span><br><span class="javascript">                    <span class="hljs-built_in">this</span>.$emit(<span class="hljs-string">&#x27;update:data&#x27;</span>, <span class="hljs-built_in">this</span>.showImgList)</span><br><span class="javascript">                &#125;</span><br><span class="javascript">            &#125;)</span><br><span class="javascript">        &#125;,</span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">onError</span>(<span class="hljs-params"></span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;上传文件失败&#x27;</span>)</span><br><span class="javascript">        &#125;,</span><br><span class="javascript"></span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">dragChange</span>(<span class="hljs-params">ele</span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-built_in">console</span>(ele.moved)</span><br><span class="javascript">        &#125;,</span><br><span class="javascript">        <span class="hljs-function"><span class="hljs-title">handleRemove</span>(<span class="hljs-params">file, fileList</span>)</span> &#123;</span><br><span class="javascript">            <span class="hljs-keyword">let</span> imgList = fileList.map(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> &#123;</span><br><span class="javascript">                <span class="hljs-keyword">return</span> item.response.key</span><br><span class="javascript">            &#125;)</span><br><span class="javascript">            <span class="hljs-built_in">this</span>.$emit(<span class="hljs-string">&#x27;update:data&#x27;</span>, imgList)</span><br><span class="javascript">        &#125;,</span><br><span class="javascript">    &#125;</span><br><span class="javascript">&#125;</span><br><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+<p>注意务必注册引入组件</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-keyword">import</span> draggable <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vuedraggable&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>    ...<br>    components: &#123;<br>        draggable,<br>    &#125;,<br>    ...<br></code></pre></td></tr></table></figure>
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/vue/" class="category-chain-item">vue</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ElementUI/">#ElementUI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ElementUI多图拖拽</div>
+      <div>https://github.13sai.com/2020/02/27/228/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/11/MySQL-workon/" title="MySQL执行流程说明">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL执行流程说明</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/22/phpframe14/" title="应用篇：2.延时任务">
+                        <span class="hidden-mobile">应用篇：2.延时任务</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      皖ICP备14021992号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
