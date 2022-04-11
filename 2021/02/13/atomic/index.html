@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="13sai blog">
 <meta property="og:description" content="go atomic 原子操作">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.13sai.com/images/topics/v2-acedfd18eadcd42f1c1662b66e860580_1440w.png">
+<meta property="og:image" content="https://github.13sai.com/images/post/v2-acedfd18eadcd42f1c1662b66e860580_1440w.png">
 <meta property="article:published_time" content="2021-02-13T04:48:20.000Z">
-<meta property="article:modified_time" content="2022-03-30T11:30:12.527Z">
+<meta property="article:modified_time" content="2022-04-11T05:56:59.742Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="gosourcecode">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://github.13sai.com/images/topics/v2-acedfd18eadcd42f1c1662b66e860580_1440w.png">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/v2-acedfd18eadcd42f1c1662b66e860580_1440w.png">
   
   
   <title>atomic - 13sai blog</title>
@@ -439,7 +439,7 @@
               <p>在之前的源码分析中，我们有多次看到atomic的出现，今天不妨我们看一下atomic的源码。</p>
 <hr>
 <p>我们看一下atomic的源码文件：</p>
-<p><img src="/images/topics/v2-acedfd18eadcd42f1c1662b66e860580_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="/images/post/v2-acedfd18eadcd42f1c1662b66e860580_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p>这里说明一下，以.s为后缀的是汇编语言源代码文件，你可以并不懂汇编，没有关系。</p>
 <p>主要看下asm.s，看一看到里面有调用runtime ∕ internal ∕ atomic，我们前去看一下这个文件夹，其中有个文件atomic_wasm.go。</p>
 <p>atomic提供的是原子操作，atomic包中支持六种类型</p>
