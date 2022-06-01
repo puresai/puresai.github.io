@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          14k 字
+          13k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          121 分钟
+          113 分钟
         
       </span>
     
@@ -450,19 +450,19 @@
     
       
       
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">goruntine和channel</span>
+          <span class="category-post">golang限流器</span>
         </a>
       
     
       
       
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">golang限流器</span>
+          <span class="category-post">goruntine和channel</span>
         </a>
       
     
@@ -512,24 +512,107 @@
 <h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>modules的引入之后，我们就可以不必使用gopath去管理项目目录了，对于modules的基本使用，建议看文章：</p>
 <p><a href="https://github.13sai.com/2019/12/27/219/#modules">gomodules</a></p>
 <p>我们开始：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">go</span> mod init sai0556/demo2-gin-frame<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">go</span> mod init sai0556/demo2-gin-frame</code></pre></div>
 
 <p>因为我们暂时本地开发：</p>
 <p><em>PS：当时理解有误，其实无需做local.com替换，import直接使用sai0556/demo2-gin-frame即可，这里有点多余</em></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 使用本地module</span><br><span class="hljs-keyword">go</span> mod edit -require=local.com/sai0556/demo2-gin-frame@v1<span class="hljs-number">.0</span><span class="hljs-number">.0</span><br><span class="hljs-keyword">go</span> mod edit -replace=local.com/sai0556/demo2-gin-frame@v1<span class="hljs-number">.0</span><span class="hljs-number">.0</span>=$PWD<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 使用本地module</span>
+<span class="hljs-keyword">go</span> mod edit -require=local.com/sai0556/demo2-gin-frame@v1<span class="hljs-number">.0</span><span class="hljs-number">.0</span>
+<span class="hljs-keyword">go</span> mod edit -replace=local.com/sai0556/demo2-gin-frame@v1<span class="hljs-number">.0</span><span class="hljs-number">.0</span>=$PWD</code></pre></div>
 
 <p>可以看到go.mod已生成：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs text">module sai0556/demo2-gin-frame<br><br>go 1.13<br><br>require local.com/sai0556/demo2-gin-frame v1.0.0<br><br>replace local.com/sai0556/demo2-gin-frame v1.0.0 =&gt; /Users/@/Work/golang/go-example/demo2-gin-frame<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">module sai0556/demo2-gin-frame
+
+go 1.13
+
+require local.com/sai0556/demo2-gin-frame v1.0.0
+
+replace local.com/sai0556/demo2-gin-frame v1.0.0 =&gt; /Users/@/Work/golang/go-example/demo2-gin-frame</code></pre></div>
 
 <blockquote>
 <p>/Users/@/Work/golang/go-example/demo2-gin-frame 此目录就是项目目录，视具体情况不一</p>
 </blockquote>
 <h2 id="自定义配置与读取："><a href="#自定义配置与读取：" class="headerlink" title="自定义配置与读取："></a>自定义配置与读取：</h2><p>在我们使用redis和mysql之前，我们先来读取一下配置，配置呢我们使用常见的yaml，当然你也可以使用其他，比如env等。</p>
 <p>新建config目录，用来读取与监听配置文件(config.yaml)：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> config<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/fsnotify/fsnotify&quot;</span><br>    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> Config <span class="hljs-keyword">struct</span> &#123;<br>    Name <span class="hljs-keyword">string</span><br>&#125;<br><br><span class="hljs-comment">// 对外的初始化配置方法</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Run</span><span class="hljs-params">(cfg <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">error</span></span> &#123;<br>    c := Config&#123;<br>        Name: cfg,<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> err := c.init(); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-keyword">return</span> err<br>    &#125;<br><br>    c.watchConfig()<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Config)</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;<br>    <span class="hljs-keyword">if</span> c.Name != <span class="hljs-string">&quot;&quot;</span> &#123;<br>        viper.SetConfigFile(c.Name)<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 默认配置文件是./config.yaml</span><br>        viper.AddConfigPath(<span class="hljs-string">&quot;.&quot;</span>)<br>        viper.SetConfigName(<span class="hljs-string">&quot;config&quot;</span>)<br>    &#125;<br><br>    viper.SetConfigType(<span class="hljs-string">&quot;yaml&quot;</span>)<br>    <span class="hljs-comment">// viper解析配置文件</span><br>    err := viper.ReadInConfig() <br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(fmt.Errorf(<span class="hljs-string">&quot;Fatal error config file: %s \n&quot;</span>, err))<br>    &#125;<br><br>	<span class="hljs-comment">// 简单打印下配置</span><br>    fmt.Println(viper.GetString(<span class="hljs-string">&quot;name&quot;</span>))<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Config)</span> <span class="hljs-title">watchConfig</span><span class="hljs-params">()</span></span> &#123;<br>    viper.WatchConfig()<br>    viper.OnConfigChange(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(e fsnotify.Event)</span></span> &#123;<br>        fmt.Println(<span class="hljs-string">&quot;Config file changed:&quot;</span>, e.Name)<br>    &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> config
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+
+    <span class="hljs-string">&quot;github.com/fsnotify/fsnotify&quot;</span>
+    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Config <span class="hljs-keyword">struct</span> &#123;
+    Name <span class="hljs-keyword">string</span>
+&#125;
+
+<span class="hljs-comment">// 对外的初始化配置方法</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Run</span><span class="hljs-params">(cfg <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">error</span></span> &#123;
+    c := Config&#123;
+        Name: cfg,
+    &#125;
+
+    <span class="hljs-keyword">if</span> err := c.init(); err != <span class="hljs-literal">nil</span> &#123;
+        <span class="hljs-keyword">return</span> err
+    &#125;
+
+    c.watchConfig()
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Config)</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;
+    <span class="hljs-keyword">if</span> c.Name != <span class="hljs-string">&quot;&quot;</span> &#123;
+        viper.SetConfigFile(c.Name)
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-comment">// 默认配置文件是./config.yaml</span>
+        viper.AddConfigPath(<span class="hljs-string">&quot;.&quot;</span>)
+        viper.SetConfigName(<span class="hljs-string">&quot;config&quot;</span>)
+    &#125;
+
+    viper.SetConfigType(<span class="hljs-string">&quot;yaml&quot;</span>)
+    <span class="hljs-comment">// viper解析配置文件</span>
+    err := viper.ReadInConfig() 
+    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+        <span class="hljs-built_in">panic</span>(fmt.Errorf(<span class="hljs-string">&quot;Fatal error config file: %s \n&quot;</span>, err))
+    &#125;
+
+	<span class="hljs-comment">// 简单打印下配置</span>
+    fmt.Println(viper.GetString(<span class="hljs-string">&quot;name&quot;</span>))
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Config)</span> <span class="hljs-title">watchConfig</span><span class="hljs-params">()</span></span> &#123;
+    viper.WatchConfig()
+    viper.OnConfigChange(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(e fsnotify.Event)</span></span> &#123;
+        fmt.Println(<span class="hljs-string">&quot;Config file changed:&quot;</span>, e.Name)
+    &#125;)
+&#125;</code></pre></div>
 
 <p>main:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span><br><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    pflag.Parse()<br><br>    <span class="hljs-comment">// 初始化配置</span><br>    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(err)<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span>
+
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> (
+    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    pflag.Parse()
+
+    <span class="hljs-comment">// 初始化配置</span>
+    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;
+        <span class="hljs-built_in">panic</span>(err)
+    &#125;
+
+&#125;</code></pre></div>
 
 <p>这里有用到大牛spf13的两个包，pflag和viper，命令行参数解析包pflag可以看作flag的进阶版本，在我们这里可以用来指定配置文件，viper是读取配置文件的包，配合fsnotify可以实现配置的热更新。（spf13大神还有其他有用的包，相信在你的go编码生涯会用到的）</p>
 <p>写完我们可以运行一下：</p>
@@ -539,39 +622,342 @@
 <p>可以看到有打印出我们配置的name。</p>
 <h2 id="整合mysql与redis"><a href="#整合mysql与redis" class="headerlink" title="整合mysql与redis"></a>整合mysql与redis</h2><p>mysql包我们就选用gorm，redis的使用比较多的是redigo和go-redis，redigo曾在我使用中出现过问题，因而我们选择后者，后者也支持连接池。</p>
 <p>mysql：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> db<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>    <span class="hljs-string">&quot;sync&quot;</span><br>    <span class="hljs-string">&quot;errors&quot;</span><br><br>    orm <span class="hljs-string">&quot;github.com/jinzhu/gorm&quot;</span><br>    _ <span class="hljs-string">&quot;github.com/jinzhu/gorm/dialects/mysql&quot;</span><br>    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> MySqlPool <span class="hljs-keyword">struct</span> &#123;&#125;<br><br><span class="hljs-keyword">var</span> instance *MySqlPool<br><span class="hljs-keyword">var</span> once sync.Once<br><br><span class="hljs-keyword">var</span> db *orm.DB<br><span class="hljs-keyword">var</span> err error <br><br><span class="hljs-comment">// 单例模式</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetInstance</span><span class="hljs-params">()</span> *<span class="hljs-title">MySqlPool</span></span> &#123;<br>    once.Do(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>        instance = &amp;MySqlPool&#123;&#125;<br>    &#125;)<br><br>    <span class="hljs-keyword">return</span> instance<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(pool *MySqlPool)</span> <span class="hljs-title">InitPool</span><span class="hljs-params">()</span> <span class="hljs-params">(isSuc <span class="hljs-keyword">bool</span>)</span></span> &#123;<br>	<span class="hljs-comment">// 这里有一种常见的拼接字符串的方式</span><br>    dsn := fmt.Sprintf(<span class="hljs-string">&quot;%s:%s@tcp(%s)/%s?charset=%s&quot;</span>, viper.GetString(<span class="hljs-string">&quot;db.username&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.password&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.host&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.name&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.charset&quot;</span>))<br>    db, err = orm.Open(<span class="hljs-string">&quot;mysql&quot;</span>, dsn)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;mysql连接失败&quot;</span>))<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    &#125;<br><br>    <span class="hljs-comment">// 连接数配置也可以写入配置，在此读取</span><br>    db.DB().SetMaxIdleConns(viper.GetInt(<span class="hljs-string">&quot;db.MaxIdleConns&quot;</span>))<br>    db.DB().SetMaxOpenConns(viper.GetInt(<span class="hljs-string">&quot;db.MaxOpenConns&quot;</span>))<br>    <span class="hljs-comment">// db.LogMode(true)</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> db
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;sync&quot;</span>
+    <span class="hljs-string">&quot;errors&quot;</span>
+
+    orm <span class="hljs-string">&quot;github.com/jinzhu/gorm&quot;</span>
+    _ <span class="hljs-string">&quot;github.com/jinzhu/gorm/dialects/mysql&quot;</span>
+    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> MySqlPool <span class="hljs-keyword">struct</span> &#123;&#125;
+
+<span class="hljs-keyword">var</span> instance *MySqlPool
+<span class="hljs-keyword">var</span> once sync.Once
+
+<span class="hljs-keyword">var</span> db *orm.DB
+<span class="hljs-keyword">var</span> err error 
+
+<span class="hljs-comment">// 单例模式</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetInstance</span><span class="hljs-params">()</span> *<span class="hljs-title">MySqlPool</span></span> &#123;
+    once.Do(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+        instance = &amp;MySqlPool&#123;&#125;
+    &#125;)
+
+    <span class="hljs-keyword">return</span> instance
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(pool *MySqlPool)</span> <span class="hljs-title">InitPool</span><span class="hljs-params">()</span> <span class="hljs-params">(isSuc <span class="hljs-keyword">bool</span>)</span></span> &#123;
+	<span class="hljs-comment">// 这里有一种常见的拼接字符串的方式</span>
+    dsn := fmt.Sprintf(<span class="hljs-string">&quot;%s:%s@tcp(%s)/%s?charset=%s&quot;</span>, viper.GetString(<span class="hljs-string">&quot;db.username&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.password&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.host&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.name&quot;</span>), viper.GetString(<span class="hljs-string">&quot;db.charset&quot;</span>))
+    db, err = orm.Open(<span class="hljs-string">&quot;mysql&quot;</span>, dsn)
+    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+        <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;mysql连接失败&quot;</span>))
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    &#125;
+
+    <span class="hljs-comment">// 连接数配置也可以写入配置，在此读取</span>
+    db.DB().SetMaxIdleConns(viper.GetInt(<span class="hljs-string">&quot;db.MaxIdleConns&quot;</span>))
+    db.DB().SetMaxOpenConns(viper.GetInt(<span class="hljs-string">&quot;db.MaxOpenConns&quot;</span>))
+    <span class="hljs-comment">// db.LogMode(true)</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+&#125;</code></pre></div>
 
 <blockquote>
 <p>后面获取连接池就可以直接使用 db.GetInstance()</p>
 </blockquote>
 <p>redis：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs text">package db<br><br>import (<br>    &quot;fmt&quot;<br><br>    &quot;github.com/spf13/viper&quot;<br>    &quot;github.com/go-redis/redis&quot;<br>)<br><br>var RedisClient *redis.Client<br><br>func InitRedis() &#123;<br>    RedisClient = redis.NewClient(&amp;redis.Options&#123;<br>        Addr:     fmt.Sprintf(&quot;%s:%s&quot;, viper.GetString(&quot;redis.host&quot;), viper.GetString(&quot;redis.port&quot;)),<br>        Password: viper.GetString(&quot;redis.auth&quot;),<br>        DB:       0,<br>    &#125;)<br><br>    _, err := RedisClient.Ping().Result()<br>    if err != nil &#123;<br>        panic(&quot;redis ping error&quot;)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">package db
+
+import (
+    &quot;fmt&quot;
+
+    &quot;github.com/spf13/viper&quot;
+    &quot;github.com/go-redis/redis&quot;
+)
+
+var RedisClient *redis.Client
+
+func InitRedis() &#123;
+    RedisClient = redis.NewClient(&amp;redis.Options&#123;
+        Addr:     fmt.Sprintf(&quot;%s:%s&quot;, viper.GetString(&quot;redis.host&quot;), viper.GetString(&quot;redis.port&quot;)),
+        Password: viper.GetString(&quot;redis.auth&quot;),
+        DB:       0,
+    &#125;)
+
+    _, err := RedisClient.Ping().Result()
+    if err != nil &#123;
+        panic(&quot;redis ping error&quot;)
+    &#125;
+&#125;</code></pre></div>
 
 <p>RedisClient就是我们后面可以用的redis连接池。</p>
 <p>在main中加入初始化连接池的代码即可：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 连接mysql数据库</span><br>btn := db.GetInstance().InitPool()<br><span class="hljs-keyword">if</span> !btn &#123;<br>    log.Println(<span class="hljs-string">&quot;init database pool failure...&quot;</span>)<br>    <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;init database pool failure&quot;</span>))<br>&#125;<br><br><span class="hljs-comment">// redis</span><br>db.InitRedis()<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 连接mysql数据库</span>
+btn := db.GetInstance().InitPool()
+<span class="hljs-keyword">if</span> !btn &#123;
+    log.Println(<span class="hljs-string">&quot;init database pool failure...&quot;</span>)
+    <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;init database pool failure&quot;</span>))
+&#125;
+
+<span class="hljs-comment">// redis</span>
+db.InitRedis()</code></pre></div>
 
 <h2 id="路由与控制器"><a href="#路由与控制器" class="headerlink" title="路由与控制器"></a>路由与控制器</h2><p>为了方便路由，我们把路由管理单独到router。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> router<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;net/http&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/controller&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Load</span><span class="hljs-params">(g *gin.Engine)</span> *<span class="hljs-title">gin</span>.<span class="hljs-title">Engine</span></span> &#123;<br>    g.Use(gin.Recovery())<br>    <span class="hljs-comment">// 404</span><br>    g.NoRoute(<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *gin.Context)</span></span>  &#123;<br>        c.String(http.StatusNotFound, <span class="hljs-string">&quot;404 not found&quot;</span>);<br>    &#125;)<br><br>    g.GET(<span class="hljs-string">&quot;/&quot;</span>, controller.Index)<br><br>    <span class="hljs-keyword">return</span> g<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> router
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;net/http&quot;</span>
+
+    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
+
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/controller&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Load</span><span class="hljs-params">(g *gin.Engine)</span> *<span class="hljs-title">gin</span>.<span class="hljs-title">Engine</span></span> &#123;
+    g.Use(gin.Recovery())
+    <span class="hljs-comment">// 404</span>
+    g.NoRoute(<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *gin.Context)</span></span>  &#123;
+        c.String(http.StatusNotFound, <span class="hljs-string">&quot;404 not found&quot;</span>);
+    &#125;)
+
+    g.GET(<span class="hljs-string">&quot;/&quot;</span>, controller.Index)
+
+    <span class="hljs-keyword">return</span> g
+&#125;</code></pre></div>
 
 
 
 <p>controller:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> controller<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;net/http&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br>)<br><br><span class="hljs-comment">// 返回</span><br><span class="hljs-keyword">type</span> Response <span class="hljs-keyword">struct</span> &#123;<br>    Code <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;code&quot;`</span><br>    Message <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;message&quot;`</span><br>    Data <span class="hljs-keyword">interface</span>&#123;&#125; <span class="hljs-string">`json:&quot;data&quot;`</span><br>&#125;<br><br><span class="hljs-comment">// api返回结构</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ApiResponse</span><span class="hljs-params">(c *gin.Context, code <span class="hljs-keyword">int</span>, message <span class="hljs-keyword">string</span>, data <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>    c.JSON(http.StatusOK, Response&#123;<br>        Code: code,<br>        Message: message,<br>        Data: data,<br>    &#125;)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Index</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>    ApiResponse(c, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;success&quot;</span>, <span class="hljs-literal">nil</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> controller
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;net/http&quot;</span>
+
+    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
+)
+
+<span class="hljs-comment">// 返回</span>
+<span class="hljs-keyword">type</span> Response <span class="hljs-keyword">struct</span> &#123;
+    Code <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;code&quot;`</span>
+    Message <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;message&quot;`</span>
+    Data <span class="hljs-keyword">interface</span>&#123;&#125; <span class="hljs-string">`json:&quot;data&quot;`</span>
+&#125;
+
+<span class="hljs-comment">// api返回结构</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ApiResponse</span><span class="hljs-params">(c *gin.Context, code <span class="hljs-keyword">int</span>, message <span class="hljs-keyword">string</span>, data <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+    c.JSON(http.StatusOK, Response&#123;
+        Code: code,
+        Message: message,
+        Data: data,
+    &#125;)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Index</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
+    ApiResponse(c, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;success&quot;</span>, <span class="hljs-literal">nil</span>)
+&#125;</code></pre></div>
 
 <p>到这呢，基本也就差不多了。</p>
 <p>我们来看下完整的main：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-comment">// import 这里我习惯把官方库，开源库，本地module依次分开列出</span><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;log&quot;</span><br>    <span class="hljs-string">&quot;errors&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span><br>    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/db&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/router&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    pflag.Parse()<br><br>    <span class="hljs-comment">// 初始化配置</span><br>    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	<br>	<span class="hljs-comment">// 连接mysql数据库</span><br>    btn := db.GetInstance().InitPool()<br>    <span class="hljs-keyword">if</span> !btn &#123;<br>        log.Println(<span class="hljs-string">&quot;init database pool failure...&quot;</span>)<br>        <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;init database pool failure&quot;</span>))<br>    &#125;<br><br>    <span class="hljs-comment">// redis</span><br>    db.InitRedis()<br><br>    gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))<br>    g := gin.New()<br>    g = router.Load(g)<br>    g.Run(viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>))<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-comment">// import 这里我习惯把官方库，开源库，本地module依次分开列出</span>
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;log&quot;</span>
+    <span class="hljs-string">&quot;errors&quot;</span>
+
+    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span>
+    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span>
+    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
+
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span>
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/db&quot;</span>
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/router&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> (
+    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    pflag.Parse()
+
+    <span class="hljs-comment">// 初始化配置</span>
+    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;
+        <span class="hljs-built_in">panic</span>(err)
+	&#125;
+	
+	<span class="hljs-comment">// 连接mysql数据库</span>
+    btn := db.GetInstance().InitPool()
+    <span class="hljs-keyword">if</span> !btn &#123;
+        log.Println(<span class="hljs-string">&quot;init database pool failure...&quot;</span>)
+        <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;init database pool failure&quot;</span>))
+    &#125;
+
+    <span class="hljs-comment">// redis</span>
+    db.InitRedis()
+
+    gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))
+    g := gin.New()
+    g = router.Load(g)
+    g.Run(viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>))
+&#125;</code></pre></div>
 
 
 
 <h2 id="整合日志"><a href="#整合日志" class="headerlink" title="整合日志"></a>整合日志</h2><p>这里我们先定义下log：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">log:<br>  level: debug # 日志级别，info，debug，error<br>  file_format: &quot;%Y%m%d&quot; # 文件格式<br>  max_save_days: 30 # 保存天数<br>  file_type: one # one, level 单文件存储还是以level级别存储<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">log:
+  level: debug # 日志级别，info，debug，error
+  file_format: &quot;%Y%m%d&quot; # 文件格式
+  max_save_days: 30 # 保存天数
+  file_type: one # one, level 单文件存储还是以level级别存储</code></pre></div>
 
 
 
 <p>整合logger：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><code class="hljs text">package logger<br><br>import (<br>	&quot;io&quot;<br>	&quot;log&quot;<br>	&quot;time&quot;<br><br>	&quot;github.com/lestrrat-go/file-rotatelogs&quot;<br>	&quot;go.uber.org/zap&quot;<br>	&quot;go.uber.org/zap/zapcore&quot;<br>        &quot;github.com/spf13/viper&quot;<br>)<br><br>var Logger *zap.Logger <br>var LogLevel string<br>var FileFormat string<br><br>// 初始化日志 logger<br>func init() &#123;<br>	// 设置一些基本日志格式<br>	config := zapcore.EncoderConfig&#123;<br>		MessageKey:  &quot;msg&quot;,<br>		LevelKey:    &quot;level&quot;,<br>		EncodeLevel: zapcore.CapitalLevelEncoder,<br>		TimeKey:     &quot;ts&quot;,<br>		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) &#123;<br>			enc.AppendString(t.Format(&quot;2006-01-02 15:04:05&quot;))<br>		&#125;,<br>		CallerKey:    &quot;file&quot;,<br>		EncodeCaller: zapcore.ShortCallerEncoder,<br>		EncodeDuration: func(d time.Duration, enc zapcore.PrimitiveArrayEncoder) &#123;<br>			enc.AppendInt64(int64(d) / 1000000)<br>		&#125;,<br>	&#125;<br>	encoder := zapcore.NewConsoleEncoder(config)<br><br>	FileFormat, saveType, LogLevel := &quot;%Y%m%d&quot;, &quot;one&quot;, &quot;info&quot;<br><br>	if viper.IsSet(&quot;log.file_format&quot;) &#123;<br>		FileFormat = viper.GetString(&quot;log.file_format&quot;)<br>	&#125;<br><br>	if viper.IsSet(&quot;log.level&quot;) &#123;<br>		LogLevel = viper.GetString(&quot;log.level&quot;)<br>	&#125;<br><br>	if viper.IsSet(&quot;log.save_type&quot;) &#123;<br>		saveType = viper.GetString(&quot;log.save_type&quot;)<br>	&#125;<br><br>	logLevel := zap.DebugLevel<br>	switch LogLevel &#123;<br>		case &quot;debug&quot;:<br>			logLevel = zap.DebugLevel<br>		case &quot;info&quot;:<br>			logLevel = zap.InfoLevel<br>		case &quot;error&quot;:<br>			logLevel = zap.ErrorLevel<br>		default:<br>			logLevel = zap.InfoLevel<br>	&#125;<br><br>	switch saveType &#123;<br>		case &quot;level&quot;:<br>			Logger = getLevelLogger(encoder, logLevel, FileFormat)<br>		default:<br>			Logger = getOneLogger(encoder, logLevel, FileFormat)<br>	&#125;<br><br>	<br>&#125;<br><br>func getLevelLogger(encoder zapcore.Encoder, logLevel zapcore.Level, fileFormat string) *zap.Logger &#123;<br>	infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;<br>		return lvl == zapcore.InfoLevel &amp;&amp; lvl &gt;= logLevel<br>	&#125;)<br><br>	debugLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;<br>		return lvl == zapcore.DebugLevel &amp;&amp; lvl &gt;= logLevel<br>	&#125;)<br><br>	errorLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;<br>		return lvl &gt;= zapcore.ErrorLevel &amp;&amp; lvl &gt;= logLevel<br>	&#125;)<br>	// 获取 info、warn日志文件的io.Writer 抽象 getLoggerWriter() 在下方实现<br>	infoWriter := getLoggerWriter(&quot;./log/info&quot;, fileFormat)<br>	errorWriter := getLoggerWriter(&quot;./log/error&quot;, fileFormat)<br>	debugWriter := getLoggerWriter(&quot;./log/debug&quot;, fileFormat)<br><br>	// 最后创建具体的Logger<br>	core := zapcore.NewTee(<br>		zapcore.NewCore(encoder, zapcore.AddSync(debugWriter), debugLevel),<br>		zapcore.NewCore(encoder, zapcore.AddSync(infoWriter), infoLevel),<br>		zapcore.NewCore(encoder, zapcore.AddSync(errorWriter), errorLevel),<br>	)<br>	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.WarnLevel))<br>&#125;<br><br>func getOneLogger(encoder zapcore.Encoder, logLevel zapcore.Level, fileFormat string) *zap.Logger &#123;<br>	infoWriter := getLoggerWriter(&quot;./log/info&quot;, fileFormat)<br><br>	infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;<br>		return lvl == zapcore.InfoLevel &amp;&amp; lvl &gt;= logLevel<br>	&#125;)<br><br>	core := zapcore.NewTee(<br>		zapcore.NewCore(encoder, zapcore.AddSync(infoWriter), infoLevel),<br>	)<br>	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.WarnLevel))<br>&#125;<br><br>func getLoggerWriter(filename, fileFormat string) io.Writer &#123;<br>	// 生成rotatelogs的Logger 实际生成的文件名 file_YYmmddHH.log<br>	hook, err := rotatelogs.New(<br>		filename+fileFormat+&quot;.log&quot;,<br>		rotatelogs.WithLinkName(filename),<br>		// 保存天数<br>		rotatelogs.WithMaxAge(time.Hour*24*30),<br>		// 切割频率24小时<br>		rotatelogs.WithRotationTime(time.Hour*24),<br>	)<br>	if err != nil &#123;<br>		log.Println(&quot;日志启动异常&quot;)<br>		panic(err)<br>	&#125;<br>	return hook<br>&#125;<br><br>func Debug(format string, v ...interface&#123;&#125;) &#123;<br>	Logger.Sugar().Debugf(format, v...)<br>&#125;<br><br>func Info(format string, v ...interface&#123;&#125;) &#123;<br>	Logger.Sugar().Infof(format, v...)<br>&#125;<br><br>func Error(format string, v ...interface&#123;&#125;) &#123;<br>	Logger.Sugar().Errorf(format, v...)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">package logger
+
+import (
+	&quot;io&quot;
+	&quot;log&quot;
+	&quot;time&quot;
+
+	&quot;github.com/lestrrat-go/file-rotatelogs&quot;
+	&quot;go.uber.org/zap&quot;
+	&quot;go.uber.org/zap/zapcore&quot;
+        &quot;github.com/spf13/viper&quot;
+)
+
+var Logger *zap.Logger 
+var LogLevel string
+var FileFormat string
+
+// 初始化日志 logger
+func init() &#123;
+	// 设置一些基本日志格式
+	config := zapcore.EncoderConfig&#123;
+		MessageKey:  &quot;msg&quot;,
+		LevelKey:    &quot;level&quot;,
+		EncodeLevel: zapcore.CapitalLevelEncoder,
+		TimeKey:     &quot;ts&quot;,
+		EncodeTime: func(t time.Time, enc zapcore.PrimitiveArrayEncoder) &#123;
+			enc.AppendString(t.Format(&quot;2006-01-02 15:04:05&quot;))
+		&#125;,
+		CallerKey:    &quot;file&quot;,
+		EncodeCaller: zapcore.ShortCallerEncoder,
+		EncodeDuration: func(d time.Duration, enc zapcore.PrimitiveArrayEncoder) &#123;
+			enc.AppendInt64(int64(d) / 1000000)
+		&#125;,
+	&#125;
+	encoder := zapcore.NewConsoleEncoder(config)
+
+	FileFormat, saveType, LogLevel := &quot;%Y%m%d&quot;, &quot;one&quot;, &quot;info&quot;
+
+	if viper.IsSet(&quot;log.file_format&quot;) &#123;
+		FileFormat = viper.GetString(&quot;log.file_format&quot;)
+	&#125;
+
+	if viper.IsSet(&quot;log.level&quot;) &#123;
+		LogLevel = viper.GetString(&quot;log.level&quot;)
+	&#125;
+
+	if viper.IsSet(&quot;log.save_type&quot;) &#123;
+		saveType = viper.GetString(&quot;log.save_type&quot;)
+	&#125;
+
+	logLevel := zap.DebugLevel
+	switch LogLevel &#123;
+		case &quot;debug&quot;:
+			logLevel = zap.DebugLevel
+		case &quot;info&quot;:
+			logLevel = zap.InfoLevel
+		case &quot;error&quot;:
+			logLevel = zap.ErrorLevel
+		default:
+			logLevel = zap.InfoLevel
+	&#125;
+
+	switch saveType &#123;
+		case &quot;level&quot;:
+			Logger = getLevelLogger(encoder, logLevel, FileFormat)
+		default:
+			Logger = getOneLogger(encoder, logLevel, FileFormat)
+	&#125;
+
+	
+&#125;
+
+func getLevelLogger(encoder zapcore.Encoder, logLevel zapcore.Level, fileFormat string) *zap.Logger &#123;
+	infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;
+		return lvl == zapcore.InfoLevel &amp;&amp; lvl &gt;= logLevel
+	&#125;)
+
+	debugLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;
+		return lvl == zapcore.DebugLevel &amp;&amp; lvl &gt;= logLevel
+	&#125;)
+
+	errorLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;
+		return lvl &gt;= zapcore.ErrorLevel &amp;&amp; lvl &gt;= logLevel
+	&#125;)
+	// 获取 info、warn日志文件的io.Writer 抽象 getLoggerWriter() 在下方实现
+	infoWriter := getLoggerWriter(&quot;./log/info&quot;, fileFormat)
+	errorWriter := getLoggerWriter(&quot;./log/error&quot;, fileFormat)
+	debugWriter := getLoggerWriter(&quot;./log/debug&quot;, fileFormat)
+
+	// 最后创建具体的Logger
+	core := zapcore.NewTee(
+		zapcore.NewCore(encoder, zapcore.AddSync(debugWriter), debugLevel),
+		zapcore.NewCore(encoder, zapcore.AddSync(infoWriter), infoLevel),
+		zapcore.NewCore(encoder, zapcore.AddSync(errorWriter), errorLevel),
+	)
+	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.WarnLevel))
+&#125;
+
+func getOneLogger(encoder zapcore.Encoder, logLevel zapcore.Level, fileFormat string) *zap.Logger &#123;
+	infoWriter := getLoggerWriter(&quot;./log/info&quot;, fileFormat)
+
+	infoLevel := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool &#123;
+		return lvl == zapcore.InfoLevel &amp;&amp; lvl &gt;= logLevel
+	&#125;)
+
+	core := zapcore.NewTee(
+		zapcore.NewCore(encoder, zapcore.AddSync(infoWriter), infoLevel),
+	)
+	return zap.New(core, zap.AddCaller(), zap.AddStacktrace(zap.WarnLevel))
+&#125;
+
+func getLoggerWriter(filename, fileFormat string) io.Writer &#123;
+	// 生成rotatelogs的Logger 实际生成的文件名 file_YYmmddHH.log
+	hook, err := rotatelogs.New(
+		filename+fileFormat+&quot;.log&quot;,
+		rotatelogs.WithLinkName(filename),
+		// 保存天数
+		rotatelogs.WithMaxAge(time.Hour*24*30),
+		// 切割频率24小时
+		rotatelogs.WithRotationTime(time.Hour*24),
+	)
+	if err != nil &#123;
+		log.Println(&quot;日志启动异常&quot;)
+		panic(err)
+	&#125;
+	return hook
+&#125;
+
+func Debug(format string, v ...interface&#123;&#125;) &#123;
+	Logger.Sugar().Debugf(format, v...)
+&#125;
+
+func Info(format string, v ...interface&#123;&#125;) &#123;
+	Logger.Sugar().Infof(format, v...)
+&#125;
+
+func Error(format string, v ...interface&#123;&#125;) &#123;
+	Logger.Sugar().Errorf(format, v...)
+&#125;</code></pre></div>
 
 <p>这里注意init函数，我们直接调用logger其中函数即可，程序加载包的过程中会自动执行init函数。关于init有以下说明：</p>
 <ol>
@@ -583,7 +969,8 @@
 <li>init函数不能被其他函数调用，而是在main函数执行之前，自动被调用</li>
 </ol>
 <p>我们直接使用：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go">logger.Info(<span class="hljs-string">&quot;i&#x27;m log123-----Info&quot;</span>)<br>logger.Error(<span class="hljs-string">&quot;i&#x27;m log123-----Error&quot;</span>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go">logger.Info(<span class="hljs-string">&quot;i&#x27;m log123-----Info&quot;</span>)
+logger.Error(<span class="hljs-string">&quot;i&#x27;m log123-----Error&quot;</span>)</code></pre></div>
 
 <p><img src="/images/post/v2-9a3fa5680e78075596feedcc5f9669c6_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
 <h2 id="平滑重启"><a href="#平滑重启" class="headerlink" title="平滑重启"></a>平滑重启</h2><p>当程序在线上稳定运行后，我们可能会去更新一些功能，但发布代码的同时，假如有用户正在使用，盲目发布代码可能会造成用户短暂失真，这时候平滑重启就来了。</p>
@@ -599,18 +986,138 @@
 </ol>
 <p>详细分析可看底部参考-Golang服务器热重启、热升级、热更新。</p>
 <h2 id="启动检查"><a href="#启动检查" class="headerlink" title="启动检查"></a>启动检查</h2><p>结合上面的优雅重启，我们在启动时配置上启动健康检查：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-comment">// import 这里我习惯把官方库，开源库，本地module依次分开列出</span><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br>	<span class="hljs-string">&quot;errors&quot;</span><br>	<span class="hljs-string">&quot;net/http&quot;</span><br><br>    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span><br>    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/db&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/router&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/logger&quot;</span><br>    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/graceful&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    pflag.Parse()<br><br>    <span class="hljs-comment">// 初始化配置</span><br>    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;<br>        <span class="hljs-built_in">panic</span>(err)<br>	&#125;<br><br>	<span class="hljs-comment">// logger.Info(&quot;i&#x27;m log123-----Info&quot;)</span><br>	<span class="hljs-comment">// logger.Error(&quot;i&#x27;m log123-----Error&quot;)</span><br><br>	<br>	<span class="hljs-comment">// 连接mysql数据库</span><br>	DB := db.GetDB()<br>	<span class="hljs-keyword">defer</span> db.CloseDB(DB)<br><br>	<span class="hljs-comment">// redis</span><br>	db.InitRedis()<br><br>	gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))<br>	g := gin.New()<br>	g = router.Load(g)<br><br>	<span class="hljs-comment">// g.Run(viper.GetString(&quot;addr&quot;))</span><br><br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">if</span> err := pingServer(); err != <span class="hljs-literal">nil</span> &#123;<br>			fmt.Println(<span class="hljs-string">&quot;fail:健康检测失败&quot;</span>, err)<br>		&#125;<br>		fmt.Println(<span class="hljs-string">&quot;success:健康检测成功&quot;</span>)<br>	&#125;()<br><br>	logger.Info(<span class="hljs-string">&quot;启动http服务端口%s\n&quot;</span>, viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>))<br><br>	<span class="hljs-keyword">if</span> err := graceful.ListenAndServe(viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>), g); err != <span class="hljs-literal">nil</span> &amp;&amp; err != http.ErrServerClosed &#123;<br>		logger.Error(<span class="hljs-string">&quot;fail:http服务启动失败: %s\n&quot;</span>, err)<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// 健康检查</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">pingServer</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; viper.GetInt(<span class="hljs-string">&quot;max_ping_count&quot;</span>); i++ &#123;<br>		url := fmt.Sprintf(<span class="hljs-string">&quot;%s%s%s&quot;</span>, <span class="hljs-string">&quot;http://127.0.0.1&quot;</span>, viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>), viper.GetString(<span class="hljs-string">&quot;healthCheck&quot;</span>))<br>		fmt.Println(url)<br>		resp, err := http.Get(url)<br>		<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &amp;&amp; resp.StatusCode == <span class="hljs-number">200</span> &#123;<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>		&#125;<br>		time.Sleep(time.Second)<br>	&#125;<br>	<span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">&quot;健康检测404&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-comment">// import 这里我习惯把官方库，开源库，本地module依次分开列出</span>
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;net/http&quot;</span>
+
+    <span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span>
+    <span class="hljs-string">&quot;github.com/spf13/viper&quot;</span>
+    <span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
+
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/config&quot;</span>
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/db&quot;</span>
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/router&quot;</span>
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/logger&quot;</span>
+    <span class="hljs-string">&quot;local.com/sai0556/demo2-gin-frame/graceful&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> (
+    conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    pflag.Parse()
+
+    <span class="hljs-comment">// 初始化配置</span>
+    <span class="hljs-keyword">if</span> err := config.Run(*conf); err != <span class="hljs-literal">nil</span> &#123;
+        <span class="hljs-built_in">panic</span>(err)
+	&#125;
+
+	<span class="hljs-comment">// logger.Info(&quot;i&#x27;m log123-----Info&quot;)</span>
+	<span class="hljs-comment">// logger.Error(&quot;i&#x27;m log123-----Error&quot;)</span>
+
+	
+	<span class="hljs-comment">// 连接mysql数据库</span>
+	DB := db.GetDB()
+	<span class="hljs-keyword">defer</span> db.CloseDB(DB)
+
+	<span class="hljs-comment">// redis</span>
+	db.InitRedis()
+
+	gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))
+	g := gin.New()
+	g = router.Load(g)
+
+	<span class="hljs-comment">// g.Run(viper.GetString(&quot;addr&quot;))</span>
+
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-keyword">if</span> err := pingServer(); err != <span class="hljs-literal">nil</span> &#123;
+			fmt.Println(<span class="hljs-string">&quot;fail:健康检测失败&quot;</span>, err)
+		&#125;
+		fmt.Println(<span class="hljs-string">&quot;success:健康检测成功&quot;</span>)
+	&#125;()
+
+	logger.Info(<span class="hljs-string">&quot;启动http服务端口%s\n&quot;</span>, viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>))
+
+	<span class="hljs-keyword">if</span> err := graceful.ListenAndServe(viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>), g); err != <span class="hljs-literal">nil</span> &amp;&amp; err != http.ErrServerClosed &#123;
+		logger.Error(<span class="hljs-string">&quot;fail:http服务启动失败: %s\n&quot;</span>, err)
+	&#125;
+&#125;
+
+<span class="hljs-comment">// 健康检查</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">pingServer</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; viper.GetInt(<span class="hljs-string">&quot;max_ping_count&quot;</span>); i++ &#123;
+		url := fmt.Sprintf(<span class="hljs-string">&quot;%s%s%s&quot;</span>, <span class="hljs-string">&quot;http://127.0.0.1&quot;</span>, viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>), viper.GetString(<span class="hljs-string">&quot;healthCheck&quot;</span>))
+		fmt.Println(url)
+		resp, err := http.Get(url)
+		<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &amp;&amp; resp.StatusCode == <span class="hljs-number">200</span> &#123;
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+		&#125;
+		time.Sleep(time.Second)
+	&#125;
+	<span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">&quot;健康检测404&quot;</span>)
+&#125;</code></pre></div>
 
 
 
 <p>这里就比较简单，另外启动一个协程，去ping健康检测的url即可。</p>
 <h2 id="打包脚本"><a href="#打包脚本" class="headerlink" title="打包脚本"></a>打包脚本</h2><p>shell</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br>SERVER=<span class="hljs-string">&quot;demo2-gin-frame&quot;</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">status</span></span>() <br>&#123;<br>	<span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;`pgrep <span class="hljs-variable">$SERVER</span> -u <span class="hljs-variable">$UID</span>`&quot;</span> != <span class="hljs-string">&quot;&quot;</span> ];<span class="hljs-keyword">then</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-variable">$SERVER</span> is running<br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-built_in">echo</span> <span class="hljs-variable">$SERVER</span> is not running<br>	<span class="hljs-keyword">fi</span><br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">build</span></span>() <br>&#123;<br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;build...&quot;</span><br><br>    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./<span class="hljs-variable">$SERVER</span> main.go<br>    <span class="hljs-keyword">if</span> [ $? -ne <span class="hljs-string">&quot;0&quot;</span> ];<span class="hljs-keyword">then</span>  <br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built error!!!&quot;</span><br>        <span class="hljs-built_in">return</span> <br>    <span class="hljs-keyword">fi</span>  <br><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built success!&quot;</span><br>&#125;<br><br><br><span class="hljs-keyword">case</span> <span class="hljs-string">&quot;<span class="hljs-variable">$1</span>&quot;</span> <span class="hljs-keyword">in</span><br>	<span class="hljs-string">&#x27;status&#x27;</span>)<br>	status<br>	;; <br>    <span class="hljs-string">&#x27;build&#x27;</span>)<br>	build<br>	;;  <br>	*)  <br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;unknown, please: <span class="hljs-variable">$0</span> &#123;status or build&#125;&quot;</span><br>	<span class="hljs-built_in">exit</span> 1<br>	;;  <br><span class="hljs-keyword">esac</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span>
+SERVER=<span class="hljs-string">&quot;demo2-gin-frame&quot;</span>
+
+<span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">status</span></span>() 
+&#123;
+	<span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;`pgrep <span class="hljs-variable">$SERVER</span> -u <span class="hljs-variable">$UID</span>`&quot;</span> != <span class="hljs-string">&quot;&quot;</span> ];<span class="hljs-keyword">then</span>
+		<span class="hljs-built_in">echo</span> <span class="hljs-variable">$SERVER</span> is running
+	<span class="hljs-keyword">else</span>
+		<span class="hljs-built_in">echo</span> <span class="hljs-variable">$SERVER</span> is not running
+	<span class="hljs-keyword">fi</span>
+&#125;
+
+<span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">build</span></span>() 
+&#123;
+	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;build...&quot;</span>
+
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./<span class="hljs-variable">$SERVER</span> main.go
+    <span class="hljs-keyword">if</span> [ $? -ne <span class="hljs-string">&quot;0&quot;</span> ];<span class="hljs-keyword">then</span>  
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built error!!!&quot;</span>
+        <span class="hljs-built_in">return</span> 
+    <span class="hljs-keyword">fi</span>  
+
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built success!&quot;</span>
+&#125;
+
+
+<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;<span class="hljs-variable">$1</span>&quot;</span> <span class="hljs-keyword">in</span>
+	<span class="hljs-string">&#x27;status&#x27;</span>)
+	status
+	;; 
+    <span class="hljs-string">&#x27;build&#x27;</span>)
+	build
+	;;  
+	*)  
+	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;unknown, please: <span class="hljs-variable">$0</span> &#123;status or build&#125;&quot;</span>
+	<span class="hljs-built_in">exit</span> 1
+	;;  
+<span class="hljs-keyword">esac</span></code></pre></div>
 
 
 
 <p>bat</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;build...&quot;</span><br><span class="hljs-built_in">SET</span> CGO_ENABLED=<span class="hljs-number">0</span><br><span class="hljs-built_in">SET</span> GOOS=linux<br>go build <span class="hljs-literal">-o</span> demo2<span class="hljs-literal">-gin</span><span class="hljs-literal">-frame</span><br><span class="hljs-keyword">if</span> %errorlevel% == <span class="hljs-number">0</span> (<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built successfully&quot;</span><br>) <span class="hljs-keyword">else</span> (<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built fail!!!&quot;</span><br>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs powershell"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;build...&quot;</span>
+<span class="hljs-built_in">SET</span> CGO_ENABLED=<span class="hljs-number">0</span>
+<span class="hljs-built_in">SET</span> GOOS=linux
+go build <span class="hljs-literal">-o</span> demo2<span class="hljs-literal">-gin</span><span class="hljs-literal">-frame</span>
+<span class="hljs-keyword">if</span> %errorlevel% == <span class="hljs-number">0</span> (
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built successfully&quot;</span>
+) <span class="hljs-keyword">else</span> (
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;built fail!!!&quot;</span>
+)</code></pre></div>
 
 
 

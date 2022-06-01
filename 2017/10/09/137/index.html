@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          621 字
+          604 字
         
       </span>
     
@@ -479,15 +479,28 @@
 <p>cd /home/repo/conf    // 进入目录</p>
 </blockquote>
 <p>配置目录下有三个文件</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">authz</span> 权限<br><br>passwd 账号密码<br><br>svnserve.conf 版本库配置<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">authz</span> 权限
+
+passwd 账号密码
+
+svnserve.conf 版本库配置</code></pre></div>
 
 <p>编辑用户文件passwd，新增两个用户：admin和guest。</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[users]</span><br><span class="hljs-attr">admin</span> = <span class="hljs-number">111111</span><br><span class="hljs-attr">guest</span> = <span class="hljs-number">123456</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-section">[users]</span>
+<span class="hljs-attr">admin</span> = <span class="hljs-number">111111</span>
+<span class="hljs-attr">guest</span> = <span class="hljs-number">123456</span></code></pre></div>
 <p>编辑权限文件authz，用户admin设置可读写权限，guest设置只读权限。</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[/]</span><br><span class="hljs-attr">admin</span> = rw<br><span class="hljs-attr">guest</span> = r<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-section">[/]</span>
+<span class="hljs-attr">admin</span> = rw
+<span class="hljs-attr">guest</span> = r</code></pre></div>
 
 <p>编辑svnserve.conf：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[general]</span><br><span class="hljs-attr">anon-access</span> = none                     <span class="hljs-comment">#控制非鉴权用户访问版本库的权限</span><br><span class="hljs-attr">auth-access</span> = write                    <span class="hljs-comment">#控制鉴权用户访问版本库的权限</span><br><span class="hljs-attr">password-db</span> = passwd                   <span class="hljs-comment">#指定用户名口令文件名</span><br><span class="hljs-attr">authz-db</span> = authz                       <span class="hljs-comment">#指定权限配置文件名</span><br><span class="hljs-attr">realm</span> = repo                           <span class="hljs-comment">#指定版本库的认证域，即在登录时提示的认证域名称</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-section">[general]</span>
+<span class="hljs-attr">anon-access</span> = none                     <span class="hljs-comment">#控制非鉴权用户访问版本库的权限</span>
+<span class="hljs-attr">auth-access</span> = write                    <span class="hljs-comment">#控制鉴权用户访问版本库的权限</span>
+<span class="hljs-attr">password-db</span> = passwd                   <span class="hljs-comment">#指定用户名口令文件名</span>
+<span class="hljs-attr">authz-db</span> = authz                       <span class="hljs-comment">#指定权限配置文件名</span>
+<span class="hljs-attr">realm</span> = repo                           <span class="hljs-comment">#指定版本库的认证域，即在登录时提示的认证域名称</span></code></pre></div>
 
 <h3 id="配置ip，打开3369端口并重启"><a href="#配置ip，打开3369端口并重启" class="headerlink" title="配置ip，打开3369端口并重启"></a>配置ip，打开3369端口并重启</h3><h3 id="启动svn"><a href="#启动svn" class="headerlink" title="启动svn"></a>启动svn</h3><blockquote>
 <p>svnserve -d -r /home/repo</p>

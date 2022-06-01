@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          215 字
+          212 字
         
       </span>
     
@@ -877,7 +877,9 @@
 <li>PHP 设置上传大小 </li>
 </ol>
 <p>打开php.ini 文件中 修改以下几个参数</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">memory_limit = 32M<br>upload_max_filesize = 8M<br>post_max_size = 16M<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">memory_limit = 32M
+upload_max_filesize = 8M
+post_max_size = 16M</code></pre></div>
 
 <p>重启nginx，fpm即可。</p>
 

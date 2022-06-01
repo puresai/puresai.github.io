@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.4k 字
+          3.1k 字
         
       </span>
     
@@ -306,7 +306,7 @@
         
         
           <!-- compatible with older versions-->
-          29 分钟
+          26 分钟
         
       </span>
     
@@ -414,19 +414,145 @@
 <p>go mod init k8s-configmap-demo</p>
 </blockquote>
 <p>main.go</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;net/http&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br>	<span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span><br>	<span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>	conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)<br>)<br><br><br><span class="hljs-keyword">type</span> Config <span class="hljs-keyword">struct</span> &#123;<br>	Name <span class="hljs-keyword">string</span><br>&#125;<br><br><span class="hljs-comment">// 对外的初始化配置方法</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configRun</span><span class="hljs-params">(cfg <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">error</span></span> &#123;<br>	c := Config&#123;<br>			Name: cfg,<br>	&#125;<br><br>	<span class="hljs-keyword">if</span> err := c.init(); err != <span class="hljs-literal">nil</span> &#123;<br>			<span class="hljs-keyword">return</span> err<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Config)</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;<br>	<span class="hljs-keyword">if</span> c.Name != <span class="hljs-string">&quot;&quot;</span> &#123;<br>			viper.SetConfigFile(c.Name)<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>			<span class="hljs-comment">// 默认配置文件是./config.yaml</span><br>			viper.AddConfigPath(<span class="hljs-string">&quot;.&quot;</span>)<br>			viper.SetConfigName(<span class="hljs-string">&quot;config&quot;</span>)<br>	&#125;<br><br>	viper.SetConfigType(<span class="hljs-string">&quot;yaml&quot;</span>)<br>	<span class="hljs-comment">// viper解析配置文件</span><br>	err := viper.ReadInConfig() <br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>			<span class="hljs-built_in">panic</span>(fmt.Errorf(<span class="hljs-string">&quot;Fatal error config file: %s \n&quot;</span>, err))<br>	&#125;<br><br><br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	pflag.Parse()<br><br>	<span class="hljs-comment">// 初始化配置</span><br>	<span class="hljs-keyword">if</span> err := configRun(*conf); err != <span class="hljs-literal">nil</span> &#123;<br>			<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br><br><br>	gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))<br>	g := gin.New()<br>	g = LoadRoute(g)<br><br>	g.Run(viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>))<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">LoadRoute</span><span class="hljs-params">(g *gin.Engine)</span> *<span class="hljs-title">gin</span>.<span class="hljs-title">Engine</span></span> &#123;<br>	g.Use(gin.Recovery())<br>	<span class="hljs-comment">// 404</span><br>	g.NoRoute(<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *gin.Context)</span></span>  &#123;<br>			c.String(http.StatusNotFound, <span class="hljs-string">&quot;404 not found&quot;</span>);<br>	&#125;)<br><br>	g.GET(<span class="hljs-string">&quot;/&quot;</span>, Index)<br><br>	<span class="hljs-keyword">return</span> g<br>&#125;<br><br><span class="hljs-comment">// 返回</span><br><span class="hljs-keyword">type</span> Response <span class="hljs-keyword">struct</span> &#123;<br>	Code <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;code&quot;`</span><br>	Message <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;message&quot;`</span><br>	Data <span class="hljs-keyword">interface</span>&#123;&#125; <span class="hljs-string">`json:&quot;data&quot;`</span><br>&#125;<br><br><span class="hljs-comment">// api返回结构</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ApiResponse</span><span class="hljs-params">(c *gin.Context, code <span class="hljs-keyword">int</span>, message <span class="hljs-keyword">string</span>, data <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	c.JSON(http.StatusOK, Response&#123;<br>			Code: code,<br>			Message: message,<br>			Data: data,<br>	&#125;)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Index</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>	ApiResponse(c, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;success&quot;</span>, viper.GetString(<span class="hljs-string">&quot;hi&quot;</span>))<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;net/http&quot;</span>
+
+	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
+	<span class="hljs-string">&quot;github.com/spf13/pflag&quot;</span>
+	<span class="hljs-string">&quot;github.com/spf13/viper&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> (
+	conf = pflag.StringP(<span class="hljs-string">&quot;config&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;config filepath&quot;</span>)
+)
+
+
+<span class="hljs-keyword">type</span> Config <span class="hljs-keyword">struct</span> &#123;
+	Name <span class="hljs-keyword">string</span>
+&#125;
+
+<span class="hljs-comment">// 对外的初始化配置方法</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configRun</span><span class="hljs-params">(cfg <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">error</span></span> &#123;
+	c := Config&#123;
+			Name: cfg,
+	&#125;
+
+	<span class="hljs-keyword">if</span> err := c.init(); err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">return</span> err
+	&#125;
+
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *Config)</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">if</span> c.Name != <span class="hljs-string">&quot;&quot;</span> &#123;
+			viper.SetConfigFile(c.Name)
+	&#125; <span class="hljs-keyword">else</span> &#123;
+			<span class="hljs-comment">// 默认配置文件是./config.yaml</span>
+			viper.AddConfigPath(<span class="hljs-string">&quot;.&quot;</span>)
+			viper.SetConfigName(<span class="hljs-string">&quot;config&quot;</span>)
+	&#125;
+
+	viper.SetConfigType(<span class="hljs-string">&quot;yaml&quot;</span>)
+	<span class="hljs-comment">// viper解析配置文件</span>
+	err := viper.ReadInConfig() 
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-built_in">panic</span>(fmt.Errorf(<span class="hljs-string">&quot;Fatal error config file: %s \n&quot;</span>, err))
+	&#125;
+
+
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	pflag.Parse()
+
+	<span class="hljs-comment">// 初始化配置</span>
+	<span class="hljs-keyword">if</span> err := configRun(*conf); err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-built_in">panic</span>(err)
+	&#125;
+
+
+	gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))
+	g := gin.New()
+	g = LoadRoute(g)
+
+	g.Run(viper.GetString(<span class="hljs-string">&quot;addr&quot;</span>))
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">LoadRoute</span><span class="hljs-params">(g *gin.Engine)</span> *<span class="hljs-title">gin</span>.<span class="hljs-title">Engine</span></span> &#123;
+	g.Use(gin.Recovery())
+	<span class="hljs-comment">// 404</span>
+	g.NoRoute(<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *gin.Context)</span></span>  &#123;
+			c.String(http.StatusNotFound, <span class="hljs-string">&quot;404 not found&quot;</span>);
+	&#125;)
+
+	g.GET(<span class="hljs-string">&quot;/&quot;</span>, Index)
+
+	<span class="hljs-keyword">return</span> g
+&#125;
+
+<span class="hljs-comment">// 返回</span>
+<span class="hljs-keyword">type</span> Response <span class="hljs-keyword">struct</span> &#123;
+	Code <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;code&quot;`</span>
+	Message <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;message&quot;`</span>
+	Data <span class="hljs-keyword">interface</span>&#123;&#125; <span class="hljs-string">`json:&quot;data&quot;`</span>
+&#125;
+
+<span class="hljs-comment">// api返回结构</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ApiResponse</span><span class="hljs-params">(c *gin.Context, code <span class="hljs-keyword">int</span>, message <span class="hljs-keyword">string</span>, data <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+	c.JSON(http.StatusOK, Response&#123;
+			Code: code,
+			Message: message,
+			Data: data,
+	&#125;)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Index</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
+	ApiResponse(c, <span class="hljs-number">0</span>, <span class="hljs-string">&quot;success&quot;</span>, viper.GetString(<span class="hljs-string">&quot;hi&quot;</span>))
+&#125;</code></pre></div>
 
 <p>代码比较简单，读取config,运行一个gin http服务，返回配置项[hi]的字符串。</p>
 <p>config.yaml</p>
-<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">name:</span> demo2<br><span class="hljs-symbol">mode:</span> debug<br><span class="hljs-symbol">addr:</span> :<span class="hljs-number">8080</span><br><span class="hljs-symbol">hi:</span> w~o~w<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs avrasm"><span class="hljs-symbol">name:</span> demo2
+<span class="hljs-symbol">mode:</span> debug
+<span class="hljs-symbol">addr:</span> :<span class="hljs-number">8080</span>
+<span class="hljs-symbol">hi:</span> w~o~w</code></pre></div>
 
 <p>Dockerfile</p>
-<figure class="highlight do"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs Do">FROM golang:alpine <span class="hljs-keyword">AS</span> builder<br><br>ENV CGO_ENABLED 0<br>ENV GOPROXY https:<span class="hljs-comment">//goproxy.cn,direct</span><br><br>WORKDIR /<span class="hljs-keyword">app</span><br><br>ADD go.mod .<br>ADD go.<span class="hljs-keyword">sum</span> .<br><span class="hljs-keyword">RUN</span> go mod download<br><span class="hljs-keyword">COPY</span> main.go .<br><span class="hljs-keyword">RUN</span> go build -o 13sai main.go<br><br><br>FROM alpine<br><br>WORKDIR /<span class="hljs-keyword">app</span><br><span class="hljs-keyword">COPY</span> --from=builder /<span class="hljs-keyword">app</span>/13sai /<span class="hljs-keyword">app</span>/13sai<br><br>ADD config.yaml .<br><br>CMD [<span class="hljs-string">&quot;./13sai&quot;</span>]<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs Do">FROM golang:alpine <span class="hljs-keyword">AS</span> builder
+
+ENV CGO_ENABLED 0
+ENV GOPROXY https:<span class="hljs-comment">//goproxy.cn,direct</span>
+
+WORKDIR /<span class="hljs-keyword">app</span>
+
+ADD go.mod .
+ADD go.<span class="hljs-keyword">sum</span> .
+<span class="hljs-keyword">RUN</span> go mod download
+<span class="hljs-keyword">COPY</span> main.go .
+<span class="hljs-keyword">RUN</span> go build -o 13sai main.go
+
+
+FROM alpine
+
+WORKDIR /<span class="hljs-keyword">app</span>
+<span class="hljs-keyword">COPY</span> --from=builder /<span class="hljs-keyword">app</span>/13sai /<span class="hljs-keyword">app</span>/13sai
+
+ADD config.yaml .
+
+CMD [<span class="hljs-string">&quot;./13sai&quot;</span>]</code></pre></div>
 
 <p>构建：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> build -t k<span class="hljs-number">8</span>s-configmap-demo:<span class="hljs-number">0</span>.<span class="hljs-number">2</span> .<br><span class="hljs-attribute">docker</span> tag k<span class="hljs-number">8</span>s-configmap-demo:<span class="hljs-number">0</span>.<span class="hljs-number">2</span> <span class="hljs-number">13</span>sai/k<span class="hljs-number">8</span>s-configmap-demo:<span class="hljs-number">0</span>.<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> build -t k<span class="hljs-number">8</span>s-configmap-demo:<span class="hljs-number">0</span>.<span class="hljs-number">2</span> .
+<span class="hljs-attribute">docker</span> tag k<span class="hljs-number">8</span>s-configmap-demo:<span class="hljs-number">0</span>.<span class="hljs-number">2</span> <span class="hljs-number">13</span>sai/k<span class="hljs-number">8</span>s-configmap-demo:<span class="hljs-number">0</span>.<span class="hljs-number">2</span></code></pre></div>
 
-<h3 id="提交镜像到hub"><a href="#提交镜像到hub" class="headerlink" title="提交镜像到hub"></a>提交镜像到hub</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> login<br><br><span class="hljs-attribute">docker</span> push <span class="hljs-number">13</span>sai/k<span class="hljs-number">8</span>s-configmap-demo:<span class="hljs-number">0</span>.<span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<h3 id="提交镜像到hub"><a href="#提交镜像到hub" class="headerlink" title="提交镜像到hub"></a>提交镜像到hub</h3><div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> login
+
+<span class="hljs-attribute">docker</span> push <span class="hljs-number">13</span>sai/k<span class="hljs-number">8</span>s-configmap-demo:<span class="hljs-number">0</span>.<span class="hljs-number">2</span></code></pre></div>
 
 
 <blockquote>
@@ -458,7 +584,63 @@
 <p>保存后即可。</p>
 <p><img src="/images/post/crd.jpg" srcset="/img/loading.gif" lazyload alt="crd"></p>
 <p>最后贴出生成的yaml文件</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span><br><span class="hljs-attr">metadata:</span> <span class="hljs-comment"># 元数据，定义基本属性和信息</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">sai-config</span> <span class="hljs-comment"># 名称</span><br><span class="hljs-attr">data:</span><br>  <span class="hljs-attr">config.yaml:</span> <span class="hljs-string">|-</span><br><span class="hljs-string">    name: sai0556</span><br><span class="hljs-string">    mode: debug</span><br><span class="hljs-string">    addr: :8080</span><br><span class="hljs-string">    hi: w~o~w</span><br><span class="hljs-string"></span><br><span class="hljs-meta">---</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">sai</span><br>  <span class="hljs-attr">labels:</span> <span class="hljs-comment"># 标签</span><br>    <span class="hljs-attr">app:</span> <span class="hljs-string">sai</span><br><span class="hljs-attr">spec:</span> <span class="hljs-comment"># 描述</span><br>  <span class="hljs-attr">ports:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span><br>    <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">8080</span><br>  <span class="hljs-attr">selector:</span><br>    <span class="hljs-attr">app:</span> <span class="hljs-string">sai</span><br><br><span class="hljs-meta">---</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">sai</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span> <span class="hljs-comment"># 创建应用程序实例个数</span><br>  <span class="hljs-attr">selector:</span> <span class="hljs-comment"># 标签选择器</span><br>    <span class="hljs-attr">matchLabels:</span> <span class="hljs-comment"># 选择包含标签app:sai的资源</span><br>      <span class="hljs-attr">app:</span> <span class="hljs-string">sai</span><br>  <span class="hljs-attr">template:</span> <span class="hljs-comment"># 模板</span><br>    <span class="hljs-attr">metadata:</span><br>      <span class="hljs-attr">labels:</span><br>        <span class="hljs-attr">app:</span> <span class="hljs-string">sai</span><br>    <span class="hljs-attr">spec:</span><br>      <span class="hljs-attr">containers:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">sai</span><br>        <span class="hljs-attr">image:</span> 	<span class="hljs-string">13sai/k8s-configmap-demo:0.2</span><br>        <span class="hljs-attr">imagePullPolicy:</span> <span class="hljs-string">IfNotPresent</span><br>        <span class="hljs-attr">command:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;/app/13sai&#x27;</span><br>        <span class="hljs-attr">volumeMounts:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">config</span><br>            <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/app/config.yaml</span><br>            <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">true</span><br>            <span class="hljs-attr">subPath:</span> <span class="hljs-string">config.yaml</span><br>      <span class="hljs-attr">volumes:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">config</span><br>          <span class="hljs-attr">configMap:</span><br>            <span class="hljs-attr">defaultMode:</span> <span class="hljs-number">0600</span><br>            <span class="hljs-attr">name:</span> <span class="hljs-string">sai-config</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span>
+<span class="hljs-attr">metadata:</span> <span class="hljs-comment"># 元数据，定义基本属性和信息</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">sai-config</span> <span class="hljs-comment"># 名称</span>
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">config.yaml:</span> <span class="hljs-string">|-</span>
+<span class="hljs-string">    name: sai0556</span>
+<span class="hljs-string">    mode: debug</span>
+<span class="hljs-string">    addr: :8080</span>
+<span class="hljs-string">    hi: w~o~w</span>
+<span class="hljs-string"></span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">sai</span>
+  <span class="hljs-attr">labels:</span> <span class="hljs-comment"># 标签</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">sai</span>
+<span class="hljs-attr">spec:</span> <span class="hljs-comment"># 描述</span>
+  <span class="hljs-attr">ports:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+    <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
+    <span class="hljs-attr">targetPort:</span> <span class="hljs-number">8080</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">sai</span>
+
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">sai</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span> <span class="hljs-comment"># 创建应用程序实例个数</span>
+  <span class="hljs-attr">selector:</span> <span class="hljs-comment"># 标签选择器</span>
+    <span class="hljs-attr">matchLabels:</span> <span class="hljs-comment"># 选择包含标签app:sai的资源</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">sai</span>
+  <span class="hljs-attr">template:</span> <span class="hljs-comment"># 模板</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">sai</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">sai</span>
+        <span class="hljs-attr">image:</span> 	<span class="hljs-string">13sai/k8s-configmap-demo:0.2</span>
+        <span class="hljs-attr">imagePullPolicy:</span> <span class="hljs-string">IfNotPresent</span>
+        <span class="hljs-attr">command:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;/app/13sai&#x27;</span>
+        <span class="hljs-attr">volumeMounts:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">config</span>
+            <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/app/config.yaml</span>
+            <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">true</span>
+            <span class="hljs-attr">subPath:</span> <span class="hljs-string">config.yaml</span>
+      <span class="hljs-attr">volumes:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">config</span>
+          <span class="hljs-attr">configMap:</span>
+            <span class="hljs-attr">defaultMode:</span> <span class="hljs-number">0600</span>
+            <span class="hljs-attr">name:</span> <span class="hljs-string">sai-config</span></code></pre></div>
 
               
             </div>

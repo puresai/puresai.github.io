@@ -295,7 +295,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.6k 字
+          4.4k 字
         
       </span>
     
@@ -307,7 +307,7 @@
         
         
           <!-- compatible with older versions-->
-          38 分钟
+          37 分钟
         
       </span>
     
@@ -429,25 +429,103 @@
             <div class="markdown-body">
               
               <p>今天看到生产的es集群有报错：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;server&quot;</span>, <span class="hljs-attr">&quot;timestamp&quot;</span>: <span class="hljs-string">&quot;2021-11-15T14:19:15,189Z&quot;</span>, <span class="hljs-attr">&quot;level&quot;</span>: <span class="hljs-string">&quot;ERROR&quot;</span>, <span class="hljs-attr">&quot;component&quot;</span>: <span class="hljs-string">&quot;o.e.x.i.IndexLifecycleRunner&quot;</span>, <span class="hljs-attr">&quot;cluster.name&quot;</span>: <span class="hljs-string">&quot;elasticsearch&quot;</span>, <span class="hljs-attr">&quot;node.name&quot;</span>: <span class="hljs-string">&quot;elasticsearch-master-2&quot;</span>, <span class="hljs-attr">&quot;message&quot;</span>: <span class="hljs-string">&quot;policy [sai-log] for index [sai-detail-2021-11-02] failed on step [&#123;\&quot;phase\&quot;:\&quot;hot\&quot;,\&quot;action\&quot;:\&quot;rollover\&quot;,\&quot;name\&quot;:\&quot;check-rollover-ready\&quot;&#125;]. Moving to ERROR step&quot;</span>, <span class="hljs-attr">&quot;cluster.uuid&quot;</span>: <span class="hljs-string">&quot;dscxSgouRw--mhyuj5Y2fw&quot;</span>, <span class="hljs-attr">&quot;node.id&quot;</span>: <span class="hljs-string">&quot;9yklgtqpTNuQU25hIOWkxQ&quot;</span> , <br><span class="hljs-attr">&quot;stacktrace&quot;</span>: [<span class="hljs-string">&quot;java.lang.IllegalArgumentException: setting [index.lifecycle.rollover_alias] for index [sai-detail-2021-11-02] is empty or not defined&quot;</span>,<br><span class="hljs-string">&quot;at org.elasticsearch.xpack.core.ilm.WaitForRolloverReadyStep.evaluateCondition(WaitForRolloverReadyStep.java:65) [x-pack-core-7.10.1.jar:7.10.1]&quot;</span>,<br><span class="hljs-string">&quot;at org.elasticsearch.xpack.ilm.IndexLifecycleRunner.runPeriodicStep(IndexLifecycleRunner.java:174) [x-pack-ilm-7.10.1.jar:7.10.1]&quot;</span>,<br><span class="hljs-string">&quot;at org.elasticsearch.xpack.ilm.IndexLifecycleService.triggerPolicies(IndexLifecycleService.java:327) [x-pack-ilm-7.10.1.jar:7.10.1]&quot;</span>,<br><span class="hljs-string">&quot;at org.elasticsearch.xpack.ilm.IndexLifecycleService.triggered(IndexLifecycleService.java:265) [x-pack-ilm-7.10.1.jar:7.10.1]&quot;</span>,<br><span class="hljs-string">&quot;at org.elasticsearch.xpack.core.scheduler.SchedulerEngine.notifyListeners(SchedulerEngine.java:183) [x-pack-core-7.10.1.jar:7.10.1]&quot;</span>,<br><span class="hljs-string">&quot;at org.elasticsearch.xpack.core.scheduler.SchedulerEngine$ActiveSchedule.run(SchedulerEngine.java:216) [x-pack-core-7.10.1.jar:7.10.1]&quot;</span>,<br><span class="hljs-string">&quot;at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515) [?:?]&quot;</span>,<br><span class="hljs-string">&quot;at java.util.concurrent.FutureTask.run(FutureTask.java:264) [?:?]&quot;</span>,<br><span class="hljs-string">&quot;at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) [?:?]&quot;</span>,<br><span class="hljs-string">&quot;at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130) [?:?]&quot;</span>,<br><span class="hljs-string">&quot;at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630) [?:?]&quot;</span>,<br><span class="hljs-string">&quot;at java.lang.Thread.run(Thread.java:832) [?:?]&quot;</span>] &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs json">&#123;<span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;server&quot;</span>, <span class="hljs-attr">&quot;timestamp&quot;</span>: <span class="hljs-string">&quot;2021-11-15T14:19:15,189Z&quot;</span>, <span class="hljs-attr">&quot;level&quot;</span>: <span class="hljs-string">&quot;ERROR&quot;</span>, <span class="hljs-attr">&quot;component&quot;</span>: <span class="hljs-string">&quot;o.e.x.i.IndexLifecycleRunner&quot;</span>, <span class="hljs-attr">&quot;cluster.name&quot;</span>: <span class="hljs-string">&quot;elasticsearch&quot;</span>, <span class="hljs-attr">&quot;node.name&quot;</span>: <span class="hljs-string">&quot;elasticsearch-master-2&quot;</span>, <span class="hljs-attr">&quot;message&quot;</span>: <span class="hljs-string">&quot;policy [sai-log] for index [sai-detail-2021-11-02] failed on step [&#123;\&quot;phase\&quot;:\&quot;hot\&quot;,\&quot;action\&quot;:\&quot;rollover\&quot;,\&quot;name\&quot;:\&quot;check-rollover-ready\&quot;&#125;]. Moving to ERROR step&quot;</span>, <span class="hljs-attr">&quot;cluster.uuid&quot;</span>: <span class="hljs-string">&quot;dscxSgouRw--mhyuj5Y2fw&quot;</span>, <span class="hljs-attr">&quot;node.id&quot;</span>: <span class="hljs-string">&quot;9yklgtqpTNuQU25hIOWkxQ&quot;</span> , 
+<span class="hljs-attr">&quot;stacktrace&quot;</span>: [<span class="hljs-string">&quot;java.lang.IllegalArgumentException: setting [index.lifecycle.rollover_alias] for index [sai-detail-2021-11-02] is empty or not defined&quot;</span>,
+<span class="hljs-string">&quot;at org.elasticsearch.xpack.core.ilm.WaitForRolloverReadyStep.evaluateCondition(WaitForRolloverReadyStep.java:65) [x-pack-core-7.10.1.jar:7.10.1]&quot;</span>,
+<span class="hljs-string">&quot;at org.elasticsearch.xpack.ilm.IndexLifecycleRunner.runPeriodicStep(IndexLifecycleRunner.java:174) [x-pack-ilm-7.10.1.jar:7.10.1]&quot;</span>,
+<span class="hljs-string">&quot;at org.elasticsearch.xpack.ilm.IndexLifecycleService.triggerPolicies(IndexLifecycleService.java:327) [x-pack-ilm-7.10.1.jar:7.10.1]&quot;</span>,
+<span class="hljs-string">&quot;at org.elasticsearch.xpack.ilm.IndexLifecycleService.triggered(IndexLifecycleService.java:265) [x-pack-ilm-7.10.1.jar:7.10.1]&quot;</span>,
+<span class="hljs-string">&quot;at org.elasticsearch.xpack.core.scheduler.SchedulerEngine.notifyListeners(SchedulerEngine.java:183) [x-pack-core-7.10.1.jar:7.10.1]&quot;</span>,
+<span class="hljs-string">&quot;at org.elasticsearch.xpack.core.scheduler.SchedulerEngine$ActiveSchedule.run(SchedulerEngine.java:216) [x-pack-core-7.10.1.jar:7.10.1]&quot;</span>,
+<span class="hljs-string">&quot;at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515) [?:?]&quot;</span>,
+<span class="hljs-string">&quot;at java.util.concurrent.FutureTask.run(FutureTask.java:264) [?:?]&quot;</span>,
+<span class="hljs-string">&quot;at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304) [?:?]&quot;</span>,
+<span class="hljs-string">&quot;at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130) [?:?]&quot;</span>,
+<span class="hljs-string">&quot;at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630) [?:?]&quot;</span>,
+<span class="hljs-string">&quot;at java.lang.Thread.run(Thread.java:832) [?:?]&quot;</span>] &#125;</code></pre></div>
 
 <p>跟同事一起查看了下，发现kibana的Index Management界面，有错误提示：</p>
 <p><img src="/images/es-ilm.png" srcset="/img/loading.gif" lazyload alt="ILM"></p>
 <p>后面同事修改了ILM，错误消失。</p>
 <hr>
 <p>下班回家，去查了日志，发现错误仍在，看来美誉解决问题，</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sh">GET /sai-log-2021-11-13/_ilm/explain<br><br>output：<br>&#123;<br>  <span class="hljs-string">&quot;indices&quot;</span> : &#123;<br>    <span class="hljs-string">&quot;sai-log-2021-11-13&quot;</span> : &#123;<br>      <span class="hljs-string">&quot;index&quot;</span> : <span class="hljs-string">&quot;sai-log-2021-11-13&quot;</span>,<br>      <span class="hljs-string">&quot;managed&quot;</span> : <span class="hljs-literal">false</span><br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">GET /sai-log-2021-11-13/_ilm/explain
+
+output：
+&#123;
+  <span class="hljs-string">&quot;indices&quot;</span> : &#123;
+    <span class="hljs-string">&quot;sai-log-2021-11-13&quot;</span> : &#123;
+      <span class="hljs-string">&quot;index&quot;</span> : <span class="hljs-string">&quot;sai-log-2021-11-13&quot;</span>,
+      <span class="hljs-string">&quot;managed&quot;</span> : <span class="hljs-literal">false</span>
+    &#125;
+  &#125;
+&#125;</code></pre></div>
 
 
-<figure class="highlight smalltalk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs smalltalk"><span class="hljs-type">POST</span> /sai-log<span class="hljs-number">-2021</span><span class="hljs-number">-11</span><span class="hljs-number">-13</span>/_ilm/retry<br><br>output:<br>&#123;<br>  <span class="hljs-comment">&quot;error&quot;</span> : &#123;<br>    <span class="hljs-comment">&quot;root_cause&quot;</span> : [<br>      &#123;<br>        <span class="hljs-comment">&quot;type&quot;</span> : <span class="hljs-comment">&quot;illegal_argument_exception&quot;</span>,<br>        <span class="hljs-comment">&quot;reason&quot;</span> : <span class="hljs-comment">&quot;cannot retry an action for an index [sai-log-2021-11-13] that has not encountered an error when running a Lifecycle Policy&quot;</span><br>      &#125;<br>    ],<br>    <span class="hljs-comment">&quot;type&quot;</span> : <span class="hljs-comment">&quot;illegal_argument_exception&quot;</span>,<br>    <span class="hljs-comment">&quot;reason&quot;</span> : <span class="hljs-comment">&quot;cannot retry an action for an index [sai-log-2021-11-13] that has not encountered an error when running a Lifecycle Policy&quot;</span><br>  &#125;,<br>  <span class="hljs-comment">&quot;status&quot;</span> : <span class="hljs-number">400</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs smalltalk"><span class="hljs-type">POST</span> /sai-log<span class="hljs-number">-2021</span><span class="hljs-number">-11</span><span class="hljs-number">-13</span>/_ilm/retry
+
+output:
+&#123;
+  <span class="hljs-comment">&quot;error&quot;</span> : &#123;
+    <span class="hljs-comment">&quot;root_cause&quot;</span> : [
+      &#123;
+        <span class="hljs-comment">&quot;type&quot;</span> : <span class="hljs-comment">&quot;illegal_argument_exception&quot;</span>,
+        <span class="hljs-comment">&quot;reason&quot;</span> : <span class="hljs-comment">&quot;cannot retry an action for an index [sai-log-2021-11-13] that has not encountered an error when running a Lifecycle Policy&quot;</span>
+      &#125;
+    ],
+    <span class="hljs-comment">&quot;type&quot;</span> : <span class="hljs-comment">&quot;illegal_argument_exception&quot;</span>,
+    <span class="hljs-comment">&quot;reason&quot;</span> : <span class="hljs-comment">&quot;cannot retry an action for an index [sai-log-2021-11-13] that has not encountered an error when running a Lifecycle Policy&quot;</span>
+  &#125;,
+  <span class="hljs-comment">&quot;status&quot;</span> : <span class="hljs-number">400</span>
+&#125;</code></pre></div>
 
 <p>前往kibana的ILM界面，绑定ILM策略到index template<br><img src="ILM_bing.png" srcset="/img/loading.gif" lazyload alt="ILM poliy"></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs sh">GET /sai-log-2021-11-13/_ilm/explain<br><br>output:<br>&#123;<br>  <span class="hljs-string">&quot;indices&quot;</span> : &#123;<br>    <span class="hljs-string">&quot;sai-log-2021-11-13&quot;</span> : &#123;<br>      <span class="hljs-string">&quot;index&quot;</span> : <span class="hljs-string">&quot;sai-log-2021-11-13&quot;</span>,<br>      <span class="hljs-string">&quot;managed&quot;</span> : <span class="hljs-literal">true</span>,<br>      <span class="hljs-string">&quot;policy&quot;</span> : <span class="hljs-string">&quot;sai-log&quot;</span>,<br>      <span class="hljs-string">&quot;lifecycle_date_millis&quot;</span> : 1636732801982,<br>      <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-string">&quot;2.94d&quot;</span>,<br>      <span class="hljs-string">&quot;phase&quot;</span> : <span class="hljs-string">&quot;hot&quot;</span>,<br>      <span class="hljs-string">&quot;phase_time_millis&quot;</span> : 1636986555834,<br>      <span class="hljs-string">&quot;action&quot;</span> : <span class="hljs-string">&quot;rollover&quot;</span>,<br>      <span class="hljs-string">&quot;action_time_millis&quot;</span> : 1636733356166,<br>      <span class="hljs-string">&quot;step&quot;</span> : <span class="hljs-string">&quot;check-rollover-ready&quot;</span>,<br>      <span class="hljs-string">&quot;step_time_millis&quot;</span> : 1636986555834,<br>      <span class="hljs-string">&quot;is_auto_retryable_error&quot;</span> : <span class="hljs-literal">true</span>,<br>      <span class="hljs-string">&quot;failed_step_retry_count&quot;</span> : 211,<br>      <span class="hljs-string">&quot;phase_execution&quot;</span> : &#123;<br>        <span class="hljs-string">&quot;policy&quot;</span> : <span class="hljs-string">&quot;sai-log&quot;</span>,<br>        <span class="hljs-string">&quot;phase_definition&quot;</span> : &#123;<br>          <span class="hljs-string">&quot;min_age&quot;</span> : <span class="hljs-string">&quot;0ms&quot;</span>,<br>          <span class="hljs-string">&quot;actions&quot;</span> : &#123;<br>            <span class="hljs-string">&quot;rollover&quot;</span> : &#123;<br>              <span class="hljs-string">&quot;max_size&quot;</span> : <span class="hljs-string">&quot;30gb&quot;</span>,<br>              <span class="hljs-string">&quot;max_age&quot;</span> : <span class="hljs-string">&quot;60d&quot;</span><br>            &#125;<br>          &#125;<br>        &#125;,<br>        <span class="hljs-string">&quot;version&quot;</span> : 3,<br>        <span class="hljs-string">&quot;modified_date_in_millis&quot;</span> : 1636960453087<br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">GET /sai-log-2021-11-13/_ilm/explain
+
+output:
+&#123;
+  <span class="hljs-string">&quot;indices&quot;</span> : &#123;
+    <span class="hljs-string">&quot;sai-log-2021-11-13&quot;</span> : &#123;
+      <span class="hljs-string">&quot;index&quot;</span> : <span class="hljs-string">&quot;sai-log-2021-11-13&quot;</span>,
+      <span class="hljs-string">&quot;managed&quot;</span> : <span class="hljs-literal">true</span>,
+      <span class="hljs-string">&quot;policy&quot;</span> : <span class="hljs-string">&quot;sai-log&quot;</span>,
+      <span class="hljs-string">&quot;lifecycle_date_millis&quot;</span> : 1636732801982,
+      <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-string">&quot;2.94d&quot;</span>,
+      <span class="hljs-string">&quot;phase&quot;</span> : <span class="hljs-string">&quot;hot&quot;</span>,
+      <span class="hljs-string">&quot;phase_time_millis&quot;</span> : 1636986555834,
+      <span class="hljs-string">&quot;action&quot;</span> : <span class="hljs-string">&quot;rollover&quot;</span>,
+      <span class="hljs-string">&quot;action_time_millis&quot;</span> : 1636733356166,
+      <span class="hljs-string">&quot;step&quot;</span> : <span class="hljs-string">&quot;check-rollover-ready&quot;</span>,
+      <span class="hljs-string">&quot;step_time_millis&quot;</span> : 1636986555834,
+      <span class="hljs-string">&quot;is_auto_retryable_error&quot;</span> : <span class="hljs-literal">true</span>,
+      <span class="hljs-string">&quot;failed_step_retry_count&quot;</span> : 211,
+      <span class="hljs-string">&quot;phase_execution&quot;</span> : &#123;
+        <span class="hljs-string">&quot;policy&quot;</span> : <span class="hljs-string">&quot;sai-log&quot;</span>,
+        <span class="hljs-string">&quot;phase_definition&quot;</span> : &#123;
+          <span class="hljs-string">&quot;min_age&quot;</span> : <span class="hljs-string">&quot;0ms&quot;</span>,
+          <span class="hljs-string">&quot;actions&quot;</span> : &#123;
+            <span class="hljs-string">&quot;rollover&quot;</span> : &#123;
+              <span class="hljs-string">&quot;max_size&quot;</span> : <span class="hljs-string">&quot;30gb&quot;</span>,
+              <span class="hljs-string">&quot;max_age&quot;</span> : <span class="hljs-string">&quot;60d&quot;</span>
+            &#125;
+          &#125;
+        &#125;,
+        <span class="hljs-string">&quot;version&quot;</span> : 3,
+        <span class="hljs-string">&quot;modified_date_in_millis&quot;</span> : 1636960453087
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre></div>
 
 <p>解决了？</p>
 <p>前往kibana的Index Management界面，依旧存在 42 indices have lifecycle errors。</p>
 <p>手动来一下：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sh">POST /sai-log-2021-11-13/_ilm/retry<br><br>output:<br>&#123;<br>  <span class="hljs-string">&quot;acknowledged&quot;</span> : <span class="hljs-literal">true</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">POST /sai-log-2021-11-13/_ilm/retry
+
+output:
+&#123;
+  <span class="hljs-string">&quot;acknowledged&quot;</span> : <span class="hljs-literal">true</span>
+&#125;</code></pre></div>
 
 <p>重复explain，发现输出一致，再去kibana的Index Management界面瞅瞅：<br><img src="/images/esindex.png" srcset="/img/loading.gif" lazyload alt="Index Management"></p>
 <p>还有一个，retry命令处理下即可。</p>

@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.9k 字
+          1.7k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          16 分钟
+          15 分钟
         
       </span>
     
@@ -554,10 +554,101 @@
               
               <p>前一段时间重构聊天服务的时候，需要定期去检测C端长连接的活跃情况，当检测到长链接失去心跳60s后，主动释放掉以节省内存开销。需要检测所有的长连接显然是不太明智的做法，因而想到了使用LRU算法，从最不活跃的连接检测，当检测到某个连接的活跃时间大于最近一分钟，后续的连接就无需检测了。</p>
 <p>LRU（Least Recently Used）算法是一种常用的缓存淘汰策略算法，其核心思想是“如果数据最近被访问过，那么将来被访问的几率也更高”。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> lru<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;container/list&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> Link <span class="hljs-keyword">struct</span> &#123;<br>	ID         <span class="hljs-keyword">int</span><br>	ActiveTime <span class="hljs-keyword">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Lru <span class="hljs-keyword">struct</span> &#123;<br>	maxSize <span class="hljs-keyword">int</span> <span class="hljs-comment">// 最大容量</span><br>	list    *list.List <span class="hljs-comment">// 链表</span><br>	cache   <span class="hljs-keyword">map</span>[*Link]*list.Element <span class="hljs-comment">// map</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">newLru</span><span class="hljs-params">(max <span class="hljs-keyword">int</span>)</span> *<span class="hljs-title">Lru</span></span> &#123;<br>	<span class="hljs-keyword">return</span> &amp;Lru&#123;<br>		maxSize: max,<br>		cache:   <span class="hljs-keyword">map</span>[*Link]*list.Element&#123;&#125;,<br>		list:    list.New(),<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">Push</span><span class="hljs-params">(key *Link)</span></span> &#123;<br>    <span class="hljs-comment">// 已存在，调整链表顺序</span><br>	<span class="hljs-keyword">if</span> e, ok := l.cache[key]; ok &#123;<br>		l.list.MoveToFront(e)<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		row := l.list.PushFront(key)<br>		l.cache[key] = row<br>	&#125;<br>    <span class="hljs-comment">// 我这里无需检测长度</span><br>	<span class="hljs-keyword">for</span> l.maxSize &gt; <span class="hljs-number">0</span> &amp;&amp; l.list.Len() &gt; l.maxSize &#123;<br>		l.removePassive()<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">CheckPassive</span><span class="hljs-params">()</span> <span class="hljs-params">(*Link, <span class="hljs-keyword">bool</span>)</span></span> &#123;<br>	e := l.list.Back()<br>	<span class="hljs-keyword">if</span> e == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">false</span><br>	&#125;<br>	link := e.Value.(*Link)<br>	<span class="hljs-keyword">return</span> link, <span class="hljs-literal">true</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">Remove</span><span class="hljs-params">(key *Link)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> e, ok := l.cache[key]; ok &#123;<br>		l.list.Remove(e)<br>		<span class="hljs-built_in">delete</span>(l.cache, key)<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">Len</span><span class="hljs-params">()</span> <span class="hljs-title">int</span></span> &#123;<br>	<span class="hljs-keyword">return</span> l.list.Len()<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">removePassive</span><span class="hljs-params">()</span></span> &#123;<br>	e := l.list.Back()<br>	l.list.Remove(e)<br>	<span class="hljs-built_in">delete</span>(l.cache, e.Value.(*Link))<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> lru
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;container/list&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Link <span class="hljs-keyword">struct</span> &#123;
+	ID         <span class="hljs-keyword">int</span>
+	ActiveTime <span class="hljs-keyword">int</span>
+&#125;
+
+<span class="hljs-keyword">type</span> Lru <span class="hljs-keyword">struct</span> &#123;
+	maxSize <span class="hljs-keyword">int</span> <span class="hljs-comment">// 最大容量</span>
+	list    *list.List <span class="hljs-comment">// 链表</span>
+	cache   <span class="hljs-keyword">map</span>[*Link]*list.Element <span class="hljs-comment">// map</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">newLru</span><span class="hljs-params">(max <span class="hljs-keyword">int</span>)</span> *<span class="hljs-title">Lru</span></span> &#123;
+	<span class="hljs-keyword">return</span> &amp;Lru&#123;
+		maxSize: max,
+		cache:   <span class="hljs-keyword">map</span>[*Link]*list.Element&#123;&#125;,
+		list:    list.New(),
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">Push</span><span class="hljs-params">(key *Link)</span></span> &#123;
+    <span class="hljs-comment">// 已存在，调整链表顺序</span>
+	<span class="hljs-keyword">if</span> e, ok := l.cache[key]; ok &#123;
+		l.list.MoveToFront(e)
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		row := l.list.PushFront(key)
+		l.cache[key] = row
+	&#125;
+    <span class="hljs-comment">// 我这里无需检测长度</span>
+	<span class="hljs-keyword">for</span> l.maxSize &gt; <span class="hljs-number">0</span> &amp;&amp; l.list.Len() &gt; l.maxSize &#123;
+		l.removePassive()
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">CheckPassive</span><span class="hljs-params">()</span> <span class="hljs-params">(*Link, <span class="hljs-keyword">bool</span>)</span></span> &#123;
+	e := l.list.Back()
+	<span class="hljs-keyword">if</span> e == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">false</span>
+	&#125;
+	link := e.Value.(*Link)
+	<span class="hljs-keyword">return</span> link, <span class="hljs-literal">true</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">Remove</span><span class="hljs-params">(key *Link)</span></span> &#123;
+	<span class="hljs-keyword">if</span> e, ok := l.cache[key]; ok &#123;
+		l.list.Remove(e)
+		<span class="hljs-built_in">delete</span>(l.cache, key)
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">Len</span><span class="hljs-params">()</span> <span class="hljs-title">int</span></span> &#123;
+	<span class="hljs-keyword">return</span> l.list.Len()
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Lru)</span> <span class="hljs-title">removePassive</span><span class="hljs-params">()</span></span> &#123;
+	e := l.list.Back()
+	l.list.Remove(e)
+	<span class="hljs-built_in">delete</span>(l.cache, e.Value.(*Link))
+&#125;</code></pre></div>
 
 <p>我们测试一下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> lru<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;testing&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestLRU</span><span class="hljs-params">(t *testing.T)</span></span> &#123;<br>	lru := newLru(<span class="hljs-number">10</span>)<br><br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++ &#123;<br>		link1 := &amp;Link&#123;i, i + <span class="hljs-number">1642262400</span>&#125;<br>		lru.Push(link1)<br>	&#125;<br><br>	old, _ := lru.CheckPassive()<br>	t.Logf(<span class="hljs-string">&quot;CheckPassive:%+v&quot;</span>, old)<br>	t.Log(<span class="hljs-string">&quot;len=&quot;</span>, lru.Len())<br><br>	<span class="hljs-keyword">for</span> <span class="hljs-literal">true</span> &#123;<br>		item, ok := lru.CheckPassive()<br>		<span class="hljs-keyword">if</span> !ok &#123;<br>			<span class="hljs-keyword">break</span><br>		&#125;<br>		t.Logf(<span class="hljs-string">&quot;Remove:%+v&quot;</span>, item)<br>		lru.Remove(item)<br>	&#125;<br><br>	old, _ = lru.CheckPassive()<br>	t.Logf(<span class="hljs-string">&quot;CheckPassive:%+v&quot;</span>, old)<br>	t.Log(<span class="hljs-string">&quot;len=&quot;</span>, lru.Len())<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> lru
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;testing&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestLRU</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+	lru := newLru(<span class="hljs-number">10</span>)
+
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++ &#123;
+		link1 := &amp;Link&#123;i, i + <span class="hljs-number">1642262400</span>&#125;
+		lru.Push(link1)
+	&#125;
+
+	old, _ := lru.CheckPassive()
+	t.Logf(<span class="hljs-string">&quot;CheckPassive:%+v&quot;</span>, old)
+	t.Log(<span class="hljs-string">&quot;len=&quot;</span>, lru.Len())
+
+	<span class="hljs-keyword">for</span> <span class="hljs-literal">true</span> &#123;
+		item, ok := lru.CheckPassive()
+		<span class="hljs-keyword">if</span> !ok &#123;
+			<span class="hljs-keyword">break</span>
+		&#125;
+		t.Logf(<span class="hljs-string">&quot;Remove:%+v&quot;</span>, item)
+		lru.Remove(item)
+	&#125;
+
+	old, _ = lru.CheckPassive()
+	t.Logf(<span class="hljs-string">&quot;CheckPassive:%+v&quot;</span>, old)
+	t.Log(<span class="hljs-string">&quot;len=&quot;</span>, lru.Len())
+&#125;</code></pre></div>
 
 <p>我们看一下输出：<br><img src="/images/post/lru.png" srcset="/img/loading.gif" lazyload alt="LRU"></p>
 <p>看效果是ok的。别着急应用到项目中，记得压测对比下再实施哦！</p>

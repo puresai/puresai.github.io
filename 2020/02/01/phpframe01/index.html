@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.1k 字
+          3k 字
         
       </span>
     
@@ -562,7 +562,38 @@
 </ul>
 <h4 id="PSR-12-代码风格规范"><a href="#PSR-12-代码风格规范" class="headerlink" title="PSR-12 代码风格规范"></a>PSR-12 代码风格规范</h4><p>PSR-12的规范很细致，包含了声明、命名空间、类及继承以及控制结构等说明。</p>
 <p>我们先来看一个demo：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>\&#123;<span class="hljs-title">ClassA</span> <span class="hljs-title">as</span> <span class="hljs-title">A</span>, <span class="hljs-title">ClassB</span>, <span class="hljs-title">ClassC</span> <span class="hljs-title">as</span> <span class="hljs-title">C</span>&#125;;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>\<span class="hljs-title">SomeNamespace</span>\<span class="hljs-title">ClassD</span> <span class="hljs-title">as</span> <span class="hljs-title">D</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">function</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>\&#123;<span class="hljs-title">functionA</span>, <span class="hljs-title">functionB</span>, <span class="hljs-title">functionC</span>&#125;;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">const</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>\&#123;<span class="hljs-title">ConstantA</span>, <span class="hljs-title">ConstantB</span>, <span class="hljs-title">ConstantC</span>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Bar</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">FooInterface</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sampleFunction</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-variable">$a</span>, <span class="hljs-keyword">int</span> <span class="hljs-variable">$b</span> = <span class="hljs-literal">null</span></span>): <span class="hljs-title">array</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> === <span class="hljs-variable">$b</span>) &#123;<br>            bar();<br>        &#125; <span class="hljs-keyword">elseif</span> (<span class="hljs-variable">$a</span> &gt; <span class="hljs-variable">$b</span>) &#123;<br>            <span class="hljs-variable">$foo</span>-&gt;bar(<span class="hljs-variable">$arg1</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            BazClass::bar(<span class="hljs-variable">$arg2</span>, <span class="hljs-variable">$arg3</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">final</span> <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">// method body</span><br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">declare</span>(strict_types=<span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>\&#123;<span class="hljs-title">ClassA</span> <span class="hljs-title">as</span> <span class="hljs-title">A</span>, <span class="hljs-title">ClassB</span>, <span class="hljs-title">ClassC</span> <span class="hljs-title">as</span> <span class="hljs-title">C</span>&#125;;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>\<span class="hljs-title">SomeNamespace</span>\<span class="hljs-title">ClassD</span> <span class="hljs-title">as</span> <span class="hljs-title">D</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">function</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>\&#123;<span class="hljs-title">functionA</span>, <span class="hljs-title">functionB</span>, <span class="hljs-title">functionC</span>&#125;;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">const</span> <span class="hljs-title">Vendor</span>\<span class="hljs-title">Package</span>\&#123;<span class="hljs-title">ConstantA</span>, <span class="hljs-title">ConstantB</span>, <span class="hljs-title">ConstantC</span>&#125;;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Bar</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">FooInterface</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sampleFunction</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-variable">$a</span>, <span class="hljs-keyword">int</span> <span class="hljs-variable">$b</span> = <span class="hljs-literal">null</span></span>): <span class="hljs-title">array</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> === <span class="hljs-variable">$b</span>) &#123;
+            bar();
+        &#125; <span class="hljs-keyword">elseif</span> (<span class="hljs-variable">$a</span> &gt; <span class="hljs-variable">$b</span>) &#123;
+            <span class="hljs-variable">$foo</span>-&gt;bar(<span class="hljs-variable">$arg1</span>);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            BazClass::bar(<span class="hljs-variable">$arg2</span>, <span class="hljs-variable">$arg3</span>);
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">final</span> <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bar</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-comment">// method body</span>
+    &#125;
+&#125;
+</code></pre></div>
 
 
 <ul>
@@ -575,7 +606,12 @@
 <li>每行一定不能存在多于一条语句</li>
 <li>代码必须使用4个空格符的缩进，一定不能用 tab键</li>
 <li>PHP所有关键字必须全部小写</li>
-<li>控制结构的基本规范如下：<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="xml">控制结构关键词后必须有一个空格。</span><br><span class="xml">左括号 ( 后一定不能有空格。</span><br><span class="xml">右括号 ) 前也一定不能有空格。</span><br><span class="xml">右括号 ) 与开始花括号 </span><span class="hljs-template-variable">&#123; 间一定有一个空格。</span><br><span class="hljs-template-variable">结构体主体一定要有一次缩进。</span><br><span class="hljs-template-variable">结束花括号 &#125;</span><span class="xml"> 一定在结构体主体后单独成行。</span><br></code></pre></td></tr></table></figure>
+<li>控制结构的基本规范如下：<div class="code-wrapper"><pre><code class="hljs dust"><span class="xml">控制结构关键词后必须有一个空格。</span>
+<span class="xml">左括号 ( 后一定不能有空格。</span>
+<span class="xml">右括号 ) 前也一定不能有空格。</span>
+<span class="xml">右括号 ) 与开始花括号 </span><span class="hljs-template-variable">&#123; 间一定有一个空格。</span>
+<span class="hljs-template-variable">结构体主体一定要有一次缩进。</span>
+<span class="hljs-template-variable">结束花括号 &#125;</span><span class="xml"> 一定在结构体主体后单独成行。</span></code></pre></div>
 代码风格规范内容很多，这里就不一一说明了，大家可自行阅读</li>
 </ul>
 <h4 id="PSR-4-自动加载"><a href="#PSR-4-自动加载" class="headerlink" title="PSR-4 自动加载"></a>PSR-4 自动加载</h4><p>关于由文件路径 自动载入 对应类的相关规范， 本规范是可互操作的，可以作为任一自动载入规范的补充，其中包括 PSR-0，此外， 本 PSR 还包括自动载入的类对应的文件存放路径规范。</p>
@@ -583,8 +619,8 @@
 <li><p>此处的“类”泛指所有的class类、接口、traits可复用代码块以及其它类似结构。</p>
 </li>
 <li><p>一个完整的类名需具有以下结构:</p>
-<pre><code class="hljs"> \&lt;命名空间&gt;(\&lt;子命名空间&gt;)*\&lt;类名&gt;
-</code></pre>
+<div class="code-wrapper"><pre><code class="hljs"> \&lt;命名空间&gt;(\&lt;子命名空间&gt;)*\&lt;类名&gt;
+</code></pre></div>
 <ol>
 <li><p>完整的类名<strong>必须</strong>要有一个顶级命名空间，被称为 “vendor namespace”；</p>
 </li>

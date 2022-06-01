@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.1k 字
+          3.9k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          35 分钟
+          33 分钟
         
       </span>
     
@@ -418,50 +418,197 @@
             <div class="markdown-body">
               
               <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>准备：docker、kubectl、golang</p>
-<h4 id="安装-kustomize"><a href="#安装-kustomize" class="headerlink" title="安装 kustomize"></a>安装 kustomize</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> <span class="hljs-variable">$GOPATH</span>/bin<br>GOBIN=$(<span class="hljs-built_in">pwd</span>)/ GO111MODULE=on go get sigs.k8s.io/kustomize/kustomize/v3<br></code></pre></td></tr></table></figure>
+<h4 id="安装-kustomize"><a href="#安装-kustomize" class="headerlink" title="安装 kustomize"></a>安装 kustomize</h4><div class="code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> <span class="hljs-variable">$GOPATH</span>/bin
+GOBIN=$(<span class="hljs-built_in">pwd</span>)/ GO111MODULE=on go get sigs.k8s.io/kustomize/kustomize/v3</code></pre></div>
 
 <h4 id="安装-kubebuilder"><a href="#安装-kubebuilder" class="headerlink" title="安装 kubebuilder"></a>安装 kubebuilder</h4><p>根据你电脑的 GOOS 和 GOARCH 去<a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/kubebuilder/releases/download/v3.2.0/kubebuilder_darwin_amd64">下载</a> 对应的版本，然后把文件挪到 <code>/usr/local/bin/kubebuilder</code>，执行</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">kubebuilder version<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">kubebuilder version</code></pre></div>
 
 
 
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh">mkdir -p <span class="hljs-variable">$GOPATH</span>/src/sai<br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$GOPATH</span>/src/sai<br><br><span class="hljs-comment"># 务必在gopath目录执行，否则报错</span><br>kubebuilder init --domain com.sai<br><span class="hljs-comment"># 可有可无的一步</span><br>go mod tidy<br><span class="hljs-comment"># make</span><br>make<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">mkdir -p <span class="hljs-variable">$GOPATH</span>/src/sai
+<span class="hljs-built_in">cd</span> <span class="hljs-variable">$GOPATH</span>/src/sai
+
+<span class="hljs-comment"># 务必在gopath目录执行，否则报错</span>
+kubebuilder init --domain com.sai
+<span class="hljs-comment"># 可有可无的一步</span>
+go mod tidy
+<span class="hljs-comment"># make</span>
+make</code></pre></div>
 
 
 
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs stylus">➜  sai tree         <br>├── Dockerfile<br>├── Makefile<br>├── PROJECT<br>├── bin<br>│   ├── controller-gen<br>│   └── manager<br>├── config<br>│   ├── default<br>│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│   │   ├── manager_auth_proxy_patch<span class="hljs-selector-class">.yaml</span><br>│   │   └── manager_config_patch<span class="hljs-selector-class">.yaml</span><br>│   ├── manager<br>│   │   ├── controller_manager_config<span class="hljs-selector-class">.yaml</span><br>│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│   │   └── manager<span class="hljs-selector-class">.yaml</span><br>│   ├── prometheus<br>│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│   │   └── monitor<span class="hljs-selector-class">.yaml</span><br>│   └── rbac<br>│       ├── auth_proxy_client_clusterrole<span class="hljs-selector-class">.yaml</span><br>│       ├── auth_proxy_role<span class="hljs-selector-class">.yaml</span><br>│       ├── auth_proxy_role_binding<span class="hljs-selector-class">.yaml</span><br>│       ├── auth_proxy_service<span class="hljs-selector-class">.yaml</span><br>│       ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│       ├── leader_election_role<span class="hljs-selector-class">.yaml</span><br>│       ├── leader_election_role_binding<span class="hljs-selector-class">.yaml</span><br>│       ├── role_binding<span class="hljs-selector-class">.yaml</span><br>│       └── service_account<span class="hljs-selector-class">.yaml</span><br>├── go<span class="hljs-selector-class">.mod</span><br>├── go<span class="hljs-selector-class">.sum</span><br>├── hack<br>│   └── boilerplate<span class="hljs-selector-class">.go</span><span class="hljs-selector-class">.txt</span><br>└── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.go</span><br><br><span class="hljs-number">7</span> directories, <span class="hljs-number">26</span> files<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stylus">➜  sai tree         
+├── Dockerfile
+├── Makefile
+├── PROJECT
+├── bin
+│   ├── controller-gen
+│   └── manager
+├── config
+│   ├── default
+│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│   │   ├── manager_auth_proxy_patch<span class="hljs-selector-class">.yaml</span>
+│   │   └── manager_config_patch<span class="hljs-selector-class">.yaml</span>
+│   ├── manager
+│   │   ├── controller_manager_config<span class="hljs-selector-class">.yaml</span>
+│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│   │   └── manager<span class="hljs-selector-class">.yaml</span>
+│   ├── prometheus
+│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│   │   └── monitor<span class="hljs-selector-class">.yaml</span>
+│   └── rbac
+│       ├── auth_proxy_client_clusterrole<span class="hljs-selector-class">.yaml</span>
+│       ├── auth_proxy_role<span class="hljs-selector-class">.yaml</span>
+│       ├── auth_proxy_role_binding<span class="hljs-selector-class">.yaml</span>
+│       ├── auth_proxy_service<span class="hljs-selector-class">.yaml</span>
+│       ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│       ├── leader_election_role<span class="hljs-selector-class">.yaml</span>
+│       ├── leader_election_role_binding<span class="hljs-selector-class">.yaml</span>
+│       ├── role_binding<span class="hljs-selector-class">.yaml</span>
+│       └── service_account<span class="hljs-selector-class">.yaml</span>
+├── go<span class="hljs-selector-class">.mod</span>
+├── go<span class="hljs-selector-class">.sum</span>
+├── hack
+│   └── boilerplate<span class="hljs-selector-class">.go</span><span class="hljs-selector-class">.txt</span>
+└── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.go</span>
 
-<h5 id="创建API-CRD和Controller"><a href="#创建API-CRD和Controller" class="headerlink" title="创建API(CRD和Controller)"></a>创建API(CRD和Controller)</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">kubebuilder create api --version v1beta1 --kind Sai --group sai<br></code></pre></td></tr></table></figure>
+<span class="hljs-number">7</span> directories, <span class="hljs-number">26</span> files</code></pre></div>
+
+<h5 id="创建API-CRD和Controller"><a href="#创建API-CRD和Controller" class="headerlink" title="创建API(CRD和Controller)"></a>创建API(CRD和Controller)</h5><div class="code-wrapper"><pre><code class="hljs sh">kubebuilder create api --version v1beta1 --kind Sai --group sai</code></pre></div>
 
 
 
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs stylus">➜ sai tree<br>.<br>├── Dockerfile<br>├── Makefile<br>├── PROJECT<br>├── api<br>│   └── v1beta1<br>│       ├── groupversion_info<span class="hljs-selector-class">.go</span><br>│       ├── sai_types<span class="hljs-selector-class">.go</span><br>│       └── zz_generated<span class="hljs-selector-class">.deepcopy</span><span class="hljs-selector-class">.go</span><br>├── bin<br>│   ├── controller-gen<br>│   └── manager<br>├── config<br>│   ├── crd<br>│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│   │   ├── kustomizeconfig<span class="hljs-selector-class">.yaml</span><br>│   │   └── patches<br>│   │       ├── cainjection_in_sais<span class="hljs-selector-class">.yaml</span><br>│   │       └── webhook_in_sais<span class="hljs-selector-class">.yaml</span><br>│   ├── default<br>│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│   │   ├── manager_auth_proxy_patch<span class="hljs-selector-class">.yaml</span><br>│   │   └── manager_config_patch<span class="hljs-selector-class">.yaml</span><br>│   ├── manager<br>│   │   ├── controller_manager_config<span class="hljs-selector-class">.yaml</span><br>│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│   │   └── manager<span class="hljs-selector-class">.yaml</span><br>│   ├── prometheus<br>│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│   │   └── monitor<span class="hljs-selector-class">.yaml</span><br>│   ├── rbac<br>│   │   ├── auth_proxy_client_clusterrole<span class="hljs-selector-class">.yaml</span><br>│   │   ├── auth_proxy_role<span class="hljs-selector-class">.yaml</span><br>│   │   ├── auth_proxy_role_binding<span class="hljs-selector-class">.yaml</span><br>│   │   ├── auth_proxy_service<span class="hljs-selector-class">.yaml</span><br>│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span><br>│   │   ├── leader_election_role<span class="hljs-selector-class">.yaml</span><br>│   │   ├── leader_election_role_binding<span class="hljs-selector-class">.yaml</span><br>│   │   ├── role_binding<span class="hljs-selector-class">.yaml</span><br>│   │   ├── sai_editor_role<span class="hljs-selector-class">.yaml</span><br>│   │   ├── sai_viewer_role<span class="hljs-selector-class">.yaml</span><br>│   │   └── service_account<span class="hljs-selector-class">.yaml</span><br>│   └── samples<br>│       └── sai_v1beta1_sai<span class="hljs-selector-class">.yaml</span><br>├── controllers<br>│   ├── sai_controller<span class="hljs-selector-class">.go</span><br>│   └── suite_test<span class="hljs-selector-class">.go</span><br>├── go<span class="hljs-selector-class">.mod</span><br>├── go<span class="hljs-selector-class">.sum</span><br>├── hack<br>│   └── boilerplate<span class="hljs-selector-class">.go</span><span class="hljs-selector-class">.txt</span><br>└── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.go</span><br><br><span class="hljs-number">13</span> directories, <span class="hljs-number">38</span> files<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stylus">➜ sai tree
+.
+├── Dockerfile
+├── Makefile
+├── PROJECT
+├── api
+│   └── v1beta1
+│       ├── groupversion_info<span class="hljs-selector-class">.go</span>
+│       ├── sai_types<span class="hljs-selector-class">.go</span>
+│       └── zz_generated<span class="hljs-selector-class">.deepcopy</span><span class="hljs-selector-class">.go</span>
+├── bin
+│   ├── controller-gen
+│   └── manager
+├── config
+│   ├── crd
+│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│   │   ├── kustomizeconfig<span class="hljs-selector-class">.yaml</span>
+│   │   └── patches
+│   │       ├── cainjection_in_sais<span class="hljs-selector-class">.yaml</span>
+│   │       └── webhook_in_sais<span class="hljs-selector-class">.yaml</span>
+│   ├── default
+│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│   │   ├── manager_auth_proxy_patch<span class="hljs-selector-class">.yaml</span>
+│   │   └── manager_config_patch<span class="hljs-selector-class">.yaml</span>
+│   ├── manager
+│   │   ├── controller_manager_config<span class="hljs-selector-class">.yaml</span>
+│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│   │   └── manager<span class="hljs-selector-class">.yaml</span>
+│   ├── prometheus
+│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│   │   └── monitor<span class="hljs-selector-class">.yaml</span>
+│   ├── rbac
+│   │   ├── auth_proxy_client_clusterrole<span class="hljs-selector-class">.yaml</span>
+│   │   ├── auth_proxy_role<span class="hljs-selector-class">.yaml</span>
+│   │   ├── auth_proxy_role_binding<span class="hljs-selector-class">.yaml</span>
+│   │   ├── auth_proxy_service<span class="hljs-selector-class">.yaml</span>
+│   │   ├── kustomization<span class="hljs-selector-class">.yaml</span>
+│   │   ├── leader_election_role<span class="hljs-selector-class">.yaml</span>
+│   │   ├── leader_election_role_binding<span class="hljs-selector-class">.yaml</span>
+│   │   ├── role_binding<span class="hljs-selector-class">.yaml</span>
+│   │   ├── sai_editor_role<span class="hljs-selector-class">.yaml</span>
+│   │   ├── sai_viewer_role<span class="hljs-selector-class">.yaml</span>
+│   │   └── service_account<span class="hljs-selector-class">.yaml</span>
+│   └── samples
+│       └── sai_v1beta1_sai<span class="hljs-selector-class">.yaml</span>
+├── controllers
+│   ├── sai_controller<span class="hljs-selector-class">.go</span>
+│   └── suite_test<span class="hljs-selector-class">.go</span>
+├── go<span class="hljs-selector-class">.mod</span>
+├── go<span class="hljs-selector-class">.sum</span>
+├── hack
+│   └── boilerplate<span class="hljs-selector-class">.go</span><span class="hljs-selector-class">.txt</span>
+└── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.go</span>
+
+<span class="hljs-number">13</span> directories, <span class="hljs-number">38</span> files</code></pre></div>
 
 
 
-<h5 id="构建和部署CRD"><a href="#构建和部署CRD" class="headerlink" title="构建和部署CRD"></a>构建和部署CRD</h5> <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">make install<br><br>output：<br>Unable to connect to the server: dial tcp: lookup kubernetes.docker.internal on 192.168.0.1:53: no such host<br>make: *** [install] Error 1<br></code></pre></td></tr></table></figure>
+<h5 id="构建和部署CRD"><a href="#构建和部署CRD" class="headerlink" title="构建和部署CRD"></a>构建和部署CRD</h5> <div class="code-wrapper"><pre><code class="hljs sh">make install
+
+output：
+Unable to connect to the server: dial tcp: lookup kubernetes.docker.internal on 192.168.0.1:53: no such host
+make: *** [install] Error 1</code></pre></div>
 
 <p>把<code>127.0.0.1 kubernetes.docker.internal</code> 加入本地hosts重新执行<code>make install</code> 即可。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">/Users/sai/go/src/sai/bin/controller-gen rbac:roleName=manager-role crd webhook paths=<span class="hljs-string">&quot;./...&quot;</span> output:crd:artifacts:config=config/crd/bases<br>/Users/sai/go/src/sai/bin/kustomize build config/crd | kubectl apply -f -<br>customresourcedefinition.apiextensions.k8s.io/sais.sai.com.sai created<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">/Users/sai/go/src/sai/bin/controller-gen rbac:roleName=manager-role crd webhook paths=<span class="hljs-string">&quot;./...&quot;</span> output:crd:artifacts:config=config/crd/bases
+/Users/sai/go/src/sai/bin/kustomize build config/crd | kubectl apply -f -
+customresourcedefinition.apiextensions.k8s.io/sais.sai.com.sai created</code></pre></div>
 
 <h5 id="编译和运行controller"><a href="#编译和运行controller" class="headerlink" title="编译和运行controller"></a>编译和运行controller</h5><p> 打开 <code>/Users/sai/go/src/sai/controllers/sai_controller.go</code> , 自行增加逻辑。</p>
 <p>Demo:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r *SaiReconciler)</span> <span class="hljs-title">Reconcile</span><span class="hljs-params">(ctx context.Context, req ctrl.Request)</span> <span class="hljs-params">(ctrl.Result, error)</span></span> &#123;<br>	_ = log.FromContext(ctx)<br><br>	<span class="hljs-comment">// TODO(user): your logic here</span><br>	fmt.Println(<span class="hljs-string">&quot;------sai builder used by 13sai-----&quot;</span>)<br>	<span class="hljs-keyword">return</span> ctrl.Result&#123;&#125;, <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r *SaiReconciler)</span> <span class="hljs-title">Reconcile</span><span class="hljs-params">(ctx context.Context, req ctrl.Request)</span> <span class="hljs-params">(ctrl.Result, error)</span></span> &#123;
+	_ = log.FromContext(ctx)
+
+	<span class="hljs-comment">// TODO(user): your logic here</span>
+	fmt.Println(<span class="hljs-string">&quot;------sai builder used by 13sai-----&quot;</span>)
+	<span class="hljs-keyword">return</span> ctrl.Result&#123;&#125;, <span class="hljs-literal">nil</span>
+&#125;</code></pre></div>
 
 
 
 
 
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># sai.yaml</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">sai.com.sai/v1beta1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Sai</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">sai-demo</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs yaml"><span class="hljs-comment"># sai.yaml</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">sai.com.sai/v1beta1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Sai</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">sai-demo</span></code></pre></div>
 
 
 
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">kubectl apply -f sai.yaml<br><br>➜ kubectl get Sai<br>NAME       AGE<br>sai-demo   79s<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">kubectl apply -f sai.yaml
+
+➜ kubectl get Sai
+NAME       AGE
+sai-demo   79s</code></pre></div>
 
 
 
 <h5 id="制作docker镜像"><a href="#制作docker镜像" class="headerlink" title="制作docker镜像"></a>制作docker镜像</h5><p>修改下dockerfile</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs docker"><span class="hljs-comment"># Build the manager binary</span><br><span class="hljs-keyword">FROM</span> golang:<span class="hljs-number">1.16</span> as builder<br><br><span class="hljs-keyword">WORKDIR</span><span class="bash"> /workspace</span><br><span class="hljs-comment"># Copy the Go Modules manifests</span><br><span class="hljs-keyword">COPY</span><span class="bash"> go.mod go.mod</span><br><span class="hljs-keyword">COPY</span><span class="bash"> go.sum go.sum</span><br><span class="hljs-comment"># cache deps before building and copying source so that we don&#x27;t need to re-download as much</span><br><span class="hljs-comment"># and so that source changes don&#x27;t invalidate our downloaded layer</span><br><span class="hljs-comment"># 改改改这里------</span><br><span class="hljs-keyword">RUN</span><span class="bash"> go env -w GOPROXY=https://goproxy.cn,direct</span><br><span class="hljs-keyword">RUN</span><span class="bash"> go mod download</span><br><br><span class="hljs-comment"># Copy the go source</span><br><span class="hljs-keyword">COPY</span><span class="bash"> main.go main.go</span><br><span class="hljs-keyword">COPY</span><span class="bash"> api/ api/</span><br><span class="hljs-keyword">COPY</span><span class="bash"> controllers/ controllers/</span><br><br><span class="hljs-comment"># Build</span><br><span class="hljs-keyword">RUN</span><span class="bash"> CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager main.go</span><br><br><span class="hljs-comment"># Use distroless as minimal base image to package the manager binary</span><br><span class="hljs-comment"># Refer to https://github.com/GoogleContainerTools/distroless for more details</span><br><span class="hljs-comment"># 改改改这里------</span><br><span class="hljs-keyword">FROM</span> katanomi/distroless-static:nonroot<br><span class="hljs-keyword">WORKDIR</span><span class="bash"> /</span><br><span class="hljs-keyword">COPY</span><span class="bash"> --from=builder /workspace/manager .</span><br><span class="hljs-keyword">USER</span> <span class="hljs-number">65532</span>:<span class="hljs-number">65532</span><br><br><span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;/manager&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs docker"><span class="hljs-comment"># Build the manager binary</span>
+<span class="hljs-keyword">FROM</span> golang:<span class="hljs-number">1.16</span> as builder
+
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /workspace</span>
+<span class="hljs-comment"># Copy the Go Modules manifests</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> go.mod go.mod</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> go.sum go.sum</span>
+<span class="hljs-comment"># cache deps before building and copying source so that we don&#x27;t need to re-download as much</span>
+<span class="hljs-comment"># and so that source changes don&#x27;t invalidate our downloaded layer</span>
+<span class="hljs-comment"># 改改改这里------</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> go env -w GOPROXY=https://goproxy.cn,direct</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> go mod download</span>
+
+<span class="hljs-comment"># Copy the go source</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> main.go main.go</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> api/ api/</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> controllers/ controllers/</span>
+
+<span class="hljs-comment"># Build</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager main.go</span>
+
+<span class="hljs-comment"># Use distroless as minimal base image to package the manager binary</span>
+<span class="hljs-comment"># Refer to https://github.com/GoogleContainerTools/distroless for more details</span>
+<span class="hljs-comment"># 改改改这里------</span>
+<span class="hljs-keyword">FROM</span> katanomi/distroless-static:nonroot
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> --from=builder /workspace/manager .</span>
+<span class="hljs-keyword">USER</span> <span class="hljs-number">65532</span>:<span class="hljs-number">65532</span>
+
+<span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;/manager&quot;</span>]</span></code></pre></div>
 
 <blockquote>
 <p>make docker-build docker-push IMG=13sai/kubebuilder-demo</p>

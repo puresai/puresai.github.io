@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2k 字
+          1.9k 字
         
       </span>
     
@@ -411,12 +411,12 @@
               <p>前一阵MBP的电池出现问题，重置了系统，于是有了下面这些。</p>
 <h2 id="基础类"><a href="#基础类" class="headerlink" title="基础类"></a>基础类</h2><h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p>打开<a target="_blank" rel="noopener" href="https://git-scm.com/downloads">git下载地址</a> 下载git后安装即可，作为开发者，git应该是基础，brew对git也有依赖，我一开始就装上。</p>
 <h3 id="安装brew"><a href="#安装brew" class="headerlink" title="安装brew"></a>安装brew</h3><p>brew 完全是为了安装各种软件方便。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">/bin/zsh -c <span class="hljs-string">&quot;<span class="hljs-subst">$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)</span>&quot;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">/bin/zsh -c <span class="hljs-string">&quot;<span class="hljs-subst">$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)</span>&quot;</span></code></pre></div>
 
 
 
 <h3 id="安装oh-my-zsh"><a href="#安装oh-my-zsh" class="headerlink" title="安装oh my zsh"></a>安装oh my zsh</h3><p>美化一下命令行，看着心情愉悦。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">sh -c <span class="hljs-string">&quot;<span class="hljs-subst">$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)</span>&quot;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">sh -c <span class="hljs-string">&quot;<span class="hljs-subst">$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)</span>&quot;</span></code></pre></div>
 
 <h4 id="设置语法高亮-–-zsh-syntax-highlighting"><a href="#设置语法高亮-–-zsh-syntax-highlighting" class="headerlink" title="设置语法高亮 – zsh-syntax-highlighting"></a>设置语法高亮 – zsh-syntax-highlighting</h4><blockquote>
 <p>git clone <a target="_blank" rel="noopener" href="https://github.com/zsh-users/zsh-syntax-highlighting.git">https://github.com/zsh-users/zsh-syntax-highlighting.git</a></p>
@@ -429,27 +429,44 @@
 </blockquote>
 <p>美化之后舒服多了。<br><img src="/images/zsh.png" srcset="/img/loading.gif" lazyload alt="zsh"></p>
 <p>命令行补全<br><a target="_blank" rel="noopener" href="https://mimosa-pudica.net/zsh-incremental.html">https://mimosa-pudica.net/zsh-incremental.html</a></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> ~/.oh-my-zsh/plugins/<br>mkdir -p incr<br><span class="hljs-built_in">cd</span> incr<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">cd</span> ~/.oh-my-zsh/plugins/
+mkdir -p incr
+<span class="hljs-built_in">cd</span> incr</code></pre></div>
 <p>将上面链接下载的文件移动到incr文件夹中</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;source ~/.oh-my-zsh/plugins/incr/incr*.zsh&quot;</span> &gt;&gt; ~/.zshrc<br><span class="hljs-built_in">source</span> ~/.zshrc<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;source ~/.oh-my-zsh/plugins/incr/incr*.zsh&quot;</span> &gt;&gt; ~/.zshrc
+<span class="hljs-built_in">source</span> ~/.zshrc</code></pre></div>
 
 <h3 id="安装各种软件"><a href="#安装各种软件" class="headerlink" title="安装各种软件"></a>安装各种软件</h3><h4 id="brew-傻瓜式安装"><a href="#brew-傻瓜式安装" class="headerlink" title="brew 傻瓜式安装"></a>brew 傻瓜式安装</h4><p>有了brew 以后安装十分简单</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>node<br><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>yarn<br><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>mysql@<span class="hljs-number">5</span>.<span class="hljs-number">7</span><br>.......<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>node
+<span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>yarn
+<span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>mysql@<span class="hljs-number">5</span>.<span class="hljs-number">7</span>
+.......</code></pre></div>
 
 <p>yarn和npm建议替换国内源（开VPN就不需要了）：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh">// yarn 🌰<br>yarn config <span class="hljs-built_in">set</span> registry https://registry.npm.taobao.org<br>yarn config <span class="hljs-built_in">set</span> sass_binary_site <span class="hljs-string">&quot;https://npm.taobao.org/mirrors/node-sass/&quot;</span><br>yarn config <span class="hljs-built_in">set</span> phantomjs_cdnurl <span class="hljs-string">&quot;http://cnpmjs.org/downloads&quot;</span><br>yarn config <span class="hljs-built_in">set</span> electron_mirror <span class="hljs-string">&quot;https://npm.taobao.org/mirrors/electron/&quot;</span><br>yarn config <span class="hljs-built_in">set</span> sqlite3_binary_host_mirror <span class="hljs-string">&quot;https://foxgis.oss-cn-shanghai.aliyuncs.com/&quot;</span><br>yarn config <span class="hljs-built_in">set</span> profiler_binary_host_mirror <span class="hljs-string">&quot;https://npm.taobao.org/mirrors/node-inspector/&quot;</span><br>yarn config <span class="hljs-built_in">set</span> chromedriver_cdnurl <span class="hljs-string">&quot;https://cdn.npm.taobao.org/dist/chromedriver&quot;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">// yarn 🌰
+yarn config <span class="hljs-built_in">set</span> registry https://registry.npm.taobao.org
+yarn config <span class="hljs-built_in">set</span> sass_binary_site <span class="hljs-string">&quot;https://npm.taobao.org/mirrors/node-sass/&quot;</span>
+yarn config <span class="hljs-built_in">set</span> phantomjs_cdnurl <span class="hljs-string">&quot;http://cnpmjs.org/downloads&quot;</span>
+yarn config <span class="hljs-built_in">set</span> electron_mirror <span class="hljs-string">&quot;https://npm.taobao.org/mirrors/electron/&quot;</span>
+yarn config <span class="hljs-built_in">set</span> sqlite3_binary_host_mirror <span class="hljs-string">&quot;https://foxgis.oss-cn-shanghai.aliyuncs.com/&quot;</span>
+yarn config <span class="hljs-built_in">set</span> profiler_binary_host_mirror <span class="hljs-string">&quot;https://npm.taobao.org/mirrors/node-inspector/&quot;</span>
+yarn config <span class="hljs-built_in">set</span> chromedriver_cdnurl <span class="hljs-string">&quot;https://cdn.npm.taobao.org/dist/chromedriver&quot;</span></code></pre></div>
 
 
 
 <h4 id="官网安装"><a href="#官网安装" class="headerlink" title="官网安装"></a>官网安装</h4><p>而像redis 这类，经常需要改配置甚至是实验布置集群的，我还是习惯官网下载安装，便于操作配置、各种捣鼓。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>download.redis.io<span class="hljs-regexp">/releases/</span>redis-<span class="hljs-number">6.0</span>.<span class="hljs-number">6</span>.tar.gz<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>download.redis.io<span class="hljs-regexp">/releases/</span>redis-<span class="hljs-number">6.0</span>.<span class="hljs-number">6</span>.tar.gz</code></pre></div>
 
 <p>此外，docker、vscode、go 这类都可以前往官网下载，下面以 go 为例。</p>
 <p>对于vscode、谷歌浏览器等提供了账号同步的，建议重置系统前设置同步，后续重新安装登录同步书签、配置、插件等，简直是太爽了。</p>
 <h5 id="安装-go"><a href="#安装-go" class="headerlink" title="安装 go"></a>安装 go</h5><p><a target="_blank" rel="noopener" href="https://golang.google.cn/dl/">https://golang.google.cn/dl/</a></p>
 <p>下载需要的版本即可。</p>
 <p>简单配置：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sh">// 使用 goproxy.cn 代理加速<br>go env -w GOPROXY=https://goproxy.cn<br>// 私有仓库<br>go env -w GOPRIVATE=git.13sai.cn<br>git config --global url.<span class="hljs-string">&quot;git@git.13sai.cn:&quot;</span>.insteadOf https://git.13sai.cn<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">// 使用 goproxy.cn 代理加速
+go env -w GOPROXY=https://goproxy.cn
+// 私有仓库
+go env -w GOPRIVATE=git.13sai.cn
+git config --global url.<span class="hljs-string">&quot;git@git.13sai.cn:&quot;</span>.insteadOf https://git.13sai.cn</code></pre></div>
 
 
 

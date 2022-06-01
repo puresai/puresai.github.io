@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.2k 字
+          3k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          27 分钟
+          26 分钟
         
       </span>
     
@@ -552,21 +552,132 @@
               
               <p>最近有新项目是利用gin开发的，过程中遇到一些问题，总结一下，作为笔记，也希望能帮助到你。</p>
 <h2 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h2><p>中间件：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Cors</span><span class="hljs-params">()</span> <span class="hljs-title">gin</span>.<span class="hljs-title">HandlerFunc</span></span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>		<span class="hljs-comment">// 这里可以用*，也可以用你指定的域名</span><br>		c.Header(<span class="hljs-string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="hljs-string">&quot;*&quot;</span>)<br>		<span class="hljs-comment">// 允许头部参数</span><br>		c.Header(<span class="hljs-string">&quot;Access-Control-Allow-Headers&quot;</span>, <span class="hljs-string">&quot;Content-Type,AccessToken,X-CSRF-Token, Authorization, Token&quot;</span>)<br>		<span class="hljs-comment">// 允许的方法</span><br>		c.Header(<span class="hljs-string">&quot;Access-Control-Allow-Methods&quot;</span>, <span class="hljs-string">&quot;POST, GET, OPTIONS&quot;</span>)<br>		c.Header(<span class="hljs-string">&quot;Access-Control-Expose-Headers&quot;</span>, <span class="hljs-string">&quot;Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type&quot;</span>)<br>		c.Header(<span class="hljs-string">&quot;Access-Control-Allow-Credentials&quot;</span>, <span class="hljs-string">&quot;true&quot;</span>)<br> <br>		method := c.Request.Method<br>		<span class="hljs-comment">//放行OPTIONS方法</span><br>		<span class="hljs-keyword">if</span> method == <span class="hljs-string">&quot;OPTIONS&quot;</span> &#123;<br>			c.AbortWithStatus(http.StatusOK)<br>		&#125;<br>		<span class="hljs-comment">// 处理请求</span><br>		c.Next()<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Cors</span><span class="hljs-params">()</span> <span class="hljs-title">gin</span>.<span class="hljs-title">HandlerFunc</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
+		<span class="hljs-comment">// 这里可以用*，也可以用你指定的域名</span>
+		c.Header(<span class="hljs-string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="hljs-string">&quot;*&quot;</span>)
+		<span class="hljs-comment">// 允许头部参数</span>
+		c.Header(<span class="hljs-string">&quot;Access-Control-Allow-Headers&quot;</span>, <span class="hljs-string">&quot;Content-Type,AccessToken,X-CSRF-Token, Authorization, Token&quot;</span>)
+		<span class="hljs-comment">// 允许的方法</span>
+		c.Header(<span class="hljs-string">&quot;Access-Control-Allow-Methods&quot;</span>, <span class="hljs-string">&quot;POST, GET, OPTIONS&quot;</span>)
+		c.Header(<span class="hljs-string">&quot;Access-Control-Expose-Headers&quot;</span>, <span class="hljs-string">&quot;Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type&quot;</span>)
+		c.Header(<span class="hljs-string">&quot;Access-Control-Allow-Credentials&quot;</span>, <span class="hljs-string">&quot;true&quot;</span>)
+ 
+		method := c.Request.Method
+		<span class="hljs-comment">//放行OPTIONS方法</span>
+		<span class="hljs-keyword">if</span> method == <span class="hljs-string">&quot;OPTIONS&quot;</span> &#123;
+			c.AbortWithStatus(http.StatusOK)
+		&#125;
+		<span class="hljs-comment">// 处理请求</span>
+		c.Next()
+	&#125;
+&#125;</code></pre></div>
 
 <p>然后在路由中加入：</p>
-<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ada">// g : *<span class="hljs-type">gin.Engine</span><br>g.<span class="hljs-keyword">Use</span>(Cors())<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs ada">// g : *<span class="hljs-type">gin.Engine</span>
+g.<span class="hljs-keyword">Use</span>(Cors())</code></pre></div>
 
 <p>当然也可以在Nginx层配置，可自行查阅，我就不展开了。</p>
-<h2 id="使用多个中间件"><a href="#使用多个中间件" class="headerlink" title="使用多个中间件"></a>使用多个中间件</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">// g : *gin.Engine<br>g.<span class="hljs-built_in">Use</span>(<span class="hljs-built_in">Cors</span>())<br>g.<span class="hljs-built_in">Use</span>(<span class="hljs-built_in">Session</span>())<br></code></pre></td></tr></table></figure>
+<h2 id="使用多个中间件"><a href="#使用多个中间件" class="headerlink" title="使用多个中间件"></a>使用多个中间件</h2><div class="code-wrapper"><pre><code class="hljs css">// g : *gin.Engine
+g.<span class="hljs-built_in">Use</span>(<span class="hljs-built_in">Cors</span>())
+g.<span class="hljs-built_in">Use</span>(<span class="hljs-built_in">Session</span>())</code></pre></div>
 
-<h2 id="中间件终止请求"><a href="#中间件终止请求" class="headerlink" title="中间件终止请求"></a>中间件终止请求</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Auth</span><span class="hljs-params">()</span> <span class="hljs-title">gin</span>.<span class="hljs-title">HandlerFunc</span></span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>		uid := c.MustGet(<span class="hljs-string">&quot;uid&quot;</span>).(<span class="hljs-keyword">int</span>)<br>		<span class="hljs-keyword">if</span> uid == <span class="hljs-number">0</span> &#123;<br>			c.Abort()<br>			controller.SendResponse(c, <span class="hljs-number">401</span>, <span class="hljs-string">&quot;未登录&quot;</span>, <span class="hljs-literal">nil</span>)<br>			<span class="hljs-comment">// return可忽略</span><br>			<span class="hljs-keyword">return</span><br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			c.Next()<br>		&#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="中间件终止请求"><a href="#中间件终止请求" class="headerlink" title="中间件终止请求"></a>中间件终止请求</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Auth</span><span class="hljs-params">()</span> <span class="hljs-title">gin</span>.<span class="hljs-title">HandlerFunc</span></span> &#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
+		uid := c.MustGet(<span class="hljs-string">&quot;uid&quot;</span>).(<span class="hljs-keyword">int</span>)
+		<span class="hljs-keyword">if</span> uid == <span class="hljs-number">0</span> &#123;
+			c.Abort()
+			controller.SendResponse(c, <span class="hljs-number">401</span>, <span class="hljs-string">&quot;未登录&quot;</span>, <span class="hljs-literal">nil</span>)
+			<span class="hljs-comment">// return可忽略</span>
+			<span class="hljs-keyword">return</span>
+		&#125; <span class="hljs-keyword">else</span> &#123;
+			c.Next()
+		&#125;
+    &#125;
+&#125;</code></pre></div>
 
-<h2 id="session使用"><a href="#session使用" class="headerlink" title="session使用"></a>session使用</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs stylus">package util<br><br>import (<br>	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span><br>	<span class="hljs-string">&quot;github.com/gin-contrib/sessions&quot;</span><br>	<span class="hljs-string">&quot;github.com/gin-contrib/sessions/redis&quot;</span><br>	redisGo <span class="hljs-string">&quot;github.com/gomodule/redigo/redis&quot;</span><br>	<span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>)<br><br><span class="hljs-comment">// 启动session</span><br>func SessionStart(g *gin<span class="hljs-selector-class">.Engine</span>, RedisClient *redisGo<span class="hljs-selector-class">.Pool</span>, key ...<span class="hljs-selector-attr">[]</span>byte)  &#123;<br>	store, _ := redis<span class="hljs-selector-class">.NewStoreWithPool</span>(RedisClient, <span class="hljs-selector-attr">[]</span>byte(viper<span class="hljs-selector-class">.GetString</span>(<span class="hljs-string">&quot;name&quot;</span>)))<br>	redis<span class="hljs-selector-class">.SetKeyPrefix</span>(store, <span class="hljs-string">&quot;session_&quot;</span>)<br>	g<span class="hljs-selector-class">.Use</span>(sessions<span class="hljs-selector-class">.Sessions</span>(viper<span class="hljs-selector-class">.GetString</span>(<span class="hljs-string">&quot;name&quot;</span>), store))<br>&#125;<br><br><span class="hljs-comment">// 使用session</span><br>session  := sessions<span class="hljs-selector-class">.Default</span>(c)<br>session<span class="hljs-selector-class">.Set</span>(<span class="hljs-string">&quot;uid&quot;</span>, uid)<br>uid  := session<span class="hljs-selector-class">.Get</span>(<span class="hljs-string">&quot;uid&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="session使用"><a href="#session使用" class="headerlink" title="session使用"></a>session使用</h2><div class="code-wrapper"><pre><code class="hljs stylus">package util
 
-<h2 id="上传oss"><a href="#上传oss" class="headerlink" title="上传oss"></a>上传oss</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;os&quot;</span><br>	<br>	<span class="hljs-string">&quot;github.com/aliyun/aliyun-oss-go-sdk/oss&quot;</span><br>	<span class="hljs-string">&quot;github.com/spf13/viper&quot;</span><br>)<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">upload</span><span class="hljs-params">(localPath <span class="hljs-keyword">string</span>, iType <span class="hljs-keyword">int</span>, Name <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(path <span class="hljs-keyword">string</span>)</span></span> &#123;<br>	client, err := oss.New(viper.GetString(<span class="hljs-string">&quot;oss.end_point&quot;</span>), viper.GetString(<span class="hljs-string">&quot;oss.access_key_id&quot;</span>), viper.GetString(<span class="hljs-string">&quot;oss.access_key_secret&quot;</span>))<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <br>    &#125;<br><br>    <span class="hljs-comment">// 获取存储空间。</span><br>    bucket, err := client.Bucket(viper.GetString(<span class="hljs-string">&quot;oss.bucket&quot;</span>))<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <br>    &#125;<br><br>    <span class="hljs-comment">// 上传本地文件。</span><br>	ossPath := fmt.Sprintf(<span class="hljs-string">&quot;%s/%s&quot;</span>, <span class="hljs-string">&quot;qiling&quot;</span>, Name)<br>    err = bucket.PutObjectFromFile(ossPath, localPath)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span><br>    &#125;<br>	<br>	path = fmt.Sprintf(<span class="hljs-string">&quot;%s/%s&quot;</span>, viper.GetString(<span class="hljs-string">&quot;oss.hosts&quot;</span>), ossPath)<br>	os.Remove(localPath)<br>	<span class="hljs-keyword">return</span><br>&#125;<br></code></pre></td></tr></table></figure>
+import (
+	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
+	<span class="hljs-string">&quot;github.com/gin-contrib/sessions&quot;</span>
+	<span class="hljs-string">&quot;github.com/gin-contrib/sessions/redis&quot;</span>
+	redisGo <span class="hljs-string">&quot;github.com/gomodule/redigo/redis&quot;</span>
+	<span class="hljs-string">&quot;github.com/spf13/viper&quot;</span>
+)
 
-<h2 id="几个实用的方法"><a href="#几个实用的方法" class="headerlink" title="几个实用的方法"></a>几个实用的方法</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">import</span>  (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;crypto/md5&quot;</span><br>	<span class="hljs-string">&quot;bytes&quot;</span><br>	<span class="hljs-string">&quot;regexp&quot;</span><br>)<br><br><span class="hljs-comment">// md5</span><br><span class="hljs-function"><span class="hljs-keyword">func</span>  <span class="hljs-title">Md5</span><span class="hljs-params">(str <span class="hljs-keyword">string</span>)</span>  <span class="hljs-title">string</span></span>  &#123;<br>	<span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;%x&quot;</span>, md5.Sum([]<span class="hljs-keyword">byte</span>(str)));<br>&#125;<br><span class="hljs-comment">// 判断是不是真实手机号码</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">IsMobile</span><span class="hljs-params">(mobile <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">bool</span></span> &#123;<br>    result, _ := regexp.MatchString(<span class="hljs-string">`^(1\d&#123;10&#125;)$`</span>, mobile)<br>    <span class="hljs-keyword">if</span> result &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 合并字符串</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">StrCombine</span><span class="hljs-params">(str ...<span class="hljs-keyword">string</span>)</span> <span class="hljs-title">string</span></span> &#123;<br>	<span class="hljs-keyword">var</span> bt bytes.Buffer<br>	<span class="hljs-keyword">for</span> _, arg := <span class="hljs-keyword">range</span> str &#123;<br>		bt.WriteString(arg)<br>    &#125;<br>	<span class="hljs-comment">//获得拼接后的字符串</span><br>	<span class="hljs-keyword">return</span> bt.String()<br>&#125;<br></code></pre></td></tr></table></figure>
+<span class="hljs-comment">// 启动session</span>
+func SessionStart(g *gin<span class="hljs-selector-class">.Engine</span>, RedisClient *redisGo<span class="hljs-selector-class">.Pool</span>, key ...<span class="hljs-selector-attr">[]</span>byte)  &#123;
+	store, _ := redis<span class="hljs-selector-class">.NewStoreWithPool</span>(RedisClient, <span class="hljs-selector-attr">[]</span>byte(viper<span class="hljs-selector-class">.GetString</span>(<span class="hljs-string">&quot;name&quot;</span>)))
+	redis<span class="hljs-selector-class">.SetKeyPrefix</span>(store, <span class="hljs-string">&quot;session_&quot;</span>)
+	g<span class="hljs-selector-class">.Use</span>(sessions<span class="hljs-selector-class">.Sessions</span>(viper<span class="hljs-selector-class">.GetString</span>(<span class="hljs-string">&quot;name&quot;</span>), store))
+&#125;
+
+<span class="hljs-comment">// 使用session</span>
+session  := sessions<span class="hljs-selector-class">.Default</span>(c)
+session<span class="hljs-selector-class">.Set</span>(<span class="hljs-string">&quot;uid&quot;</span>, uid)
+uid  := session<span class="hljs-selector-class">.Get</span>(<span class="hljs-string">&quot;uid&quot;</span>)</code></pre></div>
+
+<h2 id="上传oss"><a href="#上传oss" class="headerlink" title="上传oss"></a>上传oss</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;os&quot;</span>
+	
+	<span class="hljs-string">&quot;github.com/aliyun/aliyun-oss-go-sdk/oss&quot;</span>
+	<span class="hljs-string">&quot;github.com/spf13/viper&quot;</span>
+)
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">upload</span><span class="hljs-params">(localPath <span class="hljs-keyword">string</span>, iType <span class="hljs-keyword">int</span>, Name <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(path <span class="hljs-keyword">string</span>)</span></span> &#123;
+	client, err := oss.New(viper.GetString(<span class="hljs-string">&quot;oss.end_point&quot;</span>), viper.GetString(<span class="hljs-string">&quot;oss.access_key_id&quot;</span>), viper.GetString(<span class="hljs-string">&quot;oss.access_key_secret&quot;</span>))
+    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> 
+    &#125;
+
+    <span class="hljs-comment">// 获取存储空间。</span>
+    bucket, err := client.Bucket(viper.GetString(<span class="hljs-string">&quot;oss.bucket&quot;</span>))
+    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> 
+    &#125;
+
+    <span class="hljs-comment">// 上传本地文件。</span>
+	ossPath := fmt.Sprintf(<span class="hljs-string">&quot;%s/%s&quot;</span>, <span class="hljs-string">&quot;qiling&quot;</span>, Name)
+    err = bucket.PutObjectFromFile(ossPath, localPath)
+    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span>
+    &#125;
+	
+	path = fmt.Sprintf(<span class="hljs-string">&quot;%s/%s&quot;</span>, viper.GetString(<span class="hljs-string">&quot;oss.hosts&quot;</span>), ossPath)
+	os.Remove(localPath)
+	<span class="hljs-keyword">return</span>
+&#125;</code></pre></div>
+
+<h2 id="几个实用的方法"><a href="#几个实用的方法" class="headerlink" title="几个实用的方法"></a>几个实用的方法</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">import</span>  (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;crypto/md5&quot;</span>
+	<span class="hljs-string">&quot;bytes&quot;</span>
+	<span class="hljs-string">&quot;regexp&quot;</span>
+)
+
+<span class="hljs-comment">// md5</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span>  <span class="hljs-title">Md5</span><span class="hljs-params">(str <span class="hljs-keyword">string</span>)</span>  <span class="hljs-title">string</span></span>  &#123;
+	<span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;%x&quot;</span>, md5.Sum([]<span class="hljs-keyword">byte</span>(str)));
+&#125;
+<span class="hljs-comment">// 判断是不是真实手机号码</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">IsMobile</span><span class="hljs-params">(mobile <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">bool</span></span> &#123;
+    result, _ := regexp.MatchString(<span class="hljs-string">`^(1\d&#123;10&#125;)$`</span>, mobile)
+    <span class="hljs-keyword">if</span> result &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    &#125;
+&#125;
+
+<span class="hljs-comment">// 合并字符串</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">StrCombine</span><span class="hljs-params">(str ...<span class="hljs-keyword">string</span>)</span> <span class="hljs-title">string</span></span> &#123;
+	<span class="hljs-keyword">var</span> bt bytes.Buffer
+	<span class="hljs-keyword">for</span> _, arg := <span class="hljs-keyword">range</span> str &#123;
+		bt.WriteString(arg)
+    &#125;
+	<span class="hljs-comment">//获得拼接后的字符串</span>
+	<span class="hljs-keyword">return</span> bt.String()
+&#125;</code></pre></div>
 
 <p>大概就这些了，后面有可以分析的再补充。</p>
 

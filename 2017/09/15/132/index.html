@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.8k 字
+          1.7k 字
         
       </span>
     
@@ -306,7 +306,7 @@
         
         
           <!-- compatible with older versions-->
-          16 分钟
+          15 分钟
         
       </span>
     
@@ -876,7 +876,43 @@
 <li><p>持久性：事务处理的效果能够被永久保存下来。反过来说，事务应当能够承受所有的失败，包括服务器、进程、通信以及媒体失败等等。比如：银行转帐过程中，转帐后帐户的状态要能被保存下来。</p>
 </li>
 </ol>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$sql1</span> = <span class="hljs-string">&quot;update User set ScoreCount = ScoreCount +10 where ID= &#x27;123456&#x27;&quot;</span>;<br><span class="hljs-variable">$sql2</span> = <span class="hljs-string">&quot;update ScoreDetail  set FScore = 300 where ID= &#x27;123456&#x27;&quot;</span>;<br><span class="hljs-variable">$sql3</span> = <span class="hljs-string">&quot;insert into  ScoreDetail ID,Score) values (&#x27;123456&#x27;,60)&quot;</span>;<br><span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> mysqli(<span class="hljs-string">&#x27;localhost&#x27;</span>, <span class="hljs-string">&#x27;root&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;DB_Lib2Test&#x27;</span>);<br><span class="hljs-variable">$mysqli</span>-&gt;autocommit(<span class="hljs-literal">false</span>);<br><span class="hljs-comment">//开始事务</span><br><span class="hljs-variable">$mysqli</span>-&gt;query(<span class="hljs-variable">$sql1</span>);<br><span class="hljs-variable">$mysqli</span>-&gt;query(<span class="hljs-variable">$sql2</span>);<br><span class="hljs-keyword">if</span> (!<span class="hljs-variable">$mysqli</span>-&gt;errno) &#123;<br>    <span class="hljs-variable">$mysqli</span>-&gt;commit();<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;ok&#x27;</span>;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;err&#x27;</span>;<br>    <span class="hljs-variable">$mysqli</span>-&gt;rollback();<br>&#125;<br><span class="hljs-variable">$mysqli</span>-&gt;autocommit(<span class="hljs-literal">true</span>);<br><br><br><span class="hljs-variable">$sql1</span> = <span class="hljs-string">&quot;update User set ScoreCount = ScoreCount +10 where ID= &#x27;123456&#x27;&quot;</span>;<br><span class="hljs-variable">$sql2</span> = <span class="hljs-string">&quot;update ScoreDetail  set FScore = 300 where ID= &#x27;123456&#x27;&quot;</span>;<br><span class="hljs-variable">$sql3</span> = <span class="hljs-string">&quot;insert into  ScoreDetail ID,Score) values (&#x27;123456&#x27;,60)&quot;</span>;<br><span class="hljs-variable">$conn</span> = mysql_connect(<span class="hljs-string">&#x27;localhost&#x27;</span>, <span class="hljs-string">&#x27;root&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>);<br>mysql_select_db(<span class="hljs-string">&#x27;test2&#x27;</span>);<br>mysql_query(<span class="hljs-string">&#x27;start transaction&#x27;</span>);<br><span class="hljs-comment">//mysql_query(&#x27;SET autocommit=0&#x27;);</span><br>mysql_query(<span class="hljs-variable">$sql1</span>);<br>mysql_query(<span class="hljs-variable">$sql2</span>);<br><span class="hljs-keyword">if</span> (mysql_errno()) &#123;<br>    mysql_query(<span class="hljs-string">&#x27;rollback&#x27;</span>);<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;err&#x27;</span>;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    mysql_query(<span class="hljs-string">&#x27;commit&#x27;</span>);<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;ok&#x27;</span>;<br>&#125;<br><span class="hljs-comment">// mysql_query(&#x27;SET autocommit=1&#x27;);</span><br><span class="hljs-comment">// mysql_query($sql3);</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$sql1</span> = <span class="hljs-string">&quot;update User set ScoreCount = ScoreCount +10 where ID= &#x27;123456&#x27;&quot;</span>;
+<span class="hljs-variable">$sql2</span> = <span class="hljs-string">&quot;update ScoreDetail  set FScore = 300 where ID= &#x27;123456&#x27;&quot;</span>;
+<span class="hljs-variable">$sql3</span> = <span class="hljs-string">&quot;insert into  ScoreDetail ID,Score) values (&#x27;123456&#x27;,60)&quot;</span>;
+<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> mysqli(<span class="hljs-string">&#x27;localhost&#x27;</span>, <span class="hljs-string">&#x27;root&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;DB_Lib2Test&#x27;</span>);
+<span class="hljs-variable">$mysqli</span>-&gt;autocommit(<span class="hljs-literal">false</span>);
+<span class="hljs-comment">//开始事务</span>
+<span class="hljs-variable">$mysqli</span>-&gt;query(<span class="hljs-variable">$sql1</span>);
+<span class="hljs-variable">$mysqli</span>-&gt;query(<span class="hljs-variable">$sql2</span>);
+<span class="hljs-keyword">if</span> (!<span class="hljs-variable">$mysqli</span>-&gt;errno) &#123;
+    <span class="hljs-variable">$mysqli</span>-&gt;commit();
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;ok&#x27;</span>;
+&#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;err&#x27;</span>;
+    <span class="hljs-variable">$mysqli</span>-&gt;rollback();
+&#125;
+<span class="hljs-variable">$mysqli</span>-&gt;autocommit(<span class="hljs-literal">true</span>);
+
+
+<span class="hljs-variable">$sql1</span> = <span class="hljs-string">&quot;update User set ScoreCount = ScoreCount +10 where ID= &#x27;123456&#x27;&quot;</span>;
+<span class="hljs-variable">$sql2</span> = <span class="hljs-string">&quot;update ScoreDetail  set FScore = 300 where ID= &#x27;123456&#x27;&quot;</span>;
+<span class="hljs-variable">$sql3</span> = <span class="hljs-string">&quot;insert into  ScoreDetail ID,Score) values (&#x27;123456&#x27;,60)&quot;</span>;
+<span class="hljs-variable">$conn</span> = mysql_connect(<span class="hljs-string">&#x27;localhost&#x27;</span>, <span class="hljs-string">&#x27;root&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>);
+mysql_select_db(<span class="hljs-string">&#x27;test2&#x27;</span>);
+mysql_query(<span class="hljs-string">&#x27;start transaction&#x27;</span>);
+<span class="hljs-comment">//mysql_query(&#x27;SET autocommit=0&#x27;);</span>
+mysql_query(<span class="hljs-variable">$sql1</span>);
+mysql_query(<span class="hljs-variable">$sql2</span>);
+<span class="hljs-keyword">if</span> (mysql_errno()) &#123;
+    mysql_query(<span class="hljs-string">&#x27;rollback&#x27;</span>);
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;err&#x27;</span>;
+&#125; <span class="hljs-keyword">else</span> &#123;
+    mysql_query(<span class="hljs-string">&#x27;commit&#x27;</span>);
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;ok&#x27;</span>;
+&#125;
+<span class="hljs-comment">// mysql_query(&#x27;SET autocommit=1&#x27;);</span>
+<span class="hljs-comment">// mysql_query($sql3);</span></code></pre></div>
               
             </div>
             <hr/>

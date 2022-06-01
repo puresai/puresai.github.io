@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.8k 字
+          3.6k 字
         
       </span>
     
@@ -306,7 +306,7 @@
         
         
           <!-- compatible with older versions-->
-          32 分钟
+          31 分钟
         
       </span>
     
@@ -451,19 +451,19 @@
     
       
       
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">goruntine和channel</span>
+          <span class="category-post">golang限流器</span>
         </a>
       
     
       
       
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">golang限流器</span>
+          <span class="category-post">goruntine和channel</span>
         </a>
       
     
@@ -499,26 +499,123 @@
 </ul>
 <p>前面的demo已经有接触Redis，这里我们就用mongoDB来实现一下。</p>
 <p>我们就直接使用官方的实现好了：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">go</span>.mongodb.org/mongo-driver/mongo<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">go</span>.mongodb.org/mongo-driver/mongo</code></pre></div>
 
-<h3 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go">opt := options.Client().ApplyURI(<span class="hljs-string">&quot;mongodb://root:211111@localhost:27017&quot;</span>)<br><br><span class="hljs-comment">// Connect to MongoDB</span><br>client, err := mongo.Connect(context.TODO(), opt)<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>	log.Fatal(err)<br>&#125;<br><br><span class="hljs-comment">// Check the connection</span><br>err = client.Ping(context.TODO(), <span class="hljs-literal">nil</span>)<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>	log.Fatal(err)<br>&#125;<br><br>fmt.Println(<span class="hljs-string">&quot;Connected to MongoDB!&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h3><div class="code-wrapper"><pre><code class="hljs go">opt := options.Client().ApplyURI(<span class="hljs-string">&quot;mongodb://root:211111@localhost:27017&quot;</span>)
+
+<span class="hljs-comment">// Connect to MongoDB</span>
+client, err := mongo.Connect(context.TODO(), opt)
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+	log.Fatal(err)
+&#125;
+
+<span class="hljs-comment">// Check the connection</span>
+err = client.Ping(context.TODO(), <span class="hljs-literal">nil</span>)
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+	log.Fatal(err)
+&#125;
+
+fmt.Println(<span class="hljs-string">&quot;Connected to MongoDB!&quot;</span>)</code></pre></div>
 
 <p>我们可以设置更多：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go">opt.SetLocalThreshold(<span class="hljs-number">3</span> * time.Second)     <span class="hljs-comment">//只使用与mongo操作耗时小于3秒的</span><br>opt.SetMaxConnIdleTime(<span class="hljs-number">5</span> * time.Second)    <span class="hljs-comment">//指定连接可以保持空闲的最大毫秒数</span><br>opt.SetMaxPoolSize(<span class="hljs-number">200</span>)                    <span class="hljs-comment">//使用最大的连接数</span><br>opt.SetReadConcern(readconcern.Majority()) <span class="hljs-comment">//指定查询应返回实例的最新数据确认为，已写入副本集中的大多数成员</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go">opt.SetLocalThreshold(<span class="hljs-number">3</span> * time.Second)     <span class="hljs-comment">//只使用与mongo操作耗时小于3秒的</span>
+opt.SetMaxConnIdleTime(<span class="hljs-number">5</span> * time.Second)    <span class="hljs-comment">//指定连接可以保持空闲的最大毫秒数</span>
+opt.SetMaxPoolSize(<span class="hljs-number">200</span>)                    <span class="hljs-comment">//使用最大的连接数</span>
+opt.SetReadConcern(readconcern.Majority()) <span class="hljs-comment">//指定查询应返回实例的最新数据确认为，已写入副本集中的大多数成员</span></code></pre></div>
 
 
 
-<h3 id="model"><a href="#model" class="headerlink" title="model"></a>model</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 坐标</span><br><span class="hljs-keyword">type</span> Location <span class="hljs-keyword">struct</span> &#123;<br>	Type        <span class="hljs-keyword">string</span>    <span class="hljs-string">`json:&quot;type&quot; bson:&quot;type&quot;`</span><br>	Coordinates []<span class="hljs-keyword">float64</span> <span class="hljs-string">`json:&quot;coordinates&quot; bson:&quot;coordinates&quot;`</span><br>&#125;<br><br><span class="hljs-comment">// 每个点</span><br><span class="hljs-keyword">type</span> Point <span class="hljs-keyword">struct</span> &#123;<br>	Name     <span class="hljs-keyword">string</span>             <span class="hljs-string">`json:&quot;name&quot;`</span><br>	Age     <span class="hljs-keyword">int</span>             <span class="hljs-string">`json:&quot;age&quot;`</span><br>	City     <span class="hljs-keyword">string</span>             <span class="hljs-string">`json:&quot;city&quot;`</span><br>	Location Location           <span class="hljs-string">`json:&quot;location&quot;`</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="model"><a href="#model" class="headerlink" title="model"></a>model</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 坐标</span>
+<span class="hljs-keyword">type</span> Location <span class="hljs-keyword">struct</span> &#123;
+	Type        <span class="hljs-keyword">string</span>    <span class="hljs-string">`json:&quot;type&quot; bson:&quot;type&quot;`</span>
+	Coordinates []<span class="hljs-keyword">float64</span> <span class="hljs-string">`json:&quot;coordinates&quot; bson:&quot;coordinates&quot;`</span>
+&#125;
+
+<span class="hljs-comment">// 每个点</span>
+<span class="hljs-keyword">type</span> Point <span class="hljs-keyword">struct</span> &#123;
+	Name     <span class="hljs-keyword">string</span>             <span class="hljs-string">`json:&quot;name&quot;`</span>
+	Age     <span class="hljs-keyword">int</span>             <span class="hljs-string">`json:&quot;age&quot;`</span>
+	City     <span class="hljs-keyword">string</span>             <span class="hljs-string">`json:&quot;city&quot;`</span>
+	Location Location           <span class="hljs-string">`json:&quot;location&quot;`</span>
+&#125;</code></pre></div>
 
 
 
 <h3 id="数据写入"><a href="#数据写入" class="headerlink" title="数据写入"></a>数据写入</h3><p>我们可以先插入数据</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(mgo *mgo)</span> <span class="hljs-title">Start</span><span class="hljs-params">()</span></span> &#123;<br>	collection := mgo.client.Database(DBName).Collection(CollectionName)<br><br>	<span class="hljs-comment">// 设置索引 2dsphere， 很重要</span><br>	collection.Indexes().CreateOne(context.TODO(), mongo.IndexModel&#123;<br>		Keys: bson.M&#123;Key: <span class="hljs-string">&quot;2dsphere&quot;</span>&#125;,<br>	&#125;)<br><br>	a := Point&#123;<span class="hljs-string">&quot;王二&quot;</span>, <span class="hljs-number">18</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.185614</span>,<span class="hljs-number">30.300738</span>&#125;&#125;&#125;<br>	b := Point&#123;<span class="hljs-string">&quot;张三&quot;</span>, <span class="hljs-number">25</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.094778</span>,<span class="hljs-number">30.310217</span>&#125;&#125;&#125;<br>	c := Point&#123;<span class="hljs-string">&quot;小晴&quot;</span>, <span class="hljs-number">35</span>, <span class="hljs-string">&quot;绍兴&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.603847</span>,<span class="hljs-number">30.054237</span>&#125;&#125;&#125;<br>	d := Point&#123;<span class="hljs-string">&quot;李四&quot;</span>, <span class="hljs-number">34</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.110893</span>,<span class="hljs-number">30.207849</span>&#125;&#125;&#125;<br>	e := Point&#123;<span class="hljs-string">&quot;小明&quot;</span>, <span class="hljs-number">24</span>, <span class="hljs-string">&quot;北京&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">116.435721</span>,<span class="hljs-number">39.914031</span>&#125;&#125;&#125;<br>	f := Point&#123;<span class="hljs-string">&quot;吴六&quot;</span>, <span class="hljs-number">25</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.126443</span>,<span class="hljs-number">30.33084</span>&#125;&#125;&#125;<br>	h := Point&#123;<span class="hljs-string">&quot;于一&quot;</span>, <span class="hljs-number">23</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.28132</span>,<span class="hljs-number">30.184083</span>&#125;&#125;&#125;<br>	j := Point&#123;<span class="hljs-string">&quot;小七&quot;</span>, <span class="hljs-number">14</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">119.73926</span>,<span class="hljs-number">30.247639</span>&#125;&#125;&#125;<br><br>	<span class="hljs-comment">// 单条插入</span><br>	insertResult, err := collection.InsertOne(context.TODO(), a)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatal(err)<br>	&#125;<br>	fmt.Println(<span class="hljs-string">&quot;Inserted a single document: &quot;</span>, insertResult.InsertedID)<br><br>	ps := []<span class="hljs-keyword">interface</span>&#123;&#125;&#123;b, c, d, e, f, h, j&#125;<br><br>	<span class="hljs-comment">// 批量插入</span><br>	insertManyResult, err := collection.InsertMany(context.TODO(), ps)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatal(err)<br>	&#125;<br>	fmt.Println(<span class="hljs-string">&quot;Inserted multiple documents: &quot;</span>, insertManyResult.InsertedIDs)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(mgo *mgo)</span> <span class="hljs-title">Start</span><span class="hljs-params">()</span></span> &#123;
+	collection := mgo.client.Database(DBName).Collection(CollectionName)
+
+	<span class="hljs-comment">// 设置索引 2dsphere， 很重要</span>
+	collection.Indexes().CreateOne(context.TODO(), mongo.IndexModel&#123;
+		Keys: bson.M&#123;Key: <span class="hljs-string">&quot;2dsphere&quot;</span>&#125;,
+	&#125;)
+
+	a := Point&#123;<span class="hljs-string">&quot;王二&quot;</span>, <span class="hljs-number">18</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.185614</span>,<span class="hljs-number">30.300738</span>&#125;&#125;&#125;
+	b := Point&#123;<span class="hljs-string">&quot;张三&quot;</span>, <span class="hljs-number">25</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.094778</span>,<span class="hljs-number">30.310217</span>&#125;&#125;&#125;
+	c := Point&#123;<span class="hljs-string">&quot;小晴&quot;</span>, <span class="hljs-number">35</span>, <span class="hljs-string">&quot;绍兴&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.603847</span>,<span class="hljs-number">30.054237</span>&#125;&#125;&#125;
+	d := Point&#123;<span class="hljs-string">&quot;李四&quot;</span>, <span class="hljs-number">34</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.110893</span>,<span class="hljs-number">30.207849</span>&#125;&#125;&#125;
+	e := Point&#123;<span class="hljs-string">&quot;小明&quot;</span>, <span class="hljs-number">24</span>, <span class="hljs-string">&quot;北京&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">116.435721</span>,<span class="hljs-number">39.914031</span>&#125;&#125;&#125;
+	f := Point&#123;<span class="hljs-string">&quot;吴六&quot;</span>, <span class="hljs-number">25</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.126443</span>,<span class="hljs-number">30.33084</span>&#125;&#125;&#125;
+	h := Point&#123;<span class="hljs-string">&quot;于一&quot;</span>, <span class="hljs-number">23</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.28132</span>,<span class="hljs-number">30.184083</span>&#125;&#125;&#125;
+	j := Point&#123;<span class="hljs-string">&quot;小七&quot;</span>, <span class="hljs-number">14</span>, <span class="hljs-string">&quot;杭州&quot;</span>, Location&#123;<span class="hljs-string">&quot;Point&quot;</span>, []<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">119.73926</span>,<span class="hljs-number">30.247639</span>&#125;&#125;&#125;
+
+	<span class="hljs-comment">// 单条插入</span>
+	insertResult, err := collection.InsertOne(context.TODO(), a)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		log.Fatal(err)
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;Inserted a single document: &quot;</span>, insertResult.InsertedID)
+
+	ps := []<span class="hljs-keyword">interface</span>&#123;&#125;&#123;b, c, d, e, f, h, j&#125;
+
+	<span class="hljs-comment">// 批量插入</span>
+	insertManyResult, err := collection.InsertMany(context.TODO(), ps)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		log.Fatal(err)
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;Inserted multiple documents: &quot;</span>, insertManyResult.InsertedIDs)
+&#125;</code></pre></div>
 
 <p>注意，设置索引 2dsphere， 很重要！！！</p>
 <p><img src="/images/post/v2-4c04d12bc9bbc5b787d926532ed8954f_1440w.png" srcset="/img/loading.gif" lazyload alt="img">存储的数据格式</p>
 <p>我们查找：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(mgo *mgo)</span> <span class="hljs-title">Near</span><span class="hljs-params">()</span></span> &#123;<br>	collection := mgo.client.Database(DBName).Collection(CollectionName)<br>        <span class="hljs-comment">// 查找120.110893,30.2078490坐标附近15000米的人</span><br>	cur, err := collection.Find(context.TODO(), bson.D&#123;<br>		&#123;Key, bson.D&#123;<br>				&#123;<span class="hljs-string">&quot;$near&quot;</span>, bson.D&#123;<br>					&#123;<br>						<span class="hljs-string">&quot;$geometry&quot;</span>, Location&#123;<br>							<span class="hljs-string">&quot;Point&quot;</span>,<br>							[]<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.110893</span>,<span class="hljs-number">30.2078490</span>&#125;,<br>						&#125;,<br>					&#125;,<br>					&#123;<span class="hljs-string">&quot;$maxDistance&quot;</span>, <span class="hljs-number">15000</span>&#125;, <span class="hljs-comment">// 单位米</span><br>				&#125;&#125;,<br>			&#125;&#125;,<br>	&#125;)<br><br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	<span class="hljs-keyword">var</span> results []Point<br><br>	<span class="hljs-keyword">for</span> cur.Next(context.TODO()) &#123;<br>		<span class="hljs-keyword">var</span> elem Point<br>		err := cur.Decode(&amp;elem)<br>		fmt.Println(elem)<br>		fmt.Println(cur)<br>		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>			fmt.Println(<span class="hljs-string">&quot;Could not decode Point&quot;</span>)<br>			<span class="hljs-keyword">return</span><br>		&#125;<br><br>		results = <span class="hljs-built_in">append</span>(results, elem)<br>	&#125;<br>	fmt.Println(<span class="hljs-string">&quot;查找到&quot;</span>, <span class="hljs-built_in">len</span>(results))<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(mgo *mgo)</span> <span class="hljs-title">Near</span><span class="hljs-params">()</span></span> &#123;
+	collection := mgo.client.Database(DBName).Collection(CollectionName)
+        <span class="hljs-comment">// 查找120.110893,30.2078490坐标附近15000米的人</span>
+	cur, err := collection.Find(context.TODO(), bson.D&#123;
+		&#123;Key, bson.D&#123;
+				&#123;<span class="hljs-string">&quot;$near&quot;</span>, bson.D&#123;
+					&#123;
+						<span class="hljs-string">&quot;$geometry&quot;</span>, Location&#123;
+							<span class="hljs-string">&quot;Point&quot;</span>,
+							[]<span class="hljs-keyword">float64</span>&#123;<span class="hljs-number">120.110893</span>,<span class="hljs-number">30.2078490</span>&#125;,
+						&#125;,
+					&#125;,
+					&#123;<span class="hljs-string">&quot;$maxDistance&quot;</span>, <span class="hljs-number">15000</span>&#125;, <span class="hljs-comment">// 单位米</span>
+				&#125;&#125;,
+			&#125;&#125;,
+	&#125;)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	<span class="hljs-keyword">var</span> results []Point
+
+	<span class="hljs-keyword">for</span> cur.Next(context.TODO()) &#123;
+		<span class="hljs-keyword">var</span> elem Point
+		err := cur.Decode(&amp;elem)
+		fmt.Println(elem)
+		fmt.Println(cur)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			fmt.Println(<span class="hljs-string">&quot;Could not decode Point&quot;</span>)
+			<span class="hljs-keyword">return</span>
+		&#125;
+
+		results = <span class="hljs-built_in">append</span>(results, elem)
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;查找到&quot;</span>, <span class="hljs-built_in">len</span>(results))
+&#125;</code></pre></div>
 
 <p>我们不妨运行一下：</p>
 <p><img src="/images/post/v2-c62ee9c350d9d3b569501ae217fbd06b_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>

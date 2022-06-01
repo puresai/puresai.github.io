@@ -299,7 +299,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.4k 字
+          2.3k 字
         
       </span>
     
@@ -311,7 +311,7 @@
         
         
           <!-- compatible with older versions-->
-          21 分钟
+          20 分钟
         
       </span>
     
@@ -535,7 +535,29 @@
 <hr>
 <p>虽然框架基本完成，但我们还没有测试过。</p>
 <p>我们使用postman作为接口测试工具（<a target="_blank" rel="noopener" href="http://saif.com/test%EF%BC%89%E3%80%82">http://saif.com/test）。</a></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 自定义路由</span><br><span class="hljs-keyword">return</span> [<br>    <span class="hljs-string">&#x27;debug&#x27;</span> =&gt; <span class="hljs-literal">false</span>,<br>    <span class="hljs-string">&#x27;route&#x27;</span> =&gt; [<br>        <span class="hljs-string">&#x27;&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/welcome&#x27;</span>,<br>        <span class="hljs-string">&#x27;test&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/test&#x27;</span>,<br>    ],<br>];<br><br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DemoController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">welcome</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json([<span class="hljs-string">&#x27;hello&#x27;</span> =&gt; <span class="hljs-string">&#x27;welcome&#x27;</span>]);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json(<span class="hljs-variable">$params</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">// 自定义路由</span>
+<span class="hljs-keyword">return</span> [
+    <span class="hljs-string">&#x27;debug&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&#x27;route&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/welcome&#x27;</span>,
+        <span class="hljs-string">&#x27;test&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/test&#x27;</span>,
+    ],
+];
+
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DemoController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">welcome</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json([<span class="hljs-string">&#x27;hello&#x27;</span> =&gt; <span class="hljs-string">&#x27;welcome&#x27;</span>]);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json(<span class="hljs-variable">$params</span>);
+    &#125;
+&#125;</code></pre></div>
 
 
 <p><img src="https://cdn.learnku.com/uploads/images/202002/20/41489/rLIdUbGV7m.png!large" srcset="/img/loading.gif" lazyload alt="postman"></p>
@@ -545,7 +567,7 @@
 <p>debug：</p>
 <p>我们发现Content-Type输出是：</p>
 <meta charset='utf-8' />
-<pre style='position:relative;
+<div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -553,32 +575,72 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>multipart/form-data; boundary=--------------------------498010462598077868347660</pre>
+opacity:0.8;'>multipart/form-data; boundary=--------------------------498010462598077868347660</pre></div>
 
 
 <p>我们优化一下代码：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBodyParams</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-variable">$contentType</span> = strtolower(<span class="hljs-keyword">$this</span>-&gt;getHeader(<span class="hljs-string">&#x27;Content-Type&#x27;</span>));<br>        <span class="hljs-comment">// p($contentType);</span><br>    <span class="hljs-keyword">if</span> (strpos(<span class="hljs-variable">$contentType</span>, <span class="hljs-string">&#x27;multipart/form-data&#x27;</span>) === <span class="hljs-literal">false</span>) &#123;<br>        <span class="hljs-keyword">$this</span>-&gt;_bodyParams = \json_decode(file_get_contents(<span class="hljs-string">&quot;php://input&quot;</span>), <span class="hljs-literal">true</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">$this</span>-&gt;_bodyParams = <span class="hljs-variable">$_POST</span>;<br>    &#125;<br>        <br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;_bodyParams?? [];<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBodyParams</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$contentType</span> = strtolower(<span class="hljs-keyword">$this</span>-&gt;getHeader(<span class="hljs-string">&#x27;Content-Type&#x27;</span>));
+        <span class="hljs-comment">// p($contentType);</span>
+    <span class="hljs-keyword">if</span> (strpos(<span class="hljs-variable">$contentType</span>, <span class="hljs-string">&#x27;multipart/form-data&#x27;</span>) === <span class="hljs-literal">false</span>) &#123;
+        <span class="hljs-keyword">$this</span>-&gt;_bodyParams = \json_decode(file_get_contents(<span class="hljs-string">&quot;php://input&quot;</span>), <span class="hljs-literal">true</span>);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">$this</span>-&gt;_bodyParams = <span class="hljs-variable">$_POST</span>;
+    &#125;
+        
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;_bodyParams?? [];
+&#125;</code></pre></div>
 
 
 <p>另外我们发现getHeader方法有点问题：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHeader</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-variable">$name</span> = ucfirst(<span class="hljs-variable">$name</span>);<br>    <span class="hljs-keyword">if</span> (function_exists(<span class="hljs-string">&#x27;apache_request_headers&#x27;</span>)) &#123;<br>        <span class="hljs-variable">$headers</span> = apache_request_headers();<br>        p(<span class="hljs-variable">$headers</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$headers</span>[<span class="hljs-variable">$name</span>]?? <span class="hljs-variable">$defaultValue</span>;<br>    &#125;<br>    <span class="hljs-comment">// $_SERVER使用下划线</span><br>    <span class="hljs-variable">$name</span> = strtoupper(str_replace(<span class="hljs-string">&#x27;-&#x27;</span>, <span class="hljs-string">&#x27;_&#x27;</span>, <span class="hljs-variable">$name</span>));<br>    <span class="hljs-comment">// 部分自定义参数需要加上HTTP_</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-variable">$_SERVER</span>[<span class="hljs-variable">$name</span>]?? (<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;HTTP_&#x27;</span>.<span class="hljs-variable">$name</span>] ?? <span class="hljs-variable">$defaultValue</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHeader</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$name</span> = ucfirst(<span class="hljs-variable">$name</span>);
+    <span class="hljs-keyword">if</span> (function_exists(<span class="hljs-string">&#x27;apache_request_headers&#x27;</span>)) &#123;
+        <span class="hljs-variable">$headers</span> = apache_request_headers();
+        p(<span class="hljs-variable">$headers</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$headers</span>[<span class="hljs-variable">$name</span>]?? <span class="hljs-variable">$defaultValue</span>;
+    &#125;
+    <span class="hljs-comment">// $_SERVER使用下划线</span>
+    <span class="hljs-variable">$name</span> = strtoupper(str_replace(<span class="hljs-string">&#x27;-&#x27;</span>, <span class="hljs-string">&#x27;_&#x27;</span>, <span class="hljs-variable">$name</span>));
+    <span class="hljs-comment">// 部分自定义参数需要加上HTTP_</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$_SERVER</span>[<span class="hljs-variable">$name</span>]?? (<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;HTTP_&#x27;</span>.<span class="hljs-variable">$name</span>] ?? <span class="hljs-variable">$defaultValue</span>);
+&#125;</code></pre></div>
 
 
 <p><img src="https://cdn.learnku.com/uploads/images/202002/20/41489/b8XamwywCv.png!large" srcset="/img/loading.gif" lazyload alt="image"></p>
 <p>测试正常。</p>
 <p>另外，做一下说明，我们可以使用public function test($params)，是源于我们Request，将参数注入到方法里。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAction</span>(<span class="hljs-params"><span class="hljs-variable">$route</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    ... 省略代码<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;<span class="hljs-variable">$action</span>(array_merge(<span class="hljs-keyword">$this</span>-&gt;getQueryParams(), <span class="hljs-keyword">$this</span>-&gt;getBodyParams()));<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAction</span>(<span class="hljs-params"><span class="hljs-variable">$route</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    ... 省略代码
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;<span class="hljs-variable">$action</span>(array_merge(<span class="hljs-keyword">$this</span>-&gt;getQueryParams(), <span class="hljs-keyword">$this</span>-&gt;getBodyParams()));
+&#125;</code></pre></div>
 
 
 <h3 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h3><blockquote>
 <p>我们使用的是wrk压测</p>
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://github.com/wg/wrk">wrk</a></p>
-<figure class="highlight node-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs node-repl"><span class="hljs-meta">&gt;</span> <span class="javascript">git clone https:<span class="hljs-comment">//github.com/wg/wrk</span></span><br><span class="hljs-meta">&gt;</span> <span class="javascript">cd wrk </span><br><span class="hljs-meta">&gt;</span> <span class="javascript">make</span><br><span class="hljs-meta">&gt;</span> <span class="javascript">ln -s ./wrk /usr/bin/wrk</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs node-repl"><span class="hljs-meta">&gt;</span> <span class="javascript">git clone https:<span class="hljs-comment">//github.com/wg/wrk</span></span>
+<span class="hljs-meta">&gt;</span> <span class="javascript">cd wrk </span>
+<span class="hljs-meta">&gt;</span> <span class="javascript">make</span>
+<span class="hljs-meta">&gt;</span> <span class="javascript">ln -s ./wrk /usr/bin/wrk</span></code></pre></div>
 
 
 
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs vim">wrk参数：<br><br>-<span class="hljs-keyword">c</span>,    --connections（连接数）:      total <span class="hljs-keyword">number</span> of HTTP connections <span class="hljs-keyword">to</span> keep <span class="hljs-keyword">open</span> with each thread handling <span class="hljs-keyword">N</span> = connections/threads<br>-d,    --duration（测试持续时间）:     duration of the test, <span class="hljs-keyword">e</span>.g. <span class="hljs-number">2</span>s, <span class="hljs-number">2</span><span class="hljs-keyword">m</span>, <span class="hljs-number">2</span>h<br>-t,    --threads（线程）:            total <span class="hljs-keyword">number</span> of threads <span class="hljs-keyword">to</span> use<br>-s,    --script（脚本）:             LuaJIT script, see SCRIPTING<br>-H,    --header（头信息）:           HTTP header <span class="hljs-keyword">to</span> <span class="hljs-built_in">add</span> <span class="hljs-keyword">to</span> request, <span class="hljs-keyword">e</span>.g. <span class="hljs-string">&quot;User-Agent: wrk&quot;</span><br>       --latency（响应信息）:         <span class="hljs-keyword">print</span> detailed latency statistics<br>       --timeout（超时时间）:         record <span class="hljs-keyword">a</span> timeout <span class="hljs-keyword">if</span> <span class="hljs-keyword">a</span> response <span class="hljs-keyword">is</span> not received within this amount of time.<br>-v,    --<span class="hljs-keyword">version</span>（版本信息）          <span class="hljs-keyword">Print</span> <span class="hljs-keyword">version</span> details<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vim">wrk参数：
+
+-<span class="hljs-keyword">c</span>,    --connections（连接数）:      total <span class="hljs-keyword">number</span> of HTTP connections <span class="hljs-keyword">to</span> keep <span class="hljs-keyword">open</span> with each thread handling <span class="hljs-keyword">N</span> = connections/threads
+-d,    --duration（测试持续时间）:     duration of the test, <span class="hljs-keyword">e</span>.g. <span class="hljs-number">2</span>s, <span class="hljs-number">2</span><span class="hljs-keyword">m</span>, <span class="hljs-number">2</span>h
+-t,    --threads（线程）:            total <span class="hljs-keyword">number</span> of threads <span class="hljs-keyword">to</span> use
+-s,    --script（脚本）:             LuaJIT script, see SCRIPTING
+-H,    --header（头信息）:           HTTP header <span class="hljs-keyword">to</span> <span class="hljs-built_in">add</span> <span class="hljs-keyword">to</span> request, <span class="hljs-keyword">e</span>.g. <span class="hljs-string">&quot;User-Agent: wrk&quot;</span>
+       --latency（响应信息）:         <span class="hljs-keyword">print</span> detailed latency statistics
+       --timeout（超时时间）:         record <span class="hljs-keyword">a</span> timeout <span class="hljs-keyword">if</span> <span class="hljs-keyword">a</span> response <span class="hljs-keyword">is</span> not received within this amount of time.
+-v,    --<span class="hljs-keyword">version</span>（版本信息）          <span class="hljs-keyword">Print</span> <span class="hljs-keyword">version</span> details</code></pre></div>
 
 
 <p>我们仅仅在控制返回空信息，然后对比yii2（返回字符串“yii2”），laravel5.5（返回字符串“laravel5.5”）。</p>

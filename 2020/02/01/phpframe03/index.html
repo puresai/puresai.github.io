@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          5.8k 字
+          5.6k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          49 分钟
+          47 分钟
         
       </span>
     
@@ -529,10 +529,90 @@
 <p>反射，直观理解就是根据到达地找到出发地和来源。 反射指在PHP运行状态中，扩展分析PHP程序，导出或提出关于类、方法、属性、参数等的详细信息，包括注释。这种动态获取信息以及动态调用对象方法的功能称为反射API。</p>
 </blockquote>
 <p>不妨先来看一个demo：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Author: sai</span><br><span class="hljs-comment"> * Date: 2019/10/21</span><br><span class="hljs-comment"> * Time: 10:59</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">p</span>(<span class="hljs-params"><span class="hljs-variable">$msg</span>, <span class="hljs-variable">$var</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">echo</span>(<span class="hljs-string">&quot;&lt;pre style=&#x27;position:relative;</span><br><span class="hljs-string">z-index:999;</span><br><span class="hljs-string">padding:10px;</span><br><span class="hljs-string">border-radius:5px;</span><br><span class="hljs-string">background:#f5f5f5;</span><br><span class="hljs-string">border:1px solid #aaa;</span><br><span class="hljs-string">font-size:14px;</span><br><span class="hljs-string">line-height:18px;</span><br><span class="hljs-string">opacity:0.8;&#x27;&gt;&quot;</span>.<span class="hljs-variable">$msg</span>.<span class="hljs-string">&quot;:&quot;</span>.print_r(<span class="hljs-variable">$var</span>, <span class="hljs-literal">true</span>).<span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>);<br>&#125;<br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$id</span>;<br><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$name</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$skills</span> = [];<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$id</span>, <span class="hljs-variable">$name</span>, <span class="hljs-variable">$skills</span> = []</span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;id = <span class="hljs-variable">$id</span>;<br>        <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;<br>        <span class="hljs-keyword">$this</span>-&gt;skills = <span class="hljs-variable">$skills</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getName</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;name;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSkill</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        p(<span class="hljs-string">&#x27;skill&#x27;</span>, <span class="hljs-keyword">$this</span>-&gt;skills);<br>    &#125;<br>&#125;<br><br><br><span class="hljs-variable">$ref</span> = <span class="hljs-keyword">new</span> ReflectionClass(<span class="hljs-string">&#x27;Demo&#x27;</span>);<br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$ref</span>-&gt;isInstantiable()) &#123;<br>    p(<span class="hljs-string">&#x27;检查类是否可实例化isInstantiable&#x27;</span>, <span class="hljs-literal">null</span> );<br>&#125;<br><span class="hljs-variable">$constructor</span> = <span class="hljs-variable">$ref</span>-&gt;getConstructor();<br>p(<span class="hljs-string">&#x27;获取构造函数getConstructor&#x27;</span>, <span class="hljs-variable">$constructor</span>);<br><br><span class="hljs-variable">$parameters</span> = <span class="hljs-variable">$constructor</span>-&gt;getParameters();<br><span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$parameters</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$param</span>) &#123;<br>    p(<span class="hljs-string">&#x27;获取参数getParameters&#x27;</span>, <span class="hljs-variable">$param</span>);<br>&#125;<br><br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$ref</span>-&gt;hasProperty(<span class="hljs-string">&#x27;name&#x27;</span>)) &#123;<br>    <span class="hljs-variable">$attr</span> = <span class="hljs-variable">$ref</span>-&gt;getProperty(<span class="hljs-string">&#x27;name&#x27;</span>);<br>    p(<span class="hljs-string">&#x27;获取属性getProperty&#x27;</span>, <span class="hljs-variable">$attr</span>);<br>&#125;<br><br><span class="hljs-variable">$attributes</span> = <span class="hljs-variable">$ref</span>-&gt;getProperties();<br><span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$attributes</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$row</span>) &#123;<br>    p(<span class="hljs-string">&#x27;获取属性列表getProperties&#x27;</span>, <span class="hljs-variable">$row</span>-&gt;getName() );<br>&#125;<br><br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$ref</span>-&gt;hasMethod(<span class="hljs-string">&#x27;getSkill&#x27;</span>)) &#123;<br>    <span class="hljs-variable">$method</span> = <span class="hljs-variable">$ref</span>-&gt;getMethod(<span class="hljs-string">&#x27;getSkill&#x27;</span>);<br>    p(<span class="hljs-string">&#x27;获取方法getMethod&#x27;</span>, <span class="hljs-variable">$method</span>);<br>&#125;<br><br><span class="hljs-variable">$methods</span> = <span class="hljs-variable">$ref</span>-&gt;getMethods();<br><span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$methods</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$row</span>) &#123;<br>    p(<span class="hljs-string">&#x27;获取方法列表getMethods&#x27;</span>, <span class="hljs-variable">$row</span>-&gt;getName());<br>&#125;<br><br><span class="hljs-variable">$instance</span> = <span class="hljs-variable">$ref</span>-&gt;newInstanceArgs([<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;sai&#x27;</span>, [<span class="hljs-string">&#x27;php&#x27;</span>, <span class="hljs-string">&#x27;js&#x27;</span>]]);<br>p(<span class="hljs-string">&#x27;newInstanceArgs&#x27;</span>, <span class="hljs-variable">$instance</span>);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Author: sai</span>
+<span class="hljs-comment"> * Date: 2019/10/21</span>
+<span class="hljs-comment"> * Time: 10:59</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">p</span>(<span class="hljs-params"><span class="hljs-variable">$msg</span>, <span class="hljs-variable">$var</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">echo</span>(<span class="hljs-string">&quot;&lt;pre style=&#x27;position:relative;</span>
+<span class="hljs-string">z-index:999;</span>
+<span class="hljs-string">padding:10px;</span>
+<span class="hljs-string">border-radius:5px;</span>
+<span class="hljs-string">background:#f5f5f5;</span>
+<span class="hljs-string">border:1px solid #aaa;</span>
+<span class="hljs-string">font-size:14px;</span>
+<span class="hljs-string">line-height:18px;</span>
+<span class="hljs-string">opacity:0.8;&#x27;&gt;&quot;</span>.<span class="hljs-variable">$msg</span>.<span class="hljs-string">&quot;:&quot;</span>.print_r(<span class="hljs-variable">$var</span>, <span class="hljs-literal">true</span>).<span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>);
+&#125;
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$id</span>;
+
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$name</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$skills</span> = [];
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$id</span>, <span class="hljs-variable">$name</span>, <span class="hljs-variable">$skills</span> = []</span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;id = <span class="hljs-variable">$id</span>;
+        <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
+        <span class="hljs-keyword">$this</span>-&gt;skills = <span class="hljs-variable">$skills</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getName</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;name;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSkill</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        p(<span class="hljs-string">&#x27;skill&#x27;</span>, <span class="hljs-keyword">$this</span>-&gt;skills);
+    &#125;
+&#125;
+
+
+<span class="hljs-variable">$ref</span> = <span class="hljs-keyword">new</span> ReflectionClass(<span class="hljs-string">&#x27;Demo&#x27;</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$ref</span>-&gt;isInstantiable()) &#123;
+    p(<span class="hljs-string">&#x27;检查类是否可实例化isInstantiable&#x27;</span>, <span class="hljs-literal">null</span> );
+&#125;
+<span class="hljs-variable">$constructor</span> = <span class="hljs-variable">$ref</span>-&gt;getConstructor();
+p(<span class="hljs-string">&#x27;获取构造函数getConstructor&#x27;</span>, <span class="hljs-variable">$constructor</span>);
+
+<span class="hljs-variable">$parameters</span> = <span class="hljs-variable">$constructor</span>-&gt;getParameters();
+<span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$parameters</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$param</span>) &#123;
+    p(<span class="hljs-string">&#x27;获取参数getParameters&#x27;</span>, <span class="hljs-variable">$param</span>);
+&#125;
+
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$ref</span>-&gt;hasProperty(<span class="hljs-string">&#x27;name&#x27;</span>)) &#123;
+    <span class="hljs-variable">$attr</span> = <span class="hljs-variable">$ref</span>-&gt;getProperty(<span class="hljs-string">&#x27;name&#x27;</span>);
+    p(<span class="hljs-string">&#x27;获取属性getProperty&#x27;</span>, <span class="hljs-variable">$attr</span>);
+&#125;
+
+<span class="hljs-variable">$attributes</span> = <span class="hljs-variable">$ref</span>-&gt;getProperties();
+<span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$attributes</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$row</span>) &#123;
+    p(<span class="hljs-string">&#x27;获取属性列表getProperties&#x27;</span>, <span class="hljs-variable">$row</span>-&gt;getName() );
+&#125;
+
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$ref</span>-&gt;hasMethod(<span class="hljs-string">&#x27;getSkill&#x27;</span>)) &#123;
+    <span class="hljs-variable">$method</span> = <span class="hljs-variable">$ref</span>-&gt;getMethod(<span class="hljs-string">&#x27;getSkill&#x27;</span>);
+    p(<span class="hljs-string">&#x27;获取方法getMethod&#x27;</span>, <span class="hljs-variable">$method</span>);
+&#125;
+
+<span class="hljs-variable">$methods</span> = <span class="hljs-variable">$ref</span>-&gt;getMethods();
+<span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$methods</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$row</span>) &#123;
+    p(<span class="hljs-string">&#x27;获取方法列表getMethods&#x27;</span>, <span class="hljs-variable">$row</span>-&gt;getName());
+&#125;
+
+<span class="hljs-variable">$instance</span> = <span class="hljs-variable">$ref</span>-&gt;newInstanceArgs([<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;sai&#x27;</span>, [<span class="hljs-string">&#x27;php&#x27;</span>, <span class="hljs-string">&#x27;js&#x27;</span>]]);
+p(<span class="hljs-string">&#x27;newInstanceArgs&#x27;</span>, <span class="hljs-variable">$instance</span>);</code></pre></div>
 
 <p>输出：</p>
-<pre style='position:relative;
+<div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -540,9 +620,9 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>检查类是否可实例化isInstantiable:</pre>
+opacity:0.8;'>检查类是否可实例化isInstantiable:</pre></div>
 
-<pre style='position:relative;
+<div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -555,8 +635,8 @@ opacity:0.8;'>获取构造函数getConstructor:ReflectionMethod Object
     [name] => __construct
     [class] => Demo
 )
-</pre>
-<p></pre><pre style='position:relative;
+</pre></div>
+<p></pre><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -564,7 +644,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => id<br>)<br></pre><pre style='position:relative;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => id<br>)<br></pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -572,7 +652,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => name<br>)<br></pre><pre style='position:relative;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => name<br>)<br></pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -580,7 +660,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => skills<br>)<br></pre><pre style='position:relative;
+opacity:0.8;'>获取参数getParameters:ReflectionParameter Object<br>(<br>    [name] => skills<br>)<br></pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -588,7 +668,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取属性getProperty:ReflectionProperty Object<br>(<br>    [name] => name<br>    [class] => Demo<br>)<br></pre><pre style='position:relative;
+opacity:0.8;'>获取属性getProperty:ReflectionProperty Object<br>(<br>    [name] => name<br>    [class] => Demo<br>)<br></pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -596,7 +676,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取属性列表getProperties:id</pre><pre style='position:relative;
+opacity:0.8;'>获取属性列表getProperties:id</pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -604,7 +684,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取属性列表getProperties:name</pre><pre style='position:relative;
+opacity:0.8;'>获取属性列表getProperties:name</pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -612,7 +692,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取属性列表getProperties:skills</pre><pre style='position:relative;
+opacity:0.8;'>获取属性列表getProperties:skills</pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -620,7 +700,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取方法getMethod:ReflectionMethod Object<br>(<br>    [name] => getSkill<br>    [class] => Demo<br>)<br></pre><pre style='position:relative;
+opacity:0.8;'>获取方法getMethod:ReflectionMethod Object<br>(<br>    [name] => getSkill<br>    [class] => Demo<br>)<br></pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -628,7 +708,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取方法列表getMethods:__construct</pre><pre style='position:relative;
+opacity:0.8;'>获取方法列表getMethods:__construct</pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -636,7 +716,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取方法列表getMethods:getName</pre><pre style='position:relative;
+opacity:0.8;'>获取方法列表getMethods:getName</pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -644,7 +724,7 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>获取方法列表getMethods:getSkill</pre><pre style='position:relative;
+opacity:0.8;'>获取方法列表getMethods:getSkill</pre></div><div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -653,7 +733,7 @@ border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
 opacity:0.8;'>newInstanceArgs:Demo Object<br>(<br>    [id:Demo:private] => 1<br>    [name:protected] => sai<br>    [skills] => Array<br>        (<br>            [0] => php<br>            [1] => js<br>        )</p>
-<p>)<br></pre></p>
+<p>)<br></pre></div></p>
 <p>demo里面就有使用了ReflectionClass类，当然ReflectionClass类不止于这些方法。</p>
 <h3 id="更多方法"><a href="#更多方法" class="headerlink" title="更多方法"></a>更多方法</h3><p>ReflectionClass类还有更多方法：</p>
 <table>

@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.8k 字
+          2.7k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          24 分钟
+          23 分钟
         
       </span>
     
@@ -492,7 +492,64 @@
               <p>面试被问到健康检测，自己不了解，便有了下文。</p>
 <p>当项目访问量比较大时，我们经常使用nginx做负载均衡。</p>
 <p>如下：</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment">#设定http服务器，利用它的反向代理功能提供负载均衡支持</span><br><span class="hljs-section">http</span> &#123;<br><br>    <span class="hljs-comment">#设定mime类型,类型由mime.type文件定义</span><br>    <span class="hljs-attribute">include</span>             /etc/nginx/mime.types;<br>    <span class="hljs-attribute">default_type</span>    application/octet-stream;<br>    <span class="hljs-comment">#设定日志格式</span><br>    <span class="hljs-attribute">access_log</span>        /var/log/nginx/access.log;<br>    <span class="hljs-comment">#省略上文有的一些配置节点</span><br>    <span class="hljs-comment">#。。。。。。。。。。</span><br>    <span class="hljs-comment">#设定负载均衡的服务器列表</span><br>    <span class="hljs-attribute">upstream</span> sai&#123;<br>        <span class="hljs-comment">#weigth参数表示权值，权值越高被分配到的几率越大</span><br>        <span class="hljs-attribute">server</span> <span class="hljs-number">192.168.8.1:3128</span> weight=<span class="hljs-number">5</span>;<br>        <span class="hljs-comment">#本机上的Squid开启3128端口,不是必须要squid</span><br>        <span class="hljs-attribute">server</span> <span class="hljs-number">192.168.8.2:80</span>    weight=<span class="hljs-number">1</span>;<br>        <span class="hljs-attribute">server</span> <span class="hljs-number">192.168.8.3:80</span>    weight=<span class="hljs-number">6</span>;<br>    &#125;<br>        <br>    <span class="hljs-comment">#第一个虚拟服务器</span><br>    <span class="hljs-section">server</span> &#123;<br>        <span class="hljs-comment">#侦听192.168.8.x的80端口</span><br>        <span class="hljs-attribute">listen</span>             <span class="hljs-number">80</span>;<br>        <span class="hljs-attribute">server_name</span>    www.13sai.com;<br>        <span class="hljs-comment">#对aspx后缀的进行负载均衡请求</span><br>        <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ .*.php$</span> &#123;<br>            <span class="hljs-comment">#定义服务器的默认网站根目录位置</span><br>            <span class="hljs-attribute">root</span>     /root; <br>            <span class="hljs-comment">#定义首页索引文件的名称</span><br>            <span class="hljs-attribute">index</span> index.php index.html index.htm;<br>            <br>            <span class="hljs-comment">#请求转向mysvr 定义的服务器列表</span><br>            <span class="hljs-attribute">proxy_pass</span>    http://sai;<br>            <span class="hljs-comment">#以下是一些反向代理的配置可删除.</span><br>            <span class="hljs-attribute">proxy_redirect</span> <span class="hljs-literal">off</span>;<br>            <span class="hljs-comment">#后端的Web服务器可以通过X-Forwarded-For获取用户真实IP</span><br>            <span class="hljs-attribute">proxy_set_header</span> Host $host;<br>            <span class="hljs-attribute">proxy_set_header</span> X-Real-IP $remote_addr;<br>            <span class="hljs-attribute">proxy_set_header</span> X-Forwarded-For $proxy_add_x_forwarded_for;<br>            <span class="hljs-comment">#允许客户端请求的最大单文件字节数</span><br>            <span class="hljs-attribute">client_max_body_size</span> <span class="hljs-number">10m</span>; <br>            <span class="hljs-comment">#缓冲区代理缓冲用户端请求的最大字节数，</span><br>            <span class="hljs-attribute">client_body_buffer_size</span> <span class="hljs-number">128k</span>;<br>            <span class="hljs-comment">#nginx跟后端服务器连接超时时间(代理连接超时)</span><br>            <span class="hljs-attribute">proxy_connect_timeout</span> <span class="hljs-number">90</span>;<br>            <span class="hljs-comment">#连接成功后，后端服务器响应时间(代理接收超时)</span><br>            <span class="hljs-attribute">proxy_read_timeout</span> <span class="hljs-number">90</span>;<br>            <span class="hljs-comment">#设置代理服务器（nginx）保存用户头信息的缓冲区大小</span><br>            <span class="hljs-attribute">proxy_buffer_size</span> <span class="hljs-number">4k</span>;<br>            <span class="hljs-comment">#proxy_buffers缓冲区，网页平均在32k以下的话，这样设置</span><br>            <span class="hljs-attribute">proxy_buffers</span> <span class="hljs-number">4</span> <span class="hljs-number">32k</span>;<br>            <span class="hljs-comment">#高负荷下缓冲大小（proxy_buffers*2）</span><br>            <span class="hljs-attribute">proxy_busy_buffers_size</span> <span class="hljs-number">64k</span>; <br>            <span class="hljs-comment">#设定缓存文件夹大小，大于这个值，将从upstream服务器传</span><br>            <span class="hljs-attribute">proxy_temp_file_write_size</span> <span class="hljs-number">64k</span>;    <br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-comment">#设定http服务器，利用它的反向代理功能提供负载均衡支持</span>
+<span class="hljs-section">http</span> &#123;
+
+    <span class="hljs-comment">#设定mime类型,类型由mime.type文件定义</span>
+    <span class="hljs-attribute">include</span>             /etc/nginx/mime.types;
+    <span class="hljs-attribute">default_type</span>    application/octet-stream;
+    <span class="hljs-comment">#设定日志格式</span>
+    <span class="hljs-attribute">access_log</span>        /var/log/nginx/access.log;
+    <span class="hljs-comment">#省略上文有的一些配置节点</span>
+    <span class="hljs-comment">#。。。。。。。。。。</span>
+    <span class="hljs-comment">#设定负载均衡的服务器列表</span>
+    <span class="hljs-attribute">upstream</span> sai&#123;
+        <span class="hljs-comment">#weigth参数表示权值，权值越高被分配到的几率越大</span>
+        <span class="hljs-attribute">server</span> <span class="hljs-number">192.168.8.1:3128</span> weight=<span class="hljs-number">5</span>;
+        <span class="hljs-comment">#本机上的Squid开启3128端口,不是必须要squid</span>
+        <span class="hljs-attribute">server</span> <span class="hljs-number">192.168.8.2:80</span>    weight=<span class="hljs-number">1</span>;
+        <span class="hljs-attribute">server</span> <span class="hljs-number">192.168.8.3:80</span>    weight=<span class="hljs-number">6</span>;
+    &#125;
+        
+    <span class="hljs-comment">#第一个虚拟服务器</span>
+    <span class="hljs-section">server</span> &#123;
+        <span class="hljs-comment">#侦听192.168.8.x的80端口</span>
+        <span class="hljs-attribute">listen</span>             <span class="hljs-number">80</span>;
+        <span class="hljs-attribute">server_name</span>    www.13sai.com;
+        <span class="hljs-comment">#对aspx后缀的进行负载均衡请求</span>
+        <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ .*.php$</span> &#123;
+            <span class="hljs-comment">#定义服务器的默认网站根目录位置</span>
+            <span class="hljs-attribute">root</span>     /root; 
+            <span class="hljs-comment">#定义首页索引文件的名称</span>
+            <span class="hljs-attribute">index</span> index.php index.html index.htm;
+            
+            <span class="hljs-comment">#请求转向mysvr 定义的服务器列表</span>
+            <span class="hljs-attribute">proxy_pass</span>    http://sai;
+            <span class="hljs-comment">#以下是一些反向代理的配置可删除.</span>
+            <span class="hljs-attribute">proxy_redirect</span> <span class="hljs-literal">off</span>;
+            <span class="hljs-comment">#后端的Web服务器可以通过X-Forwarded-For获取用户真实IP</span>
+            <span class="hljs-attribute">proxy_set_header</span> Host $host;
+            <span class="hljs-attribute">proxy_set_header</span> X-Real-IP $remote_addr;
+            <span class="hljs-attribute">proxy_set_header</span> X-Forwarded-For $proxy_add_x_forwarded_for;
+            <span class="hljs-comment">#允许客户端请求的最大单文件字节数</span>
+            <span class="hljs-attribute">client_max_body_size</span> <span class="hljs-number">10m</span>; 
+            <span class="hljs-comment">#缓冲区代理缓冲用户端请求的最大字节数，</span>
+            <span class="hljs-attribute">client_body_buffer_size</span> <span class="hljs-number">128k</span>;
+            <span class="hljs-comment">#nginx跟后端服务器连接超时时间(代理连接超时)</span>
+            <span class="hljs-attribute">proxy_connect_timeout</span> <span class="hljs-number">90</span>;
+            <span class="hljs-comment">#连接成功后，后端服务器响应时间(代理接收超时)</span>
+            <span class="hljs-attribute">proxy_read_timeout</span> <span class="hljs-number">90</span>;
+            <span class="hljs-comment">#设置代理服务器（nginx）保存用户头信息的缓冲区大小</span>
+            <span class="hljs-attribute">proxy_buffer_size</span> <span class="hljs-number">4k</span>;
+            <span class="hljs-comment">#proxy_buffers缓冲区，网页平均在32k以下的话，这样设置</span>
+            <span class="hljs-attribute">proxy_buffers</span> <span class="hljs-number">4</span> <span class="hljs-number">32k</span>;
+            <span class="hljs-comment">#高负荷下缓冲大小（proxy_buffers*2）</span>
+            <span class="hljs-attribute">proxy_busy_buffers_size</span> <span class="hljs-number">64k</span>; 
+            <span class="hljs-comment">#设定缓存文件夹大小，大于这个值，将从upstream服务器传</span>
+            <span class="hljs-attribute">proxy_temp_file_write_size</span> <span class="hljs-number">64k</span>;    
+        &#125;
+    &#125;
+&#125;</code></pre></div>
 
 <p>这是nginx中文网上的一个实例（有删改），这样处理分发服务器，我们加入了三台机器，保证了项目的负载量。</p>
 <p>然而，我们常常忽略另一件事，就是健康检查。（好吧，其实我也忽略了这个问题，面试被问到，一脸懵！！！）</p>
@@ -503,18 +560,57 @@
 <blockquote>
 <p>如果 Nginx 在 10 秒内有 2 个请求发送失败或没有接收到响应，则标记服务器为不可用</p>
 </blockquote>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros">upstream sai&#123;<br>   <span class="hljs-built_in"> server </span>192.168.8.1:3128  <span class="hljs-attribute">max_fails</span>=2 <span class="hljs-attribute">fail_timeout</span>=10s <span class="hljs-attribute">weight</span>=5;<br>   <span class="hljs-built_in"> server </span>192.168.8.2:80    <span class="hljs-attribute">max_fails</span>=2 <span class="hljs-attribute">fail_timeout</span>=10s <span class="hljs-attribute">weight</span>=1;<br>   <span class="hljs-built_in"> server </span>192.168.8.3:80    <span class="hljs-attribute">max_fails</span>=2 <span class="hljs-attribute">fail_timeout</span>=10s <span class="hljs-attribute">weight</span>=6;<br>&#125;Copy<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs routeros">upstream sai&#123;
+   <span class="hljs-built_in"> server </span>192.168.8.1:3128  <span class="hljs-attribute">max_fails</span>=2 <span class="hljs-attribute">fail_timeout</span>=10s <span class="hljs-attribute">weight</span>=5;
+   <span class="hljs-built_in"> server </span>192.168.8.2:80    <span class="hljs-attribute">max_fails</span>=2 <span class="hljs-attribute">fail_timeout</span>=10s <span class="hljs-attribute">weight</span>=1;
+   <span class="hljs-built_in"> server </span>192.168.8.3:80    <span class="hljs-attribute">max_fails</span>=2 <span class="hljs-attribute">fail_timeout</span>=10s <span class="hljs-attribute">weight</span>=6;
+&#125;Copy</code></pre></div>
 
 
 
 <p><strong>主动检查：</strong></p>
 <p>需要先开启health_check</p>
-<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs nix">upstream sai&#123;<br>    zone sai <span class="hljs-number">64</span>k;<br>    server <span class="hljs-number">192.168</span>.<span class="hljs-number">8.1</span>:<span class="hljs-number">3128</span>  <span class="hljs-attr">max_fails=2</span> <span class="hljs-attr">fail_timeout=10s</span> <span class="hljs-attr">weight=5;</span><br>    server <span class="hljs-number">192.168</span>.<span class="hljs-number">8.2</span>:<span class="hljs-number">80</span>    <span class="hljs-attr">max_fails=2</span> <span class="hljs-attr">fail_timeout=10s</span> <span class="hljs-attr">weight=1;</span><br>    server <span class="hljs-number">192.168</span>.<span class="hljs-number">8.3</span>:<span class="hljs-number">80</span>    <span class="hljs-attr">max_fails=2</span> <span class="hljs-attr">fail_timeout=10s</span> <span class="hljs-attr">weight=6;</span><br>&#125;<br>location ~ .*.php$ &#123;<br>    <span class="hljs-comment">#其他省略</span><br>    …<br>    proxy_pass http://sai;<br>    health_check <span class="hljs-attr">interval=10</span> <span class="hljs-attr">fails=3</span> <span class="hljs-attr">passes=2;</span><br>    <span class="hljs-comment"># 也可以使用此种，指定特定接口 health_check uri=/some/path;</span><br>&#125;Copy<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nix">upstream sai&#123;
+    zone sai <span class="hljs-number">64</span>k;
+    server <span class="hljs-number">192.168</span>.<span class="hljs-number">8.1</span>:<span class="hljs-number">3128</span>  <span class="hljs-attr">max_fails=2</span> <span class="hljs-attr">fail_timeout=10s</span> <span class="hljs-attr">weight=5;</span>
+    server <span class="hljs-number">192.168</span>.<span class="hljs-number">8.2</span>:<span class="hljs-number">80</span>    <span class="hljs-attr">max_fails=2</span> <span class="hljs-attr">fail_timeout=10s</span> <span class="hljs-attr">weight=1;</span>
+    server <span class="hljs-number">192.168</span>.<span class="hljs-number">8.3</span>:<span class="hljs-number">80</span>    <span class="hljs-attr">max_fails=2</span> <span class="hljs-attr">fail_timeout=10s</span> <span class="hljs-attr">weight=6;</span>
+&#125;
+location ~ .*.php$ &#123;
+    <span class="hljs-comment">#其他省略</span>
+    …
+    proxy_pass http://sai;
+    health_check <span class="hljs-attr">interval=10</span> <span class="hljs-attr">fails=3</span> <span class="hljs-attr">passes=2;</span>
+    <span class="hljs-comment"># 也可以使用此种，指定特定接口 health_check uri=/some/path;</span>
+&#125;Copy</code></pre></div>
 
 
 
 <p>配置起来还是比较简单的。</p>
-<h3 id="proxy-next-upstream"><a href="#proxy-next-upstream" class="headerlink" title="proxy_next_upstream"></a>proxy_next_upstream</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 开启proxy_next_upstream </span><br>proxy_next_upstream on<br><br><br><br>upstream proxy_web&#123;<br>      server <span class="hljs-number">192.168</span>.<span class="hljs-number">1.120</span>:<span class="hljs-number">7851</span> weight=<span class="hljs-number">2</span> max_fails=<span class="hljs-number">3</span> fail_timeout=<span class="hljs-number">100</span>s;<br>      server <span class="hljs-number">192.168</span>.<span class="hljs-number">1.121</span>:<span class="hljs-number">7851</span> weight=<span class="hljs-number">2</span>  max_fails=<span class="hljs-number">3</span> fail_timeout=<span class="hljs-number">100</span>s;<br>&#125;<br><br>server &#123;<br>    listen <span class="hljs-number">80</span>;<br>    server_name blog.<span class="hljs-number">13</span>sai.com;<br>    root /www;<br>    index index.html;<br>    location /sys  &#123;<br>        proxy_pass http:<span class="hljs-regexp">//</span>proxy_web;<br>        proxy_set_header Host <span class="hljs-variable">$host</span>;<br>        proxy_set_header X-Real-IP <span class="hljs-variable">$remote_addr</span>;<br>        proxy_set_header X-Forwarded-For <span class="hljs-variable">$proxy_add_x_forwarded_for</span>;<br>	<span class="hljs-regexp">//</span> <span class="hljs-number">502</span>,<span class="hljs-number">404</span>,error自动代理到下一个server<br>    	proxy_next_upstream http_502 http_504 error timeout invalid_header; <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="proxy-next-upstream"><a href="#proxy-next-upstream" class="headerlink" title="proxy_next_upstream"></a>proxy_next_upstream</h3><div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-comment"># 开启proxy_next_upstream </span>
+proxy_next_upstream on
+
+
+
+upstream proxy_web&#123;
+      server <span class="hljs-number">192.168</span>.<span class="hljs-number">1.120</span>:<span class="hljs-number">7851</span> weight=<span class="hljs-number">2</span> max_fails=<span class="hljs-number">3</span> fail_timeout=<span class="hljs-number">100</span>s;
+      server <span class="hljs-number">192.168</span>.<span class="hljs-number">1.121</span>:<span class="hljs-number">7851</span> weight=<span class="hljs-number">2</span>  max_fails=<span class="hljs-number">3</span> fail_timeout=<span class="hljs-number">100</span>s;
+&#125;
+
+server &#123;
+    listen <span class="hljs-number">80</span>;
+    server_name blog.<span class="hljs-number">13</span>sai.com;
+    root /www;
+    index index.html;
+    location /sys  &#123;
+        proxy_pass http:<span class="hljs-regexp">//</span>proxy_web;
+        proxy_set_header Host <span class="hljs-variable">$host</span>;
+        proxy_set_header X-Real-IP <span class="hljs-variable">$remote_addr</span>;
+        proxy_set_header X-Forwarded-For <span class="hljs-variable">$proxy_add_x_forwarded_for</span>;
+	<span class="hljs-regexp">//</span> <span class="hljs-number">502</span>,<span class="hljs-number">404</span>,error自动代理到下一个server
+    	proxy_next_upstream http_502 http_504 error timeout invalid_header; 
+    &#125;
+&#125;</code></pre></div>
 
 <p>如要了解更多可以查看nginx手册：</p>
 <p><a target="_blank" rel="noopener" href="https://docs.nginx.com/nginx/admin-guide/load-balancer/http-health-check/">nginx健康监测</a></p>

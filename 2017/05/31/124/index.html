@@ -863,7 +863,7 @@
             
             <div class="markdown-body">
               
-               <h1><span style="font-size: 24px;"><strong>CSV（逗号分隔值文件格式）</strong></span></h1><p>逗号分隔值（Comma-Separated Values，CSV，有时也称为字符分隔值，因为分隔字符也可以不是逗号），其文件以纯文本形式存储表格数据（数字和文本）。纯文本意味着该文件是一个字符序列，不含必须像二进制数字那样被解读的数据。CSV文件由任意数目的记录组成，记录间以某种换行符分隔；每条记录由字段组成，字段间的分隔符是其它字符或字符串，最常见的是逗号或制表符。通常，所有记录都有完全相同的字段序列。</p><p><br/></p><p>对于大数量的导出，csv导出的速度ko excel导出速度，而csv文件也能用excel打开，这大大提高了页面性能。唯一不好的就是csv导出不比excel导出灵活，加单元格样式、合并单元格就显示不出优势来了。我们来看看代码：</p><pre class="brush:php;toolbar:false">&lt;?php
+               <h1><span style="font-size: 24px;"><strong>CSV（逗号分隔值文件格式）</strong></span></h1><p>逗号分隔值（Comma-Separated Values，CSV，有时也称为字符分隔值，因为分隔字符也可以不是逗号），其文件以纯文本形式存储表格数据（数字和文本）。纯文本意味着该文件是一个字符序列，不含必须像二进制数字那样被解读的数据。CSV文件由任意数目的记录组成，记录间以某种换行符分隔；每条记录由字段组成，字段间的分隔符是其它字符或字符串，最常见的是逗号或制表符。通常，所有记录都有完全相同的字段序列。</p><p><br/></p><p>对于大数量的导出，csv导出的速度ko excel导出速度，而csv文件也能用excel打开，这大大提高了页面性能。唯一不好的就是csv导出不比excel导出灵活，加单元格样式、合并单元格就显示不出优势来了。我们来看看代码：</p><div class="code-wrapper"><pre class="brush:php;toolbar:false">&lt;?php
 $data&nbsp;=&nbsp;array&nbsp;(
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array&nbsp;(
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;姓名&#39;,
@@ -924,7 +924,7 @@ function&nbsp;write_csv($data&nbsp;=&nbsp;null,&nbsp;$filename&nbsp;=&nbsp;null)
 <p>//&nbsp;output_csv($data,&#39;ggg.xls&#39;);<br>//output_csv($data,&#39;ggg.csv&#39;);</p>
 <p>//&nbsp;read_csv(&#39;ggg.csv&#39;);</p>
 <p>//read_output_file_get_contents(&#39;ggg.csv&#39;);</p>
-<p>//&nbsp;read_output_fopen(&#39;ggg.csv&#39;);</pre><p>简单明了，无需多言。<br/></p></p>
+<p>//&nbsp;read_output_fopen(&#39;ggg.csv&#39;);</pre></div><p>简单明了，无需多言。<br/></p></p>
 
               
             </div>

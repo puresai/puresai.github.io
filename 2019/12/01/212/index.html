@@ -292,7 +292,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3k 字
+          2.9k 字
         
       </span>
     
@@ -513,14 +513,47 @@
 <blockquote>
 <p>vi nginx.conf</p>
 </blockquote>
- <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs awk"> <span class="hljs-comment">#nginx.conf 主要配置</span><br> ...<br> <br> upstream <span class="hljs-number">13</span>sai&#123;<br>    upsync <span class="hljs-number">192.168</span>.<span class="hljs-number">65.2</span>:<span class="hljs-number">8500</span><span class="hljs-regexp">/v1/</span>kv<span class="hljs-regexp">/upstreams/</span>test-server upsync_timeout=<span class="hljs-number">6</span>m upsync_interval=<span class="hljs-number">500</span>ms upsync_type=consul strong_dependency=off;<br>    upsync_dump_path <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/servers.conf;<br>    include <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/servers.conf;<br>&#125;<br><br><br>server &#123;<br>    listen       <span class="hljs-number">80</span>;<br><br>    location / &#123;<br>		proxy_pass http:<span class="hljs-regexp">//</span><span class="hljs-number">13</span>sai;<br>    &#125;<br><br><br>    ...<br>    <br>&#125;<br><br>...<br><br></code></pre></td></tr></table></figure>
+ <div class="code-wrapper"><pre><code class="hljs awk"> <span class="hljs-comment">#nginx.conf 主要配置</span>
+ ...
+ 
+ upstream <span class="hljs-number">13</span>sai&#123;
+    upsync <span class="hljs-number">192.168</span>.<span class="hljs-number">65.2</span>:<span class="hljs-number">8500</span><span class="hljs-regexp">/v1/</span>kv<span class="hljs-regexp">/upstreams/</span>test-server upsync_timeout=<span class="hljs-number">6</span>m upsync_interval=<span class="hljs-number">500</span>ms upsync_type=consul strong_dependency=off;
+    upsync_dump_path <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/servers.conf;
+    include <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/servers.conf;
+&#125;
 
-<h4 id="upsync语法说明"><a href="#upsync语法说明" class="headerlink" title="upsync语法说明"></a>upsync语法说明</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs routeros">语法：syntax: upsync <span class="hljs-variable">$consul</span>/etcd.api.com:<span class="hljs-variable">$port</span>/v1/kv/upstreams/<span class="hljs-variable">$upstream_name</span>/ [<span class="hljs-attribute">upsync_type</span>=consul/etcd] [<span class="hljs-attribute">upsync_interval</span>=second/minutes] [<span class="hljs-attribute">upsync_timeout</span>=second/minutes] [<span class="hljs-attribute">strong_dependency</span>=off/on]<br>默认值：无，如果省略参数，则默认参数为upsync_interval = 5s upsync_timeout = 6m strong_dependency = off<br>描述：从 consul/etcd 中拉取upstreams<br><br>upsync 定义从consul/etcd拉取最新的upstream信息并存到本地的操作<br>upsync_timeout 定义从consul/etcd拉取配置的超时时间<br>upsync_interval 定义从consul/etc拉取配置的间隔时间<br>upsync_type 定义使用配置服务类型<br>strong_dependency 启动时是否强制依赖配置服务器，如果配置为on,则拉取失败，nginx同样会启用失败<br>upsync_dump_path 定义从consul/etcd拉取配置后持久化到的本地的文件路径，这样即使 consul/etcd出问题了，本地同样会有备份文件<br></code></pre></td></tr></table></figure>
+
+server &#123;
+    listen       <span class="hljs-number">80</span>;
+
+    location / &#123;
+		proxy_pass http:<span class="hljs-regexp">//</span><span class="hljs-number">13</span>sai;
+    &#125;
+
+
+    ...
+    
+&#125;
+
+...
+</code></pre></div>
+
+<h4 id="upsync语法说明"><a href="#upsync语法说明" class="headerlink" title="upsync语法说明"></a>upsync语法说明</h4><div class="code-wrapper"><pre><code class="hljs routeros">语法：syntax: upsync <span class="hljs-variable">$consul</span>/etcd.api.com:<span class="hljs-variable">$port</span>/v1/kv/upstreams/<span class="hljs-variable">$upstream_name</span>/ [<span class="hljs-attribute">upsync_type</span>=consul/etcd] [<span class="hljs-attribute">upsync_interval</span>=second/minutes] [<span class="hljs-attribute">upsync_timeout</span>=second/minutes] [<span class="hljs-attribute">strong_dependency</span>=off/on]
+默认值：无，如果省略参数，则默认参数为upsync_interval = 5s upsync_timeout = 6m strong_dependency = off
+描述：从 consul/etcd 中拉取upstreams
+
+upsync 定义从consul/etcd拉取最新的upstream信息并存到本地的操作
+upsync_timeout 定义从consul/etcd拉取配置的超时时间
+upsync_interval 定义从consul/etc拉取配置的间隔时间
+upsync_type 定义使用配置服务类型
+strong_dependency 启动时是否强制依赖配置服务器，如果配置为on,则拉取失败，nginx同样会启用失败
+upsync_dump_path 定义从consul/etcd拉取配置后持久化到的本地的文件路径，这样即使 consul/etcd出问题了，本地同样会有备份文件</code></pre></div>
 
 <blockquote>
 <p>注意下面这个文件必须要有，文件路径和名称可以自定义，nginx-upsync-module会将负载信息缓存到此文件，否则Nginx启动会报错。</p>
 </blockquote>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment">#servers.conf，192.168.x.xxx是我的宿主机ip</span><span class="hljs-built_in"></span><br><span class="hljs-built_in">server </span>192.168.x.xxx:9501 <span class="hljs-attribute">weight</span>=20 <span class="hljs-attribute">max_fails</span>=1 <span class="hljs-attribute">fail_timeout</span>=5s;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs routeros"><span class="hljs-comment">#servers.conf，192.168.x.xxx是我的宿主机ip</span><span class="hljs-built_in"></span>
+<span class="hljs-built_in">server </span>192.168.x.xxx:9501 <span class="hljs-attribute">weight</span>=20 <span class="hljs-attribute">max_fails</span>=1 <span class="hljs-attribute">fail_timeout</span>=5s;</code></pre></div>
 
 
 <p>重启nginx</p>
@@ -531,7 +564,11 @@
 <p>/usr/local/nginx/sbin/nginx -s reload</p>
 </blockquote>
 <p>这里虽然我们还未启动consul，但没有什么影响，upsync会去拉取，也必然会失败，servers.conf就不会更新，Nginx的error日志会有信息。</p>
-<h2 id="利用swoole启动3个http服务"><a href="#利用swoole启动3个http服务" class="headerlink" title="利用swoole启动3个http服务"></a>利用swoole启动3个http服务</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 可启动3个server，端口分别为9501，9502，9503，输出也做对应修改</span><br><span class="hljs-variable">$http</span> = <span class="hljs-keyword">new</span> Swoole\Http\Server(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">9501</span>);<br><span class="hljs-variable">$http</span>-&gt;on(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-variable">$response</span></span>) </span>&#123;<br>    <span class="hljs-variable">$response</span>-&gt;end(<span class="hljs-string">&quot;9501&quot;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<h2 id="利用swoole启动3个http服务"><a href="#利用swoole启动3个http服务" class="headerlink" title="利用swoole启动3个http服务"></a>利用swoole启动3个http服务</h2><div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">// 可启动3个server，端口分别为9501，9502，9503，输出也做对应修改</span>
+<span class="hljs-variable">$http</span> = <span class="hljs-keyword">new</span> Swoole\Http\Server(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">9501</span>);
+<span class="hljs-variable">$http</span>-&gt;on(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-variable">$response</span></span>) </span>&#123;
+    <span class="hljs-variable">$response</span>-&gt;end(<span class="hljs-string">&quot;9501&quot;</span>);
+&#125;);</code></pre></div>
 
 <h2 id="consul安装"><a href="#consul安装" class="headerlink" title="consul安装"></a>consul安装</h2><blockquote>
 <p>这里consul只做一个kv存储，我自己也是第一次用，就不去做过多介绍了。</p>

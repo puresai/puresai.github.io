@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          748 字
+          685 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          7 分钟
+          6 分钟
         
       </span>
     
@@ -483,7 +483,42 @@
               <p> top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，常用于服务端性能分析。</p>
 <p><img src="/images/qiniu/1556243283000.png" srcset="/img/loading.gif" lazyload alt="top"></p>
 <p>统计信息区前五行是系统整体的统计信息。具体如下：</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">第一行服务器运行信息：<br><span class="hljs-number">09</span>:<span class="hljs-number">46</span>:<span class="hljs-number">41</span>    当前时间<br><span class="hljs-meta">up</span> 71days，<span class="hljs-number">16</span>:<span class="hljs-number">51</span>    系统运行时间，格式为天，时:分<br><span class="hljs-number">2</span> users    当前登录用户数<br>load average: <span class="hljs-number">0.00</span>, <span class="hljs-number">0.00</span>, <span class="hljs-number">0.00</span>    系统负载，即任务队列的平均长度。三个数值分别为 <span class="hljs-number">1</span>分钟、<span class="hljs-number">5</span>分钟、<span class="hljs-number">15</span>分钟前到现在的平均值。<br> <br><br>第二行为进程信息Tasks:<br>total 进程总数<br>running 正在运行的进程数<br>sleeping 睡眠的进程数<br>stopped 停止的进程数<br>zombie 僵尸进程数<br><br>第三行<span class="hljs-meta">CPU</span>信息<span class="hljs-meta">Cpu</span>(s): <br><span class="hljs-number">0.5</span>% us 用户空间占用<span class="hljs-meta">CPU</span>百分比<br><span class="hljs-number">0.3</span>% sy 内核空间占用<span class="hljs-meta">CPU</span>百分比<br><span class="hljs-number">0.0</span>% ni 用户进程空间内改变过优先级的进程占用<span class="hljs-meta">CPU</span>百分比<br><span class="hljs-number">99.0</span>% id 空闲<span class="hljs-meta">CPU</span>百分比<br><span class="hljs-number">0.0</span>% wa 等待输入输出的<span class="hljs-meta">CPU</span>时间百分比<br><span class="hljs-number">0.2</span>%hi：硬件<span class="hljs-meta">CPU</span>中断占用百分比<br><span class="hljs-number">0.0</span>%si：软中断占用百分比<br><span class="hljs-number">0.0</span>%st：虚拟机占用百分比<br> <br><br>第四行Mem内存信息:<br>8189652k total    物理内存总量<br>7885740k used    使用的物理内存总量<br>303912k free    空闲内存总量<br>566272k buffers    用作内核缓存的内存量<br><br>第五行swap交换分区信息: <br>4194300k total    交换区总量<br>15544k used    使用的交换区总量<br>4178756k free    空闲交换区总量<br>1318852k cached    缓存的交换区总量，即可用交换区内存<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs x86asm">第一行服务器运行信息：
+<span class="hljs-number">09</span>:<span class="hljs-number">46</span>:<span class="hljs-number">41</span>    当前时间
+<span class="hljs-meta">up</span> 71days，<span class="hljs-number">16</span>:<span class="hljs-number">51</span>    系统运行时间，格式为天，时:分
+<span class="hljs-number">2</span> users    当前登录用户数
+load average: <span class="hljs-number">0.00</span>, <span class="hljs-number">0.00</span>, <span class="hljs-number">0.00</span>    系统负载，即任务队列的平均长度。三个数值分别为 <span class="hljs-number">1</span>分钟、<span class="hljs-number">5</span>分钟、<span class="hljs-number">15</span>分钟前到现在的平均值。
+ 
+
+第二行为进程信息Tasks:
+total 进程总数
+running 正在运行的进程数
+sleeping 睡眠的进程数
+stopped 停止的进程数
+zombie 僵尸进程数
+
+第三行<span class="hljs-meta">CPU</span>信息<span class="hljs-meta">Cpu</span>(s): 
+<span class="hljs-number">0.5</span>% us 用户空间占用<span class="hljs-meta">CPU</span>百分比
+<span class="hljs-number">0.3</span>% sy 内核空间占用<span class="hljs-meta">CPU</span>百分比
+<span class="hljs-number">0.0</span>% ni 用户进程空间内改变过优先级的进程占用<span class="hljs-meta">CPU</span>百分比
+<span class="hljs-number">99.0</span>% id 空闲<span class="hljs-meta">CPU</span>百分比
+<span class="hljs-number">0.0</span>% wa 等待输入输出的<span class="hljs-meta">CPU</span>时间百分比
+<span class="hljs-number">0.2</span>%hi：硬件<span class="hljs-meta">CPU</span>中断占用百分比
+<span class="hljs-number">0.0</span>%si：软中断占用百分比
+<span class="hljs-number">0.0</span>%st：虚拟机占用百分比
+ 
+
+第四行Mem内存信息:
+8189652k total    物理内存总量
+7885740k used    使用的物理内存总量
+303912k free    空闲内存总量
+566272k buffers    用作内核缓存的内存量
+
+第五行swap交换分区信息: 
+4194300k total    交换区总量
+15544k used    使用的交换区总量
+4178756k free    空闲交换区总量
+1318852k cached    缓存的交换区总量，即可用交换区内存</code></pre></div>
 
 <p>当然，也推荐使用其他运行分析可视化工具，如htop，功能相比top更为强大。</p>
 

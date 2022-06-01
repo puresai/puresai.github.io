@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.4k 字
+          3.2k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          29 分钟
+          27 分钟
         
       </span>
     
@@ -530,13 +530,96 @@
 </blockquote>
 <p>我们不妨来设定一个实际的场景，电商系统下单成功之后如果15分钟未支付成功，就系统自动取消订单。</p>
 <p>我们先来实现代码，然后再来详细说明：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 我们定义一个abstract，定义两个方法，startAfter和startAt</span><br><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DelayTask</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">const</span> DELAY_TASK = <span class="hljs-string">&#x27;delayTask&#x27;</span>;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 延时时间，在触发时间后多久执行</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $pushDelayTime</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startAfter</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-variable">$pushDelayTime</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        RedisManager::getRedis()-&gt;zAdd(<span class="hljs-built_in">self</span>::DELAY_TASK, time() + <span class="hljs-variable">$pushDelayTime</span>, serialize(<span class="hljs-keyword">$this</span>));<br>    &#125;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 定时时间，在未来某时刻执行</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $pushDelayAt</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startAt</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-variable">$pushDelayAt</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        RedisManager::getRedis()-&gt;zAdd(<span class="hljs-built_in">self</span>::DELAY_TASK, <span class="hljs-variable">$pushDelayAt</span>, serialize(<span class="hljs-keyword">$this</span>));<br>    &#125;<br>    <span class="hljs-keyword">abstract</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span>;<br>&#125;<br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestDelayTask</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">DelayTask</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;id = <span class="hljs-variable">$id</span>;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$file</span>  = <span class="hljs-string">&#x27;text.txt&#x27;</span>;<span class="hljs-comment">//要写入文件的文件名（可以是任意文件名），如果文件不存在，将会创建一个</span><br>        <span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;写入的内容&quot;</span>.time().<span class="hljs-string">&quot;\n&quot;</span>;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$f</span> = file_put_contents(<span class="hljs-variable">$file</span>, <span class="hljs-variable">$content</span>,FILE_APPEND))&#123;<span class="hljs-comment">// 这个函数支持版本(PHP 5)</span><br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;写入成功。&lt;br /&gt;&quot;</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">// 我们定义一个abstract，定义两个方法，startAfter和startAt</span>
+<span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DelayTask</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">const</span> DELAY_TASK = <span class="hljs-string">&#x27;delayTask&#x27;</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 延时时间，在触发时间后多久执行</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $pushDelayTime</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startAfter</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-variable">$pushDelayTime</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        RedisManager::getRedis()-&gt;zAdd(<span class="hljs-built_in">self</span>::DELAY_TASK, time() + <span class="hljs-variable">$pushDelayTime</span>, serialize(<span class="hljs-keyword">$this</span>));
+    &#125;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 定时时间，在未来某时刻执行</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $pushDelayAt</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startAt</span>(<span class="hljs-params"><span class="hljs-keyword">int</span> <span class="hljs-variable">$pushDelayAt</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        RedisManager::getRedis()-&gt;zAdd(<span class="hljs-built_in">self</span>::DELAY_TASK, <span class="hljs-variable">$pushDelayAt</span>, serialize(<span class="hljs-keyword">$this</span>));
+    &#125;
+    <span class="hljs-keyword">abstract</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span>;
+&#125;
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestDelayTask</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">DelayTask</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;id = <span class="hljs-variable">$id</span>;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$file</span>  = <span class="hljs-string">&#x27;text.txt&#x27;</span>;<span class="hljs-comment">//要写入文件的文件名（可以是任意文件名），如果文件不存在，将会创建一个</span>
+        <span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;写入的内容&quot;</span>.time().<span class="hljs-string">&quot;\n&quot;</span>;
+        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$f</span> = file_put_contents(<span class="hljs-variable">$file</span>, <span class="hljs-variable">$content</span>,FILE_APPEND))&#123;<span class="hljs-comment">// 这个函数支持版本(PHP 5)</span>
+            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;写入成功。&lt;br /&gt;&quot;</span>;
+        &#125;
+    &#125;
+&#125;</code></pre></div>
 
 <p>RedisManager是封装的一个单例模式实现的redis类，我们也贴出代码，然后再对上面的代码做一些说明。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisManager</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$instance</span> = <span class="hljs-literal">null</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span> = <span class="hljs-keyword">new</span> \Redis();<br>        <span class="hljs-variable">$config</span> = <span class="hljs-keyword">require</span> <span class="hljs-string">&#x27;redis.config.php&#x27;</span>;<br>        <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>-&gt;connect(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;host&#x27;</span>], <span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;port&#x27;</span>], <span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;timeout&#x27;</span>]);<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;password&#x27;</span>])) &#123;<br>            <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>-&gt;auth(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;password&#x27;</span>]);<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取静态实例</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRedis</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>) &#123;<br>            <span class="hljs-keyword">new</span> <span class="hljs-built_in">self</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>;<br>    &#125;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 禁止clone</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__clone</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisManager</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$instance</span> = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span> = <span class="hljs-keyword">new</span> \Redis();
+        <span class="hljs-variable">$config</span> = <span class="hljs-keyword">require</span> <span class="hljs-string">&#x27;redis.config.php&#x27;</span>;
+        <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>-&gt;connect(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;host&#x27;</span>], <span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;port&#x27;</span>], <span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;timeout&#x27;</span>]);
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;password&#x27;</span>])) &#123;
+            <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>-&gt;auth(<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;password&#x27;</span>]);
+        &#125;
+    &#125;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 获取静态实例</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRedis</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>) &#123;
+            <span class="hljs-keyword">new</span> <span class="hljs-built_in">self</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>::<span class="hljs-variable">$instance</span>;
+    &#125;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 禁止clone</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__clone</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+    &#125;
+&#125;</code></pre></div>
 
 
-<h3 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">redis</span> <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">1</span> redis<br>(integer) <span class="hljs-number">1</span><br>redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">2</span> mongodb<br>(integer) <span class="hljs-number">1</span><br>redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">4</span> mysql<br>(integer) <span class="hljs-number">0</span><br>redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZRANGE saif <span class="hljs-number">0</span> <span class="hljs-number">10</span> WITHSCORES<br><br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;redis&quot;</span><br><span class="hljs-number">2</span>) <span class="hljs-string">&quot;1&quot;</span><br><span class="hljs-number">3</span>) <span class="hljs-string">&quot;mongodb&quot;</span><br><span class="hljs-number">4</span>) <span class="hljs-string">&quot;2&quot;</span><br><span class="hljs-number">5</span>) <span class="hljs-string">&quot;mysql&quot;</span><br><span class="hljs-number">6</span>) <span class="hljs-string">&quot;4&quot;</span><br></code></pre></td></tr></table></figure>
+<h3 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h3><div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">redis</span> <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">1</span> redis
+(integer) <span class="hljs-number">1</span>
+redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">2</span> mongodb
+(integer) <span class="hljs-number">1</span>
+redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZADD saif <span class="hljs-number">4</span> mysql
+(integer) <span class="hljs-number">0</span>
+redis <span class="hljs-number">127.0.0.1:6379</span>&gt; ZRANGE saif <span class="hljs-number">0</span> <span class="hljs-number">10</span> WITHSCORES
+
+<span class="hljs-number">1</span>) <span class="hljs-string">&quot;redis&quot;</span>
+<span class="hljs-number">2</span>) <span class="hljs-string">&quot;1&quot;</span>
+<span class="hljs-number">3</span>) <span class="hljs-string">&quot;mongodb&quot;</span>
+<span class="hljs-number">4</span>) <span class="hljs-string">&quot;2&quot;</span>
+<span class="hljs-number">5</span>) <span class="hljs-string">&quot;mysql&quot;</span>
+<span class="hljs-number">6</span>) <span class="hljs-string">&quot;4&quot;</span></code></pre></div>
 
 <p>如果你有redis可视化工具，你会发现有序集合存储的结构是这样：</p>
 <table>
@@ -567,10 +650,44 @@
 <blockquote>
 <p>file_put_contents ( string $filename , mixed $data [, int $flags = 0 [, resource $context ]] ) : int   — 将一个字符串写入文件</p>
 </blockquote>
-<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs livescript">我们先尝试写入任务：<br><br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">900</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">120</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">600</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158120384</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158420380</span>);<br><span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158120900</span>);<br></code></pre></td></tr></table></figure>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><div class="code-wrapper"><pre><code class="hljs livescript">我们先尝试写入任务：
+
+<span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">900</span>);
+<span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">120</span>);
+<span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">4</span>))</span>-&gt;</span>startAfter(<span class="hljs-number">600</span>);
+<span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158120384</span>);
+<span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158420380</span>);
+<span class="hljs-function"><span class="hljs-params">(<span class="hljs-keyword">new</span> TestDelayTask(<span class="hljs-number">3</span>))</span>-&gt;</span>startAt(<span class="hljs-number">158120900</span>);</code></pre></div>
 
 <p>执行代码：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DelayTaskTask</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">const</span> QueneName = <span class="hljs-string">&#x27;delayTask&#x27;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$currentTime</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$once</span> = <span class="hljs-number">5</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;currentTime = time();<br>        error_reporting(error_reporting() &amp; ~E_WARNING);<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>            <span class="hljs-comment">// 每次取出5条</span><br>            <span class="hljs-variable">$list</span> = RedisManager::getRedis()-&gt;zRange(<span class="hljs-built_in">self</span>::QueneName, <span class="hljs-number">0</span>, <span class="hljs-keyword">$this</span>-&gt;once, <span class="hljs-literal">true</span>);<br>            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$list</span>)) &#123;<br>                <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$list</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$val</span>=&gt;<span class="hljs-variable">$score</span>) &#123;<br>                    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$score</span> &lt; <span class="hljs-keyword">$this</span>-&gt;currentTime) &#123;<br>                        unserialize(<span class="hljs-variable">$val</span>)-&gt;run();<br>                        RedisManager::getRedis()-&gt;zDelete(<span class="hljs-built_in">self</span>::QueneName, <span class="hljs-variable">$val</span>);<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        <span class="hljs-keyword">break</span> <span class="hljs-number">2</span>;<br>                    &#125;<br>                &#125;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br>(<span class="hljs-keyword">new</span> DelayTaskTask())-&gt;run();<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DelayTaskTask</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">const</span> QueneName = <span class="hljs-string">&#x27;delayTask&#x27;</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$currentTime</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$once</span> = <span class="hljs-number">5</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;currentTime = time();
+        error_reporting(error_reporting() &amp; ~E_WARNING);
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;
+            <span class="hljs-comment">// 每次取出5条</span>
+            <span class="hljs-variable">$list</span> = RedisManager::getRedis()-&gt;zRange(<span class="hljs-built_in">self</span>::QueneName, <span class="hljs-number">0</span>, <span class="hljs-keyword">$this</span>-&gt;once, <span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$list</span>)) &#123;
+                <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$list</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$val</span>=&gt;<span class="hljs-variable">$score</span>) &#123;
+                    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$score</span> &lt; <span class="hljs-keyword">$this</span>-&gt;currentTime) &#123;
+                        unserialize(<span class="hljs-variable">$val</span>)-&gt;run();
+                        RedisManager::getRedis()-&gt;zDelete(<span class="hljs-built_in">self</span>::QueneName, <span class="hljs-variable">$val</span>);
+                    &#125; <span class="hljs-keyword">else</span> &#123;
+                        <span class="hljs-keyword">break</span> <span class="hljs-number">2</span>;
+                    &#125;
+                &#125;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-keyword">break</span>;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+(<span class="hljs-keyword">new</span> DelayTaskTask())-&gt;run();</code></pre></div>
 
 <p>我们可以设置一个定时任务，每分钟执行一次上述代码。</p>
 <p>我们执行之后，会发现一旦过了我们设定的时间，text.txt就不断有文字写入了。</p>

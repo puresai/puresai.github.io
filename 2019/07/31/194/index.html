@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          864 字
+          843 字
         
       </span>
     
@@ -469,7 +469,15 @@
             
             <div class="markdown-body">
               
-              <h3 id="安装jenkins"><a href="#安装jenkins" class="headerlink" title="安装jenkins"></a>安装jenkins</h3><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs livescript">docker run <span class="hljs-string">\</span><br>  -u root <span class="hljs-string">\</span><br>  --rm <span class="hljs-string">\</span><br>  -d <span class="hljs-string">\</span><br>  -p <span class="hljs-number">8090</span>:<span class="hljs-number">8080</span> <span class="hljs-string">\</span><br>  -p <span class="hljs-number">50000</span>:<span class="hljs-number">50000</span> <span class="hljs-string">\</span><br>  -v jenkins-data:/<span class="hljs-keyword">var</span>/jenkins_home <span class="hljs-string">\</span><br>  -v /<span class="hljs-keyword">var</span>/run/docker.sock:/<span class="hljs-keyword">var</span>/run/docker.sock <span class="hljs-string">\</span><br>  jenkinsci/blueocean<br></code></pre></td></tr></table></figure>
+              <h3 id="安装jenkins"><a href="#安装jenkins" class="headerlink" title="安装jenkins"></a>安装jenkins</h3><div class="code-wrapper"><pre><code class="hljs livescript">docker run <span class="hljs-string">\</span>
+  -u root <span class="hljs-string">\</span>
+  --rm <span class="hljs-string">\</span>
+  -d <span class="hljs-string">\</span>
+  -p <span class="hljs-number">8090</span>:<span class="hljs-number">8080</span> <span class="hljs-string">\</span>
+  -p <span class="hljs-number">50000</span>:<span class="hljs-number">50000</span> <span class="hljs-string">\</span>
+  -v jenkins-data:/<span class="hljs-keyword">var</span>/jenkins_home <span class="hljs-string">\</span>
+  -v /<span class="hljs-keyword">var</span>/run/docker.sock:/<span class="hljs-keyword">var</span>/run/docker.sock <span class="hljs-string">\</span>
+  jenkinsci/blueocean</code></pre></div>
 
 <p>进入容器查看密码：</p>
 <blockquote>
@@ -479,9 +487,13 @@
 <blockquote>
 <p>/var/jenkins_home/secrets/initialAdminPassword</p>
 </blockquote>
-<h3 id="jenkins关联git，拉取无需密码验证"><a href="#jenkins关联git，拉取无需密码验证" class="headerlink" title="jenkins关联git，拉取无需密码验证"></a>jenkins关联git，拉取无需密码验证</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 产生公钥与私钥对.<br>ssh-keygen<br><span class="hljs-regexp">//</span> 用ssh-copy-id将公钥复制到远程机器中(gitlab等)<br>ssh-copy-id -i .ssh/id_rsa.pub  git@xxx.com<br></code></pre></td></tr></table></figure>
+<h3 id="jenkins关联git，拉取无需密码验证"><a href="#jenkins关联git，拉取无需密码验证" class="headerlink" title="jenkins关联git，拉取无需密码验证"></a>jenkins关联git，拉取无需密码验证</h3><div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 产生公钥与私钥对.
+ssh-keygen
+<span class="hljs-regexp">//</span> 用ssh-copy-id将公钥复制到远程机器中(gitlab等)
+ssh-copy-id -i .ssh/id_rsa.pub  git@xxx.com</code></pre></div>
 
-<h3 id="jenkins关联代码服务器，同步无需密码验证"><a href="#jenkins关联代码服务器，同步无需密码验证" class="headerlink" title="jenkins关联代码服务器，同步无需密码验证"></a>jenkins关联代码服务器，同步无需密码验证</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 尽量使用内网ip<br>scp -p .ssh<span class="hljs-regexp">/id_rsa.pub www@172.17.158.15:/</span>home<span class="hljs-regexp">/www/</span>.ssh/authorized_keys<br></code></pre></td></tr></table></figure>
+<h3 id="jenkins关联代码服务器，同步无需密码验证"><a href="#jenkins关联代码服务器，同步无需密码验证" class="headerlink" title="jenkins关联代码服务器，同步无需密码验证"></a>jenkins关联代码服务器，同步无需密码验证</h3><div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 尽量使用内网ip
+scp -p .ssh<span class="hljs-regexp">/id_rsa.pub www@172.17.158.15:/</span>home<span class="hljs-regexp">/www/</span>.ssh/authorized_keys</code></pre></div>
 
 <h3 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h3><ol>
 <li>选择自由风格项目</li>
@@ -489,7 +501,12 @@
 <li>Build执行shell脚本</li>
 </ol>
 <p>shell demo</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;BUILD_USER&#125;</span><br>SOURCE_DIR=/var/jenkins_home/workspace/<span class="hljs-variable">$&#123;JOB_NAME&#125;</span>/<br>DEST_DIR=/usr/<span class="hljs-built_in">local</span>/nginx/html/jenkins<br>REMOTE_IP=172.17.158.15<br>scp -r  <span class="hljs-variable">$SOURCE_DIR</span> www@<span class="hljs-variable">$REMOTE_IP</span>:<span class="hljs-variable">$DEST_DIR</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;BUILD_USER&#125;</span>
+SOURCE_DIR=/var/jenkins_home/workspace/<span class="hljs-variable">$&#123;JOB_NAME&#125;</span>/
+DEST_DIR=/usr/<span class="hljs-built_in">local</span>/nginx/html/jenkins
+REMOTE_IP=172.17.158.15
+scp -r  <span class="hljs-variable">$SOURCE_DIR</span> www@<span class="hljs-variable">$REMOTE_IP</span>:<span class="hljs-variable">$DEST_DIR</span></code></pre></div>
 
 <h3 id="保存后点击构建。"><a href="#保存后点击构建。" class="headerlink" title="保存后点击构建。"></a>保存后点击构建。</h3><h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>jenkins拉取git代码jenkins服务器，scp同步代码到代码服务器。</p>
 <p>易出错点：</p>

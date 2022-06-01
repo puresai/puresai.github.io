@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.7k 字
+          2.6k 字
         
       </span>
     
@@ -306,7 +306,7 @@
         
         
           <!-- compatible with older versions-->
-          23 分钟
+          22 分钟
         
       </span>
     
@@ -530,33 +530,144 @@
 <hr>
 <p>我们已经开发完成，但我们还需要更多。比如自定义配置和路由。</p>
 <p>app文件夹下新建Config.php</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> *自定义配置</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">return</span> [<br>    <span class="hljs-string">&#x27;debug&#x27;</span> =&gt; <span class="hljs-literal">false</span>,<br>    <span class="hljs-string">&#x27;route&#x27;</span> =&gt; [<br>        <span class="hljs-string">&#x27;&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/welcome&#x27;</span>,<br>        <span class="hljs-string">&#x27;test&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/test&#x27;</span>,<br>    ],<br>];<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> *自定义配置</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">return</span> [
+    <span class="hljs-string">&#x27;debug&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&#x27;route&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/welcome&#x27;</span>,
+        <span class="hljs-string">&#x27;test&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/test&#x27;</span>,
+    ],
+];</code></pre></div>
 
 <p>新建DemoController（app/Https/Controllers目录下）</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Demo控制器</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Https</span>\<span class="hljs-title">Controllers</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Https</span>\<span class="hljs-title">Controller</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DemoController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">welcome</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json([<span class="hljs-string">&#x27;hello&#x27;</span> =&gt; <span class="hljs-string">&#x27;welcome&#x27;</span>]);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json(<span class="hljs-variable">$params</span>);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Demo控制器</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Https</span>\<span class="hljs-title">Controllers</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Https</span>\<span class="hljs-title">Controller</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DemoController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">welcome</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json([<span class="hljs-string">&#x27;hello&#x27;</span> =&gt; <span class="hljs-string">&#x27;welcome&#x27;</span>]);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json(<span class="hljs-variable">$params</span>);
+    &#125;
+&#125;
+</code></pre></div>
 
 <p>修改入口文件index.php,加入加载配置代码：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php">... 省略代码<br><br><span class="hljs-comment">// 加载配置</span><br><span class="hljs-variable">$config</span> = <span class="hljs-keyword">require</span> SF_LIBRARY_PATH.<span class="hljs-string">&#x27;Config.php&#x27;</span>;<br><br><span class="hljs-variable">$appConfig</span> = file_exists(<span class="hljs-variable">$appConfigPath</span> = SF_APP_PATH.<span class="hljs-string">&#x27;Config.php&#x27;</span>) ? <span class="hljs-keyword">require</span> <span class="hljs-variable">$appConfigPath</span> : [];<br><span class="hljs-variable">$config</span> = array_merge(<span class="hljs-variable">$config</span>, <span class="hljs-variable">$appConfig</span>);<br><br><span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>] = (<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>]?? SF_DEBUG);<br><br>...省略代码<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php">... 省略代码
+
+<span class="hljs-comment">// 加载配置</span>
+<span class="hljs-variable">$config</span> = <span class="hljs-keyword">require</span> SF_LIBRARY_PATH.<span class="hljs-string">&#x27;Config.php&#x27;</span>;
+
+<span class="hljs-variable">$appConfig</span> = file_exists(<span class="hljs-variable">$appConfigPath</span> = SF_APP_PATH.<span class="hljs-string">&#x27;Config.php&#x27;</span>) ? <span class="hljs-keyword">require</span> <span class="hljs-variable">$appConfigPath</span> : [];
+<span class="hljs-variable">$config</span> = array_merge(<span class="hljs-variable">$config</span>, <span class="hljs-variable">$appConfig</span>);
+
+<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>] = (<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>]?? SF_DEBUG);
+
+...省略代码
+</code></pre></div>
 
 <p>解析路由部分也加入自定义路由处理：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// Application</span><br>...省略代码<br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleRequest</span>(<span class="hljs-params">Request <span class="hljs-variable">$request</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-variable">$route</span> = <span class="hljs-variable">$request</span>-&gt;resolve(<span class="hljs-keyword">$this</span>-&gt;_config[<span class="hljs-string">&#x27;route&#x27;</span>]??[]);<br><br>    <span class="hljs-variable">$response</span> = <span class="hljs-variable">$request</span>-&gt;runAction(<span class="hljs-variable">$route</span>);<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 执行结果赋值给$response-&gt;data，并返回给response对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$response</span> <span class="hljs-keyword">instanceof</span> Response) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$response</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> SaiException(<span class="hljs-string">&#x27;Content format error&#x27;</span>);<br>&#125;<br>...省略代码<br><br><br><span class="hljs-comment">// Request</span><br>...省略代码<br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAction</span>(<span class="hljs-params"><span class="hljs-variable">$route</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (array_key_exists(<span class="hljs-variable">$route</span>, <span class="hljs-keyword">$this</span>-&gt;_route)) &#123;<br>        <span class="hljs-variable">$route</span> = <span class="hljs-keyword">$this</span>-&gt;_route[<span class="hljs-variable">$route</span>];<br>    &#125;<br><br>    <span class="hljs-variable">$match</span> = explode(<span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-variable">$route</span>);<br>    <span class="hljs-variable">$match</span> = array_filter(<span class="hljs-variable">$match</span>);<br>    <br>...省略代码<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">// Application</span>
+...省略代码
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleRequest</span>(<span class="hljs-params">Request <span class="hljs-variable">$request</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$route</span> = <span class="hljs-variable">$request</span>-&gt;resolve(<span class="hljs-keyword">$this</span>-&gt;_config[<span class="hljs-string">&#x27;route&#x27;</span>]??[]);
+
+    <span class="hljs-variable">$response</span> = <span class="hljs-variable">$request</span>-&gt;runAction(<span class="hljs-variable">$route</span>);
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 执行结果赋值给$response-&gt;data，并返回给response对象</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$response</span> <span class="hljs-keyword">instanceof</span> Response) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$response</span>;
+    &#125;
+
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> SaiException(<span class="hljs-string">&#x27;Content format error&#x27;</span>);
+&#125;
+...省略代码
+
+
+<span class="hljs-comment">// Request</span>
+...省略代码
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAction</span>(<span class="hljs-params"><span class="hljs-variable">$route</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (array_key_exists(<span class="hljs-variable">$route</span>, <span class="hljs-keyword">$this</span>-&gt;_route)) &#123;
+        <span class="hljs-variable">$route</span> = <span class="hljs-keyword">$this</span>-&gt;_route[<span class="hljs-variable">$route</span>];
+    &#125;
+
+    <span class="hljs-variable">$match</span> = explode(<span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-variable">$route</span>);
+    <span class="hljs-variable">$match</span> = array_filter(<span class="hljs-variable">$match</span>);
+    
+...省略代码
+</code></pre></div>
 
 <p>保存后打开浏览器看看效果：</p>
 <p><img src="https://cdn.learnku.com/uploads/images/202002/20/41489/VAvnoQ1BZY.png!large" srcset="/img/loading.gif" lazyload alt="image"></p>
 <p><img src="https://cdn.learnku.com/uploads/images/202002/20/41489/FnRaFKfjAC.png!large" srcset="/img/loading.gif" lazyload alt="image"></p>
 <p>这里虽然有自定义路由，但是我们有时候需要禁止默认路由，所以我们不妨增加配置参数defaultRoute，用来控制是否开启默认路由。</p>
 <p>我们修改一下路由解析的代码：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//Application</span><br><br>...省略代码<br><br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleRequest</span>(<span class="hljs-params">Request <span class="hljs-variable">$request</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-variable">$route</span> = <span class="hljs-variable">$request</span>-&gt;resolve(<span class="hljs-keyword">$this</span>-&gt;_config[<span class="hljs-string">&#x27;route&#x27;</span>]??[]);<br><br>    <span class="hljs-variable">$response</span> = <span class="hljs-variable">$request</span>-&gt;runAction(<span class="hljs-variable">$route</span>, <span class="hljs-keyword">$this</span>-&gt;_config[<span class="hljs-string">&#x27;defaultRoute&#x27;</span>]??<span class="hljs-literal">true</span>);<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 执行结果赋值给$response-&gt;data，并返回给response对象</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$response</span> <span class="hljs-keyword">instanceof</span> Response) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$response</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> SaiException(<span class="hljs-string">&#x27;Content format error&#x27;</span>);<br>&#125;<br><br><br>...省略代码<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">//Application</span>
 
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php"><br>...省略代码<br><br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAction</span>(<span class="hljs-params"><span class="hljs-variable">$route</span>, <span class="hljs-variable">$defaultRoute</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (array_key_exists(<span class="hljs-variable">$route</span>, <span class="hljs-keyword">$this</span>-&gt;_route)) &#123;<br>        <span class="hljs-variable">$route</span> = <span class="hljs-keyword">$this</span>-&gt;_route[<span class="hljs-variable">$route</span>];<br>    &#125; <span class="hljs-keyword">elseif</span> (!<span class="hljs-variable">$defaultRoute</span>) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NotFoundException(<span class="hljs-string">&quot;route not found:&quot;</span>.<span class="hljs-variable">$route</span>);<br>    &#125;<br>    <br>...省略代码<br></code></pre></td></tr></table></figure>
+...省略代码
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleRequest</span>(<span class="hljs-params">Request <span class="hljs-variable">$request</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$route</span> = <span class="hljs-variable">$request</span>-&gt;resolve(<span class="hljs-keyword">$this</span>-&gt;_config[<span class="hljs-string">&#x27;route&#x27;</span>]??[]);
+
+    <span class="hljs-variable">$response</span> = <span class="hljs-variable">$request</span>-&gt;runAction(<span class="hljs-variable">$route</span>, <span class="hljs-keyword">$this</span>-&gt;_config[<span class="hljs-string">&#x27;defaultRoute&#x27;</span>]??<span class="hljs-literal">true</span>);
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 执行结果赋值给$response-&gt;data，并返回给response对象</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$response</span> <span class="hljs-keyword">instanceof</span> Response) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$response</span>;
+    &#125;
+
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> SaiException(<span class="hljs-string">&#x27;Content format error&#x27;</span>);
+&#125;
+
+
+...省略代码</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs php">
+...省略代码
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAction</span>(<span class="hljs-params"><span class="hljs-variable">$route</span>, <span class="hljs-variable">$defaultRoute</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (array_key_exists(<span class="hljs-variable">$route</span>, <span class="hljs-keyword">$this</span>-&gt;_route)) &#123;
+        <span class="hljs-variable">$route</span> = <span class="hljs-keyword">$this</span>-&gt;_route[<span class="hljs-variable">$route</span>];
+    &#125; <span class="hljs-keyword">elseif</span> (!<span class="hljs-variable">$defaultRoute</span>) &#123;
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NotFoundException(<span class="hljs-string">&quot;route not found:&quot;</span>.<span class="hljs-variable">$route</span>);
+    &#125;
+    
+...省略代码</code></pre></div>
 
 <p>我们在app下面的Config，加入：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">return</span> [<br>    <span class="hljs-string">&#x27;debug&#x27;</span> =&gt; <span class="hljs-literal">false</span>,<br>    <span class="hljs-string">&#x27;route&#x27;</span> =&gt; [<br>        <span class="hljs-string">&#x27;&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/welcome&#x27;</span>,<br>        <span class="hljs-string">&#x27;test&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/test&#x27;</span>,<br>    ],<br>    <span class="hljs-string">&#x27;defaultRoute&#x27;</span> =&gt; <span class="hljs-literal">false</span>,<br>];<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">return</span> [
+    <span class="hljs-string">&#x27;debug&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&#x27;route&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/welcome&#x27;</span>,
+        <span class="hljs-string">&#x27;test&#x27;</span> =&gt; <span class="hljs-string">&#x27;demo/test&#x27;</span>,
+    ],
+    <span class="hljs-string">&#x27;defaultRoute&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+];</code></pre></div>
 
 
 <p>我们打开浏览器输入<a target="_blank" rel="noopener" href="http://saif.com/login">http://saif.com/login</a></p>
 <p>报错如下：</p>
-<pre style="position:relative;
+<div class="code-wrapper"><pre style="position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -571,7 +682,7 @@ opacity:0.8;">Array
     [code] =&gt; 404
     [file] =&gt; library/Https/Request.php
 )
-</pre>
+</pre></div>
 
               
             </div>

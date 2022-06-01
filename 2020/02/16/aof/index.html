@@ -295,7 +295,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.7k 字
+          4.6k 字
         
       </span>
     
@@ -469,7 +469,14 @@
 <li>子进程会共享一部分主进程的数据空间，并且把共享的数据置为read-only的状态，子进程创建 RDB 文件，根据父进程内存生成临时快照文件，完成后对原有文件进行原子替换。在持久化的过程中是避免不了有新的数据写入的，因为我们有一部分的数据是共享的，两个进程同时拥有一块数据，肯定会导致数据不一致的问题， 但是依赖于操作系统的fork机制，在修改的时候一定是修改部分内存页的数据，这个时候会触发对应内存页的copyonwrite的操作</li>
 <li>进程发送信号给父进程表示完成，父进程更新统计信息。</li>
 </ol>
-<h3 id="配置文件（流程类似bgsave）"><a href="#配置文件（流程类似bgsave）" class="headerlink" title="配置文件（流程类似bgsave）"></a>配置文件（流程类似bgsave）</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># 900s内至少达到一条写命令 </span><br><span class="hljs-attribute">save</span> <span class="hljs-number">900</span> <span class="hljs-number">1</span><br><br><span class="hljs-comment"># 300s内至少达至10条写命令 </span><br><span class="hljs-attribute">save</span> <span class="hljs-number">300</span> <span class="hljs-number">10</span><br><br><span class="hljs-comment"># 60s内至少达到10000条写命令 </span><br><span class="hljs-attribute">save</span> <span class="hljs-number">60</span> <span class="hljs-number">10000</span><br></code></pre></td></tr></table></figure>
+<h3 id="配置文件（流程类似bgsave）"><a href="#配置文件（流程类似bgsave）" class="headerlink" title="配置文件（流程类似bgsave）"></a>配置文件（流程类似bgsave）</h3><div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-comment"># 900s内至少达到一条写命令 </span>
+<span class="hljs-attribute">save</span> <span class="hljs-number">900</span> <span class="hljs-number">1</span>
+
+<span class="hljs-comment"># 300s内至少达至10条写命令 </span>
+<span class="hljs-attribute">save</span> <span class="hljs-number">300</span> <span class="hljs-number">10</span>
+
+<span class="hljs-comment"># 60s内至少达到10000条写命令 </span>
+<span class="hljs-attribute">save</span> <span class="hljs-number">60</span> <span class="hljs-number">10000</span></code></pre></div>
 
 <h3 id="RDB-文件的处理"><a href="#RDB-文件的处理" class="headerlink" title="RDB 文件的处理"></a>RDB 文件的处理</h3><h5 id="1-保存"><a href="#1-保存" class="headerlink" title="1. 保存:"></a>1. 保存:</h5><p>RDB 文件保存在 dir 配置指定的目录下，文件名通过 dbfilename 配置指定。可以通过执行 config set dir{newDir}和 config set<br>dbfilename{newFileName}运行期动态执行，当下次运行时 RDB 文件会保存到新目录。<br>当遇到坏盘或磁盘写满等情况时，可以通过 config set dir{newDir}在线修改文件路径到可用的磁盘路径，之后执行 bgsave 进行磁盘切换，同样适用于 AOF 持久化文件。</p>
 <h5 id="2-压缩"><a href="#2-压缩" class="headerlink" title="2. 压缩:"></a>2. 压缩:</h5><p>Redis 默认采用 LZF 算法对生成的 RDB 文件做压缩处理，压缩后的文件远远小于内存大小，默认开启，可以通过参数 config set rdbcompression{yes|no}动态修改。<br>虽然压缩 RDB 会消耗 CPU，但可大幅降低文件的体积，方便保存到硬盘或通过网络发送给从节点，因此线上建议开启。</p>
@@ -486,7 +493,15 @@
 <p>AOF(append only file)持久化:与RDB存储某个时刻的快照不同，AOF持久化方式会记录客户端对服务器的每一次写操作命令到日志当中，并将这些写操作以Redis协议追加保存到以后缀为aof文件末尾</p>
 </blockquote>
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>redis.conf</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">appendonly yes <br>#启用aof持久化方式 <br><br>appendfsync <span class="hljs-keyword">always</span>/<span class="hljs-keyword">no</span>/everysec<br>设置为<span class="hljs-keyword">always</span>时，会极大消弱Redis的性能，因为这种模式下每次<span class="hljs-keyword">write</span>后都会调用fsync（Linux为调用fdatasync）。<br><br>如果设置为<span class="hljs-keyword">no</span>，则<span class="hljs-keyword">write</span>后不会有fsync调用，由操作系统自动调度刷磁盘，性能是最好的。<br><br>everysec为最多每秒调用一次fsync，这种模式性能并不是很糟糕，一般也不会产生毛刺，这归功于Redis引入了BIO线程，所有fsync操作都异步交给了BIO线程。<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">appendonly yes 
+#启用aof持久化方式 
+
+appendfsync <span class="hljs-keyword">always</span>/<span class="hljs-keyword">no</span>/everysec
+设置为<span class="hljs-keyword">always</span>时，会极大消弱Redis的性能，因为这种模式下每次<span class="hljs-keyword">write</span>后都会调用fsync（Linux为调用fdatasync）。
+
+如果设置为<span class="hljs-keyword">no</span>，则<span class="hljs-keyword">write</span>后不会有fsync调用，由操作系统自动调度刷磁盘，性能是最好的。
+
+everysec为最多每秒调用一次fsync，这种模式性能并不是很糟糕，一般也不会产生毛刺，这归功于Redis引入了BIO线程，所有fsync操作都异步交给了BIO线程。</code></pre></div>
 
 <h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p><img src="http://image.13sai.com/study/aof.png" srcset="/img/loading.gif" lazyload alt="image"></p>
 <ol>
@@ -517,7 +532,11 @@
 <li><p>手动触发:直接调用 bgrewriteaof 命令。</p>
 </li>
 <li><p>自动触发:根据 auto-aof-rewrite-min-size和auto-aof-rewrite-percentage 参数确定自动触发时机。</p>
-<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-built_in">auto</span>-aof-<span class="hljs-built_in">rewrite</span>-min-size:表示运行 AOF 重写时文件最小体积，默认为 <span class="hljs-number">64</span>MB。<br><span class="hljs-built_in">auto</span>-aof-<span class="hljs-built_in">rewrite</span>-percentage:代表当前 AOF 文件空间(aof_current_size)和上一次重写后 AOF 文件空间(aof_base_size)的比值。<br>示例:<br><span class="hljs-built_in">auto</span>-aof-<span class="hljs-built_in">rewrite</span>-percentage:<span class="hljs-number">100</span> <span class="hljs-built_in">auto</span>-aof-<span class="hljs-built_in">rewrite</span>-min-size:<span class="hljs-number">64</span>mb<br>默认配置是当AOF文件大小是上次<span class="hljs-built_in">rewrite</span>后大小的一倍且文件大于<span class="hljs-number">64</span>M时触发<br></code></pre></td></tr></table></figure></li>
+<div class="code-wrapper"><pre><code class="hljs coq"><span class="hljs-built_in">auto</span>-aof-<span class="hljs-built_in">rewrite</span>-min-size:表示运行 AOF 重写时文件最小体积，默认为 <span class="hljs-number">64</span>MB。
+<span class="hljs-built_in">auto</span>-aof-<span class="hljs-built_in">rewrite</span>-percentage:代表当前 AOF 文件空间(aof_current_size)和上一次重写后 AOF 文件空间(aof_base_size)的比值。
+示例:
+<span class="hljs-built_in">auto</span>-aof-<span class="hljs-built_in">rewrite</span>-percentage:<span class="hljs-number">100</span> <span class="hljs-built_in">auto</span>-aof-<span class="hljs-built_in">rewrite</span>-min-size:<span class="hljs-number">64</span>mb
+默认配置是当AOF文件大小是上次<span class="hljs-built_in">rewrite</span>后大小的一倍且文件大于<span class="hljs-number">64</span>M时触发</code></pre></div></li>
 </ol>
 <h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>AOF文件损坏<br>在写入aof日志文件时，如果Redis服务器宕机，则aof日志文件文件会出格式错误，在重启Redis服务器时，Redis服务器会拒绝载入这个aof文件， 可以通过命令修复aof并恢复数据</p>
 <blockquote>
@@ -533,7 +552,15 @@
 <li>相同数据量下，AOF的文件通常体积会比RDB大。因为AOF是存指令的，而RDB是所有指令的结果快照。但AOF在日志重写后会压缩一些空间。</li>
 <li>在大量写入和载入的时候，AOF的效率会比RDB低。因为大量写入，AOF会执行更多的保存命令，载入的时候也需要大量的重执行命令来得到最后的结果。RDB对此更有优势。</li>
 </ol>
-<h3 id="配置汇总"><a href="#配置汇总" class="headerlink" title="配置汇总"></a>配置汇总</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">save</span> <span class="hljs-number">60</span> <span class="hljs-number">1000</span>:<span class="hljs-number">60</span>s内至少达到<span class="hljs-number">1000</span>条写命令<br><span class="hljs-attribute">appendonly</span> no:是否开启AOF<br><span class="hljs-attribute">appendfilename</span> <span class="hljs-string">&quot;appendonly.aof&quot;</span>:AOF文件名<br><span class="hljs-attribute">dir</span> ./:RDB文件和AOF文件所在目录<br><span class="hljs-attribute">appendfsync</span> everysec:fsync持久化策略<br><span class="hljs-attribute">no</span>-appendfsync-<span class="hljs-literal">on</span>-rewrite no:AOF重写期间是否禁止fsync;如果开启该选项，可以减轻文件重写时CPU和硬盘的负载(尤其是硬盘)，但是可能会丢 失AOF重写期间的数据;需要在负载和安全性之间进行平衡<br><span class="hljs-attribute">auto</span>-aof-rewrite-percentage <span class="hljs-number">100</span>:文件重写触发条件之一<br><span class="hljs-attribute">auto</span>-aof-rewrite-min-size <span class="hljs-number">64</span>mb:文件重写触发提交之一<br><span class="hljs-attribute">aof</span>-load-truncated yes:如果AOF文件结尾损坏，Redis启动时是否仍载入AOF文件<br></code></pre></td></tr></table></figure>
+<h3 id="配置汇总"><a href="#配置汇总" class="headerlink" title="配置汇总"></a>配置汇总</h3><div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">save</span> <span class="hljs-number">60</span> <span class="hljs-number">1000</span>:<span class="hljs-number">60</span>s内至少达到<span class="hljs-number">1000</span>条写命令
+<span class="hljs-attribute">appendonly</span> no:是否开启AOF
+<span class="hljs-attribute">appendfilename</span> <span class="hljs-string">&quot;appendonly.aof&quot;</span>:AOF文件名
+<span class="hljs-attribute">dir</span> ./:RDB文件和AOF文件所在目录
+<span class="hljs-attribute">appendfsync</span> everysec:fsync持久化策略
+<span class="hljs-attribute">no</span>-appendfsync-<span class="hljs-literal">on</span>-rewrite no:AOF重写期间是否禁止fsync;如果开启该选项，可以减轻文件重写时CPU和硬盘的负载(尤其是硬盘)，但是可能会丢 失AOF重写期间的数据;需要在负载和安全性之间进行平衡
+<span class="hljs-attribute">auto</span>-aof-rewrite-percentage <span class="hljs-number">100</span>:文件重写触发条件之一
+<span class="hljs-attribute">auto</span>-aof-rewrite-min-size <span class="hljs-number">64</span>mb:文件重写触发提交之一
+<span class="hljs-attribute">aof</span>-load-truncated yes:如果AOF文件结尾损坏，Redis启动时是否仍载入AOF文件</code></pre></div>
               
             </div>
             <hr/>

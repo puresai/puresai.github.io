@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          447 字
+          423 字
         
       </span>
     
@@ -868,14 +868,33 @@
 <ol>
 <li>后端带参</li>
 </ol>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$list</span> = <span class="hljs-variable">$model</span>::paginate(<span class="hljs-number">2</span>);<br><span class="hljs-variable">$list</span>-&gt;appends([<br>      name=&gt;<span class="hljs-variable">$name</span>,<br>      city=&gt;<span class="hljs-variable">$city</span>,<br>])-&gt;render();<br><span class="hljs-keyword">return</span> view(admin, [<br>      <span class="hljs-keyword">list</span> =&gt; <span class="hljs-variable">$list</span><br>]);<br><br><br><span class="hljs-comment">// blade使用&#123;&#123; $list-&gt;links() &#125;&#125;</span><br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-variable">$list</span> = <span class="hljs-variable">$model</span>::paginate(<span class="hljs-number">2</span>);
+<span class="hljs-variable">$list</span>-&gt;appends([
+      name=&gt;<span class="hljs-variable">$name</span>,
+      city=&gt;<span class="hljs-variable">$city</span>,
+])-&gt;render();
+<span class="hljs-keyword">return</span> view(admin, [
+      <span class="hljs-keyword">list</span> =&gt; <span class="hljs-variable">$list</span>
+]);
+
+
+<span class="hljs-comment">// blade使用&#123;&#123; $list-&gt;links() &#125;&#125;</span>
+</code></pre></div>
 
 
 
 <ol start="2">
 <li>前端带参</li>
 </ol>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$list</span> = <span class="hljs-variable">$model</span>::paginate(<span class="hljs-number">2</span>);<br><span class="hljs-keyword">return</span> view(admin.apply.apply, [<br>      <span class="hljs-keyword">list</span> =&gt; <span class="hljs-variable">$list</span>,<br>      name =&gt; <span class="hljs-variable">$name</span>,<br>      city =&gt; <span class="hljs-variable">$city</span><br>]);<br><br><span class="hljs-comment">//前端</span><br>&#123;&#123; <span class="hljs-variable">$list</span>-&gt;appends([name=&gt;<span class="hljs-variable">$name</span>, city =&gt; <span class="hljs-variable">$city</span>])-&gt;links() &#125;&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-variable">$list</span> = <span class="hljs-variable">$model</span>::paginate(<span class="hljs-number">2</span>);
+<span class="hljs-keyword">return</span> view(admin.apply.apply, [
+      <span class="hljs-keyword">list</span> =&gt; <span class="hljs-variable">$list</span>,
+      name =&gt; <span class="hljs-variable">$name</span>,
+      city =&gt; <span class="hljs-variable">$city</span>
+]);
+
+<span class="hljs-comment">//前端</span>
+&#123;&#123; <span class="hljs-variable">$list</span>-&gt;appends([name=&gt;<span class="hljs-variable">$name</span>, city =&gt; <span class="hljs-variable">$city</span>])-&gt;links() &#125;&#125;</code></pre></div>
 
 <p>两种方法均可！</p>
 

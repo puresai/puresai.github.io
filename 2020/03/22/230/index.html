@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.7k 字
+          2.6k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          23 分钟
+          22 分钟
         
       </span>
     
@@ -508,7 +508,38 @@
 <blockquote>
 <p>WATCH命令可以监控一个或多个键，一旦其中有一个键被修改（或删除），之后的事务就不会执行。监控一直持续到EXEC命令（事务中的命令是在EXEC之后才执行的，所以在MULTI命令后可以修改WATCH监控的键值）</p>
 </blockquote>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 库存为<span class="hljs-number">5</span><br><span class="hljs-regexp">//</span>实例化redis<br><span class="hljs-variable">$redis</span> = new Redis();<br><span class="hljs-regexp">//</span>连接<br><span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>);<br><span class="hljs-variable">$key</span> = <span class="hljs-string">&#x27;sale&#x27;</span>;<br><span class="hljs-variable">$redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">0</span>); <span class="hljs-regexp">//</span> 此项不预定义亦可，保证key唯一就行<br><span class="hljs-variable">$redis</span>-&gt;watch(<span class="hljs-variable">$key</span>); <span class="hljs-regexp">//</span>监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。<br><br><span class="hljs-variable">$sale_num</span> = <span class="hljs-variable">$redis</span>-&gt;get(<span class="hljs-variable">$key</span>);<br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$sale_num</span> &gt; <span class="hljs-number">4</span>) &#123;<br>	<span class="hljs-keyword">exit</span>();<br>&#125;<br><br><span class="hljs-variable">$redis</span>-&gt;multi(); <span class="hljs-regexp">//</span>标记事务<br><br><span class="hljs-variable">$redis</span>-&gt;incr(<span class="hljs-variable">$key</span>);  <span class="hljs-regexp">//</span>销量+<span class="hljs-number">1</span><br>sleep(<span class="hljs-number">1</span>); <span class="hljs-regexp">//</span>模拟真实环境<br><span class="hljs-variable">$ret</span> = <span class="hljs-variable">$redis</span>-&gt;exec(); <span class="hljs-regexp">//</span> 事务块内所有命令的返回值，按命令执行的先后顺序排列。<br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$ret</span>) &#123;<br>    <span class="hljs-regexp">//</span> 自定义的一个基于medoo的dbclass<br>	include <span class="hljs-string">&#x27;db.php&#x27;</span>;<br>	<span class="hljs-variable">$db</span> = new db([<br>	    <span class="hljs-string">&#x27;database_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;mysql&#x27;</span>,<br>	    <span class="hljs-string">&#x27;database_name&#x27;</span> =&gt; <span class="hljs-string">&#x27;test&#x27;</span>,<br>	    <span class="hljs-string">&#x27;server&#x27;</span> =&gt; <span class="hljs-string">&#x27;13sai&#x27;</span>,<br>	    <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;13sai&#x27;</span>,<br>	    <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;*&#x27;</span>,<br>	    <span class="hljs-string">&#x27;charset&#x27;</span> =&gt; <span class="hljs-string">&#x27;utf8&#x27;</span><br>	]);<br>	<span class="hljs-variable">$db</span>-&gt;update(<span class="hljs-string">&#x27;goods&#x27;</span>, [<span class="hljs-string">&quot;stock_num[-]&quot;</span> =&gt; <span class="hljs-number">1</span>], [<span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">1</span>]);<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 库存为<span class="hljs-number">5</span>
+<span class="hljs-regexp">//</span>实例化redis
+<span class="hljs-variable">$redis</span> = new Redis();
+<span class="hljs-regexp">//</span>连接
+<span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>);
+<span class="hljs-variable">$key</span> = <span class="hljs-string">&#x27;sale&#x27;</span>;
+<span class="hljs-variable">$redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">0</span>); <span class="hljs-regexp">//</span> 此项不预定义亦可，保证key唯一就行
+<span class="hljs-variable">$redis</span>-&gt;watch(<span class="hljs-variable">$key</span>); <span class="hljs-regexp">//</span>监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。
+
+<span class="hljs-variable">$sale_num</span> = <span class="hljs-variable">$redis</span>-&gt;get(<span class="hljs-variable">$key</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$sale_num</span> &gt; <span class="hljs-number">4</span>) &#123;
+	<span class="hljs-keyword">exit</span>();
+&#125;
+
+<span class="hljs-variable">$redis</span>-&gt;multi(); <span class="hljs-regexp">//</span>标记事务
+
+<span class="hljs-variable">$redis</span>-&gt;incr(<span class="hljs-variable">$key</span>);  <span class="hljs-regexp">//</span>销量+<span class="hljs-number">1</span>
+sleep(<span class="hljs-number">1</span>); <span class="hljs-regexp">//</span>模拟真实环境
+<span class="hljs-variable">$ret</span> = <span class="hljs-variable">$redis</span>-&gt;exec(); <span class="hljs-regexp">//</span> 事务块内所有命令的返回值，按命令执行的先后顺序排列。
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$ret</span>) &#123;
+    <span class="hljs-regexp">//</span> 自定义的一个基于medoo的dbclass
+	include <span class="hljs-string">&#x27;db.php&#x27;</span>;
+	<span class="hljs-variable">$db</span> = new db([
+	    <span class="hljs-string">&#x27;database_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;mysql&#x27;</span>,
+	    <span class="hljs-string">&#x27;database_name&#x27;</span> =&gt; <span class="hljs-string">&#x27;test&#x27;</span>,
+	    <span class="hljs-string">&#x27;server&#x27;</span> =&gt; <span class="hljs-string">&#x27;13sai&#x27;</span>,
+	    <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;13sai&#x27;</span>,
+	    <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;*&#x27;</span>,
+	    <span class="hljs-string">&#x27;charset&#x27;</span> =&gt; <span class="hljs-string">&#x27;utf8&#x27;</span>
+	]);
+	<span class="hljs-variable">$db</span>-&gt;update(<span class="hljs-string">&#x27;goods&#x27;</span>, [<span class="hljs-string">&quot;stock_num[-]&quot;</span> =&gt; <span class="hljs-number">1</span>], [<span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">1</span>]);
+&#125;</code></pre></div>
 
 
 <h4 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h4><blockquote>
@@ -523,23 +554,48 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/RedisBloom/RedisBloom">https://github.com/RedisBloom/RedisBloom</a></li>
 </ul>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/RedisBloom/</span>RedisBloom.git<br>cd redisbloom<br>make<br><br><br><span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/redis-server --loadmodule ./</span>redisbloom.so<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/RedisBloom/</span>RedisBloom.git
+cd redisbloom
+make
+
+
+<span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/redis-server --loadmodule ./</span>redisbloom.so</code></pre></div>
 
 
 <p>Bloom：向过滤器添加新项,如果尚不存在，则会为您创建一个新的过滤器</p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; BF.ADD newFilter foo<br>(integer) <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; BF.ADD newFilter foo
+(integer) <span class="hljs-number">1</span></code></pre></div>
 
 
 <p>Bloom：检查过滤器中是否存在项 </p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; BF.EXISTS newFilter foo<br>(integer) <span class="hljs-number">1</span><br><br><span class="hljs-number">127.0.0.1:6379</span>&gt; BF.EXISTS newFilter notpresent<br>(integer) <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; BF.EXISTS newFilter foo
+(integer) <span class="hljs-number">1</span>
+
+<span class="hljs-number">127.0.0.1:6379</span>&gt; BF.EXISTS newFilter notpresent
+(integer) <span class="hljs-number">0</span></code></pre></div>
 
 
-<h3 id="限流Redis-cell"><a href="#限流Redis-cell" class="headerlink" title="限流Redis-cell"></a>限流Redis-cell</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 提前安装rust哟<br>git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/brandur/</span>redis-cell.git<br>cd redis-cell<br>cargo build --release<br>cp target<span class="hljs-regexp">/release/</span>libredis_cell.dylib <span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/modules/</span><br>redis-server --loadmodule <span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/modules/</span>libredis_cell.so<br></code></pre></td></tr></table></figure>
+<h3 id="限流Redis-cell"><a href="#限流Redis-cell" class="headerlink" title="限流Redis-cell"></a>限流Redis-cell</h3><div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 提前安装rust哟
+git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/brandur/</span>redis-cell.git
+cd redis-cell
+cargo build --release
+cp target<span class="hljs-regexp">/release/</span>libredis_cell.dylib <span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/modules/</span>
+redis-server --loadmodule <span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/modules/</span>libredis_cell.so</code></pre></div>
 
 <p>该模块只有1条指令cl.throttle，它的参数和返回值都略显复杂，接下来让我们来看看这个指令具体该如何使用。</p>
-<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">&gt; cl.throttle limitThrot  15  30  60  1<br>                    ▲     ▲  ▲  ▲  ▲<br>                    |<span class="hljs-string">     </span>|<span class="hljs-string">  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">  └───── need 1 quota (可选参数，默认值也是1)</span><br><span class="hljs-string">                    </span>|<span class="hljs-string">     </span>|<span class="hljs-string">  └──┴─────── 30 operations / 60 seconds 这是漏水速率</span><br><span class="hljs-string">                    </span>|<span class="hljs-string">     └───────────── 15 capacity 这是漏斗容量</span><br><span class="hljs-string">&gt;                   └─────────────────── key</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs gherkin">&gt; cl.throttle limitThrot  15  30  60  1
+                    ▲     ▲  ▲  ▲  ▲
+                    |<span class="hljs-string">     </span>|<span class="hljs-string">  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">  └───── need 1 quota (可选参数，默认值也是1)</span>
+<span class="hljs-string">                    </span>|<span class="hljs-string">     </span>|<span class="hljs-string">  └──┴─────── 30 operations / 60 seconds 这是漏水速率</span>
+<span class="hljs-string">                    </span>|<span class="hljs-string">     └───────────── 15 capacity 这是漏斗容量</span>
+<span class="hljs-string">&gt;                   └─────────────────── key</span></code></pre></div>
 <p>上面这个指令的意思是允许频率为每 60s 最多 30 次(漏水速率)，漏斗的初始容量为 15，也就是说一开始可以取 15 个，然后才开始受漏水速率的影响。我们看到这个指令中漏水速率变成了 2 个参数，替代了之前的单个浮点数。用两个参数相除的结果来表达漏水速率相对单个浮点数要更加直观一些。</p>
-<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs tap">&gt; cl.throttle limitThrot<span class="hljs-number"> 15 </span>30<span class="hljs-number"> 60 </span>1<br>1) (integer)<span class="hljs-number"> 0 </span>  <span class="hljs-comment"># 0 表示允许，1表示拒绝</span><br>2) (integer)<span class="hljs-number"> 15 </span> <span class="hljs-comment"># 漏斗容量capacity</span><br>3) (integer)<span class="hljs-number"> 14 </span> <span class="hljs-comment"># 漏斗剩余空间left_quota</span><br>4) (integer) -1  <span class="hljs-comment"># 如果拒绝了，需要多长时间后再试(漏斗有空间了，单位秒)</span><br>5) (integer)<span class="hljs-number"> 2 </span>  <span class="hljs-comment"># 多长时间后，漏斗完全空出来(left_quota==capacity，单位秒)</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs tap">&gt; cl.throttle limitThrot<span class="hljs-number"> 15 </span>30<span class="hljs-number"> 60 </span>1
+1) (integer)<span class="hljs-number"> 0 </span>  <span class="hljs-comment"># 0 表示允许，1表示拒绝</span>
+2) (integer)<span class="hljs-number"> 15 </span> <span class="hljs-comment"># 漏斗容量capacity</span>
+3) (integer)<span class="hljs-number"> 14 </span> <span class="hljs-comment"># 漏斗剩余空间left_quota</span>
+4) (integer) -1  <span class="hljs-comment"># 如果拒绝了，需要多长时间后再试(漏斗有空间了，单位秒)</span>
+5) (integer)<span class="hljs-number"> 2 </span>  <span class="hljs-comment"># 多长时间后，漏斗完全空出来(left_quota==capacity，单位秒)</span></code></pre></div>
 
 <hr>
 <p>基本上常见的场景就是这些了，各位周末愉快！</p>

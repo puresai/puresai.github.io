@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.3k 字
+          2.2k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          20 分钟
+          19 分钟
         
       </span>
     
@@ -483,10 +483,103 @@
 <li><a target="_blank" rel="noopener" href="http://openresty.org/cn/">OpenResty地址</a></li>
 </ul>
 <p>我是在windows7电脑上测试使用，主要配置代码如下：</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># 分配内存，根据业务量</span><br><span class="hljs-attribute">lua_shared_dict</span> ip_blacklist <span class="hljs-number">1m</span>;<br><br><span class="hljs-section">server</span> &#123;<br>    <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;<br>    <span class="hljs-attribute">server_name</span>  localhost;<br><br>    <span class="hljs-attribute">root</span>   E:/www/web/test;<br><br>    <span class="hljs-attribute">access_log</span>  logs/host.access.log ;<br>    <span class="hljs-attribute">error_log</span>  logs/host.<span class="hljs-literal">error</span>.log;<br><br>    <span class="hljs-attribute">location</span> / &#123;<br>        <span class="hljs-attribute">access_by_lua_file</span> ../lua/black.lua;<br>        <span class="hljs-attribute">index</span>  index.html index.htm;<br>    &#125;<br><br>    <br>    <span class="hljs-attribute">error_page</span>   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /50x.html;<br>    <span class="hljs-attribute">location</span> = /50x.html &#123;<br>        <span class="hljs-attribute">root</span>   html;<br>    &#125;<br><br>    <br>    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ \.php$</span> &#123;<br>     <span class="hljs-comment"># 指定lua文件</span><br>        <span class="hljs-attribute">access_by_lua_file</span> <span class="hljs-string">&quot;D:\openresty-1.15.8.1-win64/lua/black.lua&quot;</span>;<br>        <span class="hljs-attribute">fastcgi_pass</span>   <span class="hljs-number">127.0.0.1:9000</span>;<br>        <span class="hljs-attribute">fastcgi_index</span>  index.php;<br>        <span class="hljs-attribute">fastcgi_param</span>  SCRIPT_FILENAME  $document_root$fastcgi_script_name;<br>        <span class="hljs-attribute">include</span>        fastcgi_params;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-comment"># 分配内存，根据业务量</span>
+<span class="hljs-attribute">lua_shared_dict</span> ip_blacklist <span class="hljs-number">1m</span>;
+
+<span class="hljs-section">server</span> &#123;
+    <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;
+    <span class="hljs-attribute">server_name</span>  localhost;
+
+    <span class="hljs-attribute">root</span>   E:/www/web/test;
+
+    <span class="hljs-attribute">access_log</span>  logs/host.access.log ;
+    <span class="hljs-attribute">error_log</span>  logs/host.<span class="hljs-literal">error</span>.log;
+
+    <span class="hljs-attribute">location</span> / &#123;
+        <span class="hljs-attribute">access_by_lua_file</span> ../lua/black.lua;
+        <span class="hljs-attribute">index</span>  index.html index.htm;
+    &#125;
+
+    
+    <span class="hljs-attribute">error_page</span>   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /50x.html;
+    <span class="hljs-attribute">location</span> = /50x.html &#123;
+        <span class="hljs-attribute">root</span>   html;
+    &#125;
+
+    
+    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ \.php$</span> &#123;
+     <span class="hljs-comment"># 指定lua文件</span>
+        <span class="hljs-attribute">access_by_lua_file</span> <span class="hljs-string">&quot;D:\openresty-1.15.8.1-win64/lua/black.lua&quot;</span>;
+        <span class="hljs-attribute">fastcgi_pass</span>   <span class="hljs-number">127.0.0.1:9000</span>;
+        <span class="hljs-attribute">fastcgi_index</span>  index.php;
+        <span class="hljs-attribute">fastcgi_param</span>  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        <span class="hljs-attribute">include</span>        fastcgi_params;
+    &#125;
+&#125;
+</code></pre></div>
 
 <p>black.lua</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">local</span> redis_host    = &quot;127.0.0.1&quot; <span class="hljs-comment">-- 这里一定是redis的IP地址</span><br><span class="hljs-keyword">local</span> redis_port    = &quot;6379&quot;<br><br><span class="hljs-comment">-- 连接超时时间，单位ms，不建议设置太高</span><br><span class="hljs-keyword">local</span> redis_connection_timeout = <span class="hljs-number">1000</span><br><br><span class="hljs-keyword">local</span> redis_key  = &quot;ip_blacklist&quot;<br><br><span class="hljs-comment">-- 缓存时间，单位s</span><br><span class="hljs-keyword">local</span> cache_ttl  = <span class="hljs-number">100</span><br><br><span class="hljs-comment">-- 以上是配置</span><br><br><span class="hljs-keyword">local</span> ip                = ngx.var.remote_addr<br><span class="hljs-keyword">local</span> ip_blacklist      = ngx.shared.ip_blacklist<br><span class="hljs-keyword">local</span> last_update_time  = ip_blacklist:<span class="hljs-keyword">get</span>(&quot;last_update_time&quot;);<br><br><span class="hljs-comment">-- 当缓存时间到期更新blacklist</span><br><span class="hljs-keyword">if</span> last_update_time == nil <span class="hljs-keyword">or</span> last_update_time &lt; ( ngx.now() - cache_ttl ) <span class="hljs-keyword">then</span><br><br>  <span class="hljs-keyword">local</span> redis = require &quot;resty.redis&quot;;<br>  <span class="hljs-keyword">local</span> red = redis:<span class="hljs-built_in">new</span>();<br><br>  red:set_timeout(redis_connect_timeout);<br><br>  <span class="hljs-keyword">local</span> ok, err = red:<span class="hljs-keyword">connect</span>(redis_host, redis_port);<br><br>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ok <span class="hljs-keyword">then</span><br>    ngx.say(&quot;redis connect failed: &quot;, err)<br>    ngx.log(ngx.<span class="hljs-keyword">DEBUG</span>, &quot;Redis connection error while retrieving ip_blacklist: &quot; .. err);<br>    <span class="hljs-keyword">return</span> ngx.<span class="hljs-keyword">exit</span>(ngx.HTTP_INTERNAL_SERVER_ERROR)<br>  <span class="hljs-keyword">else</span><br>    <span class="hljs-comment">-- local res, err = red:auth(&quot;foobared&quot;) -- 配置redis的密码，我测试未设置密码，代码注释</span><br><br>    <span class="hljs-comment">--if not res then</span><br>        <span class="hljs-comment">--ngx.say(&quot;redis auth is error: &quot;, err)</span><br>        <span class="hljs-comment">--return</span><br>    <span class="hljs-comment">--end</span><br>    red:<span class="hljs-keyword">select</span>(<span class="hljs-number">0</span>) <span class="hljs-comment">-- 设置redis的db</span><br>    <span class="hljs-keyword">local</span> new_ip_blacklist, err = red:smembers(redis_key);<br>    <span class="hljs-keyword">if</span> err <span class="hljs-keyword">then</span><br>      ngx.log(ngx.<span class="hljs-keyword">DEBUG</span>, &quot;Redis read error while retrieving ip_blacklist: &quot; .. err);<br>    <span class="hljs-keyword">else</span><br>      <span class="hljs-comment">-- 情况本地存储</span><br>      ip_blacklist:flush_all();<br>      <span class="hljs-keyword">for</span> <span class="hljs-keyword">index</span>, banned_ip <span class="hljs-keyword">in</span> ipairs(new_ip_blacklist) <span class="hljs-keyword">do</span><br>        ip_blacklist:<span class="hljs-keyword">set</span>(banned_ip, <span class="hljs-keyword">true</span>);<br>      <span class="hljs-keyword">end</span><br><br>      <span class="hljs-comment">-- 更新时间</span><br>      ip_blacklist:<span class="hljs-keyword">set</span>(&quot;last_update_time&quot;, ngx.now());<br>    <span class="hljs-keyword">end</span><br>  <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br><br><br><span class="hljs-keyword">if</span> ip_blacklist:<span class="hljs-keyword">get</span>(ip) <span class="hljs-keyword">then</span><br>  <span class="hljs-comment">--ngx.say(ip)</span><br>  ngx.log(ngx.<span class="hljs-keyword">DEBUG</span>, &quot;Banned IP detected and refused access: &quot; .. ip);<br>  <span class="hljs-keyword">return</span> ngx.<span class="hljs-keyword">exit</span>(ngx.HTTP_FORBIDDEN);<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql"><span class="hljs-keyword">local</span> redis_host    = &quot;127.0.0.1&quot; <span class="hljs-comment">-- 这里一定是redis的IP地址</span>
+<span class="hljs-keyword">local</span> redis_port    = &quot;6379&quot;
+
+<span class="hljs-comment">-- 连接超时时间，单位ms，不建议设置太高</span>
+<span class="hljs-keyword">local</span> redis_connection_timeout = <span class="hljs-number">1000</span>
+
+<span class="hljs-keyword">local</span> redis_key  = &quot;ip_blacklist&quot;
+
+<span class="hljs-comment">-- 缓存时间，单位s</span>
+<span class="hljs-keyword">local</span> cache_ttl  = <span class="hljs-number">100</span>
+
+<span class="hljs-comment">-- 以上是配置</span>
+
+<span class="hljs-keyword">local</span> ip                = ngx.var.remote_addr
+<span class="hljs-keyword">local</span> ip_blacklist      = ngx.shared.ip_blacklist
+<span class="hljs-keyword">local</span> last_update_time  = ip_blacklist:<span class="hljs-keyword">get</span>(&quot;last_update_time&quot;);
+
+<span class="hljs-comment">-- 当缓存时间到期更新blacklist</span>
+<span class="hljs-keyword">if</span> last_update_time == nil <span class="hljs-keyword">or</span> last_update_time &lt; ( ngx.now() - cache_ttl ) <span class="hljs-keyword">then</span>
+
+  <span class="hljs-keyword">local</span> redis = require &quot;resty.redis&quot;;
+  <span class="hljs-keyword">local</span> red = redis:<span class="hljs-built_in">new</span>();
+
+  red:set_timeout(redis_connect_timeout);
+
+  <span class="hljs-keyword">local</span> ok, err = red:<span class="hljs-keyword">connect</span>(redis_host, redis_port);
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ok <span class="hljs-keyword">then</span>
+    ngx.say(&quot;redis connect failed: &quot;, err)
+    ngx.log(ngx.<span class="hljs-keyword">DEBUG</span>, &quot;Redis connection error while retrieving ip_blacklist: &quot; .. err);
+    <span class="hljs-keyword">return</span> ngx.<span class="hljs-keyword">exit</span>(ngx.HTTP_INTERNAL_SERVER_ERROR)
+  <span class="hljs-keyword">else</span>
+    <span class="hljs-comment">-- local res, err = red:auth(&quot;foobared&quot;) -- 配置redis的密码，我测试未设置密码，代码注释</span>
+
+    <span class="hljs-comment">--if not res then</span>
+        <span class="hljs-comment">--ngx.say(&quot;redis auth is error: &quot;, err)</span>
+        <span class="hljs-comment">--return</span>
+    <span class="hljs-comment">--end</span>
+    red:<span class="hljs-keyword">select</span>(<span class="hljs-number">0</span>) <span class="hljs-comment">-- 设置redis的db</span>
+    <span class="hljs-keyword">local</span> new_ip_blacklist, err = red:smembers(redis_key);
+    <span class="hljs-keyword">if</span> err <span class="hljs-keyword">then</span>
+      ngx.log(ngx.<span class="hljs-keyword">DEBUG</span>, &quot;Redis read error while retrieving ip_blacklist: &quot; .. err);
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-comment">-- 情况本地存储</span>
+      ip_blacklist:flush_all();
+      <span class="hljs-keyword">for</span> <span class="hljs-keyword">index</span>, banned_ip <span class="hljs-keyword">in</span> ipairs(new_ip_blacklist) <span class="hljs-keyword">do</span>
+        ip_blacklist:<span class="hljs-keyword">set</span>(banned_ip, <span class="hljs-keyword">true</span>);
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-comment">-- 更新时间</span>
+      ip_blacklist:<span class="hljs-keyword">set</span>(&quot;last_update_time&quot;, ngx.now());
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+
+<span class="hljs-keyword">if</span> ip_blacklist:<span class="hljs-keyword">get</span>(ip) <span class="hljs-keyword">then</span>
+  <span class="hljs-comment">--ngx.say(ip)</span>
+  ngx.log(ngx.<span class="hljs-keyword">DEBUG</span>, &quot;Banned IP detected and refused access: &quot; .. ip);
+  <span class="hljs-keyword">return</span> ngx.<span class="hljs-keyword">exit</span>(ngx.HTTP_FORBIDDEN);
+<span class="hljs-keyword">end</span></code></pre></div>
 
 <p>完成。</p>
 <p>当然了，这只是个基础版本，你可以让这个禁止访问功能更强大，比如增加可疑ip写入，比如增加ip限流等等。</p>

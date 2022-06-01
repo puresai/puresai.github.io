@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.9k 字
+          3.7k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          33 分钟
+          31 分钟
         
       </span>
     
@@ -450,19 +450,19 @@
     
       
       
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
            class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">goruntine和channel</span>
+           ">
+          <span class="category-post">golang限流器</span>
         </a>
       
     
       
       
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
            class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">golang限流器</span>
+           active">
+          <span class="category-post">goruntine和channel</span>
         </a>
       
     
@@ -506,7 +506,37 @@
 <p>一个通道相当于一个先进先出（FIFO）的队列，通道中的各个元素是严格地按照发送的顺序排列的，先被发送通道的一定会先被接收。元素的发送和接收都需要用到操作符<code>&lt;-</code>。</p>
 </blockquote>
 <p>这里有一个FIFO简单的例子</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>, <span class="hljs-number">5</span>)<br>	ch &lt;- <span class="hljs-number">1</span><br>	ch &lt;- <span class="hljs-number">2</span><br>	ch &lt;- <span class="hljs-number">3</span><br>	ch &lt;- <span class="hljs-number">4</span><br>	ch &lt;- <span class="hljs-number">5</span><br><br>	fmt.Println(<span class="hljs-string">&quot;1-&quot;</span>, &lt;-ch)<br>	fmt.Println(<span class="hljs-string">&quot;2-&quot;</span>, &lt;-ch)<br>	ch &lt;- <span class="hljs-number">6</span><br>	fmt.Println(<span class="hljs-string">&quot;3-&quot;</span>, &lt;-ch)<br>	fmt.Println(<span class="hljs-string">&quot;4-&quot;</span>, &lt;-ch)<br>	fmt.Println(<span class="hljs-string">&quot;5-&quot;</span>, &lt;-ch)<br>	fmt.Println(<span class="hljs-string">&quot;6-&quot;</span>, &lt;-ch)<br>	<span class="hljs-built_in">close</span>(ch)<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">打印的内容如下：</span><br><span class="hljs-comment">1- 1</span><br><span class="hljs-comment">2- 2</span><br><span class="hljs-comment">3- 3</span><br><span class="hljs-comment">4- 4</span><br><span class="hljs-comment">5- 5</span><br><span class="hljs-comment">6- 6</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>, <span class="hljs-number">5</span>)
+	ch &lt;- <span class="hljs-number">1</span>
+	ch &lt;- <span class="hljs-number">2</span>
+	ch &lt;- <span class="hljs-number">3</span>
+	ch &lt;- <span class="hljs-number">4</span>
+	ch &lt;- <span class="hljs-number">5</span>
+
+	fmt.Println(<span class="hljs-string">&quot;1-&quot;</span>, &lt;-ch)
+	fmt.Println(<span class="hljs-string">&quot;2-&quot;</span>, &lt;-ch)
+	ch &lt;- <span class="hljs-number">6</span>
+	fmt.Println(<span class="hljs-string">&quot;3-&quot;</span>, &lt;-ch)
+	fmt.Println(<span class="hljs-string">&quot;4-&quot;</span>, &lt;-ch)
+	fmt.Println(<span class="hljs-string">&quot;5-&quot;</span>, &lt;-ch)
+	fmt.Println(<span class="hljs-string">&quot;6-&quot;</span>, &lt;-ch)
+	<span class="hljs-built_in">close</span>(ch)
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">打印的内容如下：</span>
+<span class="hljs-comment">1- 1</span>
+<span class="hljs-comment">2- 2</span>
+<span class="hljs-comment">3- 3</span>
+<span class="hljs-comment">4- 4</span>
+<span class="hljs-comment">5- 5</span>
+<span class="hljs-comment">6- 6</span>
+<span class="hljs-comment">*/</span></code></pre></div>
 
 
 
@@ -516,31 +546,90 @@
 <li>缓冲通道</li>
 <li>非缓冲通道</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs text">// 缓冲通道<br>ch1 := make(chan int, 10)<br>ch2 := make(chan bool, 2)<br><br><br>// 非缓冲通道<br>ch3 := make(chan int)<br>ch4 := make(chan bool, 0)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">// 缓冲通道
+ch1 := make(chan int, 10)
+ch2 := make(chan bool, 2)
+
+
+// 非缓冲通道
+ch3 := make(chan int)
+ch4 := make(chan bool, 0)</code></pre></div>
 
 
 
-<h3 id="发送通道数据"><a href="#发送通道数据" class="headerlink" title="发送通道数据"></a>发送通道数据</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 创建一个空接口通道，注意定义的通道类型有</span><br>ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">interface</span>&#123;&#125;)<br><span class="hljs-comment">// 将0放入通道中</span><br>ch &lt;- <span class="hljs-number">0</span><br><span class="hljs-comment">// 将hello字符串放入通道中</span><br>ch &lt;- <span class="hljs-string">&quot;hello&quot;</span><br></code></pre></td></tr></table></figure>
+<h3 id="发送通道数据"><a href="#发送通道数据" class="headerlink" title="发送通道数据"></a>发送通道数据</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 创建一个空接口通道，注意定义的通道类型有</span>
+ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">interface</span>&#123;&#125;)
+<span class="hljs-comment">// 将0放入通道中</span>
+ch &lt;- <span class="hljs-number">0</span>
+<span class="hljs-comment">// 将hello字符串放入通道中</span>
+ch &lt;- <span class="hljs-string">&quot;hello&quot;</span></code></pre></div>
 
 
 
 <h3 id="接收通道数据"><a href="#接收通道数据" class="headerlink" title="接收通道数据"></a>接收通道数据</h3><h3 id="1-阻塞接收数据"><a href="#1-阻塞接收数据" class="headerlink" title="1. 阻塞接收数据"></a>1. 阻塞接收数据</h3><p>阻塞模式接收数据时，将接收变量作为<code>&lt;-</code>操作符的左值，格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">data := &lt;-ch<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">data := &lt;-ch</code></pre></div>
 
 <p>执行该语句时将会阻塞，直到接收到数据并赋值给 data 变量。</p>
 <h3 id="2-非阻塞接收数据"><a href="#2-非阻塞接收数据" class="headerlink" title="2. 非阻塞接收数据"></a>2. 非阻塞接收数据</h3><p>使用非阻塞方式从通道接收数据时，语句不会发生阻塞，格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">data, ok := &lt;-ch<br><br>// data：表示接收到的数据。未接收到数据时，data 为通道类型的零值<br>// ok：表示是否接收到数据。<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">data, ok := &lt;-ch
+
+// data：表示接收到的数据。未接收到数据时，data 为通道类型的零值
+// ok：表示是否接收到数据。</code></pre></div>
 
 <p>非阻塞的通道接收方法可能造成高的 CPU 占用，因此使用非常少。如果需要实现接收超时检测，可以配合 select 和计时器 channel 进行，可以参见后面的内容。</p>
 <h3 id="3-接收任意数据，忽略接收的数据"><a href="#3-接收任意数据，忽略接收的数据" class="headerlink" title="3. 接收任意数据，忽略接收的数据"></a>3. 接收任意数据，忽略接收的数据</h3><p>阻塞接收数据后，忽略从通道返回的数据，格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">&lt;-ch<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">&lt;-ch</code></pre></div>
 
 <h3 id="4-循环接收"><a href="#4-循环接收" class="headerlink" title="4. 循环接收"></a>4. 循环接收</h3><p>通道的数据接收可以借用 for range 语句进行多个元素的接收操作，格式如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br><br>    <span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br><br>    <span class="hljs-comment">// 构建一个通道</span><br>    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br><br>    <span class="hljs-comment">// 开启一个并发匿名函数</span><br>    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><br>        <span class="hljs-comment">// 从3循环到0</span><br>        <span class="hljs-keyword">for</span> i := <span class="hljs-number">3</span>; i &gt;= <span class="hljs-number">0</span>; i-- &#123;<br><br>            <span class="hljs-comment">// 发送3到0之间的数值</span><br>            ch &lt;- i<br><br>            <span class="hljs-comment">// 每次发送完时等待</span><br>            time.Sleep(time.Second)<br>        &#125;<br><br>    &#125;()<br><br>    <span class="hljs-comment">// 遍历接收通道数据</span><br>    <span class="hljs-keyword">for</span> data := <span class="hljs-keyword">range</span> ch &#123;<br><br>        <span class="hljs-comment">// 打印通道数据</span><br>        fmt.Println(data)<br><br>        <span class="hljs-comment">// 当遇到数据0时, 退出接收循环</span><br>        <span class="hljs-keyword">if</span> data == <span class="hljs-number">0</span> &#123;<br>                <span class="hljs-keyword">break</span><br>        &#125;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+
+    <span class="hljs-string">&quot;time&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+
+    <span class="hljs-comment">// 构建一个通道</span>
+    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
+
+    <span class="hljs-comment">// 开启一个并发匿名函数</span>
+    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+
+        <span class="hljs-comment">// 从3循环到0</span>
+        <span class="hljs-keyword">for</span> i := <span class="hljs-number">3</span>; i &gt;= <span class="hljs-number">0</span>; i-- &#123;
+
+            <span class="hljs-comment">// 发送3到0之间的数值</span>
+            ch &lt;- i
+
+            <span class="hljs-comment">// 每次发送完时等待</span>
+            time.Sleep(time.Second)
+        &#125;
+
+    &#125;()
+
+    <span class="hljs-comment">// 遍历接收通道数据</span>
+    <span class="hljs-keyword">for</span> data := <span class="hljs-keyword">range</span> ch &#123;
+
+        <span class="hljs-comment">// 打印通道数据</span>
+        fmt.Println(data)
+
+        <span class="hljs-comment">// 当遇到数据0时, 退出接收循环</span>
+        <span class="hljs-keyword">if</span> data == <span class="hljs-number">0</span> &#123;
+                <span class="hljs-keyword">break</span>
+        &#125;
+    &#125;
+
+&#125;</code></pre></div>
 
 
 
-<h3 id="关闭通道"><a href="#关闭通道" class="headerlink" title="关闭通道"></a>关闭通道</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go">ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>)<br><br>...<br><br><span class="hljs-built_in">close</span>(ch)<br></code></pre></td></tr></table></figure>
+<h3 id="关闭通道"><a href="#关闭通道" class="headerlink" title="关闭通道"></a>关闭通道</h3><div class="code-wrapper"><pre><code class="hljs go">ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>)
+
+...
+
+<span class="hljs-built_in">close</span>(ch)</code></pre></div>
 
 <hr>
 <h2 id="通道特性"><a href="#通道特性" class="headerlink" title="通道特性"></a>通道特性</h2><ul>
@@ -556,7 +645,8 @@
 <li>单向通道最主要的用途就是约束其他代码的行为</li>
 <li>通过函数的参数类型或者返回值类型来限制（Go的语法糖）。</li>
 </ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ch <span class="hljs-keyword">chan</span>&lt;- <span class="hljs-keyword">int</span>)</span>；传入双向通道，在函数里面调用<span class="hljs-title">ch</span>只能发送</span><br><span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span> <span class="hljs-params">(ch &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)</span>；返回双向通道，在函数外面里面调用<span class="hljs-title">ch</span>只能接收</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ch <span class="hljs-keyword">chan</span>&lt;- <span class="hljs-keyword">int</span>)</span>；传入双向通道，在函数里面调用<span class="hljs-title">ch</span>只能发送</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span> <span class="hljs-params">(ch &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)</span>；返回双向通道，在函数外面里面调用<span class="hljs-title">ch</span>只能接收</span></code></pre></div>
 
 
 
@@ -567,11 +657,55 @@
 </blockquote>
 <p>说完这些概念性的玩意儿，我们还是来几个实例，感受一下goroutine配合channel使用的快感。</p>
 <hr>
-<h3 id="chan配合select实现超时处理"><a href="#chan配合select实现超时处理" class="headerlink" title="chan配合select实现超时处理"></a>chan配合select实现超时处理</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	timeout := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">bool</span>)<br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		time.Sleep(<span class="hljs-number">3e9</span>)<br>		timeout &lt;- <span class="hljs-literal">true</span><br>	&#125;()<br>	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br>	<span class="hljs-keyword">select</span> &#123;<br>	<span class="hljs-keyword">case</span> &lt;-ch:<br>	<span class="hljs-keyword">case</span> &lt;-timeout:<br>		fmt.Println(<span class="hljs-string">&quot;timeout!&quot;</span>)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="chan配合select实现超时处理"><a href="#chan配合select实现超时处理" class="headerlink" title="chan配合select实现超时处理"></a>chan配合select实现超时处理</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	timeout := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">bool</span>)
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		time.Sleep(<span class="hljs-number">3e9</span>)
+		timeout &lt;- <span class="hljs-literal">true</span>
+	&#125;()
+	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
+	<span class="hljs-keyword">select</span> &#123;
+	<span class="hljs-keyword">case</span> &lt;-ch:
+	<span class="hljs-keyword">case</span> &lt;-timeout:
+		fmt.Println(<span class="hljs-string">&quot;timeout!&quot;</span>)
+	&#125;
+&#125;</code></pre></div>
 
 
 
-<h3 id="非缓冲通道，监听信号量"><a href="#非缓冲通道，监听信号量" class="headerlink" title="非缓冲通道，监听信号量"></a>非缓冲通道，监听信号量</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 来自gin文档的例子</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	router := gin.Default()<br>	router.GET(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;<br>		time.Sleep(<span class="hljs-number">5</span> * time.Second)<br>		c.String(http.StatusOK, <span class="hljs-string">&quot;Welcome Gin Server&quot;</span>)<br>	&#125;)<br><br>	srv := &amp;http.Server&#123;<br>		Addr:    <span class="hljs-string">&quot;:8080&quot;</span>,<br>		Handler: router,<br>	&#125;<br><br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-comment">// 服务连接</span><br>		<span class="hljs-keyword">if</span> err := srv.ListenAndServe(); err != <span class="hljs-literal">nil</span> &amp;&amp; err != http.ErrServerClosed &#123;<br>			log.Fatalf(<span class="hljs-string">&quot;listen: %s\n&quot;</span>, err)<br>		&#125;<br>	&#125;()<br><br>	<span class="hljs-comment">// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）</span><br>	quit := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal)<br>	signal.Notify(quit, os.Interrupt)<br>	&lt;-quit<br>	log.Println(<span class="hljs-string">&quot;Shutdown Server ...&quot;</span>)<br><br>	ctx, cancel := context.WithTimeout(context.Background(), <span class="hljs-number">5</span>*time.Second)<br>	<span class="hljs-keyword">defer</span> cancel()<br>	<span class="hljs-keyword">if</span> err := srv.Shutdown(ctx); err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatal(<span class="hljs-string">&quot;Server Shutdown:&quot;</span>, err)<br>	&#125;<br>	log.Println(<span class="hljs-string">&quot;Server exiting&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="非缓冲通道，监听信号量"><a href="#非缓冲通道，监听信号量" class="headerlink" title="非缓冲通道，监听信号量"></a>非缓冲通道，监听信号量</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 来自gin文档的例子</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	router := gin.Default()
+	router.GET(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
+		time.Sleep(<span class="hljs-number">5</span> * time.Second)
+		c.String(http.StatusOK, <span class="hljs-string">&quot;Welcome Gin Server&quot;</span>)
+	&#125;)
+
+	srv := &amp;http.Server&#123;
+		Addr:    <span class="hljs-string">&quot;:8080&quot;</span>,
+		Handler: router,
+	&#125;
+
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-comment">// 服务连接</span>
+		<span class="hljs-keyword">if</span> err := srv.ListenAndServe(); err != <span class="hljs-literal">nil</span> &amp;&amp; err != http.ErrServerClosed &#123;
+			log.Fatalf(<span class="hljs-string">&quot;listen: %s\n&quot;</span>, err)
+		&#125;
+	&#125;()
+
+	<span class="hljs-comment">// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）</span>
+	quit := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	&lt;-quit
+	log.Println(<span class="hljs-string">&quot;Shutdown Server ...&quot;</span>)
+
+	ctx, cancel := context.WithTimeout(context.Background(), <span class="hljs-number">5</span>*time.Second)
+	<span class="hljs-keyword">defer</span> cancel()
+	<span class="hljs-keyword">if</span> err := srv.Shutdown(ctx); err != <span class="hljs-literal">nil</span> &#123;
+		log.Fatal(<span class="hljs-string">&quot;Server Shutdown:&quot;</span>, err)
+	&#125;
+	log.Println(<span class="hljs-string">&quot;Server exiting&quot;</span>)
+&#125;</code></pre></div>
 
 
 
@@ -666,9 +800,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、redis">
+                      <a href="/2021/02/12/goexample9/" title="golang限流器">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">docker-compose整合go-kit和mysql、redis</span>
+                        <span class="hidden-mobile">golang限流器</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -676,8 +810,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/12/goexample9/" title="golang限流器">
-                        <span class="hidden-mobile">golang限流器</span>
+                      <a href="/2021/02/10/312/" title="Docker基础与常用命令">
+                        <span class="hidden-mobile">Docker基础与常用命令</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

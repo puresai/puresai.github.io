@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.1k 字
+          2.9k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          26 分钟
+          24 分钟
         
       </span>
     
@@ -457,13 +457,129 @@
 <h2 id="MAC安装"><a href="#MAC安装" class="headerlink" title="MAC安装"></a>MAC安装</h2><blockquote>
 <p>brew install nsq<br>nsqlookupd<br>nsqd –lookupd-tcp-address=127.0.0.1:4160 –broadcast-address=127.0.0.1<br>nsqadmin –lookupd-http-address=127.0.0.1:4161</p>
 </blockquote>
-<h2 id="go-nsq"><a href="#go-nsq" class="headerlink" title="go-nsq"></a>go-nsq</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// producer</span><br><span class="hljs-keyword">package</span> nsq<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/nsqio/go-nsq&quot;</span><br>	<span class="hljs-string">&quot;github.com/spf13/cast&quot;</span><br>)<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Send</span><span class="hljs-params">(ctx context.Context, cancel context.CancelFunc, topic <span class="hljs-keyword">string</span>)</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> cancel()<br>	str := <span class="hljs-string">&quot;127.0.0.1:4150&quot;</span><br>	fmt.Println(<span class="hljs-string">&quot;address: &quot;</span>, str)<br>	producer, err := nsq.NewProducer(str, nsq.NewConfig())<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br><br>	producer.SetLogger(<span class="hljs-literal">nil</span>, <span class="hljs-number">0</span>)<br><br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++ &#123;<br>		msg := <span class="hljs-string">&quot;13sai, &quot;</span> + cast.ToString(i)<br>		fmt.Println(<span class="hljs-string">&quot;publish&quot;</span>, msg, producer.Publish(topic, []<span class="hljs-keyword">byte</span>(msg)))<br>		time.Sleep(time.Second * <span class="hljs-number">1</span>)<br>	&#125;<br><br>	&lt;-ctx.Done()<br>	producer.Stop()<br>	fmt.Println(<span class="hljs-string">&quot;producer exit&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="go-nsq"><a href="#go-nsq" class="headerlink" title="go-nsq"></a>go-nsq</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// producer</span>
+<span class="hljs-keyword">package</span> nsq
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+
+	<span class="hljs-string">&quot;github.com/nsqio/go-nsq&quot;</span>
+	<span class="hljs-string">&quot;github.com/spf13/cast&quot;</span>
+)
+
+<span class="hljs-comment">// 主函数</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Send</span><span class="hljs-params">(ctx context.Context, cancel context.CancelFunc, topic <span class="hljs-keyword">string</span>)</span></span> &#123;
+	<span class="hljs-keyword">defer</span> cancel()
+	str := <span class="hljs-string">&quot;127.0.0.1:4150&quot;</span>
+	fmt.Println(<span class="hljs-string">&quot;address: &quot;</span>, str)
+	producer, err := nsq.NewProducer(str, nsq.NewConfig())
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-built_in">panic</span>(err)
+	&#125;
+
+	producer.SetLogger(<span class="hljs-literal">nil</span>, <span class="hljs-number">0</span>)
+
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++ &#123;
+		msg := <span class="hljs-string">&quot;13sai, &quot;</span> + cast.ToString(i)
+		fmt.Println(<span class="hljs-string">&quot;publish&quot;</span>, msg, producer.Publish(topic, []<span class="hljs-keyword">byte</span>(msg)))
+		time.Sleep(time.Second * <span class="hljs-number">1</span>)
+	&#125;
+
+	&lt;-ctx.Done()
+	producer.Stop()
+	fmt.Println(<span class="hljs-string">&quot;producer exit&quot;</span>)
+&#125;</code></pre></div>
 
 
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// consumer</span><br><span class="hljs-keyword">package</span> nsq<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/nsqio/go-nsq&quot;</span><br>)<br><br><span class="hljs-comment">// 消费者</span><br><span class="hljs-keyword">type</span> Consumer <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Receive</span><span class="hljs-params">(ctx context.Context, cancel context.CancelFunc, topic <span class="hljs-keyword">string</span>)</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> cancel()<br>	<span class="hljs-comment">// address := &quot;127.0.0.1:4161&quot;</span><br><br>	channel := topic + <span class="hljs-string">&quot;-channel&quot;</span><br>	cfg := nsq.NewConfig()<br>	cfg.LookupdPollInterval = time.Second * <span class="hljs-number">2</span><br>	c, err := nsq.NewConsumer(topic, channel, cfg)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	c.SetLogger(<span class="hljs-literal">nil</span>, <span class="hljs-number">0</span>) <span class="hljs-comment">//屏蔽系统日志</span><br>	c.AddConcurrentHandlers(&amp;Consumer&#123;&#125;, <span class="hljs-number">3</span>)<br><br>	<span class="hljs-comment">//建立NSQLookupd连接</span><br>	<span class="hljs-comment">// if err := c.ConnectToNSQLookupd(address); err != nil &#123;</span><br>	<span class="hljs-comment">// 	panic(err)</span><br>	<span class="hljs-comment">// &#125;</span><br><br>	<span class="hljs-comment">//建立多个nsqd连接</span><br>	<span class="hljs-keyword">if</span> err := c.ConnectToNSQDs([]<span class="hljs-keyword">string</span>&#123;<span class="hljs-string">&quot;127.0.0.1:4150&quot;</span>&#125;); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	&lt;-ctx.Done()<br>	c.Stop()<br>	fmt.Println(<span class="hljs-string">&quot;consumer exit&quot;</span>)<br>&#125;<br><br><span class="hljs-comment">// 处理消息</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*Consumer)</span> <span class="hljs-title">HandleMessage</span><span class="hljs-params">(msg *nsq.Message)</span> <span class="hljs-title">error</span></span> &#123;<br>	fmt.Println(<span class="hljs-string">&quot;receive&quot;</span>, msg.NSQDAddress, <span class="hljs-string">&quot;message:&quot;</span>, <span class="hljs-keyword">string</span>(msg.Body))<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// consumer</span>
+<span class="hljs-keyword">package</span> nsq
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+
+	<span class="hljs-string">&quot;github.com/nsqio/go-nsq&quot;</span>
+)
+
+<span class="hljs-comment">// 消费者</span>
+<span class="hljs-keyword">type</span> Consumer <span class="hljs-keyword">struct</span>&#123;&#125;
+
+<span class="hljs-comment">// 主函数</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Receive</span><span class="hljs-params">(ctx context.Context, cancel context.CancelFunc, topic <span class="hljs-keyword">string</span>)</span></span> &#123;
+	<span class="hljs-keyword">defer</span> cancel()
+	<span class="hljs-comment">// address := &quot;127.0.0.1:4161&quot;</span>
+
+	channel := topic + <span class="hljs-string">&quot;-channel&quot;</span>
+	cfg := nsq.NewConfig()
+	cfg.LookupdPollInterval = time.Second * <span class="hljs-number">2</span>
+	c, err := nsq.NewConsumer(topic, channel, cfg)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-built_in">panic</span>(err)
+	&#125;
+	c.SetLogger(<span class="hljs-literal">nil</span>, <span class="hljs-number">0</span>) <span class="hljs-comment">//屏蔽系统日志</span>
+	c.AddConcurrentHandlers(&amp;Consumer&#123;&#125;, <span class="hljs-number">3</span>)
+
+	<span class="hljs-comment">//建立NSQLookupd连接</span>
+	<span class="hljs-comment">// if err := c.ConnectToNSQLookupd(address); err != nil &#123;</span>
+	<span class="hljs-comment">// 	panic(err)</span>
+	<span class="hljs-comment">// &#125;</span>
+
+	<span class="hljs-comment">//建立多个nsqd连接</span>
+	<span class="hljs-keyword">if</span> err := c.ConnectToNSQDs([]<span class="hljs-keyword">string</span>&#123;<span class="hljs-string">&quot;127.0.0.1:4150&quot;</span>&#125;); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-built_in">panic</span>(err)
+	&#125;
+	&lt;-ctx.Done()
+	c.Stop()
+	fmt.Println(<span class="hljs-string">&quot;consumer exit&quot;</span>)
+&#125;
+
+<span class="hljs-comment">// 处理消息</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*Consumer)</span> <span class="hljs-title">HandleMessage</span><span class="hljs-params">(msg *nsq.Message)</span> <span class="hljs-title">error</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;receive&quot;</span>, msg.NSQDAddress, <span class="hljs-string">&quot;message:&quot;</span>, <span class="hljs-keyword">string</span>(msg.Body))
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;</code></pre></div>
 
 
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// nsq_test</span><br><span class="hljs-keyword">package</span> nsq<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>	<span class="hljs-string">&quot;os/signal&quot;</span><br>	<span class="hljs-string">&quot;syscall&quot;</span><br>	<span class="hljs-string">&quot;testing&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestReceive</span><span class="hljs-params">(t *testing.T)</span></span> &#123;<br>	topic := <span class="hljs-string">&quot;sai0556&quot;</span><br>	ctx, cancel := context.WithCancel(context.Background())<br>	<span class="hljs-keyword">defer</span> cancel()<br>	<span class="hljs-keyword">go</span> Send(ctx, cancel, topic)<br>	<span class="hljs-keyword">go</span> Receive(ctx, cancel, topic)<br><br>	sig := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal)<br>	signal.Notify(sig, syscall.SIGTERM, syscall.SIGINT)<br>	t.Log(<span class="hljs-string">&quot;开始监听&quot;</span>)<br><br>	<span class="hljs-keyword">select</span> &#123;<br>	<span class="hljs-keyword">case</span> &lt;-ctx.Done():<br>		t.Log(<span class="hljs-string">&quot;ctx done&quot;</span>)<br>		<span class="hljs-keyword">return</span><br>	<span class="hljs-keyword">case</span> &lt;-sig:<br>		t.Log(<span class="hljs-string">&quot;signal exit...&quot;</span>)<br>		cancel()<br>		time.Sleep(<span class="hljs-number">2</span> * time.Second)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	<span class="hljs-comment">// send(topic)</span><br><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// nsq_test</span>
+<span class="hljs-keyword">package</span> nsq
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+	<span class="hljs-string">&quot;os/signal&quot;</span>
+	<span class="hljs-string">&quot;syscall&quot;</span>
+	<span class="hljs-string">&quot;testing&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestReceive</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+	topic := <span class="hljs-string">&quot;sai0556&quot;</span>
+	ctx, cancel := context.WithCancel(context.Background())
+	<span class="hljs-keyword">defer</span> cancel()
+	<span class="hljs-keyword">go</span> Send(ctx, cancel, topic)
+	<span class="hljs-keyword">go</span> Receive(ctx, cancel, topic)
+
+	sig := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal)
+	signal.Notify(sig, syscall.SIGTERM, syscall.SIGINT)
+	t.Log(<span class="hljs-string">&quot;开始监听&quot;</span>)
+
+	<span class="hljs-keyword">select</span> &#123;
+	<span class="hljs-keyword">case</span> &lt;-ctx.Done():
+		t.Log(<span class="hljs-string">&quot;ctx done&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	<span class="hljs-keyword">case</span> &lt;-sig:
+		t.Log(<span class="hljs-string">&quot;signal exit...&quot;</span>)
+		cancel()
+		time.Sleep(<span class="hljs-number">2</span> * time.Second)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	<span class="hljs-comment">// send(topic)</span>
+
+&#125;</code></pre></div>
 
 <p>测试走一波，</p>
 <p><img src="/images/nsq.jpg" srcset="/img/loading.gif" lazyload alt="nsq"></p>

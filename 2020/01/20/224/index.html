@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          6k 字
+          5.6k 字
         
       </span>
     
@@ -306,7 +306,7 @@
         
         
           <!-- compatible with older versions-->
-          50 分钟
+          47 分钟
         
       </span>
     
@@ -868,34 +868,247 @@
               <blockquote>
 <p>测试使用的是Laravel5.5版本。</p>
 </blockquote>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">composer</span> require tymon/jwt-auth=<span class="hljs-number">1</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">5</span><br></code></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">composer</span> require tymon/jwt-auth=<span class="hljs-number">1</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">5</span></code></pre></div>
 
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h4 id="生成配置"><a href="#生成配置" class="headerlink" title="生成配置"></a>生成配置</h4><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs taggerscript">php artisan vendor:publish --provider=&quot;Tymon<span class="hljs-symbol">\J</span>WTAuth<span class="hljs-symbol">\P</span>roviders<span class="hljs-symbol">\L</span>aravelServiceProvider&quot;<br><br>php artisan jwt:secret<br></code></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h4 id="生成配置"><a href="#生成配置" class="headerlink" title="生成配置"></a>生成配置</h4><div class="code-wrapper"><pre><code class="hljs taggerscript">php artisan vendor:publish --provider=&quot;Tymon<span class="hljs-symbol">\J</span>WTAuth<span class="hljs-symbol">\P</span>roviders<span class="hljs-symbol">\L</span>aravelServiceProvider&quot;
 
-<h4 id="auth配置"><a href="#auth配置" class="headerlink" title="auth配置"></a>auth配置</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs dart">&lt;?php<br><br><span class="hljs-keyword">return</span> [<br>	...<br><br>    <span class="hljs-string">&#x27;defaults&#x27;</span> =&gt; [<br>        <span class="hljs-string">&#x27;guard&#x27;</span> =&gt; <span class="hljs-string">&#x27;web&#x27;</span>,<br>        <span class="hljs-string">&#x27;passwords&#x27;</span> =&gt; <span class="hljs-string">&#x27;users&#x27;</span>,<br>    ],<br><br><br>    <span class="hljs-string">&#x27;guards&#x27;</span> =&gt; [<br>        <span class="hljs-string">&#x27;web&#x27;</span> =&gt; [<br>            <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;session&#x27;</span>,<br>            <span class="hljs-string">&#x27;provider&#x27;</span> =&gt; <span class="hljs-string">&#x27;users&#x27;</span>,<br>        ],<br>		<span class="hljs-comment">// 使用jwt</span><br>        <span class="hljs-string">&#x27;api&#x27;</span> =&gt; [<br>            <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;jwt&#x27;</span>,<br>            <span class="hljs-string">&#x27;provider&#x27;</span> =&gt; <span class="hljs-string">&#x27;apiUser&#x27;</span>,<br>        ],<br>    ],<br><br><br>    <span class="hljs-string">&#x27;providers&#x27;</span> =&gt; [<br>        ...<br>		<span class="hljs-comment">// 指定model</span><br>        <span class="hljs-string">&#x27;apiUser&#x27;</span> =&gt; [<br>            <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;eloquent&#x27;</span>,<br>            <span class="hljs-string">&#x27;model&#x27;</span> =&gt; App\ApiUser::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span><br><span class="hljs-class">        ],	</span><br><span class="hljs-class">    ],</span><br><span class="hljs-class">];</span><br></code></pre></td></tr></table></figure>
+php artisan jwt:secret</code></pre></div>
+
+<h4 id="auth配置"><a href="#auth配置" class="headerlink" title="auth配置"></a>auth配置</h4><div class="code-wrapper"><pre><code class="hljs dart">&lt;?php
+
+<span class="hljs-keyword">return</span> [
+	...
+
+    <span class="hljs-string">&#x27;defaults&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;guard&#x27;</span> =&gt; <span class="hljs-string">&#x27;web&#x27;</span>,
+        <span class="hljs-string">&#x27;passwords&#x27;</span> =&gt; <span class="hljs-string">&#x27;users&#x27;</span>,
+    ],
+
+
+    <span class="hljs-string">&#x27;guards&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;web&#x27;</span> =&gt; [
+            <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;session&#x27;</span>,
+            <span class="hljs-string">&#x27;provider&#x27;</span> =&gt; <span class="hljs-string">&#x27;users&#x27;</span>,
+        ],
+		<span class="hljs-comment">// 使用jwt</span>
+        <span class="hljs-string">&#x27;api&#x27;</span> =&gt; [
+            <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;jwt&#x27;</span>,
+            <span class="hljs-string">&#x27;provider&#x27;</span> =&gt; <span class="hljs-string">&#x27;apiUser&#x27;</span>,
+        ],
+    ],
+
+
+    <span class="hljs-string">&#x27;providers&#x27;</span> =&gt; [
+        ...
+		<span class="hljs-comment">// 指定model</span>
+        <span class="hljs-string">&#x27;apiUser&#x27;</span> =&gt; [
+            <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;eloquent&#x27;</span>,
+            <span class="hljs-string">&#x27;model&#x27;</span> =&gt; App\ApiUser::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span>
+<span class="hljs-class">        ],	</span>
+<span class="hljs-class">    ],</span>
+<span class="hljs-class">];</span></code></pre></div>
 
 <h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>控制器：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Api</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">ApiUser</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Controller</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Request</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">JWTAuth</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 中间件去除login和refresh</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;middleware(<span class="hljs-string">&#x27;auth:api&#x27;</span>, [<span class="hljs-string">&#x27;except&#x27;</span> =&gt; [<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;refresh&#x27;</span>]]);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Get a JWT via given credentials.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">login</span>(<span class="hljs-params">Request <span class="hljs-variable">$request</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$credentials</span> = <span class="hljs-variable">$request</span>-&gt;only(<span class="hljs-string">&#x27;phone&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>);<br><br>        <span class="hljs-keyword">if</span> (count(<span class="hljs-variable">$credentials</span>) &lt; <span class="hljs-number">2</span>) &#123;<br>            <span class="hljs-keyword">return</span> response()-&gt;json([<span class="hljs-string">&#x27;error&#x27;</span> =&gt; <span class="hljs-string">&#x27;Unauthorized&#x27;</span>], <span class="hljs-number">401</span>);<br>        &#125; <br><br>        <span class="hljs-variable">$user</span> = ApiUser::where(<span class="hljs-string">&#x27;phone&#x27;</span>, <span class="hljs-variable">$credentials</span>[<span class="hljs-string">&#x27;phone&#x27;</span>])<br>            -&gt;where(<span class="hljs-string">&#x27;password&#x27;</span>, md5(<span class="hljs-variable">$credentials</span>[<span class="hljs-string">&#x27;password&#x27;</span>]))<br>            -&gt;first();<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$user</span>) || !<span class="hljs-variable">$token</span> = JWTAuth::fromUser(<span class="hljs-variable">$user</span>)) &#123;<br>            <span class="hljs-keyword">return</span> response()-&gt;json([<span class="hljs-string">&#x27;error&#x27;</span> =&gt; <span class="hljs-string">&#x27;Unauthorized&#x27;</span>], <span class="hljs-number">401</span>);<br>        &#125;<br>        <span class="hljs-comment">// dd($token);</span><br><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;respondWithToken(<span class="hljs-variable">$token</span>);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Get the authenticated User.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">me</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> response()-&gt;json(auth(<span class="hljs-string">&#x27;api&#x27;</span>)-&gt;user());<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Log the user out (Invalidate the token).</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">logout</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        auth()-&gt;logout();<br><br>        <span class="hljs-keyword">return</span> response()-&gt;json([<span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-string">&#x27;Successfully logged out&#x27;</span>]);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Refresh a token.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">refresh</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;respondWithToken(auth(<span class="hljs-string">&#x27;api&#x27;</span>)-&gt;refresh());<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Get the token array structure.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  string $token</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">respondWithToken</span>(<span class="hljs-params"><span class="hljs-variable">$token</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> response()-&gt;json([<br>            <span class="hljs-string">&#x27;access_token&#x27;</span> =&gt; <span class="hljs-variable">$token</span>,<br>            <span class="hljs-string">&#x27;token_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;bearer&#x27;</span>,<br>            <span class="hljs-string">&#x27;expires_in&#x27;</span> =&gt; auth(<span class="hljs-string">&#x27;api&#x27;</span>)-&gt;factory()-&gt;getTTL() * <span class="hljs-number">60</span><br>        ]);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Api</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">ApiUser</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Controller</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Request</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">JWTAuth</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 中间件去除login和refresh</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;middleware(<span class="hljs-string">&#x27;auth:api&#x27;</span>, [<span class="hljs-string">&#x27;except&#x27;</span> =&gt; [<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;refresh&#x27;</span>]]);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Get a JWT via given credentials.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">login</span>(<span class="hljs-params">Request <span class="hljs-variable">$request</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$credentials</span> = <span class="hljs-variable">$request</span>-&gt;only(<span class="hljs-string">&#x27;phone&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>);
+
+        <span class="hljs-keyword">if</span> (count(<span class="hljs-variable">$credentials</span>) &lt; <span class="hljs-number">2</span>) &#123;
+            <span class="hljs-keyword">return</span> response()-&gt;json([<span class="hljs-string">&#x27;error&#x27;</span> =&gt; <span class="hljs-string">&#x27;Unauthorized&#x27;</span>], <span class="hljs-number">401</span>);
+        &#125; 
+
+        <span class="hljs-variable">$user</span> = ApiUser::where(<span class="hljs-string">&#x27;phone&#x27;</span>, <span class="hljs-variable">$credentials</span>[<span class="hljs-string">&#x27;phone&#x27;</span>])
+            -&gt;where(<span class="hljs-string">&#x27;password&#x27;</span>, md5(<span class="hljs-variable">$credentials</span>[<span class="hljs-string">&#x27;password&#x27;</span>]))
+            -&gt;first();
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$user</span>) || !<span class="hljs-variable">$token</span> = JWTAuth::fromUser(<span class="hljs-variable">$user</span>)) &#123;
+            <span class="hljs-keyword">return</span> response()-&gt;json([<span class="hljs-string">&#x27;error&#x27;</span> =&gt; <span class="hljs-string">&#x27;Unauthorized&#x27;</span>], <span class="hljs-number">401</span>);
+        &#125;
+        <span class="hljs-comment">// dd($token);</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;respondWithToken(<span class="hljs-variable">$token</span>);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Get the authenticated User.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">me</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> response()-&gt;json(auth(<span class="hljs-string">&#x27;api&#x27;</span>)-&gt;user());
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Log the user out (Invalidate the token).</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">logout</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        auth()-&gt;logout();
+
+        <span class="hljs-keyword">return</span> response()-&gt;json([<span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-string">&#x27;Successfully logged out&#x27;</span>]);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Refresh a token.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">refresh</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;respondWithToken(auth(<span class="hljs-string">&#x27;api&#x27;</span>)-&gt;refresh());
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Get the token array structure.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  string $token</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Http\JsonResponse</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">respondWithToken</span>(<span class="hljs-params"><span class="hljs-variable">$token</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> response()-&gt;json([
+            <span class="hljs-string">&#x27;access_token&#x27;</span> =&gt; <span class="hljs-variable">$token</span>,
+            <span class="hljs-string">&#x27;token_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;bearer&#x27;</span>,
+            <span class="hljs-string">&#x27;expires_in&#x27;</span> =&gt; auth(<span class="hljs-string">&#x27;api&#x27;</span>)-&gt;factory()-&gt;getTTL() * <span class="hljs-number">60</span>
+        ]);
+    &#125;
+&#125;</code></pre></div>
 
 <p>路由：</p>
 <blockquote>
 <p><strong>此处注意，我为了方便测试，使用了get方法，生产环境不建议使用get。</strong></p>
 </blockquote>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs css">// routes/api<span class="hljs-selector-class">.php</span><br><br>Route::<span class="hljs-built_in">middleware</span>(<span class="hljs-string">&#x27;api&#x27;</span>)-&gt;<span class="hljs-built_in">prefix</span>(<span class="hljs-string">&#x27;auth&#x27;</span>)-&gt;<span class="hljs-built_in">namespace</span>(<span class="hljs-string">&#x27;Api&#x27;</span>)-&gt;<span class="hljs-built_in">group</span>(function () &#123;<br>	Route::<span class="hljs-built_in">get</span>(<span class="hljs-string">&#x27;login&#x27;</span>, <span class="hljs-string">&#x27;AuthController@login&#x27;</span>);<br>	Route::<span class="hljs-built_in">post</span>(<span class="hljs-string">&#x27;logout&#x27;</span>, <span class="hljs-string">&#x27;AuthController@logout&#x27;</span>);<br>	Route::<span class="hljs-built_in">get</span>(<span class="hljs-string">&#x27;refresh&#x27;</span>, <span class="hljs-string">&#x27;AuthController@refresh&#x27;</span>);<br>	Route::<span class="hljs-built_in">get</span>(<span class="hljs-string">&#x27;me&#x27;</span>, <span class="hljs-string">&#x27;AuthController@me&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs css">// routes/api<span class="hljs-selector-class">.php</span>
+
+Route::<span class="hljs-built_in">middleware</span>(<span class="hljs-string">&#x27;api&#x27;</span>)-&gt;<span class="hljs-built_in">prefix</span>(<span class="hljs-string">&#x27;auth&#x27;</span>)-&gt;<span class="hljs-built_in">namespace</span>(<span class="hljs-string">&#x27;Api&#x27;</span>)-&gt;<span class="hljs-built_in">group</span>(function () &#123;
+	Route::<span class="hljs-built_in">get</span>(<span class="hljs-string">&#x27;login&#x27;</span>, <span class="hljs-string">&#x27;AuthController@login&#x27;</span>);
+	Route::<span class="hljs-built_in">post</span>(<span class="hljs-string">&#x27;logout&#x27;</span>, <span class="hljs-string">&#x27;AuthController@logout&#x27;</span>);
+	Route::<span class="hljs-built_in">get</span>(<span class="hljs-string">&#x27;refresh&#x27;</span>, <span class="hljs-string">&#x27;AuthController@refresh&#x27;</span>);
+	Route::<span class="hljs-built_in">get</span>(<span class="hljs-string">&#x27;me&#x27;</span>, <span class="hljs-string">&#x27;AuthController@me&#x27;</span>);
+&#125;);</code></pre></div>
 
 
 <p>测试一下:</p>
 <p><img src="https://cdn.learnku.com/uploads/images/202001/20/41489/EFqa4Najap.png!large" srcset="/img/loading.gif" lazyload alt="Laravel"><br><img src="https://cdn.learnku.com/uploads/images/202001/20/41489/5JiV5lJM5j.png!large" srcset="/img/loading.gif" lazyload alt="Laravel"><br><img src="https://cdn.learnku.com/uploads/images/202001/20/41489/bfhTMMdvVq.png!large" srcset="/img/loading.gif" lazyload alt="Laravel"></p>
 <h4 id="unauthenticated处理"><a href="#unauthenticated处理" class="headerlink" title="unauthenticated处理"></a>unauthenticated处理</h4><p>这里需要注意下，unauthenticated处理一下比较好，否则会默认跳转login登录页面。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exceptions</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Exception</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Foundation</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">Handler</span> <span class="hljs-title">as</span> <span class="hljs-title">ExceptionHandler</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Auth</span>\<span class="hljs-title">AuthenticationException</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Handler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ExceptionHandler</span></span><br><span class="hljs-class"></span>&#123;<br>    ...<br><br>    <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unauthenticated</span>(<span class="hljs-params"><span class="hljs-variable">$request</span>, AuthenticationException <span class="hljs-variable">$exception</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> response()-&gt;json([<span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-string">&#x27;Unauthenticated.&#x27;</span>], <span class="hljs-number">401</span>);<br>         <span class="hljs-comment">/*非api可以这么处理</span><br><span class="hljs-comment">        return $request-&gt;expectsJson()</span><br><span class="hljs-comment">                    ? response()-&gt;json([&#x27;message&#x27; =&gt; &#x27;Unauthenticated.&#x27;], 401)</span><br><span class="hljs-comment">                    : redirect()-&gt;guest(route(&#x27;login&#x27;));</span><br><span class="hljs-comment">                    */</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exceptions</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Exception</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Foundation</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">Handler</span> <span class="hljs-title">as</span> <span class="hljs-title">ExceptionHandler</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Auth</span>\<span class="hljs-title">AuthenticationException</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Handler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ExceptionHandler</span></span>
+<span class="hljs-class"></span>&#123;
+    ...
+
+    <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unauthenticated</span>(<span class="hljs-params"><span class="hljs-variable">$request</span>, AuthenticationException <span class="hljs-variable">$exception</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> response()-&gt;json([<span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-string">&#x27;Unauthenticated.&#x27;</span>], <span class="hljs-number">401</span>);
+         <span class="hljs-comment">/*非api可以这么处理</span>
+<span class="hljs-comment">        return $request-&gt;expectsJson()</span>
+<span class="hljs-comment">                    ? response()-&gt;json([&#x27;message&#x27; =&gt; &#x27;Unauthenticated.&#x27;], 401)</span>
+<span class="hljs-comment">                    : redirect()-&gt;guest(route(&#x27;login&#x27;));</span>
+<span class="hljs-comment">                    */</span>
+    &#125;
+&#125;</code></pre></div>
 
 <hr>
 <h4 id="加入token-refresh"><a href="#加入token-refresh" class="headerlink" title="加入token refresh"></a>加入token refresh</h4><p>加入中间件代码：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Middleware</span>;<br>  <br><span class="hljs-keyword">use</span> <span class="hljs-title">Closure</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">JWTAuth</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">JWTException</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Auth</span>\<span class="hljs-title">AuthenticationException</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">TokenExpiredException</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">HttpResponseException</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Middleware</span>\<span class="hljs-title">BaseMiddleware</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RefreshToken</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseMiddleware</span></span><br><span class="hljs-class"></span>&#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Handle an incoming request.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  \Illuminate\Http\Request  $request</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  \Closure  $next</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> mixed</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-built_in">Closure</span> <span class="hljs-variable">$next</span></span>)</span><br><span class="hljs-function">    </span>&#123;  <br>        <span class="hljs-keyword">try</span>&#123;<br>            <span class="hljs-comment">//检查请求中是否带有token 如果没有token值则抛出异常</span><br>            <span class="hljs-keyword">$this</span>-&gt;checkForToken(<span class="hljs-variable">$request</span>); <br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable">$request</span>-&gt;user = JWTAuth::parseToken()-&gt;authenticate()) &#123;       <br>                <span class="hljs-keyword">return</span> <span class="hljs-variable">$next</span>(<span class="hljs-variable">$request</span>);<br>            &#125;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AuthenticationException(<span class="hljs-string">&#x27;Unauthorized&#x27;</span>, []);<br>        &#125;<span class="hljs-keyword">catch</span> (TokenExpiredException <span class="hljs-variable">$exception</span>)&#123;<br>            <span class="hljs-comment">//返回特殊的code</span><br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> HttpResponseException(response()-&gt;json([<br>                <span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-string">&#x27;token expired&#x27;</span><br>            ]));<br>        &#125; <span class="hljs-keyword">catch</span> (\<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$exception</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AuthenticationException(<span class="hljs-string">&#x27;Unauthorized&#x27;</span>, []);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Middleware</span>;
+  
+<span class="hljs-keyword">use</span> <span class="hljs-title">Closure</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">JWTAuth</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">JWTException</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Auth</span>\<span class="hljs-title">AuthenticationException</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">TokenExpiredException</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">HttpResponseException</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Tymon</span>\<span class="hljs-title">JWTAuth</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Middleware</span>\<span class="hljs-title">BaseMiddleware</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RefreshToken</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseMiddleware</span></span>
+<span class="hljs-class"></span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Handle an incoming request.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  \Illuminate\Http\Request  $request</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  \Closure  $next</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> mixed</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-built_in">Closure</span> <span class="hljs-variable">$next</span></span>)</span>
+<span class="hljs-function">    </span>&#123;  
+        <span class="hljs-keyword">try</span>&#123;
+            <span class="hljs-comment">//检查请求中是否带有token 如果没有token值则抛出异常</span>
+            <span class="hljs-keyword">$this</span>-&gt;checkForToken(<span class="hljs-variable">$request</span>); 
+            <span class="hljs-keyword">if</span> (<span class="hljs-variable">$request</span>-&gt;user = JWTAuth::parseToken()-&gt;authenticate()) &#123;       
+                <span class="hljs-keyword">return</span> <span class="hljs-variable">$next</span>(<span class="hljs-variable">$request</span>);
+            &#125;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AuthenticationException(<span class="hljs-string">&#x27;Unauthorized&#x27;</span>, []);
+        &#125;<span class="hljs-keyword">catch</span> (TokenExpiredException <span class="hljs-variable">$exception</span>)&#123;
+            <span class="hljs-comment">//返回特殊的code</span>
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> HttpResponseException(response()-&gt;json([
+                <span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-string">&#x27;token expired&#x27;</span>
+            ]));
+        &#125; <span class="hljs-keyword">catch</span> (\<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$exception</span>) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> AuthenticationException(<span class="hljs-string">&#x27;Unauthorized&#x27;</span>, []);
+        &#125;
+    &#125;
+&#125;</code></pre></div>
 <p>注册：</p>
-<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs moonscript">&lt;?php<br><br>namespace App\Http;<br><br>use Illuminate\Foundation\Http\Kernel as HttpKernel;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Kernel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpKernel</span></span><br>&#123;<br>    ...<br>    protected $routeMiddleware = [<br>        <span class="hljs-string">&#x27;token.refresh&#x27;</span> =&gt; \App\Http\Middleware\RefreshToken::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span><br>        <span class="hljs-string">&#x27;auth.basic&#x27;</span> =&gt; \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span><br>        <span class="hljs-string">&#x27;bindings&#x27;</span> =&gt; \Illuminate\Routing\Middleware\SubstituteBindings::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span><br>        <span class="hljs-string">&#x27;can&#x27;</span> =&gt; \Illuminate\Auth\Middleware\Authorize::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span><br>        <span class="hljs-string">&#x27;guest&#x27;</span> =&gt; \App\Http\Middleware\RedirectIfAuthenticated::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span><br>        <span class="hljs-string">&#x27;throttle&#x27;</span> =&gt; \Illuminate\Routing\Middleware\ThrottleRequests::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span><br>    ];<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs moonscript">&lt;?php
+
+namespace App\Http;
+
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Kernel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpKernel</span></span>
+&#123;
+    ...
+    protected $routeMiddleware = [
+        <span class="hljs-string">&#x27;token.refresh&#x27;</span> =&gt; \App\Http\Middleware\RefreshToken::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span>
+        <span class="hljs-string">&#x27;auth.basic&#x27;</span> =&gt; \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span>
+        <span class="hljs-string">&#x27;bindings&#x27;</span> =&gt; \Illuminate\Routing\Middleware\SubstituteBindings::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span>
+        <span class="hljs-string">&#x27;can&#x27;</span> =&gt; \Illuminate\Auth\Middleware\Authorize::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span>
+        <span class="hljs-string">&#x27;guest&#x27;</span> =&gt; \App\Http\Middleware\RedirectIfAuthenticated::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span>
+        <span class="hljs-string">&#x27;throttle&#x27;</span> =&gt; \Illuminate\Routing\Middleware\ThrottleRequests::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span>
+    ];
+&#125;</code></pre></div>
 <p>相应的控制器构造函数修改：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;middleware(<span class="hljs-string">&#x27;token.refresh&#x27;</span>, [<span class="hljs-string">&#x27;except&#x27;</span> =&gt; [<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;refresh&#x27;</span>]]);<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;middleware(<span class="hljs-string">&#x27;token.refresh&#x27;</span>, [<span class="hljs-string">&#x27;except&#x27;</span> =&gt; [<span class="hljs-string">&#x27;login&#x27;</span>,<span class="hljs-string">&#x27;refresh&#x27;</span>]]);
+&#125;</code></pre></div>
 <p>把token时间设置成1分钟，测试一下。</p>
 <p><img src="https://cdn.learnku.com/uploads/images/202001/20/41489/aLxjMvw3xc.png!large" srcset="/img/loading.gif" lazyload alt="Laravel 配合 jwt 使用"></p>
 <p>可以根据api返回，去调用刷新接口。</p>

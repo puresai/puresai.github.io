@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.9k 字
+          2.7k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          25 分钟
+          23 分钟
         
       </span>
     
@@ -427,7 +427,7 @@
 <p>yum -y install make gcc gcc-c++ kernel-devel m4 ncurses-devel openssl-devel unixODBC-devel socat</p>
 </blockquote>
 <p>安装erlang，务必在下面的地址下载，之前在官网下载，安装总是有问题，浪费了大把时间。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>dl.bintray.com<span class="hljs-regexp">/rabbitmq/</span>rpm<span class="hljs-regexp">/erlang/</span><span class="hljs-number">20</span><span class="hljs-regexp">/el/</span><span class="hljs-number">7</span>/<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>dl.bintray.com<span class="hljs-regexp">/rabbitmq/</span>rpm<span class="hljs-regexp">/erlang/</span><span class="hljs-number">20</span><span class="hljs-regexp">/el/</span><span class="hljs-number">7</span>/</code></pre></div>
 
 <p>官网下载rabiitmq，rpm安装</p>
 <blockquote>
@@ -460,10 +460,114 @@
 </blockquote>
 <p>重启rabbitmq服务。</p>
 <h3 id="4-简单实例"><a href="#4-简单实例" class="headerlink" title="4. 简单实例"></a>4. 简单实例</h3><p>生产者：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Created by PhpStorm.</span><br><span class="hljs-comment"> * User: 13sai</span><br><span class="hljs-comment"> * Date: 2018/11/5</span><br><span class="hljs-comment"> * Time: 10:39</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-comment">// 配置信息</span><br><span class="hljs-variable">$config</span> = [<br>    host =&gt; localhost,<br>    port =&gt; <span class="hljs-number">5672</span>,<br>    login =&gt; sai,<br>    password =&gt; <span class="hljs-number">123456</span>,<br>    vhost=&gt;/<br>];<br><br><span class="hljs-variable">$exName</span> = changes; <span class="hljs-comment">//交换机名</span><br><span class="hljs-variable">$route</span> = key; <span class="hljs-comment">//路由key</span><br><br><span class="hljs-comment">// 创建连接和channel</span><br><span class="hljs-variable">$conn</span> = <span class="hljs-keyword">new</span> AMQPConnection(<span class="hljs-variable">$config</span>);<br><span class="hljs-keyword">if</span> (!<span class="hljs-variable">$conn</span>-&gt;connect()) &#123;<br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;连接失败&quot;</span>);<br>&#125;<br><span class="hljs-variable">$channel</span> = <span class="hljs-keyword">new</span> AMQPChannel(<span class="hljs-variable">$conn</span>);<br><br><span class="hljs-comment">//消息内容</span><br><span class="hljs-variable">$message</span> = <span class="hljs-string">&quot;消息测试&quot;</span>;<br><br><span class="hljs-comment">//创建交换机</span><br><span class="hljs-variable">$ex</span> = <span class="hljs-keyword">new</span> AMQPExchange(<span class="hljs-variable">$channel</span>);<br><span class="hljs-variable">$ex</span>-&gt;setName(<span class="hljs-variable">$exName</span>);<br><br><span class="hljs-comment">//发送消息，注意持久化也要设置[delivery_mode =&gt; AMQP_DURABLE]</span><br><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$i</span>&lt;<span class="hljs-number">5</span>; <span class="hljs-variable">$i</span>++)&#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Send Message:&quot;</span>.<span class="hljs-variable">$ex</span>-&gt;publish(<span class="hljs-variable">$i</span>.:.<span class="hljs-variable">$message</span>, <span class="hljs-variable">$route</span>, AMQP_DURABLE, [delivery_mode =&gt; AMQP_DURABLE]).<span class="hljs-string">&quot;</span><br><span class="hljs-string">&quot;</span>;<br>&#125;<br><br><span class="hljs-variable">$conn</span>-&gt;disconnect();<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Created by PhpStorm.</span>
+<span class="hljs-comment"> * User: 13sai</span>
+<span class="hljs-comment"> * Date: 2018/11/5</span>
+<span class="hljs-comment"> * Time: 10:39</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-comment">// 配置信息</span>
+<span class="hljs-variable">$config</span> = [
+    host =&gt; localhost,
+    port =&gt; <span class="hljs-number">5672</span>,
+    login =&gt; sai,
+    password =&gt; <span class="hljs-number">123456</span>,
+    vhost=&gt;/
+];
+
+<span class="hljs-variable">$exName</span> = changes; <span class="hljs-comment">//交换机名</span>
+<span class="hljs-variable">$route</span> = key; <span class="hljs-comment">//路由key</span>
+
+<span class="hljs-comment">// 创建连接和channel</span>
+<span class="hljs-variable">$conn</span> = <span class="hljs-keyword">new</span> AMQPConnection(<span class="hljs-variable">$config</span>);
+<span class="hljs-keyword">if</span> (!<span class="hljs-variable">$conn</span>-&gt;connect()) &#123;
+    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;连接失败&quot;</span>);
+&#125;
+<span class="hljs-variable">$channel</span> = <span class="hljs-keyword">new</span> AMQPChannel(<span class="hljs-variable">$conn</span>);
+
+<span class="hljs-comment">//消息内容</span>
+<span class="hljs-variable">$message</span> = <span class="hljs-string">&quot;消息测试&quot;</span>;
+
+<span class="hljs-comment">//创建交换机</span>
+<span class="hljs-variable">$ex</span> = <span class="hljs-keyword">new</span> AMQPExchange(<span class="hljs-variable">$channel</span>);
+<span class="hljs-variable">$ex</span>-&gt;setName(<span class="hljs-variable">$exName</span>);
+
+<span class="hljs-comment">//发送消息，注意持久化也要设置[delivery_mode =&gt; AMQP_DURABLE]</span>
+<span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$i</span>&lt;<span class="hljs-number">5</span>; <span class="hljs-variable">$i</span>++)&#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Send Message:&quot;</span>.<span class="hljs-variable">$ex</span>-&gt;publish(<span class="hljs-variable">$i</span>.:.<span class="hljs-variable">$message</span>, <span class="hljs-variable">$route</span>, AMQP_DURABLE, [delivery_mode =&gt; AMQP_DURABLE]).<span class="hljs-string">&quot;</span>
+<span class="hljs-string">&quot;</span>;
+&#125;
+
+<span class="hljs-variable">$conn</span>-&gt;disconnect();</code></pre></div>
 
 <p>消费者：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Created by PhpStorm.</span><br><span class="hljs-comment"> * User: 13sai</span><br><span class="hljs-comment"> * Date: 2018/11/5</span><br><span class="hljs-comment"> * Time: 10:39</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-variable">$config</span> = [<br>    host =&gt; localhost,<br>    port =&gt; <span class="hljs-number">5672</span>,<br>    login =&gt; sai,<br>    password =&gt; <span class="hljs-number">123456</span>,<br>    vhost=&gt;/<br>];<br><br><span class="hljs-variable">$exName</span> = changes; <span class="hljs-comment">//交换机名</span><br><span class="hljs-variable">$queueMame</span> = queue1; <span class="hljs-comment">//队列名</span><br><span class="hljs-variable">$route</span> = key; <span class="hljs-comment">//路由key</span><br><br><span class="hljs-comment">// 创建连接和channel</span><br><span class="hljs-variable">$conn</span> = <span class="hljs-keyword">new</span> AMQPConnection(<span class="hljs-variable">$config</span>);<br><span class="hljs-keyword">if</span> (!<span class="hljs-variable">$conn</span>-&gt;connect()) &#123;<br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;连接失败&quot;</span>);<br>&#125;<br><span class="hljs-variable">$channel</span> = <span class="hljs-keyword">new</span> AMQPChannel(<span class="hljs-variable">$conn</span>);<br><br><span class="hljs-comment">// 创建交换机</span><br><span class="hljs-variable">$ex</span> = <span class="hljs-keyword">new</span> AMQPExchange(<span class="hljs-variable">$channel</span>);<br><span class="hljs-variable">$ex</span>-&gt;setName(<span class="hljs-variable">$exName</span>);<br><span class="hljs-variable">$ex</span>-&gt;setType(AMQP_EX_TYPE_DIRECT); <span class="hljs-comment">//direct类型</span><br><span class="hljs-variable">$ex</span>-&gt;setFlags(AMQP_DURABLE); <span class="hljs-comment">//持久化，很重要</span><br><br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Exchange Status:&quot;</span>.<span class="hljs-variable">$ex</span>-&gt;declare().<span class="hljs-string">&quot;</span><br><span class="hljs-string">&quot;</span>;<br><br><span class="hljs-comment">// 创建队列</span><br><span class="hljs-variable">$queue</span> = <span class="hljs-keyword">new</span> AMQPQueue(<span class="hljs-variable">$channel</span>);<br><span class="hljs-variable">$queue</span>-&gt;setName(<span class="hljs-variable">$queueMame</span>);<br><span class="hljs-variable">$queue</span>-&gt;setFlags(AMQP_DURABLE); <span class="hljs-comment">//持久化</span><br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Message Total:&quot;</span>.<span class="hljs-variable">$queue</span>-&gt;declare().<span class="hljs-string">&quot;</span><br><span class="hljs-string">&quot;</span>;<br><br><span class="hljs-comment">//绑定交换机与队列，并指定路由键</span><br><span class="hljs-keyword">echo</span> Queue Bind: .<span class="hljs-variable">$queue</span>-&gt;bind(<span class="hljs-variable">$exName</span>, <span class="hljs-variable">$route</span>).<span class="hljs-string">&quot;</span><br><span class="hljs-string">&quot;</span>;<br><br><span class="hljs-comment">//阻塞模式接收消息</span><br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Message:</span><br><span class="hljs-string">&quot;</span>;<br><span class="hljs-keyword">while</span>(<span class="hljs-literal">True</span>)&#123;<br>    <span class="hljs-variable">$queue</span>-&gt;consume(processMessage);<br>&#125;<br><span class="hljs-variable">$conn</span>-&gt;disconnect();<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 消费回调函数</span><br><span class="hljs-comment"> * 处理消息</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processMessage</span>(<span class="hljs-params"><span class="hljs-variable">$envelope</span>, <span class="hljs-variable">$queue</span></span>) </span>&#123;<br>    <span class="hljs-variable">$msg</span> = <span class="hljs-variable">$envelope</span>-&gt;getBody();<br>    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$msg</span>.<span class="hljs-string">&quot;</span><br><span class="hljs-string">&quot;</span>; <span class="hljs-comment">//处理消息</span><br>    <span class="hljs-variable">$queue</span>-&gt;ack(<span class="hljs-variable">$envelope</span>-&gt;getDeliveryTag()); <span class="hljs-comment">//手动发送ACK应答</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Created by PhpStorm.</span>
+<span class="hljs-comment"> * User: 13sai</span>
+<span class="hljs-comment"> * Date: 2018/11/5</span>
+<span class="hljs-comment"> * Time: 10:39</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-variable">$config</span> = [
+    host =&gt; localhost,
+    port =&gt; <span class="hljs-number">5672</span>,
+    login =&gt; sai,
+    password =&gt; <span class="hljs-number">123456</span>,
+    vhost=&gt;/
+];
+
+<span class="hljs-variable">$exName</span> = changes; <span class="hljs-comment">//交换机名</span>
+<span class="hljs-variable">$queueMame</span> = queue1; <span class="hljs-comment">//队列名</span>
+<span class="hljs-variable">$route</span> = key; <span class="hljs-comment">//路由key</span>
+
+<span class="hljs-comment">// 创建连接和channel</span>
+<span class="hljs-variable">$conn</span> = <span class="hljs-keyword">new</span> AMQPConnection(<span class="hljs-variable">$config</span>);
+<span class="hljs-keyword">if</span> (!<span class="hljs-variable">$conn</span>-&gt;connect()) &#123;
+    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;连接失败&quot;</span>);
+&#125;
+<span class="hljs-variable">$channel</span> = <span class="hljs-keyword">new</span> AMQPChannel(<span class="hljs-variable">$conn</span>);
+
+<span class="hljs-comment">// 创建交换机</span>
+<span class="hljs-variable">$ex</span> = <span class="hljs-keyword">new</span> AMQPExchange(<span class="hljs-variable">$channel</span>);
+<span class="hljs-variable">$ex</span>-&gt;setName(<span class="hljs-variable">$exName</span>);
+<span class="hljs-variable">$ex</span>-&gt;setType(AMQP_EX_TYPE_DIRECT); <span class="hljs-comment">//direct类型</span>
+<span class="hljs-variable">$ex</span>-&gt;setFlags(AMQP_DURABLE); <span class="hljs-comment">//持久化，很重要</span>
+
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Exchange Status:&quot;</span>.<span class="hljs-variable">$ex</span>-&gt;declare().<span class="hljs-string">&quot;</span>
+<span class="hljs-string">&quot;</span>;
+
+<span class="hljs-comment">// 创建队列</span>
+<span class="hljs-variable">$queue</span> = <span class="hljs-keyword">new</span> AMQPQueue(<span class="hljs-variable">$channel</span>);
+<span class="hljs-variable">$queue</span>-&gt;setName(<span class="hljs-variable">$queueMame</span>);
+<span class="hljs-variable">$queue</span>-&gt;setFlags(AMQP_DURABLE); <span class="hljs-comment">//持久化</span>
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Message Total:&quot;</span>.<span class="hljs-variable">$queue</span>-&gt;declare().<span class="hljs-string">&quot;</span>
+<span class="hljs-string">&quot;</span>;
+
+<span class="hljs-comment">//绑定交换机与队列，并指定路由键</span>
+<span class="hljs-keyword">echo</span> Queue Bind: .<span class="hljs-variable">$queue</span>-&gt;bind(<span class="hljs-variable">$exName</span>, <span class="hljs-variable">$route</span>).<span class="hljs-string">&quot;</span>
+<span class="hljs-string">&quot;</span>;
+
+<span class="hljs-comment">//阻塞模式接收消息</span>
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Message:</span>
+<span class="hljs-string">&quot;</span>;
+<span class="hljs-keyword">while</span>(<span class="hljs-literal">True</span>)&#123;
+    <span class="hljs-variable">$queue</span>-&gt;consume(processMessage);
+&#125;
+<span class="hljs-variable">$conn</span>-&gt;disconnect();
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 消费回调函数</span>
+<span class="hljs-comment"> * 处理消息</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processMessage</span>(<span class="hljs-params"><span class="hljs-variable">$envelope</span>, <span class="hljs-variable">$queue</span></span>) </span>&#123;
+    <span class="hljs-variable">$msg</span> = <span class="hljs-variable">$envelope</span>-&gt;getBody();
+    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$msg</span>.<span class="hljs-string">&quot;</span>
+<span class="hljs-string">&quot;</span>; <span class="hljs-comment">//处理消息</span>
+    <span class="hljs-variable">$queue</span>-&gt;ack(<span class="hljs-variable">$envelope</span>-&gt;getDeliveryTag()); <span class="hljs-comment">//手动发送ACK应答</span>
+&#125;</code></pre></div>
 
 <p>花了些时间，不过弄出来还是感觉不错的。</p>
 

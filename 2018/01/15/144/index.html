@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          701 字
+          686 字
         
       </span>
     
@@ -487,16 +487,27 @@
 <p>软链接： 保存了其代表的文件的绝对路径，是另外一种文件，在硬盘上有独立的区块，访问时替换自身路径。</p>
 </blockquote>
 <p>具体区别可看这篇文章：<br>``<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/dde6a01c4094">https://www.jianshu.com/p/dde6a01c4094</a></p>
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br>## Linux创建命令<br><br>实例：<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs clean">
+## Linux创建命令
+
+实例：</code></pre></div>
 <p>ln -s /home/test /testlink</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css">&gt; ln -s <span class="hljs-selector-tag">a</span> <span class="hljs-selector-tag">b</span> 中的 <span class="hljs-selector-tag">a</span> 就是源文件，<span class="hljs-selector-tag">b</span>是链接文件名,其作用是当进入<span class="hljs-selector-tag">b</span>目录，实际上是链接进入了<span class="hljs-selector-tag">a</span>目录<br><br>如上面的示例，当我们执行命令 ```cd /testlink/```的时候 实际上是进入了 ```/home/test/```<br><br>值得注意的是执行命令的时候,应该是<span class="hljs-selector-tag">a</span>目录已经建立，目录<span class="hljs-selector-tag">b</span>没有建立。我最开始操作的是也把<span class="hljs-selector-tag">b</span>目录给建立了，结果就不对了<br><br>删除软链接：<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs css">&gt; ln -s <span class="hljs-selector-tag">a</span> <span class="hljs-selector-tag">b</span> 中的 <span class="hljs-selector-tag">a</span> 就是源文件，<span class="hljs-selector-tag">b</span>是链接文件名,其作用是当进入<span class="hljs-selector-tag">b</span>目录，实际上是链接进入了<span class="hljs-selector-tag">a</span>目录
+
+如上面的示例，当我们执行命令 ```cd /testlink/```的时候 实际上是进入了 ```/home/test/```
+
+值得注意的是执行命令的时候,应该是<span class="hljs-selector-tag">a</span>目录已经建立，目录<span class="hljs-selector-tag">b</span>没有建立。我最开始操作的是也把<span class="hljs-selector-tag">b</span>目录给建立了，结果就不对了
+
+删除软链接：</code></pre></div>
 <p>rm -rf b 注意不是rm -rf b/</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs"><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs"></code></pre></div>
 <p>ln a b 是建立硬链接</p>
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br>## window创建命令<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs clean">
+## window创建命令
+</code></pre></div>
 <p>MKLINK [[/D] | [/H] | [/J]] Link Target<br>        /D      创建目录符号链接。默认为文件<br>                符号链接。<br>        /H      创建硬链接，而不是符号链接。<br>        /J      创建目录联接。<br>        Link    指定新的符号链接名称。<br>        Target  指定新链接引用的路径<br>                (相对或绝对)。</p>
-<pre><code class="hljs">
-</code></pre>
+<div class="code-wrapper"><pre><code class="hljs">
+</code></pre></div>
 
               
             </div>

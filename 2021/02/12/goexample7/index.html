@@ -295,7 +295,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.7k 字
+          4.4k 字
         
       </span>
     
@@ -307,7 +307,7 @@
         
         
           <!-- compatible with older versions-->
-          40 分钟
+          37 分钟
         
       </span>
     
@@ -452,19 +452,19 @@
     
       
       
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">goruntine和channel</span>
+          <span class="category-post">golang限流器</span>
         </a>
       
     
       
       
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">golang限流器</span>
+          <span class="category-post">goruntine和channel</span>
         </a>
       
     
@@ -493,11 +493,134 @@
               
               <p>专栏之前有使用go-kit、gorm、go-redis，所以部分内容就忽略。</p>
 <h2 id="定义model"><a href="#定义model" class="headerlink" title="定义model"></a>定义model</h2><p>主要实现SelectByEmail（查找）和Save（新建）两个方法：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> model<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;time&quot;</span><br><br><span class="hljs-keyword">type</span> UserEntity <span class="hljs-keyword">struct</span> &#123;<br>	ID        <span class="hljs-keyword">int64</span><br>	Username  <span class="hljs-keyword">string</span><br>	Password  <span class="hljs-keyword">string</span><br>	Email     <span class="hljs-keyword">string</span><br>	CreatedAt time.Time<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(UserEntity)</span> <span class="hljs-title">TableName</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;user&quot;</span><br>&#125;<br><br><span class="hljs-keyword">type</span> UserDao <span class="hljs-keyword">interface</span> &#123;<br>	SelectByEmail(email <span class="hljs-keyword">string</span>) (*UserEntity, error)<br>	Save(user *UserEntity) error<br>&#125;<br><br><span class="hljs-keyword">type</span> UserDaoImpl <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *UserDaoImpl)</span> <span class="hljs-title">SelectByEmail</span><span class="hljs-params">(email <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(*UserEntity, error)</span></span> &#123;<br>	user := &amp;UserEntity&#123;&#125;<br>	err := db.Where(<span class="hljs-string">&quot;email = ?&quot;</span>, email).First(user).Error<br>	<span class="hljs-keyword">return</span> user, err<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *UserDaoImpl)</span> <span class="hljs-title">Save</span><span class="hljs-params">(user *UserEntity)</span> <span class="hljs-title">error</span></span> &#123;<br>	<span class="hljs-keyword">return</span> db.Create(user).Error<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> model
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;time&quot;</span>
+
+<span class="hljs-keyword">type</span> UserEntity <span class="hljs-keyword">struct</span> &#123;
+	ID        <span class="hljs-keyword">int64</span>
+	Username  <span class="hljs-keyword">string</span>
+	Password  <span class="hljs-keyword">string</span>
+	Email     <span class="hljs-keyword">string</span>
+	CreatedAt time.Time
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(UserEntity)</span> <span class="hljs-title">TableName</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;user&quot;</span>
+&#125;
+
+<span class="hljs-keyword">type</span> UserDao <span class="hljs-keyword">interface</span> &#123;
+	SelectByEmail(email <span class="hljs-keyword">string</span>) (*UserEntity, error)
+	Save(user *UserEntity) error
+&#125;
+
+<span class="hljs-keyword">type</span> UserDaoImpl <span class="hljs-keyword">struct</span>&#123;&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *UserDaoImpl)</span> <span class="hljs-title">SelectByEmail</span><span class="hljs-params">(email <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(*UserEntity, error)</span></span> &#123;
+	user := &amp;UserEntity&#123;&#125;
+	err := db.Where(<span class="hljs-string">&quot;email = ?&quot;</span>, email).First(user).Error
+	<span class="hljs-keyword">return</span> user, err
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *UserDaoImpl)</span> <span class="hljs-title">Save</span><span class="hljs-params">(user *UserEntity)</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">return</span> db.Create(user).Error
+&#125;</code></pre></div>
 
 
 
-<h2 id="业务service"><a href="#业务service" class="headerlink" title="业务service"></a>业务service</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> service<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;demo7-docker-compose/model&quot;</span><br>	<span class="hljs-string">&quot;errors&quot;</span><br>	<span class="hljs-string">&quot;log&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/jinzhu/gorm&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> UserInfoDTO <span class="hljs-keyword">struct</span> &#123;<br>	ID       <span class="hljs-keyword">int64</span>  <span class="hljs-string">`json:&quot;id&quot;`</span><br>	Username <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;username&quot;`</span><br>	Email    <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;email&quot;`</span><br>&#125;<br><br><span class="hljs-keyword">var</span> (<br>	ErrUserExisted = errors.New(<span class="hljs-string">&quot;user is existed&quot;</span>)<br>	ErrPassword    = errors.New(<span class="hljs-string">&quot;email and password are not match&quot;</span>)<br>	ErrRegistering = errors.New(<span class="hljs-string">&quot;email is registering&quot;</span>)<br>)<br><br><span class="hljs-keyword">type</span> RegisterUser <span class="hljs-keyword">struct</span> &#123;<br>	Username <span class="hljs-keyword">string</span><br>	Password <span class="hljs-keyword">string</span><br>	Email    <span class="hljs-keyword">string</span><br>&#125;<br><br><span class="hljs-keyword">type</span> UserService <span class="hljs-keyword">interface</span> &#123;<br>	Login(ctx context.Context, email, pass <span class="hljs-keyword">string</span>) (*UserInfoDTO, error)<br>	Register(ctx context.Context, user *RegisterUser) (*UserInfoDTO, error)<br>&#125;<br><br><span class="hljs-keyword">type</span> UserServiceImpl <span class="hljs-keyword">struct</span> &#123;<br>	userDao model.UserDao<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeUserServiceImpl</span><span class="hljs-params">(userDao model.UserDao)</span> <span class="hljs-title">UserService</span></span> &#123;<br>	<span class="hljs-keyword">return</span> &amp;UserServiceImpl&#123;<br>		userDao,<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(userService *UserServiceImpl)</span> <span class="hljs-title">Login</span><span class="hljs-params">(ctx context.Context, email, password <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(*UserInfoDTO, error)</span></span> &#123;<br>	user, err := userService.userDao.SelectByEmail(email)<br>	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">if</span> user.Password == password &#123;<br>			<span class="hljs-keyword">return</span> &amp;UserInfoDTO&#123;<br>				ID:       user.ID,<br>				Username: user.Username,<br>				Email:    user.Email,<br>			&#125;, <span class="hljs-literal">nil</span><br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, ErrPassword<br>		&#125;<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		log.Printf(<span class="hljs-string">&quot;err : %s&quot;</span>, err)<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(userService UserServiceImpl)</span> <span class="hljs-title">Register</span><span class="hljs-params">(ctx context.Context, user *RegisterUser)</span> <span class="hljs-params">(*UserInfoDTO, error)</span></span> &#123;<br>	ret := model.RedisClient.SetNX(user.Email, <span class="hljs-number">1</span>, time.Duration(<span class="hljs-number">5</span>)*time.Second)<br>	<span class="hljs-keyword">if</span> ret.Val() == <span class="hljs-literal">false</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, ErrRegistering<br>	&#125;<br>	<span class="hljs-keyword">defer</span> model.RedisClient.Del(user.Email)<br><br>	existUser, err := userService.userDao.SelectByEmail(user.Email)<br><br>	<span class="hljs-keyword">if</span> (err == <span class="hljs-literal">nil</span> &amp;&amp; existUser == <span class="hljs-literal">nil</span>) || err == gorm.ErrRecordNotFound &#123;<br>		newUser := &amp;model.UserEntity&#123;<br>			Username: user.Username,<br>			Password: user.Password,<br>			Email:    user.Email,<br>		&#125;<br>		err = userService.userDao.Save(newUser)<br>		<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;<br>			<span class="hljs-keyword">return</span> &amp;UserInfoDTO&#123;<br>				ID:       newUser.ID,<br>				Username: newUser.Username,<br>				Email:    newUser.Email,<br>			&#125;, <span class="hljs-literal">nil</span><br>		&#125;<br>	&#125;<br>	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;<br>		err = ErrUserExisted<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="业务service"><a href="#业务service" class="headerlink" title="业务service"></a>业务service</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> service
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;demo7-docker-compose/model&quot;</span>
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;log&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+
+	<span class="hljs-string">&quot;github.com/jinzhu/gorm&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> UserInfoDTO <span class="hljs-keyword">struct</span> &#123;
+	ID       <span class="hljs-keyword">int64</span>  <span class="hljs-string">`json:&quot;id&quot;`</span>
+	Username <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;username&quot;`</span>
+	Email    <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;email&quot;`</span>
+&#125;
+
+<span class="hljs-keyword">var</span> (
+	ErrUserExisted = errors.New(<span class="hljs-string">&quot;user is existed&quot;</span>)
+	ErrPassword    = errors.New(<span class="hljs-string">&quot;email and password are not match&quot;</span>)
+	ErrRegistering = errors.New(<span class="hljs-string">&quot;email is registering&quot;</span>)
+)
+
+<span class="hljs-keyword">type</span> RegisterUser <span class="hljs-keyword">struct</span> &#123;
+	Username <span class="hljs-keyword">string</span>
+	Password <span class="hljs-keyword">string</span>
+	Email    <span class="hljs-keyword">string</span>
+&#125;
+
+<span class="hljs-keyword">type</span> UserService <span class="hljs-keyword">interface</span> &#123;
+	Login(ctx context.Context, email, pass <span class="hljs-keyword">string</span>) (*UserInfoDTO, error)
+	Register(ctx context.Context, user *RegisterUser) (*UserInfoDTO, error)
+&#125;
+
+<span class="hljs-keyword">type</span> UserServiceImpl <span class="hljs-keyword">struct</span> &#123;
+	userDao model.UserDao
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeUserServiceImpl</span><span class="hljs-params">(userDao model.UserDao)</span> <span class="hljs-title">UserService</span></span> &#123;
+	<span class="hljs-keyword">return</span> &amp;UserServiceImpl&#123;
+		userDao,
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(userService *UserServiceImpl)</span> <span class="hljs-title">Login</span><span class="hljs-params">(ctx context.Context, email, password <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(*UserInfoDTO, error)</span></span> &#123;
+	user, err := userService.userDao.SelectByEmail(email)
+	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">if</span> user.Password == password &#123;
+			<span class="hljs-keyword">return</span> &amp;UserInfoDTO&#123;
+				ID:       user.ID,
+				Username: user.Username,
+				Email:    user.Email,
+			&#125;, <span class="hljs-literal">nil</span>
+		&#125; <span class="hljs-keyword">else</span> &#123;
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, ErrPassword
+		&#125;
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		log.Printf(<span class="hljs-string">&quot;err : %s&quot;</span>, err)
+	&#125;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(userService UserServiceImpl)</span> <span class="hljs-title">Register</span><span class="hljs-params">(ctx context.Context, user *RegisterUser)</span> <span class="hljs-params">(*UserInfoDTO, error)</span></span> &#123;
+	ret := model.RedisClient.SetNX(user.Email, <span class="hljs-number">1</span>, time.Duration(<span class="hljs-number">5</span>)*time.Second)
+	<span class="hljs-keyword">if</span> ret.Val() == <span class="hljs-literal">false</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, ErrRegistering
+	&#125;
+	<span class="hljs-keyword">defer</span> model.RedisClient.Del(user.Email)
+
+	existUser, err := userService.userDao.SelectByEmail(user.Email)
+
+	<span class="hljs-keyword">if</span> (err == <span class="hljs-literal">nil</span> &amp;&amp; existUser == <span class="hljs-literal">nil</span>) || err == gorm.ErrRecordNotFound &#123;
+		newUser := &amp;model.UserEntity&#123;
+			Username: user.Username,
+			Password: user.Password,
+			Email:    user.Email,
+		&#125;
+		err = userService.userDao.Save(newUser)
+		<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">return</span> &amp;UserInfoDTO&#123;
+				ID:       newUser.ID,
+				Username: newUser.Username,
+				Email:    newUser.Email,
+			&#125;, <span class="hljs-literal">nil</span>
+		&#125;
+	&#125;
+	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
+		err = ErrUserExisted
+	&#125;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err
+
+&#125;</code></pre></div>
 
 
 
@@ -505,28 +628,37 @@
 <blockquote>
 <p><strong>SET key value [EX seconds] [PX milliseconds] [NX|XX]</strong></p>
 </blockquote>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">       ret := model.RedisClient.SetNX(user.Email, 1, time.Duration(5)*time.Second)<br>if ret.Val() == false &#123;<br>	return nil, ErrRegistering<br>&#125;<br>defer model.RedisClient.Del(user.Email)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">       ret := model.RedisClient.SetNX(user.Email, 1, time.Duration(5)*time.Second)
+if ret.Val() == false &#123;
+	return nil, ErrRegistering
+&#125;
+defer model.RedisClient.Del(user.Email)</code></pre></div>
 
 
 
 <p>对于endpoint和transport，就与之前的没有太大差别了，我们这里就暂时略去，有兴趣可点击文章最后的源码查看。</p>
 <h2 id="mysql和redis容器"><a href="#mysql和redis容器" class="headerlink" title="mysql和redis容器"></a>mysql和redis容器</h2><p>mysql的Dockerfile：</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs docker"><span class="hljs-keyword">FROM</span> mysql:<span class="hljs-number">5.7</span> <br><span class="hljs-keyword">WORKDIR</span><span class="bash"> /docker-entrypoint-initdb.d </span><br><span class="hljs-keyword">ENV</span> LANG=C.UTF-<span class="hljs-number">8</span><br><span class="hljs-keyword">COPY</span><span class="bash"> user.sql .</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs docker"><span class="hljs-keyword">FROM</span> mysql:<span class="hljs-number">5.7</span> 
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /docker-entrypoint-initdb.d </span>
+<span class="hljs-keyword">ENV</span> LANG=C.UTF-<span class="hljs-number">8</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> user.sql .</span></code></pre></div>
 
 <p>运行mysql-for-user容器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">docker run  -itd --name mysql-for-user -p 3316:3306 -e MYSQL_ROOT_PASSWORD=111111 mysql-for-user<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">docker run  -itd --name mysql-for-user -p 3316:3306 -e MYSQL_ROOT_PASSWORD=111111 mysql-for-user</code></pre></div>
 
 <p>这里容器启动的时候是可以执行user.sql的。（可通过docker logs mysql-for-user查看容器启动信息）</p>
 <blockquote>
 <p>/usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/user.sql</p>
 </blockquote>
 <p>redis容器的启动简单</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs docker">docker pull redis:<span class="hljs-number">5.0</span><br><br>docker <span class="hljs-keyword">run</span><span class="bash"> -itd --name redis5 -p 6389:6379 redis:5.0</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs docker">docker pull redis:<span class="hljs-number">5.0</span>
+
+docker <span class="hljs-keyword">run</span><span class="bash"> -itd --name redis5 -p 6389:6379 redis:5.0</span></code></pre></div>
 
 
 
 <p>然后我们可以运行主程序，智能到8089端口：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">go run main.go -service.port 8089<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">go run main.go -service.port 8089</code></pre></div>
 
 <p>测试一下。</p>
 <p><img src="/images/post/v2-94d150a73c8e24ba9519c5433edab2ee_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
@@ -536,13 +668,51 @@
 <p>CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o user .</p>
 </blockquote>
 <p>user的dockerfile</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs docker"><span class="hljs-keyword">FROM</span> alpine:<span class="hljs-number">3.12</span> <br><span class="hljs-keyword">WORKDIR</span><span class="bash"> /</span><br><span class="hljs-keyword">COPY</span><span class="bash"> ./user /</span><br><span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;./user&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs docker"><span class="hljs-keyword">FROM</span> alpine:<span class="hljs-number">3.12</span> 
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> ./user /</span>
+<span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;./user&quot;</span>]</span></code></pre></div>
 
 <p>构建镜像:</p>
 <blockquote>
 <p>docker build -t user-alpine .</p>
 </blockquote>
-<h2 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h2><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs docker">version: <span class="hljs-string">&#x27;2.1&#x27;</span><br>services:<br>  user13:<br>    image: <span class="hljs-keyword">user</span>-alpine<br>    depends_on: <br>      - redis<br>      - mysql<br>    ports:<br>      - <span class="hljs-string">&quot;8088:8088&quot;</span><br>    links: <br>      - redis<br>      - mysql<br>    networks:<br>      - <span class="hljs-keyword">user</span><br>  mysql:<br>    image: mysql-for-<span class="hljs-keyword">user</span><br>    ports:<br>      - <span class="hljs-string">&quot;3306:3306&quot;</span><br>    <span class="hljs-keyword">expose</span>:<br>      - <span class="hljs-string">&quot;3306&quot;</span><br>    environment:<br>      - MYSQL_ROOT_PASSWORD=<span class="hljs-number">111111</span><br>    networks:<br>      - <span class="hljs-keyword">user</span><br>    restart: always<br>  redis:<br>    image: redis:<span class="hljs-number">5.0</span><br>    ports:<br>      - <span class="hljs-string">&quot;6379:6379&quot;</span><br>    <span class="hljs-keyword">expose</span>:<br>      - <span class="hljs-string">&quot;6379&quot;</span><br>    networks:<br>      - <span class="hljs-keyword">user</span><br>networks:<br>  <span class="hljs-keyword">user</span>:<br>    driver: bridge<br></code></pre></td></tr></table></figure>
+<h2 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h2><div class="code-wrapper"><pre><code class="hljs docker">version: <span class="hljs-string">&#x27;2.1&#x27;</span>
+services:
+  user13:
+    image: <span class="hljs-keyword">user</span>-alpine
+    depends_on: 
+      - redis
+      - mysql
+    ports:
+      - <span class="hljs-string">&quot;8088:8088&quot;</span>
+    links: 
+      - redis
+      - mysql
+    networks:
+      - <span class="hljs-keyword">user</span>
+  mysql:
+    image: mysql-for-<span class="hljs-keyword">user</span>
+    ports:
+      - <span class="hljs-string">&quot;3306:3306&quot;</span>
+    <span class="hljs-keyword">expose</span>:
+      - <span class="hljs-string">&quot;3306&quot;</span>
+    environment:
+      - MYSQL_ROOT_PASSWORD=<span class="hljs-number">111111</span>
+    networks:
+      - <span class="hljs-keyword">user</span>
+    restart: always
+  redis:
+    image: redis:<span class="hljs-number">5.0</span>
+    ports:
+      - <span class="hljs-string">&quot;6379:6379&quot;</span>
+    <span class="hljs-keyword">expose</span>:
+      - <span class="hljs-string">&quot;6379&quot;</span>
+    networks:
+      - <span class="hljs-keyword">user</span>
+networks:
+  <span class="hljs-keyword">user</span>:
+    driver: bridge</code></pre></div>
 
 
 
@@ -658,8 +828,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/12/goexample8/" title="goruntine和channel">
-                        <span class="hidden-mobile">goruntine和channel</span>
+                      <a href="/2021/02/12/goexample9/" title="golang限流器">
+                        <span class="hidden-mobile">golang限流器</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

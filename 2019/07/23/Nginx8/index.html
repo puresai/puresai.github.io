@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          197 字
+          192 字
         
       </span>
     
@@ -490,7 +490,11 @@
             <div class="markdown-body">
               
               <p>老实说，我觉得nginx没有日志按日配置功能缺失有点费解，不过我们可以通过代码实现。<br>配置如下：</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><br><span class="hljs-attribute">if</span> ($time_iso8601 <span class="hljs-regexp">~ &quot;^(\d</span>&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)&quot;) &#123;<br>    <span class="hljs-attribute">set</span> $day <span class="hljs-variable">$1</span><span class="hljs-variable">$2</span><span class="hljs-variable">$3</span>;<br>&#125;<br><span class="hljs-attribute">access_log</span> logs/access-$day.log main;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nginx">
+<span class="hljs-attribute">if</span> ($time_iso8601 <span class="hljs-regexp">~ &quot;^(\d</span>&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)&quot;) &#123;
+    <span class="hljs-attribute">set</span> $day <span class="hljs-variable">$1</span><span class="hljs-variable">$2</span><span class="hljs-variable">$3</span>;
+&#125;
+<span class="hljs-attribute">access_log</span> logs/access-$day.log main;</code></pre></div>
 
 
               

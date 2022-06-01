@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4k 字
+          3.9k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          34 分钟
+          33 分钟
         
       </span>
     
@@ -486,33 +486,35 @@
 <li>已提交(Committed)</li>
 <li>已推送(Pushed)</li>
 </ul>
-<h2 id="检查修改"><a href="#检查修改" class="headerlink" title="检查修改"></a>检查修改</h2><h3 id="已修改，未暂存"><a href="#已修改，未暂存" class="headerlink" title="已修改，未暂存"></a>已修改，未暂存</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">git diff</span><br></code></pre></td></tr></table></figure>
+<h2 id="检查修改"><a href="#检查修改" class="headerlink" title="检查修改"></a>检查修改</h2><h3 id="已修改，未暂存"><a href="#已修改，未暂存" class="headerlink" title="已修改，未暂存"></a>已修改，未暂存</h3><div class="code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">git diff</span></code></pre></div>
 
-<h3 id="已暂存，未提交"><a href="#已暂存，未提交" class="headerlink" title="已暂存，未提交"></a>已暂存，未提交</h3><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">git diff <span class="hljs-comment">--cached</span><br></code></pre></td></tr></table></figure>
+<h3 id="已暂存，未提交"><a href="#已暂存，未提交" class="headerlink" title="已暂存，未提交"></a>已暂存，未提交</h3><div class="code-wrapper"><pre><code class="hljs ada">git diff <span class="hljs-comment">--cached</span></code></pre></div>
 
-<h3 id="已提交，未推送"><a href="#已提交，未推送" class="headerlink" title="已提交，未推送"></a>已提交，未推送</h3><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">git diff <span class="hljs-keyword">master</span> <span class="hljs-title">origin</span>/<span class="hljs-literal">master</span><br></code></pre></td></tr></table></figure>
+<h3 id="已提交，未推送"><a href="#已提交，未推送" class="headerlink" title="已提交，未推送"></a>已提交，未推送</h3><div class="code-wrapper"><pre><code class="hljs crmsh">git diff <span class="hljs-keyword">master</span> <span class="hljs-title">origin</span>/<span class="hljs-literal">master</span></code></pre></div>
 
 <h2 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h2><p>了解清楚如何检查各种修改之后，我们开始尝试各种撤销操作。</p>
 <h3 id="恢复已修改，未暂存"><a href="#恢复已修改，未暂存" class="headerlink" title="恢复已修改，未暂存"></a>恢复已修改，未暂存</h3><p>如果我们只是在编辑器里修改了文件，但还没有执行<code>git add .</code>，这时候我们的文件还在<code>工作区</code>，并没有进入<code>暂存区</code>，我们可以用撤销操作</p>
-<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs erlang">git checkout .<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs erlang">git checkout .</code></pre></div>
 
 <p>或者</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">git <span class="hljs-keyword">reset</span> <span class="hljs-comment">--hard</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">git <span class="hljs-keyword">reset</span> <span class="hljs-comment">--hard</span></code></pre></div>
 
 <h3 id="恢复已暂存，未提交"><a href="#恢复已暂存，未提交" class="headerlink" title="恢复已暂存，未提交"></a>恢复已暂存，未提交</h3><p>你已经执行了<code>git add .</code>，但还没有执行<code>git commit -m &quot;comment&quot;</code>。这时候你意识到了错误，想要撤销，你可以执行：</p>
-<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs erlang">git reset<br>git checkout .<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs erlang">git reset
+git checkout .</code></pre></div>
 
 <p>或者</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">git <span class="hljs-keyword">reset</span> <span class="hljs-comment">--hard</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">git <span class="hljs-keyword">reset</span> <span class="hljs-comment">--hard</span></code></pre></div>
 
 <p><code>git reset</code>只是把修改退回到了<code>git add .</code>之前的状态，也就是说文件本身还处于<code>已修改未暂存</code>状态，你如果想退回<code>未修改</code>状态，还需要执行<code>git checkout .</code>。</p>
 <p>或许你已经注意到了，以上两个步骤都可以用同一个命令<code>git reset --hard</code>来完成。是的，就是这个强大的命令，可以一步到位地把你的修改完全恢复到<code>未修改</code>的状态。</p>
 <h3 id="恢复已提交，未推送"><a href="#恢复已提交，未推送" class="headerlink" title="恢复已提交，未推送"></a>恢复已提交，未推送</h3><p>你的手太快，你既执行了<code>git add .</code>，又执行了<code>git commit</code>，这时候你的代码已经进入了你的<code>本地仓库</code>，然而你后悔了，怎么办？不要着急，还有办法。</p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima">git <span class="hljs-built_in">reset</span> --hard <span class="hljs-built_in">origin</span>/master<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs maxima">git <span class="hljs-built_in">reset</span> --hard <span class="hljs-built_in">origin</span>/master</code></pre></div>
 
 <p>还是这个<code>git reset --hard</code>命令，只不过这次多了一个参数<code>origin/master</code>，正如我们上面讲过的，<code>origin/master</code>代表<code>远程仓库</code>，既然你已经污染了你的<code>本地仓库</code>，那么就从<code>远程仓库</code>把代码取回来吧。</p>
 <h3 id="已推送"><a href="#已推送" class="headerlink" title="已推送"></a>已推送</h3><p>很不幸，你的手实在是太快了，你既<code>git add</code>了，又<code>git commit</code>了，并且还<code>git push</code>了，这时你的代码已经进入<code>远程仓库</code>。如果你想恢复的话，还好，由于你的<code>本地仓库</code>和<code>远程仓库</code>是等价的，你只需要先恢复<code>本地仓库</code>，再强制<code>push</code>到<code>远程仓库</code>就好了：</p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">git <span class="hljs-built_in">reset</span> --hard HEAD^<br>git <span class="hljs-built_in">push</span> -f<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs maxima">git <span class="hljs-built_in">reset</span> --hard HEAD^
+git <span class="hljs-built_in">push</span> -f</code></pre></div>
 
 <p>部分远程仓库设置了禁止强制push，我们可以使用以下方法。</p>
 <h4 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h4><p>git revert用于反转提交。执行revert命令时要求工作树必须是干净的，git revert用一个新提交来消除一个历史提交所做的任何修改。revert 之后你的本地代码会回滚到指定的历史版本，这时你再 git push 就可以把线上的代码更新。</p>
@@ -615,7 +617,43 @@
 <blockquote>
 <p>git config –global user.email <a target="_blank" rel="noopener" href="http://mailto:%22957042781@qq.com/">“957042781@qq.com</a>“</p>
 </blockquote>
-<h3 id="几个常见问题与解决方案"><a href="#几个常见问题与解决方案" class="headerlink" title="几个常见问题与解决方案"></a>几个常见问题与解决方案</h3><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs gams">fatal: <span class="hljs-keyword">No</span> configured push destination.<br><br>解决：<br><span class="hljs-symbol">$</span> git remote add -f -t master -m master origin git:<span class="hljs-comment">//example.com/git.git/</span><br><br><br>fatal: The current branch test has <span class="hljs-keyword">no</span> upstream branch.<br>解决：<br>git push --<span class="hljs-keyword">set</span>-upstream <span class="hljs-comment">origin test</span><br><br><br><br>模仿 git <span class="hljs-comment">clone</span>，但只跟踪选定的分支<br><br>$ mkdir <span class="hljs-comment">project.git</span><br>$ cd <span class="hljs-comment">project.git</span><br>$ git <span class="hljs-comment">init</span><br>$ git <span class="hljs-comment">remote add -f -t master -m master origin git:</span>//<span class="hljs-comment">example.com</span>/git.git/<br>$ git <span class="hljs-comment">merge origin</span><br><br><br>fatal：Unable <span class="hljs-comment">to create</span> <span class="hljs-comment">&#x27;E:/project/scrm/.git/index.lock&#x27;</span><span class="hljs-comment">: File exists.</span><br><br>rm <span class="hljs-comment">-f .</span>/.git/<span class="hljs-comment">index.lock</span><br>git <span class="hljs-comment">log</span><br>-p 查看差异<br>-n(n为正整数) 查看最近n次的提交<br>--pretty        按指定格式显示日志信息<span class="hljs-comment">,</span>可选项有：<span class="hljs-comment">oneline,short,medium,full,fuller,email,raw</span>以及<span class="hljs-comment">format:&lt;string&gt;,</span>默认为<span class="hljs-comment">medium</span>，可以通过修改配置文件来指定默认的<br>方式。<br>e.g. git <span class="hljs-comment">log (--pretty=)oneline</span><br>--stat  列出文件的修改行数<br>--sortstat      只显示<span class="hljs-comment">--stat</span>中最后行数修改添加移除的统计<br>--graph 以简单的图形方式列出提交记录<br>--abbrev-commit 仅显示 <span class="hljs-comment">SHA-1</span> 的前几个字符，而非所有的 <span class="hljs-comment">40</span> 个字符。<br>--relative-date 使用较短的相对时间显示（比如，“<span class="hljs-comment">2 weeks ago</span>”）。<br>--name-only 仅在提交信息后显示已修改的文件清单。<br>--name-status 显示新增、修改、删除的文件清单。<br></code></pre></td></tr></table></figure>
+<h3 id="几个常见问题与解决方案"><a href="#几个常见问题与解决方案" class="headerlink" title="几个常见问题与解决方案"></a>几个常见问题与解决方案</h3><div class="code-wrapper"><pre><code class="hljs gams">fatal: <span class="hljs-keyword">No</span> configured push destination.
+
+解决：
+<span class="hljs-symbol">$</span> git remote add -f -t master -m master origin git:<span class="hljs-comment">//example.com/git.git/</span>
+
+
+fatal: The current branch test has <span class="hljs-keyword">no</span> upstream branch.
+解决：
+git push --<span class="hljs-keyword">set</span>-upstream <span class="hljs-comment">origin test</span>
+
+
+
+模仿 git <span class="hljs-comment">clone</span>，但只跟踪选定的分支
+
+$ mkdir <span class="hljs-comment">project.git</span>
+$ cd <span class="hljs-comment">project.git</span>
+$ git <span class="hljs-comment">init</span>
+$ git <span class="hljs-comment">remote add -f -t master -m master origin git:</span>//<span class="hljs-comment">example.com</span>/git.git/
+$ git <span class="hljs-comment">merge origin</span>
+
+
+fatal：Unable <span class="hljs-comment">to create</span> <span class="hljs-comment">&#x27;E:/project/scrm/.git/index.lock&#x27;</span><span class="hljs-comment">: File exists.</span>
+
+rm <span class="hljs-comment">-f .</span>/.git/<span class="hljs-comment">index.lock</span>
+git <span class="hljs-comment">log</span>
+-p 查看差异
+-n(n为正整数) 查看最近n次的提交
+--pretty        按指定格式显示日志信息<span class="hljs-comment">,</span>可选项有：<span class="hljs-comment">oneline,short,medium,full,fuller,email,raw</span>以及<span class="hljs-comment">format:&lt;string&gt;,</span>默认为<span class="hljs-comment">medium</span>，可以通过修改配置文件来指定默认的
+方式。
+e.g. git <span class="hljs-comment">log (--pretty=)oneline</span>
+--stat  列出文件的修改行数
+--sortstat      只显示<span class="hljs-comment">--stat</span>中最后行数修改添加移除的统计
+--graph 以简单的图形方式列出提交记录
+--abbrev-commit 仅显示 <span class="hljs-comment">SHA-1</span> 的前几个字符，而非所有的 <span class="hljs-comment">40</span> 个字符。
+--relative-date 使用较短的相对时间显示（比如，“<span class="hljs-comment">2 weeks ago</span>”）。
+--name-only 仅在提交信息后显示已修改的文件清单。
+--name-status 显示新增、修改、删除的文件清单。</code></pre></div>
 
 <h4 id="列出tag"><a href="#列出tag" class="headerlink" title="列出tag"></a>列出tag</h4><blockquote>
 <p>git tag # 在控制台打印出当前仓库的所有tag</p>

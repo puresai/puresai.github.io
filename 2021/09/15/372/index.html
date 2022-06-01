@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          790 字
+          739 字
         
       </span>
     
@@ -553,19 +553,52 @@
             <div class="markdown-body">
               
               <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>今天写接口写了这么个代码：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 伪代码</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">abc</span><span class="hljs-params">(id <span class="hljs-keyword">int64</span>)</span> <span class="hljs-params">([]*model, error)</span></span> &#123;<br>	key := <span class="hljs-string">&quot;abc&quot;</span><br>	cache, err := redis.Get(key).Bytes()<br>	<span class="hljs-keyword">var</span> res []*model<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		res, err := service.GetFromDB(id)<br>		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>			<span class="hljs-keyword">return</span> res, err<br>		&#125;<br>		redis.Set(key, gostring.JsonEncode(res), <span class="hljs-number">2</span>*time.Minute)<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>        json.Unmarshal(cache, &amp;res)<br>	&#125;<br>	<span class="hljs-keyword">return</span> res, <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 伪代码</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">abc</span><span class="hljs-params">(id <span class="hljs-keyword">int64</span>)</span> <span class="hljs-params">([]*model, error)</span></span> &#123;
+	key := <span class="hljs-string">&quot;abc&quot;</span>
+	cache, err := redis.Get(key).Bytes()
+	<span class="hljs-keyword">var</span> res []*model
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		res, err := service.GetFromDB(id)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-keyword">return</span> res, err
+		&#125;
+		redis.Set(key, gostring.JsonEncode(res), <span class="hljs-number">2</span>*time.Minute)
+	&#125; <span class="hljs-keyword">else</span> &#123;
+        json.Unmarshal(cache, &amp;res)
+	&#125;
+	<span class="hljs-keyword">return</span> res, <span class="hljs-literal">nil</span>
+&#125;</code></pre></div>
 
 <p>然后本地测试接口，发现没有命中redis时，res 总是 null，十分奇怪。</p>
 <h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><p>仔细看看，你能知道是什么原因吗？</p>
 <hr>
 <p>看到文章标题，应该能猜到吧！</p>
 <p>我们写个test</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> tests<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;errors&quot;</span><br>	<span class="hljs-string">&quot;testing&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestVar</span><span class="hljs-params">(t *testing.T)</span></span> &#123;<br>	<span class="hljs-keyword">var</span> a <span class="hljs-keyword">int64</span><br>	btn := <span class="hljs-literal">true</span><br>	<span class="hljs-keyword">if</span> btn &#123;<br>		a, err := <span class="hljs-number">2</span>, errors.New(<span class="hljs-string">&quot;11&quot;</span>)<br>		t.Log(<span class="hljs-string">&quot;btn&quot;</span>, a, err)<br>	&#125;<br><br>	t.Log(a)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> tests
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;testing&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestVar</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+	<span class="hljs-keyword">var</span> a <span class="hljs-keyword">int64</span>
+	btn := <span class="hljs-literal">true</span>
+	<span class="hljs-keyword">if</span> btn &#123;
+		a, err := <span class="hljs-number">2</span>, errors.New(<span class="hljs-string">&quot;11&quot;</span>)
+		t.Log(<span class="hljs-string">&quot;btn&quot;</span>, a, err)
+	&#125;
+
+	t.Log(a)
+&#125;</code></pre></div>
 
 <p>运行一下，</p>
 <p><img src="/images/iShot2021-09-15.png" srcset="/img/loading.gif" lazyload alt="test"></p>
 <h2 id="why？"><a href="#why？" class="headerlink" title="why？"></a>why？</h2><p>结果看出来了吗？就是因为使用了 ##:=## 的缘故，变量在 if 内部才有效，不影响 if 外部变量，修改也就简单了：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go">...<br>res, err = service.GetFromDB(id)<br>...<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go">...
+res, err = service.GetFromDB(id)
+...</code></pre></div>
 
 <p>去掉:即可。</p>
 <p>这是使用go的:=需要注意的点，变量作用域需要注意哦！</p>

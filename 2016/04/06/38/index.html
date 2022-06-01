@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.2k 字
+          1.1k 字
         
       </span>
     
@@ -407,11 +407,14 @@
             <div class="markdown-body">
               
               <p>修改一个中英文混合css需求时，看到了以下样式。</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">font</span>: <span class="hljs-number">12</span>px/<span class="hljs-number">25</span>px <span class="hljs-string">&quot;Microsoft Yahei&quot;</span>, <span class="hljs-string">&quot;微软雅黑&quot;</span>, <span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-string">&quot;Helvetica Neue&quot;</span>, Helvetica, Arial, sans-serif;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">font</span>: <span class="hljs-number">12</span>px/<span class="hljs-number">25</span>px <span class="hljs-string">&quot;Microsoft Yahei&quot;</span>, <span class="hljs-string">&quot;微软雅黑&quot;</span>, <span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-string">&quot;Helvetica Neue&quot;</span>, Helvetica, Arial, sans-serif;</code></pre></div>
 <p>居然设置了这么多字体。然后就查了查，贴上来。</p>
 <p>font-family的调用方法:</p>
 <p>代码如下:</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">div</span> &#123;<br>    <span class="hljs-attribute">font-family</span>:Arial,<span class="hljs-string">&#x27;Times New Roman&#x27;</span>,<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>,SimHei; <br>    <span class="hljs-attribute">font</span>:bold <span class="hljs-number">12px</span>/<span class="hljs-number">0.75em</span> Arial,<span class="hljs-string">&#x27;Times New Roman&#x27;</span>,<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>,SimHei; <br>&#125; <br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs css"><span class="hljs-selector-tag">div</span> &#123;
+    <span class="hljs-attribute">font-family</span>:Arial,<span class="hljs-string">&#x27;Times New Roman&#x27;</span>,<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>,SimHei; 
+    <span class="hljs-attribute">font</span>:bold <span class="hljs-number">12px</span>/<span class="hljs-number">0.75em</span> Arial,<span class="hljs-string">&#x27;Times New Roman&#x27;</span>,<span class="hljs-string">&#x27;Microsoft YaHei&#x27;</span>,SimHei; 
+&#125;</code></pre></div>
 
 
 <p>font-family 可以把多个字体名称作为一个“回退”系统来保存。如果浏览器不支持第一个字体，则会尝试下一个。也就是说，font-family 属性的值是用于某个元素的字体族名称或/及类族名称的一个优先表。浏览器会使用它可识别的第一个值。</p>
@@ -420,7 +423,7 @@
 <p>所以,在定义字体的时候把英文的字体写在前面把中文的写在后面。这样，系统就会自动按顺序依次给字用字体，如果当前字体不支持文本，自动换用列表中的下一个字体。</p>
 <p>经过测试，IE9、IE9兼容模式（兼容IE8）、Chrome浏览器最新版本（34.0）、 Firefox浏览器最新版本（29.0）支持该font-family属性；但是某些版本的IE浏览器（IE7、IE8）无法实现该font-family属性的要求，还会暴露出一些奇怪的 bug。如在这些版本的浏览器下使用中文字体（比如微软雅黑），需要把该中文字体放到font-family属性的首位，但是会导致英文字体也会使用该中 文字体渲染。即在这些浏览器（IE7、IE8）下不支持在font-family属性中为英文和中文字体分别使用不同的字体。</p>
 <p>我改成这样，</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">font</span>: <span class="hljs-number">12</span>px/<span class="hljs-number">25</span>px <span class="hljs-string">&quot;Times New Roman&quot;</span>, <span class="hljs-string">&quot;Microsoft Yahei&quot;</span>, <span class="hljs-string">&quot;Helvetica Neue&quot;</span>, Helvetica, Arial, sans-serif;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">font</span>: <span class="hljs-number">12</span>px/<span class="hljs-number">25</span>px <span class="hljs-string">&quot;Times New Roman&quot;</span>, <span class="hljs-string">&quot;Microsoft Yahei&quot;</span>, <span class="hljs-string">&quot;Helvetica Neue&quot;</span>, Helvetica, Arial, sans-serif;</code></pre></div>
 
 <p>用360兼容模式测了下，IE7，8都没发现文章中说的问题。</p>
 

@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.7k 字
+          2.4k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          23 分钟
+          21 分钟
         
       </span>
     
@@ -553,7 +553,120 @@
             <div class="markdown-body">
               
               <p>time应该是开发中比较常用的库了，常见方法说明：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;time&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br><br>	a := time.Now().Unix()<br>	fmt.Println(<span class="hljs-string">&quot;时间戳---&quot;</span>, a)<br><br>	<span class="hljs-comment">// 2006-01-02 15:04:05 记住这一刻</span><br>	b := time.Now().Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>)<br>	fmt.Println(<span class="hljs-string">&quot;格式化时间&quot;</span>, b)<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	func (t Time) Add(d Duration) Time</span><br><span class="hljs-comment">	Duration如下</span><br><span class="hljs-comment">	const (</span><br><span class="hljs-comment">		Nanosecond  Duration = 1</span><br><span class="hljs-comment">		Microsecond          = 1000 * Nanosecond</span><br><span class="hljs-comment">		Millisecond          = 1000 * Microsecond</span><br><span class="hljs-comment">		Second               = 1000 * Millisecond</span><br><span class="hljs-comment">		Minute               = 60 * Second</span><br><span class="hljs-comment">		Hour                 = 60 * Minute</span><br><span class="hljs-comment">	)</span><br><span class="hljs-comment">	 */</span><br>	c := time.Now().Add(time.Minute * <span class="hljs-number">3</span>)<br>	fmt.Println(<span class="hljs-string">&quot;3分钟后时间&quot;</span>, c.Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>))<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">		func (t Time) AddDate(years int, months int, days int) Time</span><br><span class="hljs-comment">	*/</span><br>	d := time.Now().AddDate(<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>,<span class="hljs-number">10</span>)<br>	fmt.Println(<span class="hljs-string">&quot;时间&quot;</span>, d.Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>))<br><br>	<span class="hljs-comment">// 返回年月日三个值</span><br>	fmt.Println(time.Now().Date())<br>	<span class="hljs-comment">// 返回时分秒三个值</span><br>	fmt.Println(time.Now().Clock())<br><br><br>	fmt.Println(time.Now().Year(), time.Now().Month(), time.Now().Day())<br>	fmt.Println(time.Now().Weekday(), time.Now().Hour())<br>	fmt.Println(time.Now().YearDay())<br><br>	fmt.Println(time.Since(d))<br><br><br>	<span class="hljs-comment">// tring返回采用如下格式字符串的格式化时间。</span><br>	<span class="hljs-comment">// &quot;2006-01-02 15:04:05.999999999 -0700 MST&quot;</span><br>	fmt.Println(time.Now().String())<br><br>	time.AfterFunc(<span class="hljs-number">2</span>*time.Second, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;hello 2s&quot;</span>)<br>	&#125;)<br><br>	loc, _ := time.LoadLocation(<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>)<br>	<span class="hljs-keyword">const</span> longForm = <span class="hljs-string">&quot;Jan 2, 2006 at 3:04pm (MST)&quot;</span><br>	<span class="hljs-keyword">const</span> shortForm = <span class="hljs-string">&quot;2006-Jan-02&quot;</span><br>	t, _ := time.ParseInLocation(longForm, <span class="hljs-string">&quot;Jul 9, 2012 at 5:02am (CEST)&quot;</span>, loc)<br>	fmt.Println(t)<br>	<br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	func ParseInLocation(layout, value string, loc *Location) (Time, error)</span><br><span class="hljs-comment">	 */</span><br>	t, _ = time.ParseInLocation(shortForm, <span class="hljs-string">&quot;2022-Jul-09&quot;</span>, loc)<br>	fmt.Println(t)<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	func Parse(layout, value string) (Time, error)</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">	解析一个格式化的时间字符串并返回它代表的时间</span><br><span class="hljs-comment">	ParseInLocation类似Parse但有两个重要的不同之处。</span><br><span class="hljs-comment">	第一，当缺少时区信息时，Parse将时间解释为UTC时间，而ParseInLocation将返回值的Location设置为loc；</span><br><span class="hljs-comment">	第二，当时间字符串提供了时区偏移量信息时，Parse会尝试去匹配本地时区，而ParseInLocation会去匹配loc</span><br><span class="hljs-comment">	*/</span><br>	t, _ = time.Parse(longForm, <span class="hljs-string">&quot;Feb 3, 2023 at 7:54pm (PST)&quot;</span>)<br>	fmt.Println(t)<br>	<br>	<br>	t, _ = time.Parse(shortForm, <span class="hljs-string">&quot;2020-Feb-03&quot;</span>)<br>	fmt.Println(t)<br><br>	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br>	timeout := time.After(time.Second * <span class="hljs-number">2</span>)<br>	timer := time.NewTimer(time.Second * <span class="hljs-number">4</span>) <br>	<span class="hljs-keyword">var</span> i <span class="hljs-keyword">int</span><br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">for</span> &#123;<br>			<span class="hljs-comment">// i++</span><br>			<span class="hljs-keyword">select</span> &#123;<br>				<span class="hljs-keyword">case</span> &lt;- ch:<br>					fmt.Println(<span class="hljs-string">&quot;channel close&quot;</span>)<br>					<span class="hljs-keyword">return</span><br>				<span class="hljs-keyword">case</span> &lt;- timer.C:<br>					fmt.Println(<span class="hljs-string">&quot;4s的NewTimer定时任务&quot;</span>)<br>				<span class="hljs-keyword">case</span> &lt;- timeout:<br>					fmt.Println(<span class="hljs-string">&quot;4s定时输出&quot;</span>)<br>				<span class="hljs-keyword">case</span> &lt;- time.After(time.Second * <span class="hljs-number">6</span>):<br>					fmt.Println(<span class="hljs-string">&quot;6s到了&quot;</span>) <br>				<span class="hljs-comment">// default:</span><br>				<span class="hljs-comment">// 	//Sleep 1秒，参数就是上面的Duration</span><br>				<span class="hljs-comment">// 	time.Sleep(time.Second * 1)</span><br>				<span class="hljs-comment">// 	fmt.Println(&quot;go 1s&quot;)</span><br>			&#125;<br>		&#125;<br>	&#125;()<br>	time.Sleep(time.Second * <span class="hljs-number">15</span>)<br>	fmt.Println(<span class="hljs-string">&quot;close----&quot;</span>)<br>	<span class="hljs-built_in">close</span>(ch)<br>	time.Sleep(time.Second * <span class="hljs-number">2</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;time&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+
+	a := time.Now().Unix()
+	fmt.Println(<span class="hljs-string">&quot;时间戳---&quot;</span>, a)
+
+	<span class="hljs-comment">// 2006-01-02 15:04:05 记住这一刻</span>
+	b := time.Now().Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>)
+	fmt.Println(<span class="hljs-string">&quot;格式化时间&quot;</span>, b)
+
+	<span class="hljs-comment">/**</span>
+<span class="hljs-comment">	func (t Time) Add(d Duration) Time</span>
+<span class="hljs-comment">	Duration如下</span>
+<span class="hljs-comment">	const (</span>
+<span class="hljs-comment">		Nanosecond  Duration = 1</span>
+<span class="hljs-comment">		Microsecond          = 1000 * Nanosecond</span>
+<span class="hljs-comment">		Millisecond          = 1000 * Microsecond</span>
+<span class="hljs-comment">		Second               = 1000 * Millisecond</span>
+<span class="hljs-comment">		Minute               = 60 * Second</span>
+<span class="hljs-comment">		Hour                 = 60 * Minute</span>
+<span class="hljs-comment">	)</span>
+<span class="hljs-comment">	 */</span>
+	c := time.Now().Add(time.Minute * <span class="hljs-number">3</span>)
+	fmt.Println(<span class="hljs-string">&quot;3分钟后时间&quot;</span>, c.Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>))
+
+	<span class="hljs-comment">/**</span>
+<span class="hljs-comment">		func (t Time) AddDate(years int, months int, days int) Time</span>
+<span class="hljs-comment">	*/</span>
+	d := time.Now().AddDate(<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>,<span class="hljs-number">10</span>)
+	fmt.Println(<span class="hljs-string">&quot;时间&quot;</span>, d.Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>))
+
+	<span class="hljs-comment">// 返回年月日三个值</span>
+	fmt.Println(time.Now().Date())
+	<span class="hljs-comment">// 返回时分秒三个值</span>
+	fmt.Println(time.Now().Clock())
+
+
+	fmt.Println(time.Now().Year(), time.Now().Month(), time.Now().Day())
+	fmt.Println(time.Now().Weekday(), time.Now().Hour())
+	fmt.Println(time.Now().YearDay())
+
+	fmt.Println(time.Since(d))
+
+
+	<span class="hljs-comment">// tring返回采用如下格式字符串的格式化时间。</span>
+	<span class="hljs-comment">// &quot;2006-01-02 15:04:05.999999999 -0700 MST&quot;</span>
+	fmt.Println(time.Now().String())
+
+	time.AfterFunc(<span class="hljs-number">2</span>*time.Second, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;hello 2s&quot;</span>)
+	&#125;)
+
+	loc, _ := time.LoadLocation(<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>)
+	<span class="hljs-keyword">const</span> longForm = <span class="hljs-string">&quot;Jan 2, 2006 at 3:04pm (MST)&quot;</span>
+	<span class="hljs-keyword">const</span> shortForm = <span class="hljs-string">&quot;2006-Jan-02&quot;</span>
+	t, _ := time.ParseInLocation(longForm, <span class="hljs-string">&quot;Jul 9, 2012 at 5:02am (CEST)&quot;</span>, loc)
+	fmt.Println(t)
+	
+	<span class="hljs-comment">/**</span>
+<span class="hljs-comment">	func ParseInLocation(layout, value string, loc *Location) (Time, error)</span>
+<span class="hljs-comment">	 */</span>
+	t, _ = time.ParseInLocation(shortForm, <span class="hljs-string">&quot;2022-Jul-09&quot;</span>, loc)
+	fmt.Println(t)
+
+	<span class="hljs-comment">/**</span>
+<span class="hljs-comment">	func Parse(layout, value string) (Time, error)</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">	解析一个格式化的时间字符串并返回它代表的时间</span>
+<span class="hljs-comment">	ParseInLocation类似Parse但有两个重要的不同之处。</span>
+<span class="hljs-comment">	第一，当缺少时区信息时，Parse将时间解释为UTC时间，而ParseInLocation将返回值的Location设置为loc；</span>
+<span class="hljs-comment">	第二，当时间字符串提供了时区偏移量信息时，Parse会尝试去匹配本地时区，而ParseInLocation会去匹配loc</span>
+<span class="hljs-comment">	*/</span>
+	t, _ = time.Parse(longForm, <span class="hljs-string">&quot;Feb 3, 2023 at 7:54pm (PST)&quot;</span>)
+	fmt.Println(t)
+	
+	
+	t, _ = time.Parse(shortForm, <span class="hljs-string">&quot;2020-Feb-03&quot;</span>)
+	fmt.Println(t)
+
+	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
+	timeout := time.After(time.Second * <span class="hljs-number">2</span>)
+	timer := time.NewTimer(time.Second * <span class="hljs-number">4</span>) 
+	<span class="hljs-keyword">var</span> i <span class="hljs-keyword">int</span>
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-keyword">for</span> &#123;
+			<span class="hljs-comment">// i++</span>
+			<span class="hljs-keyword">select</span> &#123;
+				<span class="hljs-keyword">case</span> &lt;- ch:
+					fmt.Println(<span class="hljs-string">&quot;channel close&quot;</span>)
+					<span class="hljs-keyword">return</span>
+				<span class="hljs-keyword">case</span> &lt;- timer.C:
+					fmt.Println(<span class="hljs-string">&quot;4s的NewTimer定时任务&quot;</span>)
+				<span class="hljs-keyword">case</span> &lt;- timeout:
+					fmt.Println(<span class="hljs-string">&quot;4s定时输出&quot;</span>)
+				<span class="hljs-keyword">case</span> &lt;- time.After(time.Second * <span class="hljs-number">6</span>):
+					fmt.Println(<span class="hljs-string">&quot;6s到了&quot;</span>) 
+				<span class="hljs-comment">// default:</span>
+				<span class="hljs-comment">// 	//Sleep 1秒，参数就是上面的Duration</span>
+				<span class="hljs-comment">// 	time.Sleep(time.Second * 1)</span>
+				<span class="hljs-comment">// 	fmt.Println(&quot;go 1s&quot;)</span>
+			&#125;
+		&#125;
+	&#125;()
+	time.Sleep(time.Second * <span class="hljs-number">15</span>)
+	fmt.Println(<span class="hljs-string">&quot;close----&quot;</span>)
+	<span class="hljs-built_in">close</span>(ch)
+	time.Sleep(time.Second * <span class="hljs-number">2</span>)
+&#125;</code></pre></div>
 
               
             </div>

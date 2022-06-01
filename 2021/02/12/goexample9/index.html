@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.9k 字
+          1.8k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          16 分钟
+          15 分钟
         
       </span>
     
@@ -448,19 +448,19 @@
     
       
       
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
            class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">goruntine和channel</span>
+           active">
+          <span class="category-post">golang限流器</span>
         </a>
       
     
       
       
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
            class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">golang限流器</span>
+           ">
+          <span class="category-post">goruntine和channel</span>
         </a>
       
     
@@ -489,15 +489,58 @@
               
               <p>限流应该是我们开发中经常遇到的了，限流器能保证我们不至于在流量过大的时候服务超过负载，能有效地保证服务的可用和稳定。</p>
 <p>go自带有限流器rate，它的本质其实就是令牌桶。用起来也十分简单。我们修改下之前的http服务做一些修改：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-comment">// ServeMux类型是HTTP请求的多路转接器。它会将每一个接收的请求的URL与一个注册模式的列表进行匹配，并调用和URL最匹配的模式的处理器。</span><br>	mux := http.NewServeMux()<br>	mux.HandleFunc(<span class="hljs-string">&quot;/&quot;</span>, defaultHttp)<br>	http.ListenAndServe(<span class="hljs-string">&quot;:8080&quot;</span>, middlewareLimit(mux))<br>&#125;<br><br><span class="hljs-comment">// 限流桶</span><br><span class="hljs-keyword">var</span> limiter = rate.NewLimiter(rate.Every(time.Second), <span class="hljs-number">1</span>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">middlewareLimit</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> &#123;<br>	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br><br>		<span class="hljs-keyword">if</span> limiter.Allow() == <span class="hljs-literal">false</span> &#123;<br>			fmt.Println(<span class="hljs-string">&quot;limit&quot;</span>)<br>			<span class="hljs-keyword">return</span><br>		&#125;<br><br>		next.ServeHTTP(w, r)<br>	&#125;)<br>&#125;<br><br><span class="hljs-comment">// 默认http处理</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultHttp</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>	path := r.URL.Path<br><br>	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/&quot;</span> &#123;<br>		w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;index&quot;</span>))<br>		fmt.Println(<span class="hljs-string">&quot;index&quot;</span>)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	<span class="hljs-comment">// 自定义404</span><br>	http.Error(w, <span class="hljs-string">&quot;you lost???&quot;</span>, http.StatusNotFound)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">// ServeMux类型是HTTP请求的多路转接器。它会将每一个接收的请求的URL与一个注册模式的列表进行匹配，并调用和URL最匹配的模式的处理器。</span>
+	mux := http.NewServeMux()
+	mux.HandleFunc(<span class="hljs-string">&quot;/&quot;</span>, defaultHttp)
+	http.ListenAndServe(<span class="hljs-string">&quot;:8080&quot;</span>, middlewareLimit(mux))
+&#125;
+
+<span class="hljs-comment">// 限流桶</span>
+<span class="hljs-keyword">var</span> limiter = rate.NewLimiter(rate.Every(time.Second), <span class="hljs-number">1</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">middlewareLimit</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> &#123;
+	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
+
+		<span class="hljs-keyword">if</span> limiter.Allow() == <span class="hljs-literal">false</span> &#123;
+			fmt.Println(<span class="hljs-string">&quot;limit&quot;</span>)
+			<span class="hljs-keyword">return</span>
+		&#125;
+
+		next.ServeHTTP(w, r)
+	&#125;)
+&#125;
+
+<span class="hljs-comment">// 默认http处理</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultHttp</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
+	path := r.URL.Path
+
+	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/&quot;</span> &#123;
+		w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;index&quot;</span>))
+		fmt.Println(<span class="hljs-string">&quot;index&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	&#125;
+
+	<span class="hljs-comment">// 自定义404</span>
+	http.Error(w, <span class="hljs-string">&quot;you lost???&quot;</span>, http.StatusNotFound)
+&#125;</code></pre></div>
 
 <p>这里的</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">var</span> limiter = rate.NewLimiter(rate.Every(<span class="hljs-number">2</span>*time.Second), <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> limiter = rate.NewLimiter(rate.Every(<span class="hljs-number">2</span>*time.Second), <span class="hljs-number">1</span>)</code></pre></div>
 
 <p>就是定义了一个限流器，生成速率是1 个/s，令牌桶的容量是1。也就是每秒最多能通过2个请求。</p>
 <p>我们可以用ab或者快速刷新浏览器来看一下效果</p>
 <p>是不是有点类似nginx的限流模块：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs text">limit_req_zone  $binary_remote_addr  zone=one:10m  rate=1r/s;<br><br>server &#123;<br>    ...<br><br>    location / &#123;<br>        #缓存区队列burst=5个,nodelay表示不延期(超过的请求失败)，即每秒最多可处理rate+burst个,同时处理rate个。<br>        limit_req zone=one burst=1 nodelay; <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">limit_req_zone  $binary_remote_addr  zone=one:10m  rate=1r/s;
+
+server &#123;
+    ...
+
+    location / &#123;
+        #缓存区队列burst=5个,nodelay表示不延期(超过的请求失败)，即每秒最多可处理rate+burst个,同时处理rate个。
+        limit_req zone=one burst=1 nodelay; 
+    &#125;
+&#125;</code></pre></div>
 
 
 
@@ -507,7 +550,17 @@
 <li>middlewareLimit 可看作一个http server的前置中间件，你可以类比去自己处理复杂的http中间件业务。</li>
 <li>限流器的初始化务必在中间件前生成，可以尝试修改代码再测试:</li>
 </ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">middlewareLimit</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> &#123;<br>	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>		limiter := rate.NewLimiter(rate.Every(<span class="hljs-number">2</span>*time.Second), <span class="hljs-number">10</span>)<br>		<span class="hljs-keyword">if</span> limiter.Allow() == <span class="hljs-literal">false</span> &#123;<br>			fmt.Println(<span class="hljs-string">&quot;limit&quot;</span>)<br>			<span class="hljs-keyword">return</span><br>		&#125;<br><br>		next.ServeHTTP(w, r)<br>	&#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">middlewareLimit</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> &#123;
+	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
+		limiter := rate.NewLimiter(rate.Every(<span class="hljs-number">2</span>*time.Second), <span class="hljs-number">10</span>)
+		<span class="hljs-keyword">if</span> limiter.Allow() == <span class="hljs-literal">false</span> &#123;
+			fmt.Println(<span class="hljs-string">&quot;limit&quot;</span>)
+			<span class="hljs-keyword">return</span>
+		&#125;
+
+		next.ServeHTTP(w, r)
+	&#125;)
+&#125;</code></pre></div>
 
 
 
@@ -601,9 +654,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/12/goexample8/" title="goruntine和channel">
+                      <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、redis">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">goruntine和channel</span>
+                        <span class="hidden-mobile">docker-compose整合go-kit和mysql、redis</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -611,8 +664,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/10/312/" title="Docker基础与常用命令">
-                        <span class="hidden-mobile">Docker基础与常用命令</span>
+                      <a href="/2021/02/12/goexample8/" title="goruntine和channel">
+                        <span class="hidden-mobile">goruntine和channel</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

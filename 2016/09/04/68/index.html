@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          768 字
+          735 字
         
       </span>
     
@@ -865,7 +865,27 @@
               <p>前几天开发时，需要同时上传两张图，但总出现问题，打开提示，显示的事文件名已存在。</p>
 <p>各种搜索，没找到解决方法，然后就改成了uploadify上传，但治标不治本，同事说可以修改uploadFile的类，获取savename时增加随机数。</p>
 <p>修改savename</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSaveName</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>) </span>&#123;<br>    <span class="hljs-variable">$rand</span> = mt_rand(<span class="hljs-number">1000</span>,<span class="hljs-number">9999</span>);  <span class="hljs-comment">//生成五位随机数</span><br>        <span class="hljs-variable">$rule</span> = <span class="hljs-keyword">$this</span>-&gt;saveRule;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$rule</span>)) &#123;<span class="hljs-comment">//没有定义命名规则，则保持文件名不变</span><br>            <span class="hljs-variable">$saveName</span> = <span class="hljs-variable">$filename</span>[<span class="hljs-string">&#x27;name&#x27;</span>];<br>        &#125;<span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">if</span>(function_exists(<span class="hljs-variable">$rule</span>)) &#123;<br>                <span class="hljs-comment">//使用函数生成一个唯一文件标识号  加入随机数</span><br>                <span class="hljs-variable">$saveName</span> = <span class="hljs-variable">$rule</span>().<span class="hljs-variable">$rand</span>.<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$filename</span>[<span class="hljs-string">&#x27;extension&#x27;</span>];<br>            &#125;<span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">//使用给定的文件名作为标识号</span><br>                <span class="hljs-variable">$saveName</span> = <span class="hljs-variable">$rule</span>.<span class="hljs-variable">$rand</span>.<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$filename</span>[<span class="hljs-string">&#x27;extension&#x27;</span>];<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;autoSub) &#123;<br>            <span class="hljs-comment">// 使用子目录保存文件</span><br>            <span class="hljs-variable">$filename</span>[<span class="hljs-string">&#x27;savename&#x27;</span>] = <span class="hljs-variable">$saveName</span>;<br>            <span class="hljs-variable">$saveName</span> = <span class="hljs-keyword">$this</span>-&gt;getSubName(<span class="hljs-variable">$filename</span>).<span class="hljs-variable">$saveName</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$saveName</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSaveName</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>) </span>&#123;
+    <span class="hljs-variable">$rand</span> = mt_rand(<span class="hljs-number">1000</span>,<span class="hljs-number">9999</span>);  <span class="hljs-comment">//生成五位随机数</span>
+        <span class="hljs-variable">$rule</span> = <span class="hljs-keyword">$this</span>-&gt;saveRule;
+        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$rule</span>)) &#123;<span class="hljs-comment">//没有定义命名规则，则保持文件名不变</span>
+            <span class="hljs-variable">$saveName</span> = <span class="hljs-variable">$filename</span>[<span class="hljs-string">&#x27;name&#x27;</span>];
+        &#125;<span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">if</span>(function_exists(<span class="hljs-variable">$rule</span>)) &#123;
+                <span class="hljs-comment">//使用函数生成一个唯一文件标识号  加入随机数</span>
+                <span class="hljs-variable">$saveName</span> = <span class="hljs-variable">$rule</span>().<span class="hljs-variable">$rand</span>.<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$filename</span>[<span class="hljs-string">&#x27;extension&#x27;</span>];
+            &#125;<span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-comment">//使用给定的文件名作为标识号</span>
+                <span class="hljs-variable">$saveName</span> = <span class="hljs-variable">$rule</span>.<span class="hljs-variable">$rand</span>.<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$filename</span>[<span class="hljs-string">&#x27;extension&#x27;</span>];
+            &#125;
+        &#125;
+        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;autoSub) &#123;
+            <span class="hljs-comment">// 使用子目录保存文件</span>
+            <span class="hljs-variable">$filename</span>[<span class="hljs-string">&#x27;savename&#x27;</span>] = <span class="hljs-variable">$saveName</span>;
+            <span class="hljs-variable">$saveName</span> = <span class="hljs-keyword">$this</span>-&gt;getSubName(<span class="hljs-variable">$filename</span>).<span class="hljs-variable">$saveName</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$saveName</span>;
+    &#125;</code></pre></div>
 
 <p>这样就几乎不会出现同名的情况了。</p>
 

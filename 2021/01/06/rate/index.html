@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.5k 字
+          2.2k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          21 分钟
+          19 分钟
         
       </span>
     
@@ -443,7 +443,135 @@
             <div class="markdown-body">
               
               <p>限流是保证服务可用性和稳定的利器之一。go自带有限流器rate，我们来研读一下源码，源码较少，我们列出主要代码部分，注释说明：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 限定速率</span><br><span class="hljs-keyword">type</span> Limit <span class="hljs-keyword">float64</span><br><br><span class="hljs-comment">// 常量Inf：无速率限制</span><br><span class="hljs-keyword">const</span> Inf = Limit(math.MaxFloat64)<br><br><span class="hljs-comment">// 限流器的结构体，本质就是一个令牌桶，</span><br><span class="hljs-keyword">type</span> Limiter <span class="hljs-keyword">struct</span> &#123;<br>  mu     sync.Mutex<br>  limit  Limit<br>  burst  <span class="hljs-keyword">int</span><br>  tokens <span class="hljs-keyword">float64</span><br>  <span class="hljs-comment">// 记录上次 Limiter 被更新的时间</span><br>  last time.Time<br>  <span class="hljs-comment">// lastEvent 记录速率受限制的时间</span><br>  lastEvent time.Time<br>&#125;<br><br><br><span class="hljs-comment">// new一个新的限流器 *Limiter，r是速率，b是允许突发的令牌数量</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewLimiter</span><span class="hljs-params">(r Limit, b <span class="hljs-keyword">int</span>)</span> *<span class="hljs-title">Limiter</span></span> &#123;<br>  <span class="hljs-keyword">return</span> &amp;Limiter&#123;<br>    limit: r,<br>    burst: b,<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// Reservation 保存了限流器延迟后发生的事件信息</span><br><span class="hljs-keyword">type</span> Reservation <span class="hljs-keyword">struct</span> &#123;<br>  <span class="hljs-comment">// 是否满足条件分配了令牌啊</span><br>  ok        <span class="hljs-keyword">bool</span><br>  <span class="hljs-comment">// 限流器</span><br>  lim       *Limiter<br>  <span class="hljs-comment">// 令牌数量</span><br>  tokens    <span class="hljs-keyword">int</span><br>  <span class="hljs-comment">// 满足令牌发放的时间</span><br>  timeToAct time.Time<br>  <span class="hljs-comment">// 令牌发放速率</span><br>  limit Limit<br>&#125;<br><br><br><span class="hljs-comment">// 这是一个重要的内部函数，返回一个Reservation</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(lim *Limiter)</span> <span class="hljs-title">reserveN</span><span class="hljs-params">(now time.Time, n <span class="hljs-keyword">int</span>, maxFutureReserve time.Duration)</span> <span class="hljs-title">Reservation</span></span> &#123;<br>  <span class="hljs-comment">// 互斥锁，保证原子性</span><br>  lim.mu.Lock()<br><br>  <span class="hljs-comment">// 判断速率是不是最大，是的话无需限流</span><br>  <span class="hljs-keyword">if</span> lim.limit == Inf &#123;<br>    lim.mu.Unlock()<br>    <span class="hljs-keyword">return</span> Reservation&#123;<br>      ok:        <span class="hljs-literal">true</span>,<br>      lim:       lim,<br>      tokens:    n,<br>      timeToAct: now,<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-comment">// 调用 advance 方法，获取最新的时间、上一次取得令牌的时间、最新的token数量</span><br>  now, last, tokens := lim.advance(now)<br><br>  <span class="hljs-comment">// 更新token数量</span><br>  tokens -= <span class="hljs-keyword">float64</span>(n)<br><br>  <span class="hljs-comment">// 计算等待时间，数量小于0表示令牌桶中木有可用的令牌了</span><br>  <span class="hljs-keyword">var</span> waitDuration time.Duration<br>  <span class="hljs-keyword">if</span> tokens &lt; <span class="hljs-number">0</span> &#123;<br>    waitDuration = lim.limit.durationFromTokens(-tokens)<br>  &#125;<br><br>  <span class="hljs-comment">// 计算结果</span><br>  ok := n &lt;= lim.burst &amp;&amp; waitDuration &lt;= maxFutureReserve<br><br>  <span class="hljs-comment">// 初始化 Reservation</span><br>  r := Reservation&#123;<br>    ok:    ok,<br>    lim:   lim,<br>    limit: lim.limit,<br>  &#125;<br>  <br>  <span class="hljs-comment">// 更新令牌桶数量和时间</span><br>  <span class="hljs-keyword">if</span> ok &#123;<br>    r.tokens = n<br>    r.timeToAct = now.Add(waitDuration)<br>  &#125;<br><br>  <span class="hljs-comment">// 更新限流器最新取得令牌的时间、数量、事件</span><br>  <span class="hljs-keyword">if</span> ok &#123;<br>    lim.last = now<br>    lim.tokens = tokens<br>    lim.lastEvent = r.timeToAct<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    lim.last = last<br>  &#125;<br><br>  lim.mu.Unlock()<br>  <span class="hljs-keyword">return</span> r<br>&#125;<br><br><span class="hljs-comment">// 计算时间变化的 Limiter 的状态变化，得到最新的时间，最后一次取得令牌的时间和 token 令牌数量</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(lim *Limiter)</span> <span class="hljs-title">advance</span><span class="hljs-params">(now time.Time)</span> <span class="hljs-params">(newNow time.Time, newLast time.Time, newTokens <span class="hljs-keyword">float64</span>)</span></span> &#123;<br>  last := lim.last<br>  <span class="hljs-keyword">if</span> now.Before(last) &#123;<br>    last = now<br>  &#125;<br><br>  maxElapsed := lim.limit.durationFromTokens(<span class="hljs-keyword">float64</span>(lim.burst) - lim.tokens)<br>  elapsed := now.Sub(last)<br>  <span class="hljs-keyword">if</span> elapsed &gt; maxElapsed &#123;<br>    elapsed = maxElapsed<br>  &#125;<br><br>  delta := lim.limit.tokensFromDuration(elapsed)<br>  tokens := lim.tokens + delta<br>  <span class="hljs-keyword">if</span> burst := <span class="hljs-keyword">float64</span>(lim.burst); tokens &gt; burst &#123;<br>    tokens = burst<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> now, last, tokens<br>&#125;<br><br><br><span class="hljs-comment">// 这里单独放出来，是提醒一下，go也有精度缺失问题，所以复杂计算要注意</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(limit Limit)</span> <span class="hljs-title">tokensFromDuration</span><span class="hljs-params">(d time.Duration)</span> <span class="hljs-title">float64</span></span> &#123;<br>  sec := <span class="hljs-keyword">float64</span>(d/time.Second) * <span class="hljs-keyword">float64</span>(limit)<br>  nsec := <span class="hljs-keyword">float64</span>(d%time.Second) * <span class="hljs-keyword">float64</span>(limit)<br>  <span class="hljs-keyword">return</span> sec + nsec/<span class="hljs-number">1e9</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 限定速率</span>
+<span class="hljs-keyword">type</span> Limit <span class="hljs-keyword">float64</span>
+
+<span class="hljs-comment">// 常量Inf：无速率限制</span>
+<span class="hljs-keyword">const</span> Inf = Limit(math.MaxFloat64)
+
+<span class="hljs-comment">// 限流器的结构体，本质就是一个令牌桶，</span>
+<span class="hljs-keyword">type</span> Limiter <span class="hljs-keyword">struct</span> &#123;
+  mu     sync.Mutex
+  limit  Limit
+  burst  <span class="hljs-keyword">int</span>
+  tokens <span class="hljs-keyword">float64</span>
+  <span class="hljs-comment">// 记录上次 Limiter 被更新的时间</span>
+  last time.Time
+  <span class="hljs-comment">// lastEvent 记录速率受限制的时间</span>
+  lastEvent time.Time
+&#125;
+
+
+<span class="hljs-comment">// new一个新的限流器 *Limiter，r是速率，b是允许突发的令牌数量</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewLimiter</span><span class="hljs-params">(r Limit, b <span class="hljs-keyword">int</span>)</span> *<span class="hljs-title">Limiter</span></span> &#123;
+  <span class="hljs-keyword">return</span> &amp;Limiter&#123;
+    limit: r,
+    burst: b,
+  &#125;
+&#125;
+
+<span class="hljs-comment">// Reservation 保存了限流器延迟后发生的事件信息</span>
+<span class="hljs-keyword">type</span> Reservation <span class="hljs-keyword">struct</span> &#123;
+  <span class="hljs-comment">// 是否满足条件分配了令牌啊</span>
+  ok        <span class="hljs-keyword">bool</span>
+  <span class="hljs-comment">// 限流器</span>
+  lim       *Limiter
+  <span class="hljs-comment">// 令牌数量</span>
+  tokens    <span class="hljs-keyword">int</span>
+  <span class="hljs-comment">// 满足令牌发放的时间</span>
+  timeToAct time.Time
+  <span class="hljs-comment">// 令牌发放速率</span>
+  limit Limit
+&#125;
+
+
+<span class="hljs-comment">// 这是一个重要的内部函数，返回一个Reservation</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(lim *Limiter)</span> <span class="hljs-title">reserveN</span><span class="hljs-params">(now time.Time, n <span class="hljs-keyword">int</span>, maxFutureReserve time.Duration)</span> <span class="hljs-title">Reservation</span></span> &#123;
+  <span class="hljs-comment">// 互斥锁，保证原子性</span>
+  lim.mu.Lock()
+
+  <span class="hljs-comment">// 判断速率是不是最大，是的话无需限流</span>
+  <span class="hljs-keyword">if</span> lim.limit == Inf &#123;
+    lim.mu.Unlock()
+    <span class="hljs-keyword">return</span> Reservation&#123;
+      ok:        <span class="hljs-literal">true</span>,
+      lim:       lim,
+      tokens:    n,
+      timeToAct: now,
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">// 调用 advance 方法，获取最新的时间、上一次取得令牌的时间、最新的token数量</span>
+  now, last, tokens := lim.advance(now)
+
+  <span class="hljs-comment">// 更新token数量</span>
+  tokens -= <span class="hljs-keyword">float64</span>(n)
+
+  <span class="hljs-comment">// 计算等待时间，数量小于0表示令牌桶中木有可用的令牌了</span>
+  <span class="hljs-keyword">var</span> waitDuration time.Duration
+  <span class="hljs-keyword">if</span> tokens &lt; <span class="hljs-number">0</span> &#123;
+    waitDuration = lim.limit.durationFromTokens(-tokens)
+  &#125;
+
+  <span class="hljs-comment">// 计算结果</span>
+  ok := n &lt;= lim.burst &amp;&amp; waitDuration &lt;= maxFutureReserve
+
+  <span class="hljs-comment">// 初始化 Reservation</span>
+  r := Reservation&#123;
+    ok:    ok,
+    lim:   lim,
+    limit: lim.limit,
+  &#125;
+  
+  <span class="hljs-comment">// 更新令牌桶数量和时间</span>
+  <span class="hljs-keyword">if</span> ok &#123;
+    r.tokens = n
+    r.timeToAct = now.Add(waitDuration)
+  &#125;
+
+  <span class="hljs-comment">// 更新限流器最新取得令牌的时间、数量、事件</span>
+  <span class="hljs-keyword">if</span> ok &#123;
+    lim.last = now
+    lim.tokens = tokens
+    lim.lastEvent = r.timeToAct
+  &#125; <span class="hljs-keyword">else</span> &#123;
+    lim.last = last
+  &#125;
+
+  lim.mu.Unlock()
+  <span class="hljs-keyword">return</span> r
+&#125;
+
+<span class="hljs-comment">// 计算时间变化的 Limiter 的状态变化，得到最新的时间，最后一次取得令牌的时间和 token 令牌数量</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(lim *Limiter)</span> <span class="hljs-title">advance</span><span class="hljs-params">(now time.Time)</span> <span class="hljs-params">(newNow time.Time, newLast time.Time, newTokens <span class="hljs-keyword">float64</span>)</span></span> &#123;
+  last := lim.last
+  <span class="hljs-keyword">if</span> now.Before(last) &#123;
+    last = now
+  &#125;
+
+  maxElapsed := lim.limit.durationFromTokens(<span class="hljs-keyword">float64</span>(lim.burst) - lim.tokens)
+  elapsed := now.Sub(last)
+  <span class="hljs-keyword">if</span> elapsed &gt; maxElapsed &#123;
+    elapsed = maxElapsed
+  &#125;
+
+  delta := lim.limit.tokensFromDuration(elapsed)
+  tokens := lim.tokens + delta
+  <span class="hljs-keyword">if</span> burst := <span class="hljs-keyword">float64</span>(lim.burst); tokens &gt; burst &#123;
+    tokens = burst
+  &#125;
+
+  <span class="hljs-keyword">return</span> now, last, tokens
+&#125;
+
+
+<span class="hljs-comment">// 这里单独放出来，是提醒一下，go也有精度缺失问题，所以复杂计算要注意</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(limit Limit)</span> <span class="hljs-title">tokensFromDuration</span><span class="hljs-params">(d time.Duration)</span> <span class="hljs-title">float64</span></span> &#123;
+  sec := <span class="hljs-keyword">float64</span>(d/time.Second) * <span class="hljs-keyword">float64</span>(limit)
+  nsec := <span class="hljs-keyword">float64</span>(d%time.Second) * <span class="hljs-keyword">float64</span>(limit)
+  <span class="hljs-keyword">return</span> sec + nsec/<span class="hljs-number">1e9</span>
+&#125;
+</code></pre></div>
 
 
 

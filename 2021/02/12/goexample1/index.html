@@ -296,7 +296,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2k 字
+          1.9k 字
         
       </span>
     
@@ -308,7 +308,7 @@
         
         
           <!-- compatible with older versions-->
-          17 分钟
+          16 分钟
         
       </span>
     
@@ -453,19 +453,19 @@
     
       
       
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">goruntine和channel</span>
+          <span class="category-post">golang限流器</span>
         </a>
       
     
       
       
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">golang限流器</span>
+          <span class="category-post">goruntine和channel</span>
         </a>
       
     
@@ -505,23 +505,94 @@
 </ul>
 <hr>
 <p>我们先搭建起来server：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;net/http&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>  &#123;<br>	srv := http.Server&#123;<br>		Addr: <span class="hljs-string">&quot;:8080&quot;</span>,<br>		Handler: http.HandlerFunc(defaultHttp),<br>	&#125;<br>	srv.ListenAndServe()<br>&#125;<br><br><span class="hljs-comment">// 默认http处理</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultHttp</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>	w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;wow&quot;</span>))<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;net/http&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>  &#123;
+	srv := http.Server&#123;
+		Addr: <span class="hljs-string">&quot;:8080&quot;</span>,
+		Handler: http.HandlerFunc(defaultHttp),
+	&#125;
+	srv.ListenAndServe()
+&#125;
+
+<span class="hljs-comment">// 默认http处理</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultHttp</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
+	w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;wow&quot;</span>))
+&#125;</code></pre></div>
 
 <p>运行就可以跑起来了。</p>
 <p>我们再来定义下json输出格式。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 自定义返回</span><br><span class="hljs-keyword">type</span> JsonRes <span class="hljs-keyword">struct</span> &#123;<br>	Code <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;code&quot;`</span><br>	Data <span class="hljs-keyword">interface</span>&#123;&#125; <span class="hljs-string">`json:&quot;data&quot;`</span><br>	Msg <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;msg&quot;`</span><br>	TimeStamp <span class="hljs-keyword">int64</span> <span class="hljs-string">`json:&quot;timestmap&quot;`</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">apiResult</span><span class="hljs-params">(w http.ResponseWriter, code <span class="hljs-keyword">int</span>, data <span class="hljs-keyword">interface</span>&#123;&#125;, msg <span class="hljs-keyword">string</span>)</span></span> &#123;<br>	body, _ := json.Marshal(JsonRes&#123;<br>		Code: code, <br>		Data: data, <br>		Msg: msg, <br>		<span class="hljs-comment">// 获取时间戳</span><br>		TimeStamp: time.Now().Unix(),<br>	&#125;)<br>    w.Write(body)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 自定义返回</span>
+<span class="hljs-keyword">type</span> JsonRes <span class="hljs-keyword">struct</span> &#123;
+	Code <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;code&quot;`</span>
+	Data <span class="hljs-keyword">interface</span>&#123;&#125; <span class="hljs-string">`json:&quot;data&quot;`</span>
+	Msg <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;msg&quot;`</span>
+	TimeStamp <span class="hljs-keyword">int64</span> <span class="hljs-string">`json:&quot;timestmap&quot;`</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">apiResult</span><span class="hljs-params">(w http.ResponseWriter, code <span class="hljs-keyword">int</span>, data <span class="hljs-keyword">interface</span>&#123;&#125;, msg <span class="hljs-keyword">string</span>)</span></span> &#123;
+	body, _ := json.Marshal(JsonRes&#123;
+		Code: code, 
+		Data: data, 
+		Msg: msg, 
+		<span class="hljs-comment">// 获取时间戳</span>
+		TimeStamp: time.Now().Unix(),
+	&#125;)
+    w.Write(body)
+&#125;</code></pre></div>
 
 <p>再来看一下接收参数与输出：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 处理hello，并接收参数输出json</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sayHello</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>    query := r.URL.Query()<br><br>    <span class="hljs-comment">// 第一种方式，但是没有name参数会报错</span><br>    <span class="hljs-comment">// name := query[&quot;name&quot;][0]</span><br><br>    <span class="hljs-comment">// 第二种方式</span><br>    name := query.Get(<span class="hljs-string">&quot;name&quot;</span>)<br>	<br>    apiResult(w, <span class="hljs-number">0</span>, name+<span class="hljs-string">&quot; say &quot;</span>+r.PostFormValue(<span class="hljs-string">&quot;some&quot;</span>), <span class="hljs-string">&quot;success&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 处理hello，并接收参数输出json</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sayHello</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
+    query := r.URL.Query()
+
+    <span class="hljs-comment">// 第一种方式，但是没有name参数会报错</span>
+    <span class="hljs-comment">// name := query[&quot;name&quot;][0]</span>
+
+    <span class="hljs-comment">// 第二种方式</span>
+    name := query.Get(<span class="hljs-string">&quot;name&quot;</span>)
+	
+    apiResult(w, <span class="hljs-number">0</span>, name+<span class="hljs-string">&quot; say &quot;</span>+r.PostFormValue(<span class="hljs-string">&quot;some&quot;</span>), <span class="hljs-string">&quot;success&quot;</span>)
+&#125;</code></pre></div>
 
 <p>超时处理：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go">Handler: http.TimeoutHandler(http.HandlerFunc(defaultHttp), <span class="hljs-number">2</span>*time.Second, <span class="hljs-string">&quot;Timeout!!!&quot;</span>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go">Handler: http.TimeoutHandler(http.HandlerFunc(defaultHttp), <span class="hljs-number">2</span>*time.Second, <span class="hljs-string">&quot;Timeout!!!&quot;</span>)</code></pre></div>
 
 <p>404:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go">http.Error(w, <span class="hljs-string">&quot;you lost???&quot;</span>, http.StatusNotFound)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go">http.Error(w, <span class="hljs-string">&quot;you lost???&quot;</span>, http.StatusNotFound)</code></pre></div>
 
 <p>最后加入路由处理：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultHttp</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;<br>	path, httpMethod := r.URL.Path, r.Method<br><br>	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/&quot;</span> &#123;<br>		w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;index&quot;</span>))<br>		<span class="hljs-keyword">return</span> <br>	&#125;<br><br>	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/hello&quot;</span> &amp;&amp; httpMethod == <span class="hljs-string">&quot;POST&quot;</span> &#123;<br>		sayHello(w, r)<br>		<span class="hljs-keyword">return</span> <br>	&#125;<br><br>	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/sleep&quot;</span> &#123;<br>		<span class="hljs-comment">// 模拟一下业务处理超时</span><br>		time.Sleep(<span class="hljs-number">4</span>*time.Second)<br>		<span class="hljs-keyword">return</span> <br>	&#125;<br><br>	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/path&quot;</span> &#123;<br>		w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;path:&quot;</span>+path+<span class="hljs-string">&quot;, method:&quot;</span>+httpMethod))<br>		<span class="hljs-keyword">return</span> <br>	&#125;<br><br>	<span class="hljs-comment">// 自定义404</span><br>	http.Error(w, <span class="hljs-string">&quot;you lost???&quot;</span>, http.StatusNotFound)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultHttp</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
+	path, httpMethod := r.URL.Path, r.Method
+
+	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/&quot;</span> &#123;
+		w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;index&quot;</span>))
+		<span class="hljs-keyword">return</span> 
+	&#125;
+
+	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/hello&quot;</span> &amp;&amp; httpMethod == <span class="hljs-string">&quot;POST&quot;</span> &#123;
+		sayHello(w, r)
+		<span class="hljs-keyword">return</span> 
+	&#125;
+
+	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/sleep&quot;</span> &#123;
+		<span class="hljs-comment">// 模拟一下业务处理超时</span>
+		time.Sleep(<span class="hljs-number">4</span>*time.Second)
+		<span class="hljs-keyword">return</span> 
+	&#125;
+
+	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/path&quot;</span> &#123;
+		w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;path:&quot;</span>+path+<span class="hljs-string">&quot;, method:&quot;</span>+httpMethod))
+		<span class="hljs-keyword">return</span> 
+	&#125;
+
+	<span class="hljs-comment">// 自定义404</span>
+	http.Error(w, <span class="hljs-string">&quot;you lost???&quot;</span>, http.StatusNotFound)
+&#125;</code></pre></div>
 
 <p>我们运行起来看下效果：</p>
 <p><img src="/images/post/v2-1e879cbadf7b04db53a74f55409d5bb2_1440w.png" srcset="/img/loading.gif" lazyload alt="img">404效果</p>

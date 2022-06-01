@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          11 分钟
+          10 分钟
         
       </span>
     
@@ -864,28 +864,36 @@
               
               <p>如果你需要在查询的时候同时偶尔使用字符串却又不希望丢失数组方式的灵活的话，可以考虑使用组合查询。<br>组合查询的主体还是采用数组方式查询，只是加入了一些特殊的查询支持，包括字符串模式查询（_string）、复合查询（_complex）、请求字符串 查询（_query），混合查询中的特殊查询每次查询只能定义一个，由于采用数组的索引方式，索引相同的特殊查询会被覆盖。</p>
 <h2 id="一-字符串模式查询（采用-string-作为查询条件）"><a href="#一-字符串模式查询（采用-string-作为查询条件）" class="headerlink" title="一. 字符串模式查询（采用_string 作为查询条件）"></a>一. 字符串模式查询（采用_string 作为查询条件）</h2><p>数组条件还可以和字符串条件混合使用，例如：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$User</span> = M(<span class="hljs-string">&quot;member&quot;</span>); <br><span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;id&#x27;</span>] = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;neq&#x27;</span>,<span class="hljs-number">5</span>);<br><span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;name&#x27;</span>] = <span class="hljs-string">&#x27;wzt&#x27;</span>;<br><span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;_string&#x27;</span>] = <span class="hljs-string">&#x27;status=1 AND score&gt;10&#x27;</span>;<br><span class="hljs-variable">$User</span>-&gt;where(<span class="hljs-variable">$map</span>)-&gt;select();<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-variable">$User</span> = M(<span class="hljs-string">&quot;member&quot;</span>); 
+<span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;id&#x27;</span>] = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;neq&#x27;</span>,<span class="hljs-number">5</span>);
+<span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;name&#x27;</span>] = <span class="hljs-string">&#x27;wzt&#x27;</span>;
+<span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;_string&#x27;</span>] = <span class="hljs-string">&#x27;status=1 AND score&gt;10&#x27;</span>;
+<span class="hljs-variable">$User</span>-&gt;where(<span class="hljs-variable">$map</span>)-&gt;select();</code></pre></div>
 
 <p>最后得到的查询条件：</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">( `id` != <span class="hljs-number">5</span> ) <span class="hljs-literal">AND</span> ( `name` = &#x27;wzt&#x27; ) <span class="hljs-literal">AND</span> ( status=<span class="hljs-number">1</span> <span class="hljs-literal">AND</span> score&gt;<span class="hljs-number">10</span> )<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs autohotkey">( `id` != <span class="hljs-number">5</span> ) <span class="hljs-literal">AND</span> ( `name` = &#x27;wzt&#x27; ) <span class="hljs-literal">AND</span> ( status=<span class="hljs-number">1</span> <span class="hljs-literal">AND</span> score&gt;<span class="hljs-number">10</span> )</code></pre></div>
 
 <h2 id="二-请求字符串查询方式"><a href="#二-请求字符串查询方式" class="headerlink" title="二. 请求字符串查询方式"></a>二. 请求字符串查询方式</h2><p>请求字符串查询是一种类似于URL传参的方式，可以支持简单的条件判断</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;m_id&#x27;</span>] = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;gt&#x27;</span>,<span class="hljs-string">&#x27;10&#x27;</span>);<br><span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;_query&#x27;</span>] = <span class="hljs-string">&#x27;status=1&amp;score&gt;60&amp;_logic=or&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;m_id&#x27;</span>] = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;gt&#x27;</span>,<span class="hljs-string">&#x27;10&#x27;</span>);
+<span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;_query&#x27;</span>] = <span class="hljs-string">&#x27;status=1&amp;score&gt;60&amp;_logic=or&#x27;</span>;</code></pre></div>
 
 <p>得到的查询条件是：</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">`m_id`&gt;<span class="hljs-number">10</span> <span class="hljs-literal">AND</span> (`status` = &#x27;<span class="hljs-number">1</span>&#x27; <span class="hljs-literal">OR</span> `score` &gt; &#x27;<span class="hljs-number">60</span>&#x27;)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs autohotkey">`m_id`&gt;<span class="hljs-number">10</span> <span class="hljs-literal">AND</span> (`status` = &#x27;<span class="hljs-number">1</span>&#x27; <span class="hljs-literal">OR</span> `score` &gt; &#x27;<span class="hljs-number">60</span>&#x27;)</code></pre></div>
 
 
 
 <h2 id="三-复合查询"><a href="#三-复合查询" class="headerlink" title="三. 复合查询"></a>三. 复合查询</h2><p>复合查询相当于封装了一个新的查询条件，然后并入原来的查询条件之中，所以可以完成比较复杂的查询条件组装。</p>
 <p>例如:<br>``<br>$where[‘name’]  = array(‘like’, ‘%kw%’);<br>$where[‘title’]  = array(‘like’,’%kw%’);<br>$where[‘_logic’] = ‘or’;<br>$con[‘_complex’] = $where;<br>$con[‘id’]  = array(‘gt’,5);</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs"><br>查询条件是<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs">
+查询条件是</code></pre></div>
 <p>( id &gt; 5) AND ( ( name like ‘%kw%’) OR ( title like ‘%kw%’) )</p>
-<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs excel">复合查询使用了_<span class="hljs-built_in">complex</span>作为子查询条件来定义，配合之前的查询方式，可以非常灵活的制定更加复杂的查询条件。<br><br>很多查询方式可以相互转换，例如上面的可以改成<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs excel">复合查询使用了_<span class="hljs-built_in">complex</span>作为子查询条件来定义，配合之前的查询方式，可以非常灵活的制定更加复杂的查询条件。
+
+很多查询方式可以相互转换，例如上面的可以改成</code></pre></div>
 <p>$where[‘id’] = array(‘gt’,5);<br>$where[‘_string’] = ‘ (name like “%kw%”)  OR ( title like “%kw%”) ‘;</p>
-<pre><code class="hljs">
+<div class="code-wrapper"><pre><code class="hljs">
 最后生成的SQL语句是一致的。
-</code></pre>
+</code></pre></div>
 
               
             </div>

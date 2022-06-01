@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          440 字
+          431 字
         
       </span>
     
@@ -874,7 +874,15 @@
               <p>layer弹出层应该是我们比较常用的一个组件了。</p>
 <p>遇到个问题，就是弹出层加上下一个上一个，其实按理是比较好实现，点击上一个下一个按钮，调用一下layer.close即可，然而无奈的是弹出的是一个iframe，都不在一个页面，如何调用layer.close。</p>
 <p>那可怎么办呢？</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">var <span class="hljs-keyword">index</span>=parent.layer.getFrameIndex(<span class="hljs-keyword">window</span>.name);<br>parent.layer.<span class="hljs-keyword">close</span>(<span class="hljs-keyword">index</span>);<br>parent.layer.<span class="hljs-keyword">open</span>(&#123;<br>    <span class="hljs-keyword">type</span>: <span class="hljs-number">2</span>,<br>    title: <span class="hljs-string">&#x27;详情&#x27;</span>,<br>    shadeClose: <span class="hljs-keyword">true</span>,<br>    area: [<span class="hljs-string">&#x27;1000px&#x27;</span>, <span class="hljs-string">&#x27;96%&#x27;</span>],<br>    content: &quot;...&quot;<br>&#125;); <br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">var <span class="hljs-keyword">index</span>=parent.layer.getFrameIndex(<span class="hljs-keyword">window</span>.name);
+parent.layer.<span class="hljs-keyword">close</span>(<span class="hljs-keyword">index</span>);
+parent.layer.<span class="hljs-keyword">open</span>(&#123;
+    <span class="hljs-keyword">type</span>: <span class="hljs-number">2</span>,
+    title: <span class="hljs-string">&#x27;详情&#x27;</span>,
+    shadeClose: <span class="hljs-keyword">true</span>,
+    area: [<span class="hljs-string">&#x27;1000px&#x27;</span>, <span class="hljs-string">&#x27;96%&#x27;</span>],
+    content: &quot;...&quot;
+&#125;);</code></pre></div>
 
 <p>如上，我们可以调用parent.layer.close，并通过parent.layer.getFrameIndex获取副页面的layer元素，这样就实现此需求了。</p>
 

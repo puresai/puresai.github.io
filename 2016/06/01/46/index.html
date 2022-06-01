@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          645 字
+          637 字
         
       </span>
     
@@ -864,13 +864,18 @@
               
               <p>复合查询相当于封装了一个新的查询条件，然后并入原来的查询条件之中，所以可以完成比较复杂的查询条件组装。</p>
 <p>例如查询name和title中有kw且id大于10的数据：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$where</span>[<span class="hljs-string">&#x27;name&#x27;</span>]  = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;like&#x27;</span>, <span class="hljs-string">&#x27;%kw%&#x27;</span>);<br><span class="hljs-variable">$where</span>[<span class="hljs-string">&#x27;title&#x27;</span>]  = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;like&#x27;</span>,<span class="hljs-string">&#x27;%kw%&#x27;</span>);<br><span class="hljs-variable">$where</span>[<span class="hljs-string">&#x27;_logic&#x27;</span>] = <span class="hljs-string">&#x27;or&#x27;</span>;<br><span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;_complex&#x27;</span>] = <span class="hljs-variable">$where</span>;<br><span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;id&#x27;</span>]  = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;gt&#x27;</span>,<span class="hljs-number">10</span>);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-variable">$where</span>[<span class="hljs-string">&#x27;name&#x27;</span>]  = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;like&#x27;</span>, <span class="hljs-string">&#x27;%kw%&#x27;</span>);
+<span class="hljs-variable">$where</span>[<span class="hljs-string">&#x27;title&#x27;</span>]  = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;like&#x27;</span>,<span class="hljs-string">&#x27;%kw%&#x27;</span>);
+<span class="hljs-variable">$where</span>[<span class="hljs-string">&#x27;_logic&#x27;</span>] = <span class="hljs-string">&#x27;or&#x27;</span>;
+<span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;_complex&#x27;</span>] = <span class="hljs-variable">$where</span>;
+<span class="hljs-variable">$map</span>[<span class="hljs-string">&#x27;id&#x27;</span>]  = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;gt&#x27;</span>,<span class="hljs-number">10</span>);</code></pre></div>
 
 <p>相当于sql语句</p>
-<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">( id &gt; 10) <span class="hljs-keyword">AND</span> ( ( name <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;%kw%&#x27;</span>) <span class="hljs-keyword">OR</span> ( <span class="hljs-built_in">title</span> <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;%kw%&#x27;</span>) )<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs n1ql">( id &gt; 10) <span class="hljs-keyword">AND</span> ( ( name <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;%kw%&#x27;</span>) <span class="hljs-keyword">OR</span> ( <span class="hljs-built_in">title</span> <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;%kw%&#x27;</span>) )</code></pre></div>
 
 <p>其实，很多查询方式可以相互转换，例如上面的查询条件可以改成：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"><span class="hljs-built_in">where</span>[<span class="hljs-string">&#x27;id&#x27;</span>] = array(<span class="hljs-string">&#x27;gt&#x27;</span>,10);</span><br><span class="hljs-meta">$</span><span class="bash"><span class="hljs-built_in">where</span>[<span class="hljs-string">&#x27;_string&#x27;</span>] = <span class="hljs-string">&#x27; (name like &quot;%kw%&quot;)  OR ( title like &quot;%kw&quot;) &#x27;</span>;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"><span class="hljs-built_in">where</span>[<span class="hljs-string">&#x27;id&#x27;</span>] = array(<span class="hljs-string">&#x27;gt&#x27;</span>,10);</span>
+<span class="hljs-meta">$</span><span class="bash"><span class="hljs-built_in">where</span>[<span class="hljs-string">&#x27;_string&#x27;</span>] = <span class="hljs-string">&#x27; (name like &quot;%kw%&quot;)  OR ( title like &quot;%kw&quot;) &#x27;</span>;</span></code></pre></div>
 
 <p>复合查询相当于封装了一个新的查询条件，然后并入原来的查询条件之中，所以可以完成比较复杂的查询条件组装。</p>
 

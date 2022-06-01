@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.2k 字
+          1.1k 字
         
       </span>
     
@@ -410,11 +410,32 @@
 <h2 id="ochinchina-supervisord"><a href="#ochinchina-supervisord" class="headerlink" title="ochinchina/supervisord"></a>ochinchina/supervisord</h2><p><a target="_blank" rel="noopener" href="https://github.com/ochinchina/supervisord">ochinchina/supervisord源码</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/ochinchina/supervisord/releases">下载地址</a></p>
 <p>源码安装：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/ochinchina/</span>supervisord.git<br><span class="hljs-regexp">//</span> 切换到需要的版本分支<br>git checkout v0.<span class="hljs-number">7.3</span> <br><span class="hljs-regexp">//</span> linux 编译安装<br><span class="hljs-regexp">//</span> <span class="hljs-number">64</span>位版本<br>env GOOS=linux GOARCH=amd64 go build -o supervisord_linux_amd64<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/ochinchina/</span>supervisord.git
+<span class="hljs-regexp">//</span> 切换到需要的版本分支
+git checkout v0.<span class="hljs-number">7.3</span> 
+<span class="hljs-regexp">//</span> linux 编译安装
+<span class="hljs-regexp">//</span> <span class="hljs-number">64</span>位版本
+env GOOS=linux GOARCH=amd64 go build -o supervisord_linux_amd64</code></pre></div>
 
 
 <p>配置文件demo</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 内网地址<br>[inet_http_server]<br>port = :<span class="hljs-number">9001</span><br><br><span class="hljs-regexp">//</span> UI地址<br>[supervisorctl]<br>serverurl=http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9001</span><br><br><span class="hljs-regexp">//</span> 进程配置<br>[program:hello]<br>directory = Work<span class="hljs-regexp">/golang/</span><br>command =<br>stdout_logfile = <br>stderr_logfile = <br>autostart = true<br>user=<br><span class="hljs-regexp">//</span> depends_on=B, C<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 内网地址
+[inet_http_server]
+port = :<span class="hljs-number">9001</span>
+
+<span class="hljs-regexp">//</span> UI地址
+[supervisorctl]
+serverurl=http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9001</span>
+
+<span class="hljs-regexp">//</span> 进程配置
+[program:hello]
+directory = Work<span class="hljs-regexp">/golang/</span>
+command =
+stdout_logfile = 
+stderr_logfile = 
+autostart = true
+user=
+<span class="hljs-regexp">//</span> depends_on=B, C</code></pre></div>
 
 
 
@@ -423,7 +444,26 @@
 <p>supervisord -c supervisor.conf -d</p>
 </blockquote>
 <p>ctl 命令</p>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs fortran">// 不是<span class="hljs-number">9001</span>端口，务必指定-s参数<br>supervisord ctl -s=http://localhost:<span class="hljs-number">9010</span> <span class="hljs-keyword">status</span><br>supervisord ctl -s=http://localhost:<span class="hljs-number">9010</span> <span class="hljs-keyword">status</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">1</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">2.</span>..<br>supervisord ctl -s=http://localhost:<span class="hljs-number">9010</span> <span class="hljs-keyword">status</span> group:*<br><br>supervisord ctl <span class="hljs-keyword">stop</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">1</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">2.</span>..<br>supervisord ctl <span class="hljs-keyword">stop</span> group:*<br>supervisord ctl <span class="hljs-keyword">stop</span> <span class="hljs-built_in">all</span><br><br>supervisord ctl -s=http://localhost:<span class="hljs-number">9010</span> start <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">1</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">2.</span>..<br>supervisord ctl start group:*<br>supervisord ctl start <span class="hljs-built_in">all</span><br><br>supervisord ctl shutdown<br>supervisord ctl reload<br><br>supervisord ctl signal &lt;signal_name&gt; &lt;process_name&gt; &lt;process_name&gt; ...<br>supervisord ctl signal <span class="hljs-built_in">all</span><br>supervisord ctl pid &lt;process_name&gt;<br>supervisord ctl fg &lt;process_name&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs fortran">// 不是<span class="hljs-number">9001</span>端口，务必指定-s参数
+supervisord ctl -s=http://localhost:<span class="hljs-number">9010</span> <span class="hljs-keyword">status</span>
+supervisord ctl -s=http://localhost:<span class="hljs-number">9010</span> <span class="hljs-keyword">status</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">1</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">2.</span>..
+supervisord ctl -s=http://localhost:<span class="hljs-number">9010</span> <span class="hljs-keyword">status</span> group:*
+
+supervisord ctl <span class="hljs-keyword">stop</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">1</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">2.</span>..
+supervisord ctl <span class="hljs-keyword">stop</span> group:*
+supervisord ctl <span class="hljs-keyword">stop</span> <span class="hljs-built_in">all</span>
+
+supervisord ctl -s=http://localhost:<span class="hljs-number">9010</span> start <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">1</span> <span class="hljs-function"><span class="hljs-keyword">program</span></span>-<span class="hljs-number">2.</span>..
+supervisord ctl start group:*
+supervisord ctl start <span class="hljs-built_in">all</span>
+
+supervisord ctl shutdown
+supervisord ctl reload
+
+supervisord ctl signal &lt;signal_name&gt; &lt;process_name&gt; &lt;process_name&gt; ...
+supervisord ctl signal <span class="hljs-built_in">all</span>
+supervisord ctl pid &lt;process_name&gt;
+supervisord ctl fg &lt;process_name&gt;</code></pre></div>
 
 
 

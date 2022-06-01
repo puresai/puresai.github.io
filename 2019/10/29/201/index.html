@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          218 字
+          210 字
         
       </span>
     
@@ -472,10 +472,16 @@
             <div class="markdown-body">
               
               <p> 偶尔会有代码提交错误，又提交到远程分支了，怎么回退呢？</p>
-<h3 id="强制回退"><a href="#强制回退" class="headerlink" title="强制回退"></a>强制回退</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs git"># 查看日志，找到对应的commit id<br>git log<br>git reset --hard 回退的版本id<br>git push -f origin 分支名<br></code></pre></td></tr></table></figure>
+<h3 id="强制回退"><a href="#强制回退" class="headerlink" title="强制回退"></a>强制回退</h3><div class="code-wrapper"><pre><code class="hljs git"># 查看日志，找到对应的commit id
+git log
+git reset --hard 回退的版本id
+git push -f origin 分支名</code></pre></div>
 
 <p>这样回退是清除了回退的版本id之后的提交，连日志都没有了。</p>
-<h3 id="回退版本"><a href="#回退版本" class="headerlink" title="回退版本"></a>回退版本</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs git"># 查看日志，找到对应的commit id<br>git log<br>git reset --soft 回退的版本id<br>git commit <br></code></pre></td></tr></table></figure>
+<h3 id="回退版本"><a href="#回退版本" class="headerlink" title="回退版本"></a>回退版本</h3><div class="code-wrapper"><pre><code class="hljs git"># 查看日志，找到对应的commit id
+git log
+git reset --soft 回退的版本id
+git commit</code></pre></div>
 
 <p>这样回退是改回回退的版本id之后的提交，日志仍然存在。</p>
 

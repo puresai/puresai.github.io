@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.8k 字
+          2.6k 字
         
       </span>
     
@@ -306,7 +306,7 @@
         
         
           <!-- compatible with older versions-->
-          24 分钟
+          22 分钟
         
       </span>
     
@@ -533,25 +533,111 @@
 <p>还记得那个流程图吗？</p>
 <p><img src="https://cdn.learnku.com/uploads/images/202002/18/41489/Fd5m6n01d6.png!large" srcset="/img/loading.gif" lazyload alt="简单流程图"></p>
 <p>我们需要加载配置，实例化Application并运行，并且引入后面可能遇到的一些常量。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">require</span> <span class="hljs-keyword">__DIR__</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;..&#x27;</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;library&#x27;</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;System.php&#x27;</span>;<br><br><span class="hljs-comment">// 加载配置</span><br><span class="hljs-variable">$config</span> = <span class="hljs-keyword">require</span> SF_LIBRARY_PATH.<span class="hljs-string">&#x27;Config.php&#x27;</span>;<br><br><br><span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>] = (<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>]?? SF_DEBUG);<br><br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>]) &#123;<br>    ini_set(<span class="hljs-string">&quot;display_errors&quot;</span>, <span class="hljs-string">&quot;On&quot;</span>);<br>    error_reporting(E_ALL);<br>&#125;<br><br><span class="hljs-comment">// composer自动加载</span><br><span class="hljs-keyword">require</span> <span class="hljs-keyword">__DIR__</span> . <span class="hljs-string">&#x27;/../vendor/autoload.php&#x27;</span>;<br><br><span class="hljs-comment">// 实例化应用并运行</span><br><span class="hljs-variable">$app</span> = <span class="hljs-keyword">new</span> Library\Application(<span class="hljs-keyword">new</span> Library\Https\Request() ,<span class="hljs-variable">$config</span>);<br><span class="hljs-variable">$app</span>-&gt;run();<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">require</span> <span class="hljs-keyword">__DIR__</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;..&#x27;</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;library&#x27;</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;System.php&#x27;</span>;
+
+<span class="hljs-comment">// 加载配置</span>
+<span class="hljs-variable">$config</span> = <span class="hljs-keyword">require</span> SF_LIBRARY_PATH.<span class="hljs-string">&#x27;Config.php&#x27;</span>;
+
+
+<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>] = (<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>]?? SF_DEBUG);
+
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$config</span>[<span class="hljs-string">&#x27;debug&#x27;</span>]) &#123;
+    ini_set(<span class="hljs-string">&quot;display_errors&quot;</span>, <span class="hljs-string">&quot;On&quot;</span>);
+    error_reporting(E_ALL);
+&#125;
+
+<span class="hljs-comment">// composer自动加载</span>
+<span class="hljs-keyword">require</span> <span class="hljs-keyword">__DIR__</span> . <span class="hljs-string">&#x27;/../vendor/autoload.php&#x27;</span>;
+
+<span class="hljs-comment">// 实例化应用并运行</span>
+<span class="hljs-variable">$app</span> = <span class="hljs-keyword">new</span> Library\Application(<span class="hljs-keyword">new</span> Library\Https\Request() ,<span class="hljs-variable">$config</span>);
+<span class="hljs-variable">$app</span>-&gt;run();</code></pre></div>
 <p>知识点：</p>
 <ol>
 <li>__DIR__是PHP的一个魔术常量，可以理解成当前文件所在路径。DIRECTORY_SEPARATOR是一个显示系统分隔符的命令，DIRECTORY_SEPARATOR是PHP的内部常量，不需要任何定义与包含即可直接使用。</li>
 <li>ini_set — 为一个配置选项设置值</li>
 <li>error_reporting — 设置应该报告何种 PHP 错误</li>
 </ol>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-comment">// Turn off all error reporting</span><br>error_reporting(<span class="hljs-number">0</span>);<br><br><span class="hljs-comment">// Report simple running errors</span><br>error_reporting(E_ERROR | E_WARNING | E_PARSE);<br><br><span class="hljs-comment">// Reporting E_NOTICE can be good too (to report uninitialized</span><br><span class="hljs-comment">// variables or catch variable name misspellings ...)</span><br>error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);<br><br><span class="hljs-comment">// Report all errors except E_NOTICE</span><br>error_reporting(E_ALL &amp; ~E_NOTICE);<br><br><span class="hljs-comment">// Report all PHP errors (see changelog)</span><br>error_reporting(E_ALL);<br><br><span class="hljs-comment">// Report all PHP errors</span><br>error_reporting(-<span class="hljs-number">1</span>);<br><br><span class="hljs-comment">// Same as error_reporting(E_ALL);</span><br>ini_set(<span class="hljs-string">&#x27;error_reporting&#x27;</span>, E_ALL);<br><br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-comment">// Turn off all error reporting</span>
+error_reporting(<span class="hljs-number">0</span>);
+
+<span class="hljs-comment">// Report simple running errors</span>
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
+<span class="hljs-comment">// Reporting E_NOTICE can be good too (to report uninitialized</span>
+<span class="hljs-comment">// variables or catch variable name misspellings ...)</span>
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+
+<span class="hljs-comment">// Report all errors except E_NOTICE</span>
+error_reporting(E_ALL &amp; ~E_NOTICE);
+
+<span class="hljs-comment">// Report all PHP errors (see changelog)</span>
+error_reporting(E_ALL);
+
+<span class="hljs-comment">// Report all PHP errors</span>
+error_reporting(-<span class="hljs-number">1</span>);
+
+<span class="hljs-comment">// Same as error_reporting(E_ALL);</span>
+ini_set(<span class="hljs-string">&#x27;error_reporting&#x27;</span>, E_ALL);
+
+<span class="hljs-meta">?&gt;</span></code></pre></div>
 
 
 
-<h3 id="System-php"><a href="#System-php" class="headerlink" title="System.php"></a>System.php</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-comment">// debug默认开启</span><br>defined(<span class="hljs-string">&#x27;SF_DEBUG&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_DEBUG&#x27;</span>, <span class="hljs-literal">true</span>);<br><span class="hljs-comment">// 框架开始运行时间</span><br>defined(<span class="hljs-string">&#x27;SF_START_TIME&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_START_TIME&#x27;</span>, microtime(<span class="hljs-literal">true</span>));<br><span class="hljs-comment">// 核心文件目录</span><br>defined(<span class="hljs-string">&#x27;SF_LIBRARY_PATH&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_LIBRARY_PATH&#x27;</span>, <span class="hljs-keyword">__DIR__</span>.DIRECTORY_SEPARATOR);<br><span class="hljs-comment">// 应用目录</span><br>defined(<span class="hljs-string">&#x27;SF_APP_PATH&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_APP_PATH&#x27;</span>, <span class="hljs-keyword">__DIR__</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;..&#x27;</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;app&#x27;</span>.DIRECTORY_SEPARATOR);<br><span class="hljs-comment">// 入口目录</span><br>defined(<span class="hljs-string">&#x27;SF_PUBLIC_PATH&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_PUBLIC_PATH&#x27;</span>, <span class="hljs-keyword">__DIR__</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;..&#x27;</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;public&#x27;</span>.DIRECTORY_SEPARATOR);<br><br></code></pre></td></tr></table></figure>
+<h3 id="System-php"><a href="#System-php" class="headerlink" title="System.php"></a>System.php</h3><div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 
-<h3 id="Config-php"><a href="#Config-php" class="headerlink" title="Config.php"></a>Config.php</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 系统配置</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">return</span> [<br>    <span class="hljs-string">&#x27;debug&#x27;</span> =&gt; <span class="hljs-literal">true</span>, <span class="hljs-comment">// 建议开发过程中开启</span><br>];<br></code></pre></td></tr></table></figure>
+<span class="hljs-comment">// debug默认开启</span>
+defined(<span class="hljs-string">&#x27;SF_DEBUG&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_DEBUG&#x27;</span>, <span class="hljs-literal">true</span>);
+<span class="hljs-comment">// 框架开始运行时间</span>
+defined(<span class="hljs-string">&#x27;SF_START_TIME&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_START_TIME&#x27;</span>, microtime(<span class="hljs-literal">true</span>));
+<span class="hljs-comment">// 核心文件目录</span>
+defined(<span class="hljs-string">&#x27;SF_LIBRARY_PATH&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_LIBRARY_PATH&#x27;</span>, <span class="hljs-keyword">__DIR__</span>.DIRECTORY_SEPARATOR);
+<span class="hljs-comment">// 应用目录</span>
+defined(<span class="hljs-string">&#x27;SF_APP_PATH&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_APP_PATH&#x27;</span>, <span class="hljs-keyword">__DIR__</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;..&#x27;</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;app&#x27;</span>.DIRECTORY_SEPARATOR);
+<span class="hljs-comment">// 入口目录</span>
+defined(<span class="hljs-string">&#x27;SF_PUBLIC_PATH&#x27;</span>) <span class="hljs-keyword">or</span> define(<span class="hljs-string">&#x27;SF_PUBLIC_PATH&#x27;</span>, <span class="hljs-keyword">__DIR__</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;..&#x27;</span>.DIRECTORY_SEPARATOR.<span class="hljs-string">&#x27;public&#x27;</span>.DIRECTORY_SEPARATOR);
+</code></pre></div>
+
+<h3 id="Config-php"><a href="#Config-php" class="headerlink" title="Config.php"></a>Config.php</h3><div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 系统配置</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">return</span> [
+    <span class="hljs-string">&#x27;debug&#x27;</span> =&gt; <span class="hljs-literal">true</span>, <span class="hljs-comment">// 建议开发过程中开启</span>
+];</code></pre></div>
 
 <hr>
 <p>到这里，我们的框架已经可以运行起来了。</p>
 <h3 id="运行应用"><a href="#运行应用" class="headerlink" title="运行应用"></a>运行应用</h3><p>配置Nginx</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123;<br>    <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;<br>    <span class="hljs-attribute">server_name</span>  saif.com;<br>    <span class="hljs-comment"># 框架根目录</span><br>    <span class="hljs-attribute">root</span> /Users/sai/Work/www/saif/public;<br><br><br>    <span class="hljs-attribute">location</span> / &#123;<br>        <span class="hljs-attribute">index</span> index.html index.htm index.php;<br>        <span class="hljs-attribute">try_files</span> $uri $uri/ /index.php?$query_string;<br>    &#125;<br><br><br>    <span class="hljs-attribute">error_page</span>   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /50x.html;<br>    <span class="hljs-attribute">location</span> = /50x.html &#123;<br>    &#125;<br><br>    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ \.php$</span> &#123;<br>        <span class="hljs-attribute">fastcgi_pass</span>   <span class="hljs-number">127.0.0.1:9000</span>;<br>        <span class="hljs-attribute">fastcgi_index</span>  index.php;<br>        <span class="hljs-attribute">fastcgi_param</span>  SCRIPT_FILENAME  $document_root$fastcgi_script_name;<br>        <span class="hljs-attribute">include</span>        fastcgi_params;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123;
+    <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;
+    <span class="hljs-attribute">server_name</span>  saif.com;
+    <span class="hljs-comment"># 框架根目录</span>
+    <span class="hljs-attribute">root</span> /Users/sai/Work/www/saif/public;
+
+
+    <span class="hljs-attribute">location</span> / &#123;
+        <span class="hljs-attribute">index</span> index.html index.htm index.php;
+        <span class="hljs-attribute">try_files</span> $uri $uri/ /index.php?$query_string;
+    &#125;
+
+
+    <span class="hljs-attribute">error_page</span>   <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span>  /50x.html;
+    <span class="hljs-attribute">location</span> = /50x.html &#123;
+    &#125;
+
+    <span class="hljs-attribute">location</span> <span class="hljs-regexp">~ \.php$</span> &#123;
+        <span class="hljs-attribute">fastcgi_pass</span>   <span class="hljs-number">127.0.0.1:9000</span>;
+        <span class="hljs-attribute">fastcgi_index</span>  index.php;
+        <span class="hljs-attribute">fastcgi_param</span>  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        <span class="hljs-attribute">include</span>        fastcgi_params;
+    &#125;
+&#125;
+</code></pre></div>
 
 <p>浏览器输入<a target="_blank" rel="noopener" href="http://saif.com./">http://saif.com。</a></p>
 <p>你会看到返回的json数组：</p>

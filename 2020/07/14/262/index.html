@@ -450,24 +450,51 @@
 <p>基本上常用的不常用的功能都有，就不多说了，有兴趣链接直达，正式开始正文。</p>
 <h3 id="修改菜单图标为elementUI图标"><a href="#修改菜单图标为elementUI图标" class="headerlink" title="修改菜单图标为elementUI图标"></a>修改菜单图标为elementUI图标</h3><p>官方的svg图标确实比较少，添加我也觉得繁琐，另外，既然集成了elementUI，直接用elementUI图标就好了。</p>
 <p>改：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs stylus">修改菜单<span class="hljs-attribute">icon</span>为elementUI图标：<br><span class="hljs-comment">// 文件地址：src\layout\components\Sidebar\Item.vue</span><br><span class="hljs-comment">// if (icon) &#123;</span><br><span class="hljs-comment">//   vnodes.push(&lt;svg-icon icon-class=&#123;icon&#125;/&gt;)</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-keyword">if</span> (<span class="hljs-attribute">icon</span>) &#123;<br>  vnodes<span class="hljs-selector-class">.push</span>(&lt;<span class="hljs-selector-tag">i</span> class=&#123;<span class="hljs-attribute">icon</span>&#125;&gt;&lt;/i&gt;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stylus">修改菜单<span class="hljs-attribute">icon</span>为elementUI图标：
+<span class="hljs-comment">// 文件地址：src\layout\components\Sidebar\Item.vue</span>
+<span class="hljs-comment">// if (icon) &#123;</span>
+<span class="hljs-comment">//   vnodes.push(&lt;svg-icon icon-class=&#123;icon&#125;/&gt;)</span>
+<span class="hljs-comment">// &#125;</span>
+
+<span class="hljs-keyword">if</span> (<span class="hljs-attribute">icon</span>) &#123;
+  vnodes<span class="hljs-selector-class">.push</span>(&lt;<span class="hljs-selector-tag">i</span> class=&#123;<span class="hljs-attribute">icon</span>&#125;&gt;&lt;/i&gt;)
+&#125;</code></pre></div>
 
 <h3 id="关闭eslint"><a href="#关闭eslint" class="headerlink" title="关闭eslint"></a>关闭eslint</h3><p>官网已有答案</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-comment">// vue.config.js</span><br>lintOnSave: <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs actionscript"><span class="hljs-comment">// vue.config.js</span>
+lintOnSave: <span class="hljs-literal">false</span></code></pre></div>
 
 <p>but，如果你使用的是git管理代码，会发现commit的时候依旧会触发eslint。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> package.json <br><span class="hljs-string">&quot;lint-staged&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;src/**/*.&#123;js,vue&#125;&quot;</span>: [<br>      <span class="hljs-string">&quot;eslint --fix&quot;</span>, <span class="hljs-regexp">//</span> 删除这一行<br>      <span class="hljs-string">&quot;git add&quot;</span><br>    ]<br>  &#125;,<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> package.json 
+<span class="hljs-string">&quot;lint-staged&quot;</span>: &#123;
+    <span class="hljs-string">&quot;src/**/*.&#123;js,vue&#125;&quot;</span>: [
+      <span class="hljs-string">&quot;eslint --fix&quot;</span>, <span class="hljs-regexp">//</span> 删除这一行
+      <span class="hljs-string">&quot;git add&quot;</span>
+    ]
+  &#125;,</code></pre></div>
 
-<h3 id="增加本地环境变量"><a href="#增加本地环境变量" class="headerlink" title="增加本地环境变量"></a>增加本地环境变量</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> package.json <br><span class="hljs-string">&quot;scripts&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;local&quot;</span>: <span class="hljs-string">&quot;vue-cli-service serve --mode local&quot;</span>,<br>    ...<br>  &#125;,<br></code></pre></td></tr></table></figure>
+<h3 id="增加本地环境变量"><a href="#增加本地环境变量" class="headerlink" title="增加本地环境变量"></a>增加本地环境变量</h3><div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> package.json 
+<span class="hljs-string">&quot;scripts&quot;</span>: &#123;
+    <span class="hljs-string">&quot;local&quot;</span>: <span class="hljs-string">&quot;vue-cli-service serve --mode local&quot;</span>,
+    ...
+  &#125;,</code></pre></div>
 
 <p>复制.env.production为.env.local，自定义配置后，运行：</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">yarn <span class="hljs-built_in">run</span> <span class="hljs-keyword">local</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs applescript">yarn <span class="hljs-built_in">run</span> <span class="hljs-keyword">local</span></code></pre></div>
 
 <h3 id="缓存页面"><a href="#缓存页面" class="headerlink" title="缓存页面"></a>缓存页面</h3><p>想缓存的页面：</p>
-<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xquery"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="javascript"><span class="xml"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> </span></span><span class="xquery">&#123;</span><br><span class="xquery"> <span class="hljs-built_in"> name</span>: <span class="hljs-string">&quot;cacheIndex&quot;</span>,</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs xquery"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span>
+<span class="javascript"><span class="xml"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> </span></span><span class="xquery">&#123;</span>
+<span class="xquery"> <span class="hljs-built_in"> name</span>: <span class="hljs-string">&quot;cacheIndex&quot;</span>,</span></code></pre></div>
 
 <p>加入cachedViews</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pf">// src\store\modules\tagsView.js<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">state</span> = &#123;<br>  visitedViews: [],<br>  cachedViews: [<br>    &#x27;cacheIndex&#x27;<br>  ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pf">// src\store\modules\tagsView.js
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">state</span> = &#123;
+  visitedViews: [],
+  cachedViews: [
+    &#x27;cacheIndex&#x27;
+  ]
+&#125;</code></pre></div>
 <p>最近开发的项目后台基于vue-element-admin开发，在逐步完善的过程中遇到了一些问题，特此总结，希望能对你有所帮助。</p>
 <p>先上链接，真的很好用，安利一下，链接如下：</p>
 <ul>
@@ -476,24 +503,51 @@
 <p>基本上常用的不常用的功能都有，就不多说了，有兴趣链接直达，正式开始正文。</p>
 <h3 id="修改菜单图标为elementUI图标-1"><a href="#修改菜单图标为elementUI图标-1" class="headerlink" title="修改菜单图标为elementUI图标"></a>修改菜单图标为elementUI图标</h3><p>官方的svg图标确实比较少，添加我也觉得繁琐，另外，既然集成了elementUI，直接用elementUI图标就好了。</p>
 <p>改：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs stylus">修改菜单<span class="hljs-attribute">icon</span>为elementUI图标：<br><span class="hljs-comment">// 文件地址：src\layout\components\Sidebar\Item.vue</span><br><span class="hljs-comment">// if (icon) &#123;</span><br><span class="hljs-comment">//   vnodes.push(&lt;svg-icon icon-class=&#123;icon&#125;/&gt;)</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-keyword">if</span> (<span class="hljs-attribute">icon</span>) &#123;<br>  vnodes<span class="hljs-selector-class">.push</span>(&lt;<span class="hljs-selector-tag">i</span> class=&#123;<span class="hljs-attribute">icon</span>&#125;&gt;&lt;/i&gt;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stylus">修改菜单<span class="hljs-attribute">icon</span>为elementUI图标：
+<span class="hljs-comment">// 文件地址：src\layout\components\Sidebar\Item.vue</span>
+<span class="hljs-comment">// if (icon) &#123;</span>
+<span class="hljs-comment">//   vnodes.push(&lt;svg-icon icon-class=&#123;icon&#125;/&gt;)</span>
+<span class="hljs-comment">// &#125;</span>
+
+<span class="hljs-keyword">if</span> (<span class="hljs-attribute">icon</span>) &#123;
+  vnodes<span class="hljs-selector-class">.push</span>(&lt;<span class="hljs-selector-tag">i</span> class=&#123;<span class="hljs-attribute">icon</span>&#125;&gt;&lt;/i&gt;)
+&#125;</code></pre></div>
 
 <h3 id="关闭eslint-1"><a href="#关闭eslint-1" class="headerlink" title="关闭eslint"></a>关闭eslint</h3><p>官网已有答案</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-comment">// vue.config.js</span><br>lintOnSave: <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs actionscript"><span class="hljs-comment">// vue.config.js</span>
+lintOnSave: <span class="hljs-literal">false</span></code></pre></div>
 
 <p>but，如果你使用的是git管理代码，会发现commit的时候依旧会触发eslint。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> package.json <br><span class="hljs-string">&quot;lint-staged&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;src/**/*.&#123;js,vue&#125;&quot;</span>: [<br>      <span class="hljs-string">&quot;eslint --fix&quot;</span>, <span class="hljs-regexp">//</span> 删除这一行<br>      <span class="hljs-string">&quot;git add&quot;</span><br>    ]<br>  &#125;,<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> package.json 
+<span class="hljs-string">&quot;lint-staged&quot;</span>: &#123;
+    <span class="hljs-string">&quot;src/**/*.&#123;js,vue&#125;&quot;</span>: [
+      <span class="hljs-string">&quot;eslint --fix&quot;</span>, <span class="hljs-regexp">//</span> 删除这一行
+      <span class="hljs-string">&quot;git add&quot;</span>
+    ]
+  &#125;,</code></pre></div>
 
-<h3 id="增加本地环境变量-1"><a href="#增加本地环境变量-1" class="headerlink" title="增加本地环境变量"></a>增加本地环境变量</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> package.json <br><span class="hljs-string">&quot;scripts&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;local&quot;</span>: <span class="hljs-string">&quot;vue-cli-service serve --mode local&quot;</span>,<br>    ...<br>  &#125;,<br></code></pre></td></tr></table></figure>
+<h3 id="增加本地环境变量-1"><a href="#增加本地环境变量-1" class="headerlink" title="增加本地环境变量"></a>增加本地环境变量</h3><div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> package.json 
+<span class="hljs-string">&quot;scripts&quot;</span>: &#123;
+    <span class="hljs-string">&quot;local&quot;</span>: <span class="hljs-string">&quot;vue-cli-service serve --mode local&quot;</span>,
+    ...
+  &#125;,</code></pre></div>
 
 <p>复制.env.production为.env.local，自定义配置后，运行：</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">yarn <span class="hljs-built_in">run</span> <span class="hljs-keyword">local</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs applescript">yarn <span class="hljs-built_in">run</span> <span class="hljs-keyword">local</span></code></pre></div>
 
 <h3 id="缓存页面-1"><a href="#缓存页面-1" class="headerlink" title="缓存页面"></a>缓存页面</h3><p>想缓存的页面：</p>
-<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xquery"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="javascript"><span class="xml"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> </span></span><span class="xquery">&#123;</span><br><span class="xquery"> <span class="hljs-built_in"> name</span>: <span class="hljs-string">&quot;cacheIndex&quot;</span>,</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs xquery"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span>
+<span class="javascript"><span class="xml"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> </span></span><span class="xquery">&#123;</span>
+<span class="xquery"> <span class="hljs-built_in"> name</span>: <span class="hljs-string">&quot;cacheIndex&quot;</span>,</span></code></pre></div>
 
 <p>加入cachedViews</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pf">// src\store\modules\tagsView.js<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">state</span> = &#123;<br>  visitedViews: [],<br>  cachedViews: [<br>    &#x27;cacheIndex&#x27;<br>  ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pf">// src\store\modules\tagsView.js
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">state</span> = &#123;
+  visitedViews: [],
+  cachedViews: [
+    &#x27;cacheIndex&#x27;
+  ]
+&#125;</code></pre></div>
 
 
               

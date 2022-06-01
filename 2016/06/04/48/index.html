@@ -873,16 +873,16 @@
             
             <div class="markdown-body">
               
-               <p><br/></p><p>jQuery自定义了jQuery.extend()和jQuery.fn.extend()方法.其中jQuery.extend()方法能够创建全局函数或者选择器,而jQuery.fn.extend()方法能够创建jQuery对象方法.</p><p>jQuery插件开发就分为这两种： <br/><br/>一、类级别 <br/><br/>类级别你可以理解为扩展jquery类，最明显的例子是$.ajax(...),相当于静态方法。 <br/><br/>开发扩展其方法时使用$.extend方法，即jQuery.extend(object);&nbsp;</p><pre class="brush:js;toolbar:false">$.extend({
+               <p><br/></p><p>jQuery自定义了jQuery.extend()和jQuery.fn.extend()方法.其中jQuery.extend()方法能够创建全局函数或者选择器,而jQuery.fn.extend()方法能够创建jQuery对象方法.</p><p>jQuery插件开发就分为这两种： <br/><br/>一、类级别 <br/><br/>类级别你可以理解为扩展jquery类，最明显的例子是$.ajax(...),相当于静态方法。 <br/><br/>开发扩展其方法时使用$.extend方法，即jQuery.extend(object);&nbsp;</p><div class="code-wrapper"><pre class="brush:js;toolbar:false">$.extend({
 &nbsp;&nbsp;&nbsp;al:function(msg){alert(msg);}
-});</pre><p>调用很简单，$.al(11);效果如下：</p><p><img src="/ueditor/php/upload/image/20160604/1465046777269616.png" srcset="/img/loading.gif" lazyload title="1465046777269616.png" alt="捕获.PNG"/></p><p><br/></p><p>二、对象级别 <br/><br/>对象级别则可以理解为基于对象的拓展，如$(&quot;#scroll&quot;).slide(...); 这里这个slide呢，就是基于对象的扩展了。 <br/><br/>开发扩展其方法时使用$.fn.extend方法，即jQuery.fn.extend(object);&nbsp;</p><pre class="brush:js;toolbar:false">$.fn.extend({&nbsp;
+});</pre></div><p>调用很简单，$.al(11);效果如下：</p><p><img src="/ueditor/php/upload/image/20160604/1465046777269616.png" srcset="/img/loading.gif" lazyload title="1465046777269616.png" alt="捕获.PNG"/></p><p><br/></p><p>二、对象级别 <br/><br/>对象级别则可以理解为基于对象的拓展，如$(&quot;#scroll&quot;).slide(...); 这里这个slide呢，就是基于对象的扩展了。 <br/><br/>开发扩展其方法时使用$.fn.extend方法，即jQuery.fn.extend(object);&nbsp;</p><div class="code-wrapper"><pre class="brush:js;toolbar:false">$.fn.extend({&nbsp;
 shtml:&nbsp;function&nbsp;(showhtml)&nbsp;{&nbsp;
 jQuery(this).html(showhtml);&nbsp;
 }&nbsp;
-})</pre><p>调用也很简单，<br/></p><pre class="brush:html;toolbar:false">&lt;div&nbsp;class=&quot;msg&quot;&gt;&lt;/div&gt;
+})</pre></div><p>调用也很简单，<br/></p><div class="code-wrapper"><pre class="brush:html;toolbar:false">&lt;div&nbsp;class=&quot;msg&quot;&gt;&lt;/div&gt;
 &lt;script&gt;
 &nbsp;&nbsp;&nbsp;&nbsp;$(&#39;.msg&#39;).shtml(&#39;111&#39;);
-&lt;/script&gt;</pre><p>效果如下：</p><p><img src="/ueditor/php/upload/image/20160604/1465046931169395.png" srcset="/img/loading.gif" lazyload title="1465046931169395.png" alt="捕获.PNG"/></p><p><br/></p><p>这里只是最简单的示例，你可以尝试开发一些复杂美观的插件。</p>
+&lt;/script&gt;</pre></div><p>效果如下：</p><p><img src="/ueditor/php/upload/image/20160604/1465046931169395.png" srcset="/img/loading.gif" lazyload title="1465046931169395.png" alt="捕获.PNG"/></p><p><br/></p><p>这里只是最简单的示例，你可以尝试开发一些复杂美观的插件。</p>
 
               
             </div>

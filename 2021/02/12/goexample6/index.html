@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.8k 字
+          3.6k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          32 分钟
+          31 分钟
         
       </span>
     
@@ -450,19 +450,19 @@
     
       
       
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">goruntine和channel</span>
+          <span class="category-post">golang限流器</span>
         </a>
       
     
       
       
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">golang限流器</span>
+          <span class="category-post">goruntine和channel</span>
         </a>
       
     
@@ -503,23 +503,142 @@
 <p>另外，go-kit提供log日志，metric计数器，tracing请求跟踪，circuitbreaker服务熔断，rate-limiter限流器等模块。简单说，go-kit提供了微服务架构常见的基础模块，可以让开发者省去很多时间。</p>
 <h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>了解还不够，show code。</p>
 <p>我们先定义下service，不如就做个简单的计算器，仅仅做演示，有加减功能即可，不整太复杂了。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> service<br><br><span class="hljs-comment">// 接口定义</span><br><span class="hljs-keyword">type</span> CalculateService <span class="hljs-keyword">interface</span> &#123;<br>	Add(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span><br>	Reduce(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span><br>	Multi(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> calculateService <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewService</span><span class="hljs-params">()</span> *<span class="hljs-title">calculateService</span></span> &#123;<br>	<span class="hljs-keyword">return</span> &amp;calculateService&#123;&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Add</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;<br>	<span class="hljs-keyword">return</span> a + b<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Reduce</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;<br>	<span class="hljs-keyword">return</span> a - b<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Multi</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;<br>	<span class="hljs-keyword">return</span> a * b<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> service
+
+<span class="hljs-comment">// 接口定义</span>
+<span class="hljs-keyword">type</span> CalculateService <span class="hljs-keyword">interface</span> &#123;
+	Add(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span>
+	Reduce(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span>
+	Multi(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span>
+&#125;
+
+<span class="hljs-keyword">type</span> calculateService <span class="hljs-keyword">struct</span>&#123;&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewService</span><span class="hljs-params">()</span> *<span class="hljs-title">calculateService</span></span> &#123;
+	<span class="hljs-keyword">return</span> &amp;calculateService&#123;&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Add</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;
+	<span class="hljs-keyword">return</span> a + b
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Reduce</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;
+	<span class="hljs-keyword">return</span> a - b
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Multi</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;
+	<span class="hljs-keyword">return</span> a * b
+&#125;</code></pre></div>
 
 <blockquote>
 <p>注意：Go 接口是一组方法的集合，可以理解为抽象的类型。它提供了一种非侵入式的接口。任何类型，只要实现了该接口中方法集，那么就属于这个类型。（这是go中非常常用的特性，切记)</p>
 </blockquote>
 <p>endpoint格式化请求，调用service服务，并格式化输出</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> endpoint<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;demo6/service&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/go-kit/kit/endpoint&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> Request <span class="hljs-keyword">struct</span> &#123;<br>	A <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;a&quot; form:&quot;a&quot;`</span><br>	B <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;b&quot; form:&quot;b&quot;`</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Res <span class="hljs-keyword">struct</span> &#123;<br>	Res <span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;res&quot;`</span><br>	Err error <span class="hljs-string">`json:&quot;err&quot;`</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeAddEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;<br>		req := request.(Request)<br>		<span class="hljs-keyword">return</span> Res&#123;Res: s.Add(req.A, req.B)&#125;, <span class="hljs-literal">nil</span><br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeReduceEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;<br>		req := request.(Request)<br>		<span class="hljs-keyword">return</span> Res&#123;Res: s.Reduce(req.A, req.B)&#125;, <span class="hljs-literal">nil</span><br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeMultiEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;<br>		req := request.(Request)<br>		<span class="hljs-keyword">return</span> Res&#123;Res: s.Multi(req.A, req.B)&#125;, <span class="hljs-literal">nil</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> endpoint
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;demo6/service&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+
+	<span class="hljs-string">&quot;github.com/go-kit/kit/endpoint&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Request <span class="hljs-keyword">struct</span> &#123;
+	A <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;a&quot; form:&quot;a&quot;`</span>
+	B <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;b&quot; form:&quot;b&quot;`</span>
+&#125;
+
+<span class="hljs-keyword">type</span> Res <span class="hljs-keyword">struct</span> &#123;
+	Res <span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;res&quot;`</span>
+	Err error <span class="hljs-string">`json:&quot;err&quot;`</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeAddEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
+		req := request.(Request)
+		<span class="hljs-keyword">return</span> Res&#123;Res: s.Add(req.A, req.B)&#125;, <span class="hljs-literal">nil</span>
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeReduceEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
+		req := request.(Request)
+		<span class="hljs-keyword">return</span> Res&#123;Res: s.Reduce(req.A, req.B)&#125;, <span class="hljs-literal">nil</span>
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeMultiEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
+		req := request.(Request)
+		<span class="hljs-keyword">return</span> Res&#123;Res: s.Multi(req.A, req.B)&#125;, <span class="hljs-literal">nil</span>
+	&#125;
+&#125;</code></pre></div>
 
 
 
 <p>接下来，定义transport定义请求方式（这里我们使用json）：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> transport<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;demo6/endpoint&quot;</span><br>	<span class="hljs-string">&quot;encoding/json&quot;</span><br>	<span class="hljs-string">&quot;errors&quot;</span><br>	<span class="hljs-string">&quot;net/http&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">DecodeRequest</span><span class="hljs-params">(_ context.Context, r *http.Request)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;<br>	<span class="hljs-keyword">var</span> req endpoint.Request<br>	<span class="hljs-keyword">if</span> err := json.NewDecoder(r.Body).Decode(&amp;req); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;params error&quot;</span>)<br>	&#125;<br>	<span class="hljs-keyword">return</span> req, <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">EncodeResponse</span><span class="hljs-params">(_ context.Context, w http.ResponseWriter, res <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">error</span></span> &#123;<br>	<span class="hljs-keyword">return</span> json.NewEncoder(w).Encode(res)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> transport
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;demo6/endpoint&quot;</span>
+	<span class="hljs-string">&quot;encoding/json&quot;</span>
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;net/http&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">DecodeRequest</span><span class="hljs-params">(_ context.Context, r *http.Request)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
+	<span class="hljs-keyword">var</span> req endpoint.Request
+	<span class="hljs-keyword">if</span> err := json.NewDecoder(r.Body).Decode(&amp;req); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;params error&quot;</span>)
+	&#125;
+	<span class="hljs-keyword">return</span> req, <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">EncodeResponse</span><span class="hljs-params">(_ context.Context, w http.ResponseWriter, res <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">return</span> json.NewEncoder(w).Encode(res)
+&#125;</code></pre></div>
 
 
 
 <p>最后我们将它们endpoint和transport粘合起来，跑起来go～</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs text">package main<br><br>import (<br>	&quot;demo6/endpoint&quot;<br>	&quot;demo6/service&quot;<br>	&quot;demo6/transport&quot;<br>	&quot;net/http&quot;<br><br>	httpTransport &quot;github.com/go-kit/kit/transport/http&quot;<br>)<br><br>func main() &#123;<br>	s := service.NewService()<br><br>	add := httpTransport.NewServer(<br>		endpoint.MakeAddEndpoint(s),<br>		transport.DecodeRequest,<br>		transport.EncodeResponse,<br>	)<br><br>	reduce := httpTransport.NewServer(<br>		endpoint.MakeReduceEndpoint(s),<br>		transport.DecodeRequest,<br>		transport.EncodeResponse,<br>	)<br><br>	multi := httpTransport.NewServer(<br>		endpoint.MakeMultiEndpoint(s),<br>		transport.DecodeRequest,<br>		transport.EncodeResponse,<br>	)<br>	http.Handle(&quot;/add&quot;, add)<br>	http.Handle(&quot;/reduce&quot;, reduce)<br>	http.Handle(&quot;/multi&quot;, multi)<br>	http.ListenAndServe(&quot;:9009&quot;, nil)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs text">package main
+
+import (
+	&quot;demo6/endpoint&quot;
+	&quot;demo6/service&quot;
+	&quot;demo6/transport&quot;
+	&quot;net/http&quot;
+
+	httpTransport &quot;github.com/go-kit/kit/transport/http&quot;
+)
+
+func main() &#123;
+	s := service.NewService()
+
+	add := httpTransport.NewServer(
+		endpoint.MakeAddEndpoint(s),
+		transport.DecodeRequest,
+		transport.EncodeResponse,
+	)
+
+	reduce := httpTransport.NewServer(
+		endpoint.MakeReduceEndpoint(s),
+		transport.DecodeRequest,
+		transport.EncodeResponse,
+	)
+
+	multi := httpTransport.NewServer(
+		endpoint.MakeMultiEndpoint(s),
+		transport.DecodeRequest,
+		transport.EncodeResponse,
+	)
+	http.Handle(&quot;/add&quot;, add)
+	http.Handle(&quot;/reduce&quot;, reduce)
+	http.Handle(&quot;/multi&quot;, multi)
+	http.ListenAndServe(&quot;:9009&quot;, nil)
+&#125;</code></pre></div>
 
 
 

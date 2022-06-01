@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3k 字
+          2.9k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          25 分钟
+          24 分钟
         
       </span>
     
@@ -532,45 +532,123 @@
             
             <div class="markdown-body">
               
-              <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 下载，注意下载对应的系统版本，否则安装会报错<br>wget https:<span class="hljs-regexp">//</span>fastdl.mongodb.org<span class="hljs-regexp">/linux/m</span>ongodb-linux-x86_64-rhel70-<span class="hljs-number">4.4</span>.<span class="hljs-number">1</span>.tgz<br><span class="hljs-regexp">//</span> 解压即可，无需编译安装<br>tar -zxvf mongodb-linux-x86_64-rhel70-<span class="hljs-number">4.4</span>.<span class="hljs-number">1</span>.tgz<br>mv mongodb-linux-x86_64-rhel70-<span class="hljs-number">4.4</span>.<span class="hljs-number">1</span> <span class="hljs-regexp">/usr/</span>local/mongodb<br></code></pre></td></tr></table></figure>
+              <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 下载，注意下载对应的系统版本，否则安装会报错
+wget https:<span class="hljs-regexp">//</span>fastdl.mongodb.org<span class="hljs-regexp">/linux/m</span>ongodb-linux-x86_64-rhel70-<span class="hljs-number">4.4</span>.<span class="hljs-number">1</span>.tgz
+<span class="hljs-regexp">//</span> 解压即可，无需编译安装
+tar -zxvf mongodb-linux-x86_64-rhel70-<span class="hljs-number">4.4</span>.<span class="hljs-number">1</span>.tgz
+mv mongodb-linux-x86_64-rhel70-<span class="hljs-number">4.4</span>.<span class="hljs-number">1</span> <span class="hljs-regexp">/usr/</span>local/mongodb</code></pre></div>
 
 <h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><p>新建mongodb.conf（版本可能不一样，略有不同）</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">dbpath</span> = /data/mongodb/data <span class="hljs-comment">#数据文件存放目录  </span><br><span class="hljs-attr">logpath</span> = /data/mongodb/log/mongodb.log <span class="hljs-comment">#日志文件存放目录  </span><br><span class="hljs-attr">port</span> = <span class="hljs-number">27000</span>  <span class="hljs-comment">#端口  </span><br><span class="hljs-attr">fork</span> = <span class="hljs-literal">true</span>  <span class="hljs-comment">#以守护程序的方式启用，即在后台运行  </span><br><span class="hljs-attr">bind_ip</span>=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span><br></code></pre></td></tr></table></figure>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/mongodb/</span><br><br><span class="hljs-regexp">//</span> 启动服务<br>bin<span class="hljs-regexp">/mongod -f ./m</span>ongodb.conf<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">dbpath</span> = /data/mongodb/data <span class="hljs-comment">#数据文件存放目录  </span>
+<span class="hljs-attr">logpath</span> = /data/mongodb/log/mongodb.log <span class="hljs-comment">#日志文件存放目录  </span>
+<span class="hljs-attr">port</span> = <span class="hljs-number">27000</span>  <span class="hljs-comment">#端口  </span>
+<span class="hljs-attr">fork</span> = <span class="hljs-literal">true</span>  <span class="hljs-comment">#以守护程序的方式启用，即在后台运行  </span>
+<span class="hljs-attr">bind_ip</span>=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span></code></pre></div>
+<div class="code-wrapper"><pre><code class="hljs awk">cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/mongodb/</span>
+
+<span class="hljs-regexp">//</span> 启动服务
+bin<span class="hljs-regexp">/mongod -f ./m</span>ongodb.conf</code></pre></div>
 
 <h2 id="新增用户"><a href="#新增用户" class="headerlink" title="新增用户"></a>新增用户</h2><p>设置密码</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> admin;<br><br><span class="hljs-keyword">db</span>.createUser(&#123;user:<span class="hljs-string">&quot;root&quot;</span>,<span class="hljs-keyword">pwd</span>:<span class="hljs-string">&quot;666888&quot;</span>,roles:[<span class="hljs-string">&quot;userAdminAnyDatabase&quot;</span>]&#125;);<br><br><br><span class="hljs-keyword">use</span> <span class="hljs-keyword">test</span>;<br><span class="hljs-keyword">db</span>.createUser(&#123;<br>    user: <span class="hljs-string">&quot;test&quot;</span>,<br>    <span class="hljs-keyword">pwd</span>: <span class="hljs-string">&quot;123456&quot;</span>,<br>    roles: [&#123;role: <span class="hljs-string">&quot;readWrite&quot;</span>,<span class="hljs-keyword">db</span>: <span class="hljs-string">&quot;hotel&quot;</span>&#125;]<br>&#125;)<br><br><span class="hljs-keyword">db</span>.createUser(  <br>  &#123;  <br>    user: <span class="hljs-string">&quot;admin&quot;</span>,  <br>    <span class="hljs-keyword">pwd</span>: <span class="hljs-string">&quot;5176567&quot;</span>,  <br>    roles: [&#123;role: <span class="hljs-string">&quot;userAdminAnyDatabase&quot;</span>, <span class="hljs-keyword">db</span>: <span class="hljs-string">&quot;admin&quot;</span>&#125;]  <br>  &#125;<br>)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> admin;
+
+<span class="hljs-keyword">db</span>.createUser(&#123;user:<span class="hljs-string">&quot;root&quot;</span>,<span class="hljs-keyword">pwd</span>:<span class="hljs-string">&quot;666888&quot;</span>,roles:[<span class="hljs-string">&quot;userAdminAnyDatabase&quot;</span>]&#125;);
+
+
+<span class="hljs-keyword">use</span> <span class="hljs-keyword">test</span>;
+<span class="hljs-keyword">db</span>.createUser(&#123;
+    user: <span class="hljs-string">&quot;test&quot;</span>,
+    <span class="hljs-keyword">pwd</span>: <span class="hljs-string">&quot;123456&quot;</span>,
+    roles: [&#123;role: <span class="hljs-string">&quot;readWrite&quot;</span>,<span class="hljs-keyword">db</span>: <span class="hljs-string">&quot;hotel&quot;</span>&#125;]
+&#125;)
+
+<span class="hljs-keyword">db</span>.createUser(  
+  &#123;  
+    user: <span class="hljs-string">&quot;admin&quot;</span>,  
+    <span class="hljs-keyword">pwd</span>: <span class="hljs-string">&quot;5176567&quot;</span>,  
+    roles: [&#123;role: <span class="hljs-string">&quot;userAdminAnyDatabase&quot;</span>, <span class="hljs-keyword">db</span>: <span class="hljs-string">&quot;admin&quot;</span>&#125;]  
+  &#125;
+)</code></pre></div>
 
 <p>role的说明</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">Read</span>：允许用户读取指定数据库<br>readWrite：允许用户读写指定数据库<br>dbAdmin：允许用户在指定数据库中执行管理函数，如索引创建、删除，查看统计或访问<span class="hljs-keyword">system</span>.profile<br>userAdmin：允许用户向<span class="hljs-keyword">system</span>.users集合写入，可以找指定数据库里创建、删除和管理用户<br>clusterAdmin：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有分片和复制集相关函数的管理权限。<br>readAnyDatabase：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有数据库的读权限<br>readWriteAnyDatabase：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有数据库的读写权限<br>userAdminAnyDatabase：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有数据库的userAdmin权限<br>dbAdminAnyDatabase：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有数据库的dbAdmin权限。<br>root：只在<span class="hljs-keyword">admin</span>数据库中可用。超级账号，超级权限<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql"><span class="hljs-keyword">Read</span>：允许用户读取指定数据库
+readWrite：允许用户读写指定数据库
+dbAdmin：允许用户在指定数据库中执行管理函数，如索引创建、删除，查看统计或访问<span class="hljs-keyword">system</span>.profile
+userAdmin：允许用户向<span class="hljs-keyword">system</span>.users集合写入，可以找指定数据库里创建、删除和管理用户
+clusterAdmin：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有分片和复制集相关函数的管理权限。
+readAnyDatabase：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有数据库的读权限
+readWriteAnyDatabase：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有数据库的读写权限
+userAdminAnyDatabase：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有数据库的userAdmin权限
+dbAdminAnyDatabase：只在<span class="hljs-keyword">admin</span>数据库中可用，赋予用户所有数据库的dbAdmin权限。
+root：只在<span class="hljs-keyword">admin</span>数据库中可用。超级账号，超级权限</code></pre></div>
 
 <p>建议出root和admin，各个数据库使用自己独立的账号密码。</p>
 <p>auth尝试一下，如果返回1，表示auth验证成功</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">db.auth(&#x27;root&#x27;, &#x27;<span class="hljs-number">666888</span>&#x27;)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs 1c">db.auth(&#x27;root&#x27;, &#x27;<span class="hljs-number">666888</span>&#x27;)</code></pre></div>
 
 <h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>关闭mongo服务</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> admin<br><span class="hljs-keyword">db</span>.shutdownServer()<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> admin
+<span class="hljs-keyword">db</span>.shutdownServer()</code></pre></div>
 
 
 <p>清空当前数据库</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> xxx<br><span class="hljs-keyword">db</span>.dropDatabase()<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stata"><span class="hljs-keyword">use</span> xxx
+<span class="hljs-keyword">db</span>.dropDatabase()</code></pre></div>
 
 <h2 id="集成到Laravel"><a href="#集成到Laravel" class="headerlink" title="集成到Laravel"></a>集成到Laravel</h2><p>安装</p>
 <blockquote>
 <p>composer require jenssegers/mongodb 3.6.x</p>
 </blockquote>
 <p>低版本需要在config/app.php加入</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Jenssegers\Mongodb\MongodbServiceProvider::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs cpp">Jenssegers\Mongodb\MongodbServiceProvider::<span class="hljs-class"><span class="hljs-keyword">class</span>,</span></code></pre></div>
 
 <p>配置database.php</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-string">&#x27;mongodb&#x27;</span> =&gt; [<br>            <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;mongodb&#x27;</span>,<br>            <span class="hljs-string">&#x27;host&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_HOST&#x27;</span>, <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>),<br>            <span class="hljs-string">&#x27;port&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_PORT&#x27;</span>, <span class="hljs-number">27017</span>),<br>            <span class="hljs-string">&#x27;database&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_DATABASE&#x27;</span>, <span class="hljs-string">&#x27;test&#x27;</span>),<br>            <span class="hljs-string">&#x27;username&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_USERNAME&#x27;</span>, <span class="hljs-string">&#x27;test&#x27;</span>),<br>            <span class="hljs-string">&#x27;password&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_PWD&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>),<br>            <span class="hljs-string">&#x27;options&#x27;</span> =&gt; [<br>                <span class="hljs-comment">// here you can pass more settings to the Mongo Driver Manager</span><br>                <span class="hljs-comment">// see https://www.php.net/manual/en/mongodb-driver-manager.construct.php under &quot;Uri Options&quot; for a list of complete parameters that you can use</span><br><br>            <span class="hljs-string">&#x27;database&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_AUTHENTICATION_DATABASE&#x27;</span>, <span class="hljs-string">&#x27;hotel&#x27;</span>), <span class="hljs-comment">// required with Mongo 3+</span><br>            ],<br>        ],<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs dart"><span class="hljs-string">&#x27;mongodb&#x27;</span> =&gt; [
+            <span class="hljs-string">&#x27;driver&#x27;</span> =&gt; <span class="hljs-string">&#x27;mongodb&#x27;</span>,
+            <span class="hljs-string">&#x27;host&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_HOST&#x27;</span>, <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>),
+            <span class="hljs-string">&#x27;port&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_PORT&#x27;</span>, <span class="hljs-number">27017</span>),
+            <span class="hljs-string">&#x27;database&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_DATABASE&#x27;</span>, <span class="hljs-string">&#x27;test&#x27;</span>),
+            <span class="hljs-string">&#x27;username&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_USERNAME&#x27;</span>, <span class="hljs-string">&#x27;test&#x27;</span>),
+            <span class="hljs-string">&#x27;password&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_PWD&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>),
+            <span class="hljs-string">&#x27;options&#x27;</span> =&gt; [
+                <span class="hljs-comment">// here you can pass more settings to the Mongo Driver Manager</span>
+                <span class="hljs-comment">// see https://www.php.net/manual/en/mongodb-driver-manager.construct.php under &quot;Uri Options&quot; for a list of complete parameters that you can use</span>
+
+            <span class="hljs-string">&#x27;database&#x27;</span> =&gt; env(<span class="hljs-string">&#x27;MONGODB_AUTHENTICATION_DATABASE&#x27;</span>, <span class="hljs-string">&#x27;hotel&#x27;</span>), <span class="hljs-comment">// required with Mongo 3+</span>
+            ],
+        ],</code></pre></div>
 
 
 <p>Model定义:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Author: 13sai</span><br><span class="hljs-comment"> * Date: 2020/12/22</span><br><span class="hljs-comment"> * Time: 15:08</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Jenssegers</span>\<span class="hljs-title">Mongodb</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Product</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$collection</span> = <span class="hljs-string">&#x27;products&#x27;</span>;<br><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$connection</span> = <span class="hljs-string">&#x27;mongodb&#x27;</span>;<br><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$guarded</span> = [<span class="hljs-string">&#x27;id&#x27;</span>];<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Author: 13sai</span>
+<span class="hljs-comment"> * Date: 2020/12/22</span>
+<span class="hljs-comment"> * Time: 15:08</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Jenssegers</span>\<span class="hljs-title">Mongodb</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Product</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$collection</span> = <span class="hljs-string">&#x27;products&#x27;</span>;
+
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$connection</span> = <span class="hljs-string">&#x27;mongodb&#x27;</span>;
+
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$guarded</span> = [<span class="hljs-string">&#x27;id&#x27;</span>];
+
+&#125;</code></pre></div>
 
 <p>使用:</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$users</span> = User::distinct(<span class="hljs-string">&#x27;name&#x27;</span>)-&gt;get();<br><br><span class="hljs-variable">$users</span> = User::whereIn(<span class="hljs-string">&#x27;age&#x27;</span>, [<span class="hljs-number">16</span>, <span class="hljs-number">18</span>, <span class="hljs-number">20</span>])-&gt;get();<br><br><span class="hljs-variable">$total</span> = Product::count();<br><br><span class="hljs-variable">$price</span> = Product::avg(<span class="hljs-string">&#x27;price&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs elixir"><span class="hljs-variable">$users</span> = User::distinct(<span class="hljs-string">&#x27;name&#x27;</span>)-&gt;get();
+
+<span class="hljs-variable">$users</span> = User::whereIn(<span class="hljs-string">&#x27;age&#x27;</span>, [<span class="hljs-number">16</span>, <span class="hljs-number">18</span>, <span class="hljs-number">20</span>])-&gt;get();
+
+<span class="hljs-variable">$total</span> = Product::count();
+
+<span class="hljs-variable">$price</span> = Product::avg(<span class="hljs-string">&#x27;price&#x27;</span>);</code></pre></div>
 
 <p>Eloquent ORM常用的命令均支持，用起来毫无违和感，select略有不同，会把_id查询出来。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/jenssegers/laravel-mongodb">更多命令点击查看代码仓库</a></p>

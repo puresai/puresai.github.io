@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1k 字
+          981 字
         
       </span>
     
@@ -431,11 +431,31 @@
 <blockquote>
 <p>glup -v // 输入版本，则说明安装成功。</p>
 </blockquote>
-<h2 id="新建package-json"><a href="#新建package-json" class="headerlink" title="新建package.json"></a>新建package.json</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br>	<span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;sai&quot;</span>,<br>	<span class="hljs-attr">&quot;version&quot;</span>: <span class="hljs-string">&quot;1.0&quot;</span>,<br>	<span class="hljs-attr">&quot;description&quot;</span>: <span class="hljs-string">&quot;gulp css!&quot;</span>,<br>	<span class="hljs-attr">&quot;author&quot;</span>: &#123;<br>		<span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;13sai&quot;</span>,<br>		<span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;95742781@qq.com&quot;</span><br>	&#125;,<br>	<span class="hljs-attr">&quot;license&quot;</span>: <span class="hljs-string">&quot;MIT&quot;</span>,<br>	<span class="hljs-attr">&quot;devDependencies&quot;</span>: &#123;<br>		<span class="hljs-attr">&quot;gulp&quot;</span>: <span class="hljs-string">&quot;^3.9.1&quot;</span>,<br>		<span class="hljs-attr">&quot;gulp-minify-css&quot;</span>: <span class="hljs-string">&quot;^1.2.4&quot;</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="新建package-json"><a href="#新建package-json" class="headerlink" title="新建package.json"></a>新建package.json</h2><div class="code-wrapper"><pre><code class="hljs json">&#123;
+	<span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;sai&quot;</span>,
+	<span class="hljs-attr">&quot;version&quot;</span>: <span class="hljs-string">&quot;1.0&quot;</span>,
+	<span class="hljs-attr">&quot;description&quot;</span>: <span class="hljs-string">&quot;gulp css!&quot;</span>,
+	<span class="hljs-attr">&quot;author&quot;</span>: &#123;
+		<span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;13sai&quot;</span>,
+		<span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;95742781@qq.com&quot;</span>
+	&#125;,
+	<span class="hljs-attr">&quot;license&quot;</span>: <span class="hljs-string">&quot;MIT&quot;</span>,
+	<span class="hljs-attr">&quot;devDependencies&quot;</span>: &#123;
+		<span class="hljs-attr">&quot;gulp&quot;</span>: <span class="hljs-string">&quot;^3.9.1&quot;</span>,
+		<span class="hljs-attr">&quot;gulp-minify-css&quot;</span>: <span class="hljs-string">&quot;^1.2.4&quot;</span>
+	&#125;
+&#125;</code></pre></div>
 
-<h2 id="本地安装gulp，gulp-minify-css。"><a href="#本地安装gulp，gulp-minify-css。" class="headerlink" title="本地安装gulp，gulp-minify-css。"></a>本地安装gulp，gulp-minify-css。</h2><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs q">cnpm install gulp --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span> <br>cnpm install gulp-minify-css --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span><br></code></pre></td></tr></table></figure>
+<h2 id="本地安装gulp，gulp-minify-css。"><a href="#本地安装gulp，gulp-minify-css。" class="headerlink" title="本地安装gulp，gulp-minify-css。"></a>本地安装gulp，gulp-minify-css。</h2><div class="code-wrapper"><pre><code class="hljs q">cnpm install gulp --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span> 
+cnpm install gulp-minify-css --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span></code></pre></div>
 
-<h2 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">var gulp = require(<span class="hljs-string">&#x27;gulp&#x27;</span>),<br>    mincss = require(<span class="hljs-string">&#x27;gulp-minify-css&#x27;</span>);<span class="hljs-regexp">//</span>定义一个sai任务gulp.task(<span class="hljs-string">&#x27;sai&#x27;</span>, <span class="hljs-keyword">function</span> () &#123;<br>    gulp.src(<span class="hljs-string">&#x27;assets/css/*.css&#x27;</span>) <span class="hljs-regexp">//</span>该任务针对的文件<br>        .pipe(mincss()) <span class="hljs-regexp">//</span>该任务调用的模块<br>        .pipe(gulp.dest(<span class="hljs-string">&#x27;assets/mini&#x27;</span>)); <span class="hljs-regexp">//</span>将会在assets/mini下生成css&#125;);<br> <br>gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,[<span class="hljs-string">&#x27;sai&#x27;</span>]); <span class="hljs-regexp">//</span>定义默认任务<br></code></pre></td></tr></table></figure>
+<h2 id="新建gulpfile-js"><a href="#新建gulpfile-js" class="headerlink" title="新建gulpfile.js"></a>新建gulpfile.js</h2><div class="code-wrapper"><pre><code class="hljs awk">var gulp = require(<span class="hljs-string">&#x27;gulp&#x27;</span>),
+    mincss = require(<span class="hljs-string">&#x27;gulp-minify-css&#x27;</span>);<span class="hljs-regexp">//</span>定义一个sai任务gulp.task(<span class="hljs-string">&#x27;sai&#x27;</span>, <span class="hljs-keyword">function</span> () &#123;
+    gulp.src(<span class="hljs-string">&#x27;assets/css/*.css&#x27;</span>) <span class="hljs-regexp">//</span>该任务针对的文件
+        .pipe(mincss()) <span class="hljs-regexp">//</span>该任务调用的模块
+        .pipe(gulp.dest(<span class="hljs-string">&#x27;assets/mini&#x27;</span>)); <span class="hljs-regexp">//</span>将会在assets/mini下生成css&#125;);
+ 
+gulp.task(<span class="hljs-string">&#x27;default&#x27;</span>,[<span class="hljs-string">&#x27;sai&#x27;</span>]); <span class="hljs-regexp">//</span>定义默认任务</code></pre></div>
 
 <h2 id="cmd执行gulp"><a href="#cmd执行gulp" class="headerlink" title="cmd执行gulp"></a>cmd执行gulp</h2><blockquote>
 <p>gulp</p>

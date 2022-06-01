@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          15 分钟
+          14 分钟
         
       </span>
     
@@ -454,7 +454,26 @@
               <p>随着电商业务的发展，秒杀是个十分常见的场景，今天我们来利用redis实现一个简单的秒杀系统。</p>
 <p>假定我们有一个商品id为1，秒杀数量是5。</p>
 <p>一般场景：</p>
-<figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs zephir">include <span class="hljs-string">&#x27;db.php&#x27;</span>;<br>$db = <span class="hljs-keyword">new</span> db([<br>    <span class="hljs-string">&#x27;database_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;mysql&#x27;</span>,<br>    <span class="hljs-string">&#x27;database_name&#x27;</span> =&gt; <span class="hljs-string">&#x27;test&#x27;</span>,<br>    <span class="hljs-string">&#x27;server&#x27;</span> =&gt; <span class="hljs-string">&#x27;www.13sai.com&#x27;</span>,<br>    <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;13sai&#x27;</span>,<br>    <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;*&#x27;</span>,<br>    <span class="hljs-string">&#x27;charset&#x27;</span> =&gt; <span class="hljs-string">&#x27;utf8&#x27;</span><br>]);<br><br>$stock_num= $db-&gt;get(<span class="hljs-string">&#x27;goods&#x27;</span>, <span class="hljs-string">&#x27;stock_num&#x27;</span>, [<span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">1</span>]);<br><br><span class="hljs-comment">// 检测库存</span><br><span class="hljs-keyword">if</span> ($stock_num&gt; <span class="hljs-number">0</span>) &#123;<br>    sleep(<span class="hljs-number">1</span>); <span class="hljs-comment">//模拟真实环境</span><br>    $db-&gt;update(<span class="hljs-string">&#x27;goods&#x27;</span>, [<span class="hljs-string">&quot;stock_num[-]&quot;</span> =&gt; <span class="hljs-number">1</span>], [<span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">1</span>]);<br>    print_r(<span class="hljs-string">&#x27;ok&#x27;</span>)<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    print_r(<span class="hljs-string">&#x27;sorry&#x27;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs zephir">include <span class="hljs-string">&#x27;db.php&#x27;</span>;
+$db = <span class="hljs-keyword">new</span> db([
+    <span class="hljs-string">&#x27;database_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;mysql&#x27;</span>,
+    <span class="hljs-string">&#x27;database_name&#x27;</span> =&gt; <span class="hljs-string">&#x27;test&#x27;</span>,
+    <span class="hljs-string">&#x27;server&#x27;</span> =&gt; <span class="hljs-string">&#x27;www.13sai.com&#x27;</span>,
+    <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;13sai&#x27;</span>,
+    <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;*&#x27;</span>,
+    <span class="hljs-string">&#x27;charset&#x27;</span> =&gt; <span class="hljs-string">&#x27;utf8&#x27;</span>
+]);
+
+$stock_num= $db-&gt;get(<span class="hljs-string">&#x27;goods&#x27;</span>, <span class="hljs-string">&#x27;stock_num&#x27;</span>, [<span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">1</span>]);
+
+<span class="hljs-comment">// 检测库存</span>
+<span class="hljs-keyword">if</span> ($stock_num&gt; <span class="hljs-number">0</span>) &#123;
+    sleep(<span class="hljs-number">1</span>); <span class="hljs-comment">//模拟真实环境</span>
+    $db-&gt;update(<span class="hljs-string">&#x27;goods&#x27;</span>, [<span class="hljs-string">&quot;stock_num[-]&quot;</span> =&gt; <span class="hljs-number">1</span>], [<span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-number">1</span>]);
+    print_r(<span class="hljs-string">&#x27;ok&#x27;</span>)
+&#125; <span class="hljs-keyword">else</span> &#123;
+    print_r(<span class="hljs-string">&#x27;sorry&#x27;</span>)
+&#125;</code></pre></div>
 
 <p>我们尝试模拟高并发场景，使用ab压测工具，</p>
 <blockquote>
@@ -462,7 +481,37 @@
 </blockquote>
 <p>运行后发现库存stock_num很可能已经变成负数了，出现了超卖问题。</p>
 <p>引入redis</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//实例化redis</span><br><span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> Redis();<br><span class="hljs-comment">//连接</span><br><span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>);<br><span class="hljs-variable">$key</span> = <span class="hljs-string">&#x27;sale&#x27;</span>;<br><span class="hljs-comment">//检测是否连接成功</span><br><span class="hljs-comment">// echo &quot;Server is running: &quot; . $redis-&gt;ping();</span><br><span class="hljs-variable">$redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">0</span>);<br><span class="hljs-variable">$redis</span>-&gt;watch(<span class="hljs-variable">$key</span>); <span class="hljs-comment">//监测一个key的值是否被更改</span><br><br><span class="hljs-variable">$sale_num</span> = <span class="hljs-variable">$redis</span>-&gt;get(<span class="hljs-variable">$key</span>);<br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$sale_num</span> &gt; <span class="hljs-number">4</span>) &#123;<br>    <span class="hljs-keyword">exit</span>();<br>&#125;<br><br><span class="hljs-variable">$redis</span>-&gt;multi(); <span class="hljs-comment">//标记事务</span><br><span class="hljs-variable">$redis</span>-&gt;incr(<span class="hljs-variable">$key</span>);  <span class="hljs-comment">//销量+1</span><br>sleep(<span class="hljs-number">1</span>); <span class="hljs-comment">//模拟真实环境</span><br><span class="hljs-variable">$ret</span> = <span class="hljs-variable">$redis</span>-&gt;exec(); <span class="hljs-comment">// 事务块内所有命令的返回值，按命令执行的先后顺序排列。</span><br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$ret</span>) &#123;<br>    <span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;db.php&#x27;</span>;<br>    <span class="hljs-variable">$db</span> = <span class="hljs-keyword">new</span> db([<br>        <span class="hljs-string">&#x27;database_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;mysql&#x27;</span>,<br>        <span class="hljs-string">&#x27;database_name&#x27;</span> =&gt; <span class="hljs-string">&#x27;test&#x27;</span>,<br>        <span class="hljs-string">&#x27;server&#x27;</span> =&gt; <span class="hljs-string">&#x27;www.13sai.com&amp;#39;,</span><br><span class="hljs-string">        &#x27;</span>username<span class="hljs-string">&#x27; =&gt; &#x27;</span><span class="hljs-number">13</span>sai<span class="hljs-string">&#x27;,</span><br><span class="hljs-string">        &#x27;</span>password<span class="hljs-string">&#x27; =&gt; &#x27;</span>*<span class="hljs-string">&#x27;,</span><br><span class="hljs-string">        &#x27;</span>charset<span class="hljs-string">&#x27; =&gt; &#x27;</span>utf8<span class="hljs-string">&#x27;</span><br><span class="hljs-string">    ]);</span><br><span class="hljs-string">    $db-&gt;update(&#x27;</span>goods<span class="hljs-string">&#x27;, [&quot;stock_num[-]&quot; =&gt; 1], [&#x27;</span>id<span class="hljs-string">&#x27; =&gt; 1]);</span><br><span class="hljs-string">&#125;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">//实例化redis</span>
+<span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> Redis();
+<span class="hljs-comment">//连接</span>
+<span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>);
+<span class="hljs-variable">$key</span> = <span class="hljs-string">&#x27;sale&#x27;</span>;
+<span class="hljs-comment">//检测是否连接成功</span>
+<span class="hljs-comment">// echo &quot;Server is running: &quot; . $redis-&gt;ping();</span>
+<span class="hljs-variable">$redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">0</span>);
+<span class="hljs-variable">$redis</span>-&gt;watch(<span class="hljs-variable">$key</span>); <span class="hljs-comment">//监测一个key的值是否被更改</span>
+
+<span class="hljs-variable">$sale_num</span> = <span class="hljs-variable">$redis</span>-&gt;get(<span class="hljs-variable">$key</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$sale_num</span> &gt; <span class="hljs-number">4</span>) &#123;
+    <span class="hljs-keyword">exit</span>();
+&#125;
+
+<span class="hljs-variable">$redis</span>-&gt;multi(); <span class="hljs-comment">//标记事务</span>
+<span class="hljs-variable">$redis</span>-&gt;incr(<span class="hljs-variable">$key</span>);  <span class="hljs-comment">//销量+1</span>
+sleep(<span class="hljs-number">1</span>); <span class="hljs-comment">//模拟真实环境</span>
+<span class="hljs-variable">$ret</span> = <span class="hljs-variable">$redis</span>-&gt;exec(); <span class="hljs-comment">// 事务块内所有命令的返回值，按命令执行的先后顺序排列。</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$ret</span>) &#123;
+    <span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;db.php&#x27;</span>;
+    <span class="hljs-variable">$db</span> = <span class="hljs-keyword">new</span> db([
+        <span class="hljs-string">&#x27;database_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;mysql&#x27;</span>,
+        <span class="hljs-string">&#x27;database_name&#x27;</span> =&gt; <span class="hljs-string">&#x27;test&#x27;</span>,
+        <span class="hljs-string">&#x27;server&#x27;</span> =&gt; <span class="hljs-string">&#x27;www.13sai.com&amp;#39;,</span>
+<span class="hljs-string">        &#x27;</span>username<span class="hljs-string">&#x27; =&gt; &#x27;</span><span class="hljs-number">13</span>sai<span class="hljs-string">&#x27;,</span>
+<span class="hljs-string">        &#x27;</span>password<span class="hljs-string">&#x27; =&gt; &#x27;</span>*<span class="hljs-string">&#x27;,</span>
+<span class="hljs-string">        &#x27;</span>charset<span class="hljs-string">&#x27; =&gt; &#x27;</span>utf8<span class="hljs-string">&#x27;</span>
+<span class="hljs-string">    ]);</span>
+<span class="hljs-string">    $db-&gt;update(&#x27;</span>goods<span class="hljs-string">&#x27;, [&quot;stock_num[-]&quot; =&gt; 1], [&#x27;</span>id<span class="hljs-string">&#x27; =&gt; 1]);</span>
+<span class="hljs-string">&#125;</span></code></pre></div>
 <p>重新增加库存到5，多次测试，发现库存并无出现负数情况，测试通过。</p>
 
               

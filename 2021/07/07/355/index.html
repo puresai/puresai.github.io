@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          835 字
+          809 字
         
       </span>
     
@@ -418,10 +418,29 @@
             <div class="markdown-body">
               
               <p>在项目目录新建，.vscode/launch.json</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.2.0&quot;</span>, <span class="hljs-comment">// 版本好</span><br>  <span class="hljs-attr">&quot;configurations&quot;</span>: [<br>      &#123;<br>          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;app&quot;</span>, <span class="hljs-comment">// 名称</span><br>          <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;go&quot;</span>,<br>          <span class="hljs-attr">&quot;request&quot;</span>: <span class="hljs-string">&quot;launch&quot;</span>,<br>          <span class="hljs-attr">&quot;mode&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,<br>          <span class="hljs-attr">&quot;program&quot;</span>: <span class="hljs-string">&quot;$&#123;cwd&#125;&quot;</span>,<br>          <span class="hljs-attr">&quot;env&quot;</span>: &#123;<span class="hljs-attr">&quot;DebugEnv&quot;</span>:<span class="hljs-string">&quot;1&quot;</span>&#125;, <span class="hljs-comment">// 环境变量</span><br>          <span class="hljs-attr">&quot;args&quot;</span>: [<span class="hljs-string">&quot;--config&quot;</span>,<span class="hljs-string">&quot;./config-local.yaml&quot;</span>, <span class="hljs-string">&quot;--listen&quot;</span>, <span class="hljs-string">&quot;:8087&quot;</span>] <span class="hljs-comment">// 启动参数</span><br>      &#125;<br>  ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.2.0&quot;</span>, <span class="hljs-comment">// 版本好</span>
+  <span class="hljs-attr">&quot;configurations&quot;</span>: [
+      &#123;
+          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;app&quot;</span>, <span class="hljs-comment">// 名称</span>
+          <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;go&quot;</span>,
+          <span class="hljs-attr">&quot;request&quot;</span>: <span class="hljs-string">&quot;launch&quot;</span>,
+          <span class="hljs-attr">&quot;mode&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,
+          <span class="hljs-attr">&quot;program&quot;</span>: <span class="hljs-string">&quot;$&#123;cwd&#125;&quot;</span>,
+          <span class="hljs-attr">&quot;env&quot;</span>: &#123;<span class="hljs-attr">&quot;DebugEnv&quot;</span>:<span class="hljs-string">&quot;1&quot;</span>&#125;, <span class="hljs-comment">// 环境变量</span>
+          <span class="hljs-attr">&quot;args&quot;</span>: [<span class="hljs-string">&quot;--config&quot;</span>,<span class="hljs-string">&quot;./config-local.yaml&quot;</span>, <span class="hljs-string">&quot;--listen&quot;</span>, <span class="hljs-string">&quot;:8087&quot;</span>] <span class="hljs-comment">// 启动参数</span>
+      &#125;
+  ]
+&#125;</code></pre></div>
 
 <p>对于program:</p>
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-symbol">$</span>&#123;workspaceRoot&#125; VSCode当前打开的文件夹<br><span class="hljs-symbol">$</span>&#123;<span class="hljs-keyword">file</span>&#125; 当前打开的文件<br><span class="hljs-symbol">$</span>&#123;relativeFile&#125; 相对于workspaceRoot的相对路径<br><span class="hljs-symbol">$</span>&#123;fileBasename&#125; 当前打开文件的文件名<br><span class="hljs-symbol">$</span>&#123;fileDirname&#125; 所在的文件夹，是绝对路径<br><span class="hljs-symbol">$</span>&#123;fileExtname&#125; 当前打开文件的拓展名，如.json<br><span class="hljs-symbol">$</span>&#123;cwd&#125; 启动时任务运行程序的当前工作目录<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs gams"><span class="hljs-symbol">$</span>&#123;workspaceRoot&#125; VSCode当前打开的文件夹
+<span class="hljs-symbol">$</span>&#123;<span class="hljs-keyword">file</span>&#125; 当前打开的文件
+<span class="hljs-symbol">$</span>&#123;relativeFile&#125; 相对于workspaceRoot的相对路径
+<span class="hljs-symbol">$</span>&#123;fileBasename&#125; 当前打开文件的文件名
+<span class="hljs-symbol">$</span>&#123;fileDirname&#125; 所在的文件夹，是绝对路径
+<span class="hljs-symbol">$</span>&#123;fileExtname&#125; 当前打开文件的拓展名，如.json
+<span class="hljs-symbol">$</span>&#123;cwd&#125; 启动时任务运行程序的当前工作目录</code></pre></div>
 
 <p>然后运行-》启动调试，就能跑起来了，可以打断点调试了。</p>
 <p>断点点击代码行左侧即可，还是很方便的。</p>

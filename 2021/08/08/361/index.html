@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.6k 字
+          1.5k 字
         
       </span>
     
@@ -536,11 +536,71 @@
 <p>Bolt is a pure Go key/value store inspired by Howard Chu’s LMDB project. The goal of the project is to provide a simple, fast, and reliable database for projects that don’t require a full database server such as Postgres or MySQL.</p>
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://github.com/boltdb/bolt">bolt</a> 是一个简单的kv数据库，使用及其简单，目前github项目处于只读状态。</p>
-<h2 id="数据库连接"><a href="#数据库连接" class="headerlink" title="数据库连接"></a>数据库连接</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;log&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/boltdb/bolt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-comment">// 文件不存在，会新建文件</span><br>	db, err := bolt.Open(<span class="hljs-string">&quot;sai.db&quot;</span>, <span class="hljs-number">0600</span>, <span class="hljs-literal">nil</span>)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatal(err)<br>	&#125;<br>	<span class="hljs-keyword">defer</span> db.Close()<br><br>	...<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="数据库连接"><a href="#数据库连接" class="headerlink" title="数据库连接"></a>数据库连接</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
-<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 读写</span><br>err := db.Update(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(tx *bolt.Tx)</span> <span class="hljs-title">error</span></span> &#123;<br>	...<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;)<br><br><span class="hljs-comment">// 只读，里面只能进行读取操作</span><br>err := db.View(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(tx *bolt.Tx)</span> <span class="hljs-title">error</span></span> &#123;<br>	...<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;)<br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;log&quot;</span>
 
-<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 创建一个bucket，可以理解成一个table</span><br>b, _ := tx.CreateBucketIfNotExists([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;sai0556&quot;</span>))<br><span class="hljs-comment">// 新增</span><br>b.Put([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;a&quot;</span>), []<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;11&quot;</span>))<br>b.Put([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;b&quot;</span>), []<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;22&quot;</span>))<br><br><span class="hljs-comment">// 取</span><br>v := b.Get([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;a&quot;</span>))<br>fmt.Printf(<span class="hljs-string">&quot;The a is: %s\n&quot;</span>, v)<br><br><span class="hljs-comment">// 删除</span><br>b.Delete([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;a&quot;</span>))<br><br><span class="hljs-comment">// 游标遍历</span><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">First()  Move to the first key.</span><br><span class="hljs-comment">Last()   Move to the last key.</span><br><span class="hljs-comment">Seek()   Move to a specific key.</span><br><span class="hljs-comment">Next()   Move to the next key.</span><br><span class="hljs-comment">Prev()   Move to the previous key</span><br><span class="hljs-comment">*/</span><br>c := b.Cursor()<br><span class="hljs-keyword">for</span> k, v := c.First(); k != <span class="hljs-literal">nil</span>; k, v = c.Next() &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;key=%s, value=%s\n&quot;</span>, k, v)<br>&#125;<br><br><span class="hljs-comment">// ForEach 遍历</span><br>b.ForEach(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(k, v []<span class="hljs-keyword">byte</span>)</span> <span class="hljs-title">error</span></span> &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;key=%s, value=%s\n&quot;</span>, k, v)<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;)<br><br><span class="hljs-comment">// 删除bucket</span><br>tx.DeleteBucket([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;sai0556&quot;</span>))<br></code></pre></td></tr></table></figure>
+	<span class="hljs-string">&quot;github.com/boltdb/bolt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">// 文件不存在，会新建文件</span>
+	db, err := bolt.Open(<span class="hljs-string">&quot;sai.db&quot;</span>, <span class="hljs-number">0600</span>, <span class="hljs-literal">nil</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		log.Fatal(err)
+	&#125;
+	<span class="hljs-keyword">defer</span> db.Close()
+
+	...
+&#125;</code></pre></div>
+
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 读写</span>
+err := db.Update(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(tx *bolt.Tx)</span> <span class="hljs-title">error</span></span> &#123;
+	...
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;)
+
+<span class="hljs-comment">// 只读，里面只能进行读取操作</span>
+err := db.View(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(tx *bolt.Tx)</span> <span class="hljs-title">error</span></span> &#123;
+	...
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;)</code></pre></div>
+
+<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 创建一个bucket，可以理解成一个table</span>
+b, _ := tx.CreateBucketIfNotExists([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;sai0556&quot;</span>))
+<span class="hljs-comment">// 新增</span>
+b.Put([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;a&quot;</span>), []<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;11&quot;</span>))
+b.Put([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;b&quot;</span>), []<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;22&quot;</span>))
+
+<span class="hljs-comment">// 取</span>
+v := b.Get([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;a&quot;</span>))
+fmt.Printf(<span class="hljs-string">&quot;The a is: %s\n&quot;</span>, v)
+
+<span class="hljs-comment">// 删除</span>
+b.Delete([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;a&quot;</span>))
+
+<span class="hljs-comment">// 游标遍历</span>
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">First()  Move to the first key.</span>
+<span class="hljs-comment">Last()   Move to the last key.</span>
+<span class="hljs-comment">Seek()   Move to a specific key.</span>
+<span class="hljs-comment">Next()   Move to the next key.</span>
+<span class="hljs-comment">Prev()   Move to the previous key</span>
+<span class="hljs-comment">*/</span>
+c := b.Cursor()
+<span class="hljs-keyword">for</span> k, v := c.First(); k != <span class="hljs-literal">nil</span>; k, v = c.Next() &#123;
+    fmt.Printf(<span class="hljs-string">&quot;key=%s, value=%s\n&quot;</span>, k, v)
+&#125;
+
+<span class="hljs-comment">// ForEach 遍历</span>
+b.ForEach(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(k, v []<span class="hljs-keyword">byte</span>)</span> <span class="hljs-title">error</span></span> &#123;
+    fmt.Printf(<span class="hljs-string">&quot;key=%s, value=%s\n&quot;</span>, k, v)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;)
+
+<span class="hljs-comment">// 删除bucket</span>
+tx.DeleteBucket([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;sai0556&quot;</span>))</code></pre></div>
 
 <p>使用很简单，但需要注意以下几点：</p>
 <ul>

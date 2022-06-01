@@ -490,10 +490,24 @@
             <div class="markdown-body">
               
               <h2 id="负载均衡策略"><a href="#负载均衡策略" class="headerlink" title="负载均衡策略"></a>负载均衡策略</h2><p>1.轮询(默认)：每一个来自网络中的请求，轮流分配给内部的服务器，从1到N然后重新开始。此种负载均衡算法适合服务器组内部的服务器都具有相同的配置并且平均服务请求 相对均衡的情况。<br>2.加权轮询（weight）：根据服务器的不同处理能力，给每个服务器分配不同的权值，使其能够接受相应权值数的服务请求。例如:服务器A的权值被设计成1，B的权值是3，C的权值是6，则服务器A、B、C将分别接受到10%、30%、60%的服务请求。此种均衡算法能确保高性能的服务器得到更多的使用率，避免低性能的服务器负载过重。<br>3.ip-hash（ip_hash）：nginx将会根据相应的hash函数，对每个请求的ip作为关键字，得到的hash值将会决定将请求分发给相应Server进行处理。<br>4.最少连接数（least_conn）：nginx会判断后端集群服务器中哪个Server当前的 Active Connection 数是最少的，对于每个新进来的请求，nginx将该其分发给对应的Server。</p>
-<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">语法: upstream name &#123; ... &#125; </span><br><span class="hljs-section">默认值: —</span><br><span class="hljs-section">上下文: http</span><br><br>upstream 指令当中包含server指令<br><span class="hljs-section">语法: server address [parameters]; </span><br><span class="hljs-section">上下文: upstream</span><br></code></pre></td></tr></table></figure>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><div class="code-wrapper"><pre><code class="hljs makefile"><span class="hljs-section">语法: upstream name &#123; ... &#125; </span>
+<span class="hljs-section">默认值: —</span>
+<span class="hljs-section">上下文: http</span>
+
+upstream 指令当中包含server指令
+<span class="hljs-section">语法: server address [parameters]; </span>
+<span class="hljs-section">上下文: upstream</span></code></pre></div>
 
 <p>demo:</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">upstream</span> backend &#123;<br>    <span class="hljs-attribute">server</span> backend1.example.com:<span class="hljs-number">8081</span> weight=<span class="hljs-number">4</span> max_fails=<span class="hljs-number">2</span> fail_timeout=<span class="hljs-number">30s</span>; <br>    <span class="hljs-attribute">server</span> backend2.example.com:<span class="hljs-number">8080</span> weight=<span class="hljs-number">1</span>;<br>&#125;<br><span class="hljs-section">server</span> &#123; <br>    <span class="hljs-attribute">location</span> / &#123;<br>        <span class="hljs-attribute">proxy_pass</span> http://backend; <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">upstream</span> backend &#123;
+    <span class="hljs-attribute">server</span> backend1.example.com:<span class="hljs-number">8081</span> weight=<span class="hljs-number">4</span> max_fails=<span class="hljs-number">2</span> fail_timeout=<span class="hljs-number">30s</span>; 
+    <span class="hljs-attribute">server</span> backend2.example.com:<span class="hljs-number">8080</span> weight=<span class="hljs-number">1</span>;
+&#125;
+<span class="hljs-section">server</span> &#123; 
+    <span class="hljs-attribute">location</span> / &#123;
+        <span class="hljs-attribute">proxy_pass</span> http://backend; 
+    &#125;
+&#125;</code></pre></div>
 
 <p>参数说明:</p>
 <ul>
@@ -504,7 +518,9 @@
 <li>down,标记服务器永久不可用，可以跟ip_hash指令一起使用。</li>
 </ul>
 <h2 id="proxy-next-upstream-指令"><a href="#proxy-next-upstream-指令" class="headerlink" title="proxy_next_upstream 指令"></a>proxy_next_upstream 指令</h2><p>在nginx的配置文件中， proxy_next_upstream 项定义了什么情况下进行重试</p>
-<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs coq">语法: proxy_next_upstream error | <span class="hljs-type">timeout</span> | <span class="hljs-type">invalid_header</span> | <span class="hljs-type">http_500</span> | <span class="hljs-type">http_502</span> | <span class="hljs-type">http_503</span> | <span class="hljs-type">http_504</span> | <span class="hljs-type">http_403</span> | <span class="hljs-type">http_404</span> | <span class="hljs-type">http_429</span> | <span class="hljs-type">non_idempotent</span> | <span class="hljs-type">off</span> ...; <br>默认值: proxy_next_upstream error <span class="hljs-built_in">timeout</span>;<br>上下文: http, server, location<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs coq">语法: proxy_next_upstream error | <span class="hljs-type">timeout</span> | <span class="hljs-type">invalid_header</span> | <span class="hljs-type">http_500</span> | <span class="hljs-type">http_502</span> | <span class="hljs-type">http_503</span> | <span class="hljs-type">http_504</span> | <span class="hljs-type">http_403</span> | <span class="hljs-type">http_404</span> | <span class="hljs-type">http_429</span> | <span class="hljs-type">non_idempotent</span> | <span class="hljs-type">off</span> ...; 
+默认值: proxy_next_upstream error <span class="hljs-built_in">timeout</span>;
+上下文: http, server, location</code></pre></div>
 
 <p>参数说明:</p>
 <ul>
@@ -524,7 +540,18 @@
 <li>proxy_connect_timeout:nginx连接后端的超时时间，一般不超过75s</li>
 </ul>
 <p>demo:</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">location</span> / &#123;<br>    <span class="hljs-attribute">proxy_pass</span>         http://app-proxy;<br>    <span class="hljs-attribute">proxy_next_upstream</span> <span class="hljs-literal">error</span> timeout http_500 http_502 http_503 http_504;<br>    <span class="hljs-attribute">proxy_next_upstream_tries</span> <span class="hljs-number">3</span>;<br>    <span class="hljs-attribute">proxy_connect_timeout</span> <span class="hljs-number">60s</span>;<br>    <span class="hljs-attribute">proxy_read_timeout</span> <span class="hljs-number">60s</span>;<br>    <span class="hljs-attribute">proxy_send_timeout</span> <span class="hljs-number">60s</span>;<br>    <span class="hljs-attribute">proxy_pass_request_headers</span>      <span class="hljs-literal">on</span>;<br>    <span class="hljs-attribute">proxy_set_header</span>   Host             $host:$server_port;<br>    <span class="hljs-attribute">proxy_set_header</span>   X-Real-IP        $remote_addr;<br>    <span class="hljs-attribute">proxy_set_header</span>   X-Forwarded-For  $proxy_add_x_forwarded_for;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">location</span> / &#123;
+    <span class="hljs-attribute">proxy_pass</span>         http://app-proxy;
+    <span class="hljs-attribute">proxy_next_upstream</span> <span class="hljs-literal">error</span> timeout http_500 http_502 http_503 http_504;
+    <span class="hljs-attribute">proxy_next_upstream_tries</span> <span class="hljs-number">3</span>;
+    <span class="hljs-attribute">proxy_connect_timeout</span> <span class="hljs-number">60s</span>;
+    <span class="hljs-attribute">proxy_read_timeout</span> <span class="hljs-number">60s</span>;
+    <span class="hljs-attribute">proxy_send_timeout</span> <span class="hljs-number">60s</span>;
+    <span class="hljs-attribute">proxy_pass_request_headers</span>      <span class="hljs-literal">on</span>;
+    <span class="hljs-attribute">proxy_set_header</span>   Host             $host:$server_port;
+    <span class="hljs-attribute">proxy_set_header</span>   X-Real-IP        $remote_addr;
+    <span class="hljs-attribute">proxy_set_header</span>   X-Forwarded-For  $proxy_add_x_forwarded_for;
+&#125;</code></pre></div>
 
 <p>建议自己动手使用这些参数，试验一下，加深印象和理解。</p>
 

@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.5k 字
+          2.4k 字
         
       </span>
     
@@ -875,42 +875,94 @@
               
               <p>javascript</p>
 <p>先看break：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">10</span>;i++)&#123;<br>   <span class="hljs-built_in">document</span>.write(i);<br>   <span class="hljs-keyword">if</span>(i==<span class="hljs-number">5</span>)&#123;<span class="hljs-keyword">break</span>;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">10</span>;i++)&#123;
+   <span class="hljs-built_in">document</span>.write(i);
+   <span class="hljs-keyword">if</span>(i==<span class="hljs-number">5</span>)&#123;<span class="hljs-keyword">break</span>;&#125;
+&#125;</code></pre></div>
 
 <p>输出的结果为：12345，当i的值等于5的时候直接通过break跳出了循环，不再继续往下运行。</p>
 <p>再来看continue:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">10</span>;i++)&#123;<br>   <span class="hljs-keyword">if</span>(i==<span class="hljs-number">5</span>)&#123;<span class="hljs-keyword">continue</span>;&#125;<br>   <span class="hljs-built_in">document</span>.write(i);<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>;i&lt;=<span class="hljs-number">10</span>;i++)&#123;
+   <span class="hljs-keyword">if</span>(i==<span class="hljs-number">5</span>)&#123;<span class="hljs-keyword">continue</span>;&#125;
+   <span class="hljs-built_in">document</span>.write(i);
+&#125;</code></pre></div>
 
 <p>输出的结果为：1234678910，当i的值等于5的时候跳了过去继续向下执行循环。</p>
 <p>最后来看return，return只能出现在函数里面，如果出现在上面的实例里的for循环里会报错，而return出现在函数里的作用就是即使函数下面还有内容也不会再执行了。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">if</span> (username==<span class="hljs-string">&quot;&quot;</span>)&#123;<br>   alert(<span class="hljs-string">&quot;请输入用户名&quot;</span>);<br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br><span class="hljs-keyword">if</span>(qq==<span class="hljs-string">&quot;&quot;</span>)&#123;<br>   alert(<span class="hljs-string">&quot;请输入QQ&quot;</span>);<br>   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs javascript"><span class="hljs-keyword">if</span> (username==<span class="hljs-string">&quot;&quot;</span>)&#123;
+   alert(<span class="hljs-string">&quot;请输入用户名&quot;</span>);
+   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;
+<span class="hljs-keyword">if</span>(qq==<span class="hljs-string">&quot;&quot;</span>)&#123;
+   alert(<span class="hljs-string">&quot;请输入QQ&quot;</span>);
+   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;</code></pre></div>
 
 <p>当username为空时，就不会再向下执行。</p>
 <p>此外，break 语句和 continue 语句都可以与有标签的语句联合使用，返回代码中的特定位置。</p>
 <p>通常，当循环内部还有循环时，会这样做，例如：</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">var iNum = <span class="hljs-number">0</span>;<br><span class="hljs-symbol"></span><br><span class="hljs-symbol">outermost:</span><br>for (var i=<span class="hljs-number">0</span><span class="hljs-comment">; i&lt;10; i++) &#123;</span><br>  for (var <span class="hljs-keyword">j=0; </span><span class="hljs-keyword">j&lt;10; </span><span class="hljs-keyword">j++) </span>&#123;<br>    if (i == <span class="hljs-number">5</span> &amp;&amp; <span class="hljs-keyword">j </span>== <span class="hljs-number">5</span>) &#123;    <span class="hljs-keyword">break </span>outermost;<br>  &#125;<br>  iNum++;<br>  &#125;<br>&#125;<br>alert(iNum)<span class="hljs-comment">;    //输出 &quot;55&quot;Copy</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs mipsasm">var iNum = <span class="hljs-number">0</span>;
+<span class="hljs-symbol"></span>
+<span class="hljs-symbol">outermost:</span>
+for (var i=<span class="hljs-number">0</span><span class="hljs-comment">; i&lt;10; i++) &#123;</span>
+  for (var <span class="hljs-keyword">j=0; </span><span class="hljs-keyword">j&lt;10; </span><span class="hljs-keyword">j++) </span>&#123;
+    if (i == <span class="hljs-number">5</span> &amp;&amp; <span class="hljs-keyword">j </span>== <span class="hljs-number">5</span>) &#123;    <span class="hljs-keyword">break </span>outermost;
+  &#125;
+  iNum++;
+  &#125;
+&#125;
+alert(iNum)<span class="hljs-comment">;    //输出 &quot;55&quot;Copy</span></code></pre></div>
 
 <p>在上面的例子中，标签 outermost 表示的是第一个 for 语句。正常情况下，每个 for 语句执行 10 次代码块，这意味着<br>iNum++ 正常情况下将被执行 100 次，在执行完成时，iNum 应该等于 100。这里的 break<br>语句有一个参数，即停止循环后要跳转到的语句的标签。这样 break 语句不止能跳出内部 for 语句（即使用变量 j 的语句），还能跳出外部<br>for 语句（即使用变量 i 的语句）。因此，iNum 最后的值是 55，因为当 i 和 j 的值都等于 5 时，循环将终止。</p>
 <p>PHP</p>
 <p>**continue<br>**continue<br>是用来用在循环结构中，控制程序放弃本次循环continue语句之后的代码并转而进行下一次循环。如果在非循环结构中(例如if语句中，switch语句中)使用continue，程序将会出错。<br>**例如在下面的这段PHP代码片段中：<br>**</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">1</span>;<span class="hljs-variable">$i</span> &lt;= <span class="hljs-number">100</span>; <span class="hljs-variable">$i</span>++ )&#123;<br>	<span class="hljs-keyword">if</span>(<span class="hljs-variable">$i</span> % <span class="hljs-number">3</span> == <span class="hljs-number">0</span> || <span class="hljs-variable">$i</span> % <span class="hljs-number">7</span> == <span class="hljs-number">0</span>)&#123;<br>		<span class="hljs-keyword">continue</span>;<br>	&#125; <span class="hljs-keyword">else</span>&#123;<br>		<span class="hljs-keyword">echo</span>”<span class="hljs-variable">$i</span>&lt;br/&gt;”;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">1</span>;<span class="hljs-variable">$i</span> &lt;= <span class="hljs-number">100</span>; <span class="hljs-variable">$i</span>++ )&#123;
+	<span class="hljs-keyword">if</span>(<span class="hljs-variable">$i</span> % <span class="hljs-number">3</span> == <span class="hljs-number">0</span> || <span class="hljs-variable">$i</span> % <span class="hljs-number">7</span> == <span class="hljs-number">0</span>)&#123;
+		<span class="hljs-keyword">continue</span>;
+	&#125; <span class="hljs-keyword">else</span>&#123;
+		<span class="hljs-keyword">echo</span>”<span class="hljs-variable">$i</span>&lt;br/&gt;”;
+	&#125;
+&#125;</code></pre></div>
 
 <p>输出100以内，既不能被7整除又不能被3整除的那些自然数，循环中先用if条件语句判断那些能被整除的数，然后执行 continue，就直接进入了下个循环。不会执行下面的输出语句了。<br>**<br>break<br>**break是被用在上面所提的各种循环和switch语句中的。作用是跳出当前的语法结构，执行下面的语句。break语句可以带一个参数n，表示跳出循环的层数，如果要跳出多重循环的话，可以用n来表示跳出的层数，如果不带参数默认是跳出本重循环。<br>看下面这个多重循环嵌套的例子：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">1</span>;<span class="hljs-variable">$i</span> &lt;= <span class="hljs-number">10</span>; <span class="hljs-variable">$i</span>++ )&#123;<br>  <span class="hljs-keyword">for</span>(<span class="hljs-variable">$j</span> = <span class="hljs-number">1</span>;<span class="hljs-variable">$j</span> &lt;= <span class="hljs-number">10</span>;<span class="hljs-variable">$j</span>++)&#123;<br>    <span class="hljs-variable">$m</span> = <span class="hljs-variable">$i</span>  <span class="hljs-variable">$i</span> + <span class="hljs-variable">$j</span>  <span class="hljs-variable">$j</span>;<br>    <span class="hljs-keyword">echo</span>”<span class="hljs-variable">$m</span> &lt;br/&gt;”;<br>    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$m</span> &lt; <span class="hljs-number">90</span> || <span class="hljs-variable">$m</span> &gt; <span class="hljs-number">190</span>) &#123;<br>    <span class="hljs-keyword">break</span> <span class="hljs-number">2</span>;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">1</span>;<span class="hljs-variable">$i</span> &lt;= <span class="hljs-number">10</span>; <span class="hljs-variable">$i</span>++ )&#123;
+  <span class="hljs-keyword">for</span>(<span class="hljs-variable">$j</span> = <span class="hljs-number">1</span>;<span class="hljs-variable">$j</span> &lt;= <span class="hljs-number">10</span>;<span class="hljs-variable">$j</span>++)&#123;
+    <span class="hljs-variable">$m</span> = <span class="hljs-variable">$i</span>  <span class="hljs-variable">$i</span> + <span class="hljs-variable">$j</span>  <span class="hljs-variable">$j</span>;
+    <span class="hljs-keyword">echo</span>”<span class="hljs-variable">$m</span> &lt;br/&gt;”;
+    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$m</span> &lt; <span class="hljs-number">90</span> || <span class="hljs-variable">$m</span> &gt; <span class="hljs-number">190</span>) &#123;
+    <span class="hljs-keyword">break</span> <span class="hljs-number">2</span>;
+    &#125;
+  &#125;
+&#125;</code></pre></div>
 
 
 
 <p>这里使用了break 2跳出了两重循环，将2去掉，得到的结果是完全不一样的。</p>
 <p>如果不使用参数，跳出的只是本次循环，第一层循环会继续执行下去。</p>
 <p>**<br>exit<br>**exit是用来结束程序执行的。可以用在任何地方，本身没有跳出循环的含义。exit可以带一个参数，如果参数是字符串，PHP将会直接把字符串输出，如果参数是integer整形（范围是0-254），那个参数将会被作为结束状态使用。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">1000</span>;<span class="hljs-variable">$i</span> &gt;= <span class="hljs-number">1</span> ; <span class="hljs-variable">$i</span>– )&#123;<br>  <span class="hljs-keyword">if</span>( sqrt(<span class="hljs-variable">$i</span>) &gt;= <span class="hljs-number">29</span>)&#123;<br>    <span class="hljs-keyword">echo</span>”<span class="hljs-variable">$i</span> &lt;br/&gt;”;<br>  &#125;<span class="hljs-keyword">else</span>&#123;<br>    <span class="hljs-keyword">exit</span>;<br>  &#125;<br>&#125;<br><span class="hljs-keyword">echo</span>”本行将不会被输出”;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">1000</span>;<span class="hljs-variable">$i</span> &gt;= <span class="hljs-number">1</span> ; <span class="hljs-variable">$i</span>– )&#123;
+  <span class="hljs-keyword">if</span>( sqrt(<span class="hljs-variable">$i</span>) &gt;= <span class="hljs-number">29</span>)&#123;
+    <span class="hljs-keyword">echo</span>”<span class="hljs-variable">$i</span> &lt;br/&gt;”;
+  &#125;<span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">exit</span>;
+  &#125;
+&#125;
+<span class="hljs-keyword">echo</span>”本行将不会被输出”;</code></pre></div>
 
 
 
 <p>例子中直接在从循环里结束了代码的运行，这样会导致后面的代码都不会被执行，如果是在一个php web 页面里面，甚至连exit后面的html代码都不会被输出。</p>
 <p>**return<br>**return</p>
 <p>语句是用来结束一段代码，并返回一个参数的。可以从一个函数里调用，也可以从一个include()或者require()语句包含的文件里来调用，也可以是在主程序里调用，如果是在函数里调用程序将会马上结束运行并返回参数，如果是include()或者require()语句包含的文件中被调用，程序<br>执行将会马上返回到调用该文件的程序，而返回值将作为include()或者require()的返回值。而如果是在主程序中调用，那么主程序将会马上停<br>止执行</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs php"><br><span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">1000</span>;<span class="hljs-variable">$i</span> &gt;= <span class="hljs-number">1</span> ; <span class="hljs-variable">$i</span>– )&#123;<br>  <span class="hljs-keyword">if</span>( sqrt(<span class="hljs-variable">$i</span>) &gt;= <span class="hljs-number">29</span>)&#123;<br>    <span class="hljs-keyword">echo</span>”<span class="hljs-variable">$i</span> &lt;br/&gt;”;<br>  &#125;<span class="hljs-keyword">else</span>&#123;<br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>&#125;<br><span class="hljs-keyword">echo</span>”本行将不会被输出”;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php">
+<span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span> = <span class="hljs-number">1000</span>;<span class="hljs-variable">$i</span> &gt;= <span class="hljs-number">1</span> ; <span class="hljs-variable">$i</span>– )&#123;
+  <span class="hljs-keyword">if</span>( sqrt(<span class="hljs-variable">$i</span>) &gt;= <span class="hljs-number">29</span>)&#123;
+    <span class="hljs-keyword">echo</span>”<span class="hljs-variable">$i</span> &lt;br/&gt;”;
+  &#125;<span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">return</span>;
+  &#125;
+&#125;
+<span class="hljs-keyword">echo</span>”本行将不会被输出”;</code></pre></div>
 
 
 

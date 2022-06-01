@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.6k 字
+          3.5k 字
         
       </span>
     
@@ -306,7 +306,7 @@
         
         
           <!-- compatible with older versions-->
-          31 分钟
+          29 分钟
         
       </span>
     
@@ -566,11 +566,19 @@
 <p>下面我们里一一说明：</p>
 <h2 id="session-start"><a href="#session-start" class="headerlink" title="session_start"></a>session_start</h2><p>session_start ([ array $options = array() ] ) : bool —— 启动新会话或者重用现有会话（<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/session.configuration.php">点击查看更多参数</a>）</p>
 <p>来看demo：</p>
-<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs prolog">session_start([<br>    <span class="hljs-string">&#x27;save_path&#x27;</span> =&gt; <span class="hljs-string">&#x27;tcp://127.0.0.1:6379&#x27;</span>,<br>    <span class="hljs-string">&#x27;save_handler&#x27;</span> =&gt; <span class="hljs-string">&#x27;redis&#x27;</span>,<br>]);<br><br>$<span class="hljs-symbol">_SESSION</span>[<span class="hljs-string">&#x27;user_id&#x27;</span>] = <span class="hljs-number">10001</span>;<br>$<span class="hljs-symbol">_SESSION</span>[<span class="hljs-string">&#x27;userInfo&#x27;</span>] = [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;sai&#x27;</span>];<br>p($<span class="hljs-symbol">_SESSION</span>[<span class="hljs-string">&#x27;user_id&#x27;</span>]);<br>p($<span class="hljs-symbol">_SESSION</span>[<span class="hljs-string">&#x27;userInfo&#x27;</span>]);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs prolog">session_start([
+    <span class="hljs-string">&#x27;save_path&#x27;</span> =&gt; <span class="hljs-string">&#x27;tcp://127.0.0.1:6379&#x27;</span>,
+    <span class="hljs-string">&#x27;save_handler&#x27;</span> =&gt; <span class="hljs-string">&#x27;redis&#x27;</span>,
+]);
+
+$<span class="hljs-symbol">_SESSION</span>[<span class="hljs-string">&#x27;user_id&#x27;</span>] = <span class="hljs-number">10001</span>;
+$<span class="hljs-symbol">_SESSION</span>[<span class="hljs-string">&#x27;userInfo&#x27;</span>] = [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;sai&#x27;</span>];
+p($<span class="hljs-symbol">_SESSION</span>[<span class="hljs-string">&#x27;user_id&#x27;</span>]);
+p($<span class="hljs-symbol">_SESSION</span>[<span class="hljs-string">&#x27;userInfo&#x27;</span>]);</code></pre></div>
 
 
 <p>输出如下：</p>
-<pre style='position:relative;
+<div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -578,8 +586,8 @@ background:#f5f5f5;
 border:1px solid #aaa;
 font-size:14px;
 line-height:18px;
-opacity:0.8;'>10001</pre>
-<pre style='position:relative;
+opacity:0.8;'>10001</pre></div>
+<div class="code-wrapper"><pre style='position:relative;
 z-index:999;
 padding:10px;
 border-radius:5px;
@@ -591,7 +599,7 @@ opacity:0.8;'>Array
 (
     [name] => sai
 )
-</pre>
+</pre></div>
 
 
 <p>我们可以使用redis-cli连接查看：</p>
@@ -602,7 +610,89 @@ opacity:0.8;'>Array
 <p>我们可以看到redis里有了PHPREDIS_SESSION:nmo65igogqnq8ur2gia94jt15u，里面存储了我们的session信息。</p>
 <h2 id="session-set-save-handler"><a href="#session-set-save-handler" class="headerlink" title="session_set_save_handler"></a>session_set_save_handler</h2><p>建议session.serialize_handler = php_serialize，默认php写入和读取略微繁琐。</p>
 <p>这里说明我们成功了将session信息通过Redis进行了读写。下面我们使用session_set_save_handler来实现：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Sessions</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">SessionHandler</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisSession</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">SessionHandler</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$redis</span>;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$lifeTime</span> = <span class="hljs-number">7200</span>;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$config</span>;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$prefix</span> = <span class="hljs-string">&#x27;PHPREDIS_SESSION:&#x27;</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$config</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;config = <span class="hljs-variable">$config</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRedisInstance</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-keyword">$this</span>-&gt;redis)) &#123;<br>            <span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> \Redis();<br>            <span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;host&#x27;</span>], <span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;port&#x27;</span>], <span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;timeout&#x27;</span>]);<br>            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;auth&#x27;</span>]) &#123;<br>                <span class="hljs-variable">$redis</span>-&gt;auth(<span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;auth&#x27;</span>]);<br>            &#125;<br><br>            <span class="hljs-keyword">$this</span>-&gt;redis = <span class="hljs-variable">$redis</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redis;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">read</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;get(<span class="hljs-keyword">$this</span>-&gt;prefix.<span class="hljs-variable">$id</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">write</span>(<span class="hljs-params"><span class="hljs-variable">$id</span>, <span class="hljs-variable">$data</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;setex(<span class="hljs-keyword">$this</span>-&gt;prefix.<span class="hljs-variable">$id</span>, <span class="hljs-keyword">$this</span>-&gt;lifeTime, <span class="hljs-variable">$data</span>)) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">destroy</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;delete(<span class="hljs-variable">$id</span>))&#123;<span class="hljs-comment">//删除redis中的指定记录</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gc</span>(<span class="hljs-params"><span class="hljs-variable">$maxlifetime</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        session_write_close();<br>    &#125;<br>&#125;<br><br><br><span class="hljs-variable">$handler</span> = <span class="hljs-keyword">new</span> RedisSession([<br>            <span class="hljs-string">&#x27;host&#x27;</span> =&gt; <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>,<br>            <span class="hljs-string">&#x27;port&#x27;</span> =&gt; <span class="hljs-number">6379</span>,<br>            <span class="hljs-string">&#x27;auth&#x27;</span> =&gt; <span class="hljs-literal">null</span>,<br>            <span class="hljs-string">&#x27;timeout&#x27;</span> =&gt; <span class="hljs-number">5</span>,<br>        ]);<br>session_set_save_handler(<span class="hljs-variable">$handler</span>, <span class="hljs-literal">true</span>);<br>session_start();<br><br><span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;user_id&#x27;</span>] = <span class="hljs-number">10001</span>;<br><span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;userInfo&#x27;</span>] = [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;sai&#x27;</span>];<br>p(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;user_id&#x27;</span>]);<br>p(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;userInfo&#x27;</span>]);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Sessions</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">SessionHandler</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedisSession</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">SessionHandler</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$redis</span>;
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$lifeTime</span> = <span class="hljs-number">7200</span>;
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$config</span>;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$prefix</span> = <span class="hljs-string">&#x27;PHPREDIS_SESSION:&#x27;</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$config</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;config = <span class="hljs-variable">$config</span>;
+    &#125;
+    
+    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRedisInstance</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-keyword">$this</span>-&gt;redis)) &#123;
+            <span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> \Redis();
+            <span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;host&#x27;</span>], <span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;port&#x27;</span>], <span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;timeout&#x27;</span>]);
+            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;auth&#x27;</span>]) &#123;
+                <span class="hljs-variable">$redis</span>-&gt;auth(<span class="hljs-keyword">$this</span>-&gt;config[<span class="hljs-string">&#x27;auth&#x27;</span>]);
+            &#125;
+
+            <span class="hljs-keyword">$this</span>-&gt;redis = <span class="hljs-variable">$redis</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redis;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">read</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;get(<span class="hljs-keyword">$this</span>-&gt;prefix.<span class="hljs-variable">$id</span>);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">write</span>(<span class="hljs-params"><span class="hljs-variable">$id</span>, <span class="hljs-variable">$data</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;setex(<span class="hljs-keyword">$this</span>-&gt;prefix.<span class="hljs-variable">$id</span>, <span class="hljs-keyword">$this</span>-&gt;lifeTime, <span class="hljs-variable">$data</span>)) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        &#125;
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">destroy</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;delete(<span class="hljs-variable">$id</span>))&#123;<span class="hljs-comment">//删除redis中的指定记录</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gc</span>(<span class="hljs-params"><span class="hljs-variable">$maxlifetime</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        session_write_close();
+    &#125;
+&#125;
+
+
+<span class="hljs-variable">$handler</span> = <span class="hljs-keyword">new</span> RedisSession([
+            <span class="hljs-string">&#x27;host&#x27;</span> =&gt; <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>,
+            <span class="hljs-string">&#x27;port&#x27;</span> =&gt; <span class="hljs-number">6379</span>,
+            <span class="hljs-string">&#x27;auth&#x27;</span> =&gt; <span class="hljs-literal">null</span>,
+            <span class="hljs-string">&#x27;timeout&#x27;</span> =&gt; <span class="hljs-number">5</span>,
+        ]);
+session_set_save_handler(<span class="hljs-variable">$handler</span>, <span class="hljs-literal">true</span>);
+session_start();
+
+<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;user_id&#x27;</span>] = <span class="hljs-number">10001</span>;
+<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;userInfo&#x27;</span>] = [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;sai&#x27;</span>];
+p(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;user_id&#x27;</span>]);
+p(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;userInfo&#x27;</span>]);</code></pre></div>
 
 <p>知识点：</p>
 <ol>
@@ -615,7 +705,19 @@ opacity:0.8;'>Array
 <p>private $prefix = ‘PHPREDIS_SESSION:’;</p>
 </blockquote>
 <p>然后做一下调整即可：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">read</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> serialize(<span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;get(<span class="hljs-keyword">$this</span>-&gt;prefix.<span class="hljs-variable">$id</span>));<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">write</span>(<span class="hljs-params"><span class="hljs-variable">$id</span>,<span class="hljs-variable">$data</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;setex(<span class="hljs-keyword">$this</span>-&gt;prefix.<span class="hljs-variable">$id</span>, <span class="hljs-keyword">$this</span>-&gt;lifeTime, <span class="hljs-variable">$data</span>)) &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">read</span>(<span class="hljs-params"><span class="hljs-variable">$id</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> serialize(<span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;get(<span class="hljs-keyword">$this</span>-&gt;prefix.<span class="hljs-variable">$id</span>));
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">write</span>(<span class="hljs-params"><span class="hljs-variable">$id</span>,<span class="hljs-variable">$data</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;getRedisInstance()-&gt;setex(<span class="hljs-keyword">$this</span>-&gt;prefix.<span class="hljs-variable">$id</span>, <span class="hljs-keyword">$this</span>-&gt;lifeTime, <span class="hljs-variable">$data</span>)) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;</code></pre></div>
 
 <p>运行后会发现把之前第一种设置的session覆盖掉。</p>
 <p>当然我比较建议使用第二种方法，便于我们定制化编码。</p>

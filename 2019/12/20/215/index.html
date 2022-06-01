@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          5k 字
+          4.7k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          42 分钟
+          40 分钟
         
       </span>
     
@@ -556,40 +556,176 @@
 <p>gRPC是可以在任何环境中运行的现代开源高性能RPC框架。它可以通过可插拔的支持来有效地连接数据中心内和跨数据中心的服务，以实现负载平衡，跟踪，运行状况检查和身份验证。它也适用于分布式计算的最后一英里，以将设备，移动应用程序和浏览器连接到后端服务。</p>
 </blockquote>
 <h2 id="安装protocol-buffer-编译器"><a href="#安装protocol-buffer-编译器" class="headerlink" title="安装protocol buffer 编译器"></a>安装protocol buffer 编译器</h2><p>mac：</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>protobuf<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs mipsasm"><span class="hljs-keyword">brew </span><span class="hljs-keyword">install </span>protobuf</code></pre></div>
 
 <p>其他系统可以尝试编译安装</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/protocolbuffers/protobuf">protocolbuffers/protobuf</a></li>
 </ul>
-<h2 id="安装gprc"><a href="#安装gprc" class="headerlink" title="安装gprc"></a>安装gprc</h2><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs maxima"><span class="hljs-built_in">go</span> <span class="hljs-built_in">get</span> -u google.golang.org/grpc<br></code></pre></td></tr></table></figure>
+<h2 id="安装gprc"><a href="#安装gprc" class="headerlink" title="安装gprc"></a>安装gprc</h2><div class="code-wrapper"><pre><code class="hljs maxima"><span class="hljs-built_in">go</span> <span class="hljs-built_in">get</span> -u google.golang.org/grpc</code></pre></div>
 
-<h2 id="安装protoc-gen-go插件"><a href="#安装protoc-gen-go插件" class="headerlink" title="安装protoc-gen-go插件"></a>安装protoc-gen-go插件</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">go</span> <span class="hljs-built_in">get</span> -<span class="hljs-keyword">u</span> github.<span class="hljs-keyword">com</span>/golang/protobuf/protoc-gen-<span class="hljs-keyword">go</span><br></code></pre></td></tr></table></figure>
+<h2 id="安装protoc-gen-go插件"><a href="#安装protoc-gen-go插件" class="headerlink" title="安装protoc-gen-go插件"></a>安装protoc-gen-go插件</h2><div class="code-wrapper"><pre><code class="hljs vim"><span class="hljs-keyword">go</span> <span class="hljs-built_in">get</span> -<span class="hljs-keyword">u</span> github.<span class="hljs-keyword">com</span>/golang/protobuf/protoc-gen-<span class="hljs-keyword">go</span></code></pre></div>
 
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>新建hello目录，进入后执行：</p>
-<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">protoc</span> --<span class="hljs-comment">proto_path</span> <span class="hljs-comment">hello/</span> --<span class="hljs-comment">go_out=plugins=grpc:hello</span> <span class="hljs-comment">hello</span><span class="hljs-string">.</span><span class="hljs-comment">proto</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs brainfuck"><span class="hljs-comment">protoc</span> --<span class="hljs-comment">proto_path</span> <span class="hljs-comment">hello/</span> --<span class="hljs-comment">go_out=plugins=grpc:hello</span> <span class="hljs-comment">hello</span><span class="hljs-string">.</span><span class="hljs-comment">proto</span></code></pre></div>
 
 <p>会看到hello目录下生成了hello.pb.go文件。</p>
 <p>当然，其中的 <code>hello.proto</code> 是预先自定义在hello文件夹下的，如：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs awk">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;  <span class="hljs-regexp">//</span>语法声明<br><br>package hello; <span class="hljs-regexp">//</span>包名<br><br><span class="hljs-regexp">//</span> 定义服务<br>service Greeter &#123;<br>  rpc SayHello (HelloRequest) returns (HelloReply) &#123;&#125;<br>&#125;<br><br><span class="hljs-regexp">//</span> 请求数据格式<br>message HelloRequest &#123;<br>  string name = <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-regexp">//</span> 响应数据格式<br>message HelloReply &#123;<br>  string message = <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;  <span class="hljs-regexp">//</span>语法声明
+
+package hello; <span class="hljs-regexp">//</span>包名
+
+<span class="hljs-regexp">//</span> 定义服务
+service Greeter &#123;
+  rpc SayHello (HelloRequest) returns (HelloReply) &#123;&#125;
+&#125;
+
+<span class="hljs-regexp">//</span> 请求数据格式
+message HelloRequest &#123;
+  string name = <span class="hljs-number">1</span>;
+&#125;
+
+<span class="hljs-regexp">//</span> 响应数据格式
+message HelloReply &#123;
+  string message = <span class="hljs-number">1</span>;
+&#125;</code></pre></div>
 
 <h2 id="server"><a href="#server" class="headerlink" title="server"></a>server</h2><p>新建server目录，<br>golang例子代码来自：<a target="_blank" rel="noopener" href="https://github.com/grpc/grpc-go/tree/master/examples/helloworld">https://github.com/grpc/grpc-go/tree/master/examples/helloworld</a></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// main.go</span><br><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;log&quot;</span><br>	<span class="hljs-string">&quot;net&quot;</span><br><br>	<span class="hljs-string">&quot;google.golang.org/grpc&quot;</span><br>	pb <span class="hljs-string">&quot;local.com/sai/game/grpc/hello&quot;</span><br>)<br><br><span class="hljs-keyword">const</span> (<br>	port = <span class="hljs-string">&quot;:50051&quot;</span><br>)<br><br><span class="hljs-comment">// server is used to implement helloworld.GreeterServer.</span><br><span class="hljs-keyword">type</span> server <span class="hljs-keyword">struct</span> &#123;<br>	pb.UnimplementedGreeterServer<br>&#125;<br><br><span class="hljs-comment">// SayHello implements helloworld.GreeterServer</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *server)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx context.Context, in *pb.HelloRequest)</span> <span class="hljs-params">(*pb.HelloReply, error)</span></span> &#123;<br>	log.Printf(<span class="hljs-string">&quot;Received: %v&quot;</span>, in.GetName())<br>	<span class="hljs-keyword">return</span> &amp;pb.HelloReply&#123;Message: <span class="hljs-string">&quot;Hello &quot;</span> + in.GetName()&#125;, <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	lis, err := net.Listen(<span class="hljs-string">&quot;tcp&quot;</span>, port)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatalf(<span class="hljs-string">&quot;failed to listen: %v&quot;</span>, err)<br>	&#125;<br>	s := grpc.NewServer()<br>	pb.RegisterGreeterServer(s, &amp;server&#123;&#125;)<br>	<span class="hljs-keyword">if</span> err := s.Serve(lis); err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatalf(<span class="hljs-string">&quot;failed to serve: %v&quot;</span>, err)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// main.go</span>
+<span class="hljs-keyword">package</span> main
 
-<h2 id="client"><a href="#client" class="headerlink" title="client"></a>client</h2><h3 id="go-client"><a href="#go-client" class="headerlink" title="go client"></a>go client</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-comment">// client.go</span><br>package <span class="hljs-selector-tag">main</span><br><br>import (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;log&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br><br>	<span class="hljs-string">&quot;google.golang.org/grpc&quot;</span><br>	pb <span class="hljs-string">&quot;local.com/sai/game/grpc/hello&quot;</span><br>)<br><br>const (<br>	<span class="hljs-selector-tag">address</span>     = <span class="hljs-string">&quot;127.0.0.1:50051&quot;</span><br>	defaultName = <span class="hljs-string">&quot;13sai&quot;</span><br>)<br><br>func <span class="hljs-selector-tag">main</span>() &#123;<br>	<span class="hljs-comment">// Set up a connection to the server.</span><br>	conn, err := grpc<span class="hljs-selector-class">.Dial</span>(<span class="hljs-selector-tag">address</span>, grpc<span class="hljs-selector-class">.WithInsecure</span>(), grpc<span class="hljs-selector-class">.WithBlock</span>())<br>	<span class="hljs-keyword">if</span> err != nil &#123;<br>		log<span class="hljs-selector-class">.Fatalf</span>(<span class="hljs-string">&quot;did not connect: %v&quot;</span>, err)<br>	&#125;<br>	defer conn<span class="hljs-selector-class">.Close</span>()<br>	c := pb<span class="hljs-selector-class">.NewGreeterClient</span>(conn)<br><br>	<span class="hljs-comment">// Contact the server and print out its response.</span><br>	name := defaultName<br>	<span class="hljs-keyword">if</span> len(os.Args) &gt; <span class="hljs-number">1</span> &#123;<br>		name = os<span class="hljs-selector-class">.Args</span><span class="hljs-selector-attr">[1]</span><br>	&#125;<br>	ctx, cancel := context<span class="hljs-selector-class">.WithTimeout</span>(context<span class="hljs-selector-class">.Background</span>(), <span class="hljs-selector-tag">time</span>.Second)<br>	defer cancel()<br>	r, err := c<span class="hljs-selector-class">.SayHello</span>(ctx, &amp;pb.HelloRequest&#123;Name: name&#125;)<br>	<span class="hljs-keyword">if</span> err != nil &#123;<br>		log<span class="hljs-selector-class">.Fatalf</span>(<span class="hljs-string">&quot;could not greet: %v&quot;</span>, err)<br>	&#125;<br>	log<span class="hljs-selector-class">.Printf</span>(<span class="hljs-string">&quot;Greeting: %s&quot;</span>, r<span class="hljs-selector-class">.GetMessage</span>())<br>&#125;`<br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;log&quot;</span>
+	<span class="hljs-string">&quot;net&quot;</span>
+
+	<span class="hljs-string">&quot;google.golang.org/grpc&quot;</span>
+	pb <span class="hljs-string">&quot;local.com/sai/game/grpc/hello&quot;</span>
+)
+
+<span class="hljs-keyword">const</span> (
+	port = <span class="hljs-string">&quot;:50051&quot;</span>
+)
+
+<span class="hljs-comment">// server is used to implement helloworld.GreeterServer.</span>
+<span class="hljs-keyword">type</span> server <span class="hljs-keyword">struct</span> &#123;
+	pb.UnimplementedGreeterServer
+&#125;
+
+<span class="hljs-comment">// SayHello implements helloworld.GreeterServer</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *server)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx context.Context, in *pb.HelloRequest)</span> <span class="hljs-params">(*pb.HelloReply, error)</span></span> &#123;
+	log.Printf(<span class="hljs-string">&quot;Received: %v&quot;</span>, in.GetName())
+	<span class="hljs-keyword">return</span> &amp;pb.HelloReply&#123;Message: <span class="hljs-string">&quot;Hello &quot;</span> + in.GetName()&#125;, <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	lis, err := net.Listen(<span class="hljs-string">&quot;tcp&quot;</span>, port)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		log.Fatalf(<span class="hljs-string">&quot;failed to listen: %v&quot;</span>, err)
+	&#125;
+	s := grpc.NewServer()
+	pb.RegisterGreeterServer(s, &amp;server&#123;&#125;)
+	<span class="hljs-keyword">if</span> err := s.Serve(lis); err != <span class="hljs-literal">nil</span> &#123;
+		log.Fatalf(<span class="hljs-string">&quot;failed to serve: %v&quot;</span>, err)
+	&#125;
+&#125;</code></pre></div>
+
+<h2 id="client"><a href="#client" class="headerlink" title="client"></a>client</h2><h3 id="go-client"><a href="#go-client" class="headerlink" title="go client"></a>go client</h3><div class="code-wrapper"><pre><code class="hljs stylus"><span class="hljs-comment">// client.go</span>
+package <span class="hljs-selector-tag">main</span>
+
+import (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;log&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+
+	<span class="hljs-string">&quot;google.golang.org/grpc&quot;</span>
+	pb <span class="hljs-string">&quot;local.com/sai/game/grpc/hello&quot;</span>
+)
+
+const (
+	<span class="hljs-selector-tag">address</span>     = <span class="hljs-string">&quot;127.0.0.1:50051&quot;</span>
+	defaultName = <span class="hljs-string">&quot;13sai&quot;</span>
+)
+
+func <span class="hljs-selector-tag">main</span>() &#123;
+	<span class="hljs-comment">// Set up a connection to the server.</span>
+	conn, err := grpc<span class="hljs-selector-class">.Dial</span>(<span class="hljs-selector-tag">address</span>, grpc<span class="hljs-selector-class">.WithInsecure</span>(), grpc<span class="hljs-selector-class">.WithBlock</span>())
+	<span class="hljs-keyword">if</span> err != nil &#123;
+		log<span class="hljs-selector-class">.Fatalf</span>(<span class="hljs-string">&quot;did not connect: %v&quot;</span>, err)
+	&#125;
+	defer conn<span class="hljs-selector-class">.Close</span>()
+	c := pb<span class="hljs-selector-class">.NewGreeterClient</span>(conn)
+
+	<span class="hljs-comment">// Contact the server and print out its response.</span>
+	name := defaultName
+	<span class="hljs-keyword">if</span> len(os.Args) &gt; <span class="hljs-number">1</span> &#123;
+		name = os<span class="hljs-selector-class">.Args</span><span class="hljs-selector-attr">[1]</span>
+	&#125;
+	ctx, cancel := context<span class="hljs-selector-class">.WithTimeout</span>(context<span class="hljs-selector-class">.Background</span>(), <span class="hljs-selector-tag">time</span>.Second)
+	defer cancel()
+	r, err := c<span class="hljs-selector-class">.SayHello</span>(ctx, &amp;pb.HelloRequest&#123;Name: name&#125;)
+	<span class="hljs-keyword">if</span> err != nil &#123;
+		log<span class="hljs-selector-class">.Fatalf</span>(<span class="hljs-string">&quot;could not greet: %v&quot;</span>, err)
+	&#125;
+	log<span class="hljs-selector-class">.Printf</span>(<span class="hljs-string">&quot;Greeting: %s&quot;</span>, r<span class="hljs-selector-class">.GetMessage</span>())
+&#125;`</code></pre></div>
 
 <h3 id="php-client"><a href="#php-client" class="headerlink" title="php client"></a>php client</h3><h4 id="扩展安装"><a href="#扩展安装" class="headerlink" title="扩展安装"></a>扩展安装</h4><ul>
 <li><a target="_blank" rel="noopener" href="http://pecl.php.net/package/gRPC">grpc扩展下载</a></li>
 <li><a target="_blank" rel="noopener" href="http://pecl.php.net/package/protobuf">profo</a></li>
 </ul>
 <p>下载安装合适版本的扩展即可，记得别忘记在php.ini中加入：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">extension</span>=grpc.so<br><span class="hljs-attr">extension</span>=protobuf.so<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">extension</span>=grpc.so
+<span class="hljs-attr">extension</span>=protobuf.so</code></pre></div>
 
-<h4 id="自动生成代码"><a href="#自动生成代码" class="headerlink" title="自动生成代码"></a>自动生成代码</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">protoc <span class="hljs-attribute">--php_out</span>=client hello/hello.proto<br></code></pre></td></tr></table></figure>
+<h4 id="自动生成代码"><a href="#自动生成代码" class="headerlink" title="自动生成代码"></a>自动生成代码</h4><div class="code-wrapper"><pre><code class="hljs routeros">protoc <span class="hljs-attribute">--php_out</span>=client hello/hello.proto</code></pre></div>
 
 <p>会看到client目录下生成了GPBMetadata和Hello两个目录。</p>
 <p>如果你对grpc相对较熟练，可以直接进行代码编写：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">require</span> <span class="hljs-keyword">__DIR__</span> . <span class="hljs-string">&#x27;/vendor/autoload.php&#x27;</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">Grpc</span>\<span class="hljs-title">BaseStub</span></span>&#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$hostname</span>, <span class="hljs-variable">$opts</span>, <span class="hljs-variable">$channel</span> = <span class="hljs-literal">null</span></span>) </span>&#123;<br>        <span class="hljs-built_in">parent</span>::__construct(<span class="hljs-variable">$hostname</span>, <span class="hljs-variable">$opts</span>, <span class="hljs-variable">$channel</span>);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * rpc SayHello(HelloRequest) returns (HelloReply) &#123;&#125;</span><br><span class="hljs-comment">     * 方法名尽量和 (gprc 定义 Greeter 服务)的方法一样</span><br><span class="hljs-comment">     * 用于请求和响应该服务</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">SayHello</span>(<span class="hljs-params">\Hello\HelloRequest <span class="hljs-variable">$argument</span></span>)</span>&#123;<br>        <span class="hljs-comment">// (/hello.Greeter/SayHello) 是请求服务端那个服务和方法，基本和 proto 文件定义一样</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;_simpleRequest(<span class="hljs-string">&#x27;/hello.Greeter/SayHello&#x27;</span>,<br>            <span class="hljs-variable">$argument</span>,<br>            [<span class="hljs-string">&#x27;\Hello\HelloReply&#x27;</span>, <span class="hljs-string">&#x27;decode&#x27;</span>]<br>            );<br>    &#125;<br><br>&#125;<br><br><span class="hljs-comment">//用于连接 服务端</span><br><span class="hljs-variable">$client</span> = <span class="hljs-keyword">new</span> \Client(<span class="hljs-string">&#x27;127.0.0.1:50051&#x27;</span>, [<br>    <span class="hljs-string">&#x27;credentials&#x27;</span> =&gt; Grpc\ChannelCredentials::createInsecure()<br>]);<br><br><span class="hljs-comment">//实例化 TestRequest 请求类</span><br><span class="hljs-variable">$request</span> = <span class="hljs-keyword">new</span> \Hello\HelloRequest();<br><span class="hljs-variable">$request</span>-&gt;setName(<span class="hljs-string">&quot;fairy&quot;</span>);<br><br><span class="hljs-comment">//调用远程服务</span><br><span class="hljs-variable">$get</span> = <span class="hljs-variable">$client</span>-&gt;SayHello(<span class="hljs-variable">$request</span>)-&gt;wait();<br><br><span class="hljs-comment">//返回数组</span><br><span class="hljs-comment">//$reply 是 TestReply 对象</span><br><span class="hljs-comment">//$status 是数组</span><br><span class="hljs-keyword">list</span>(<span class="hljs-variable">$reply</span>, <span class="hljs-variable">$status</span>) = <span class="hljs-variable">$get</span>;<br><br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$reply</span>-&gt;getMessage().PHP_EOL;<br><span class="hljs-comment">// print_r($client-&gt;SayHello($request));</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">require</span> <span class="hljs-keyword">__DIR__</span> . <span class="hljs-string">&#x27;/vendor/autoload.php&#x27;</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Client</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">Grpc</span>\<span class="hljs-title">BaseStub</span></span>&#123;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$hostname</span>, <span class="hljs-variable">$opts</span>, <span class="hljs-variable">$channel</span> = <span class="hljs-literal">null</span></span>) </span>&#123;
+        <span class="hljs-built_in">parent</span>::__construct(<span class="hljs-variable">$hostname</span>, <span class="hljs-variable">$opts</span>, <span class="hljs-variable">$channel</span>);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * rpc SayHello(HelloRequest) returns (HelloReply) &#123;&#125;</span>
+<span class="hljs-comment">     * 方法名尽量和 (gprc 定义 Greeter 服务)的方法一样</span>
+<span class="hljs-comment">     * 用于请求和响应该服务</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">SayHello</span>(<span class="hljs-params">\Hello\HelloRequest <span class="hljs-variable">$argument</span></span>)</span>&#123;
+        <span class="hljs-comment">// (/hello.Greeter/SayHello) 是请求服务端那个服务和方法，基本和 proto 文件定义一样</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;_simpleRequest(<span class="hljs-string">&#x27;/hello.Greeter/SayHello&#x27;</span>,
+            <span class="hljs-variable">$argument</span>,
+            [<span class="hljs-string">&#x27;\Hello\HelloReply&#x27;</span>, <span class="hljs-string">&#x27;decode&#x27;</span>]
+            );
+    &#125;
+
+&#125;
+
+<span class="hljs-comment">//用于连接 服务端</span>
+<span class="hljs-variable">$client</span> = <span class="hljs-keyword">new</span> \Client(<span class="hljs-string">&#x27;127.0.0.1:50051&#x27;</span>, [
+    <span class="hljs-string">&#x27;credentials&#x27;</span> =&gt; Grpc\ChannelCredentials::createInsecure()
+]);
+
+<span class="hljs-comment">//实例化 TestRequest 请求类</span>
+<span class="hljs-variable">$request</span> = <span class="hljs-keyword">new</span> \Hello\HelloRequest();
+<span class="hljs-variable">$request</span>-&gt;setName(<span class="hljs-string">&quot;fairy&quot;</span>);
+
+<span class="hljs-comment">//调用远程服务</span>
+<span class="hljs-variable">$get</span> = <span class="hljs-variable">$client</span>-&gt;SayHello(<span class="hljs-variable">$request</span>)-&gt;wait();
+
+<span class="hljs-comment">//返回数组</span>
+<span class="hljs-comment">//$reply 是 TestReply 对象</span>
+<span class="hljs-comment">//$status 是数组</span>
+<span class="hljs-keyword">list</span>(<span class="hljs-variable">$reply</span>, <span class="hljs-variable">$status</span>) = <span class="hljs-variable">$get</span>;
+
+<span class="hljs-keyword">echo</span> <span class="hljs-variable">$reply</span>-&gt;getMessage().PHP_EOL;
+<span class="hljs-comment">// print_r($client-&gt;SayHello($request));</span></code></pre></div>
 
 
 <p>当然，也可以使用grpc_php_plugin插件生成。</p>
@@ -598,14 +734,39 @@
 <li></li>
 </ul>
 <h4 id="grpc-php-plugin插件"><a href="#grpc-php-plugin插件" class="headerlink" title="grpc_php_plugin插件"></a>grpc_php_plugin插件</h4><p><a target="_blank" rel="noopener" href="https://gitee.com/mirrors/grpc.git">clone太慢可以使用码云</a></p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">git clone -b <span class="hljs-constructor">$(<span class="hljs-params">curl</span> -L <span class="hljs-params">https</span>:<span class="hljs-operator">/</span><span class="hljs-operator">/</span><span class="hljs-params">grpc</span>.<span class="hljs-params">io</span><span class="hljs-operator">/</span><span class="hljs-params">release</span>)</span> https:<span class="hljs-comment">//github.com/grpc/grpc</span><br>cd grpc<br>#这一步很慢，暂未找到什么好方法<br>git submodule update --init<br>make grpc_php_plugin<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs reasonml">git clone -b <span class="hljs-constructor">$(<span class="hljs-params">curl</span> -L <span class="hljs-params">https</span>:<span class="hljs-operator">/</span><span class="hljs-operator">/</span><span class="hljs-params">grpc</span>.<span class="hljs-params">io</span><span class="hljs-operator">/</span><span class="hljs-params">release</span>)</span> https:<span class="hljs-comment">//github.com/grpc/grpc</span>
+cd grpc
+#这一步很慢，暂未找到什么好方法
+git submodule update --init
+make grpc_php_plugin</code></pre></div>
 
 
 <p>新建php-client，再来自动生成：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">protoc -I=.<span class="hljs-regexp">/hello hello.proto --php_out=./</span>php-client<span class="hljs-regexp">/ --grpc_out=php-client/</span> --plugin=protoc-gen-grpc=<span class="hljs-regexp">/Users/</span>wangzetao<span class="hljs-regexp">/www/g</span>rpc1<span class="hljs-regexp">/bins/</span>opt/grpc_php_plugin<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">protoc -I=.<span class="hljs-regexp">/hello hello.proto --php_out=./</span>php-client<span class="hljs-regexp">/ --grpc_out=php-client/</span> --plugin=protoc-gen-grpc=<span class="hljs-regexp">/Users/</span>wangzetao<span class="hljs-regexp">/www/g</span>rpc1<span class="hljs-regexp">/bins/</span>opt/grpc_php_plugin</code></pre></div>
 
 <p>会发现比上面自动生成多了一个GreeterClient.php</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">// client.php</span><br><span class="hljs-keyword">require</span> <span class="hljs-keyword">__DIR__</span> . <span class="hljs-string">&#x27;/vendor/autoload.php&#x27;</span>;<br><br><span class="hljs-comment">//用于连接 服务端</span><br><span class="hljs-variable">$client</span> = <span class="hljs-keyword">new</span> \Hello\GreeterClient(<span class="hljs-string">&#x27;127.0.0.1:50051&#x27;</span>, [<br>    <span class="hljs-string">&#x27;credentials&#x27;</span> =&gt; Grpc\ChannelCredentials::createInsecure()<br>]);<br><br><span class="hljs-comment">//实例化 TestRequest 请求类</span><br><span class="hljs-variable">$request</span> = <span class="hljs-keyword">new</span> \Hello\HelloRequest();<br><span class="hljs-variable">$request</span>-&gt;setName(<span class="hljs-string">&quot;world&quot;</span>);<br><br><span class="hljs-comment">//调用远程服务</span><br><span class="hljs-variable">$get</span> = <span class="hljs-variable">$client</span>-&gt;SayHello(<span class="hljs-variable">$request</span>)-&gt;wait();<br><br><span class="hljs-comment">//返回数组</span><br><span class="hljs-comment">//$status 是数组</span><br><span class="hljs-keyword">list</span>(<span class="hljs-variable">$reply</span>, <span class="hljs-variable">$status</span>) = <span class="hljs-variable">$get</span>;<br><br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$reply</span>-&gt;getMessage().PHP_EOL;<br><span class="hljs-comment">// print_r($client-&gt;SayHello($request));</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">// client.php</span>
+<span class="hljs-keyword">require</span> <span class="hljs-keyword">__DIR__</span> . <span class="hljs-string">&#x27;/vendor/autoload.php&#x27;</span>;
+
+<span class="hljs-comment">//用于连接 服务端</span>
+<span class="hljs-variable">$client</span> = <span class="hljs-keyword">new</span> \Hello\GreeterClient(<span class="hljs-string">&#x27;127.0.0.1:50051&#x27;</span>, [
+    <span class="hljs-string">&#x27;credentials&#x27;</span> =&gt; Grpc\ChannelCredentials::createInsecure()
+]);
+
+<span class="hljs-comment">//实例化 TestRequest 请求类</span>
+<span class="hljs-variable">$request</span> = <span class="hljs-keyword">new</span> \Hello\HelloRequest();
+<span class="hljs-variable">$request</span>-&gt;setName(<span class="hljs-string">&quot;world&quot;</span>);
+
+<span class="hljs-comment">//调用远程服务</span>
+<span class="hljs-variable">$get</span> = <span class="hljs-variable">$client</span>-&gt;SayHello(<span class="hljs-variable">$request</span>)-&gt;wait();
+
+<span class="hljs-comment">//返回数组</span>
+<span class="hljs-comment">//$status 是数组</span>
+<span class="hljs-keyword">list</span>(<span class="hljs-variable">$reply</span>, <span class="hljs-variable">$status</span>) = <span class="hljs-variable">$get</span>;
+
+<span class="hljs-keyword">echo</span> <span class="hljs-variable">$reply</span>-&gt;getMessage().PHP_EOL;
+<span class="hljs-comment">// print_r($client-&gt;SayHello($request));</span></code></pre></div>
 
 <h2 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h2><blockquote>
 <p>go run grpc/server/main.go</p>

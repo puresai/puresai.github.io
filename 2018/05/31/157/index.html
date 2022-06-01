@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          597 字
+          573 字
         
       </span>
     
@@ -534,9 +534,25 @@
               
               <p>mysql数据量很大使用limit查询最后几页很慢，你知道原因么？</p>
 <p>我们不妨先来看看几条查询语句与结果。</p>
-<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id&gt;<span class="hljs-number">9900000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">10</span>;<br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">limit</span> <span class="hljs-number">9900000</span>,<span class="hljs-number">10</span>;<br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id <span class="hljs-keyword">in</span> (<span class="hljs-keyword">select</span> b.id <span class="hljs-keyword">from</span> (<span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id&gt;<span class="hljs-number">9900000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">10</span>) <span class="hljs-keyword">as</span> b); //子查询<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id&gt;<span class="hljs-number">9900000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">10</span>;
+<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">limit</span> <span class="hljs-number">9900000</span>,<span class="hljs-number">10</span>;
+<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id <span class="hljs-keyword">in</span> (<span class="hljs-keyword">select</span> b.id <span class="hljs-keyword">from</span> (<span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id&gt;<span class="hljs-number">9900000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">10</span>) <span class="hljs-keyword">as</span> b); //子查询</code></pre></div>
 <hr>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[<span class="hljs-keyword">SQL</span>]<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id&gt;<span class="hljs-number">9900000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">10</span>;<br>受影响的行: <span class="hljs-number">0</span><br>时间: <span class="hljs-number">0.019</span>s<br><br><br>[<span class="hljs-keyword">SQL</span>]<br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">limit</span> <span class="hljs-number">9900000</span>,<span class="hljs-number">10</span>;<br>受影响的行: <span class="hljs-number">0</span><br>时间: <span class="hljs-number">1.147</span>s<br><br><br>[<span class="hljs-keyword">SQL</span>]<br><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id <span class="hljs-keyword">in</span> (<span class="hljs-keyword">select</span> b.id <span class="hljs-keyword">from</span> (<span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id&gt;<span class="hljs-number">9900000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">10</span>) <span class="hljs-keyword">as</span> b);<br>受影响的行: <span class="hljs-number">0</span><br>时间: <span class="hljs-number">0.001</span>s<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">[<span class="hljs-keyword">SQL</span>]<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id&gt;<span class="hljs-number">9900000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">10</span>;
+受影响的行: <span class="hljs-number">0</span>
+时间: <span class="hljs-number">0.019</span>s
+
+
+[<span class="hljs-keyword">SQL</span>]
+<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">limit</span> <span class="hljs-number">9900000</span>,<span class="hljs-number">10</span>;
+受影响的行: <span class="hljs-number">0</span>
+时间: <span class="hljs-number">1.147</span>s
+
+
+[<span class="hljs-keyword">SQL</span>]
+<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id <span class="hljs-keyword">in</span> (<span class="hljs-keyword">select</span> b.id <span class="hljs-keyword">from</span> (<span class="hljs-keyword">select</span> id <span class="hljs-keyword">from</span> test_user <span class="hljs-keyword">where</span> id&gt;<span class="hljs-number">9900000</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">10</span>) <span class="hljs-keyword">as</span> b);
+受影响的行: <span class="hljs-number">0</span>
+时间: <span class="hljs-number">0.001</span>s</code></pre></div>
 
 <p>其实，原因就在于：</p>
 <blockquote>

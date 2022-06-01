@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.8k 字
+          1.7k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          16 分钟
+          15 分钟
         
       </span>
     
@@ -407,18 +407,73 @@
             <div class="markdown-body">
               
               <p>最近有需要做一些压力测试，之前一直用ab，用起来不是很舒服，最近有使用wrk，轻量好用。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/wg/</span>wrk.git wrk<br>cd wrk<br>make<br><span class="hljs-comment"># move the executable to somewhere in your PATH</span><br>sudo cp wrk <span class="hljs-regexp">/somewhere/i</span>n<span class="hljs-regexp">/your/</span>PATH<br></code></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><div class="code-wrapper"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/wg/</span>wrk.git wrk
+cd wrk
+make
+<span class="hljs-comment"># move the executable to somewhere in your PATH</span>
+sudo cp wrk <span class="hljs-regexp">/somewhere/i</span>n<span class="hljs-regexp">/your/</span>PATH</code></pre></div>
 
 <p>默认情况下wrk会使用自带的LuaJIT和OpenSSL，如果你想使用系统已安装的版本，可以使用WITH_LUAJIT和WITH_OPENSSL这两个选项来指定它们的路径。比如：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">make <span class="hljs-attribute">WITH_LUAJIT</span>=/usr <span class="hljs-attribute">WITH_OPENSSL</span>=/usr<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs routeros">make <span class="hljs-attribute">WITH_LUAJIT</span>=/usr <span class="hljs-attribute">WITH_OPENSSL</span>=/usr</code></pre></div>
 
-<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dts">wrk <span class="hljs-params">&lt;选项&gt;</span> <span class="hljs-params">&lt;被测HTTP服务的URL&gt;</span>                            <br><span class="hljs-symbol">  Options:</span>                                            <br>    -c, --connections <span class="hljs-params">&lt;N&gt;</span>  跟服务器建立并保持的TCP连接数量  <br>    -d, --duration    <span class="hljs-params">&lt;T&gt;</span>  压测时间           <br>    -t, --threads     <span class="hljs-params">&lt;N&gt;</span>  使用多少个线程进行压测   <br>                                                      <br>    -s, --script      <span class="hljs-params">&lt;S&gt;</span>  指定Lua脚本路径       <br>    -H, --header      <span class="hljs-params">&lt;H&gt;</span>  为每一个HTTP请求添加HTTP头      <br>        --latency          在压测结束后，打印延迟统计信息   <br>        --timeout     <span class="hljs-params">&lt;T&gt;</span>  超时时间     <br>    -v, --version          打印正在使用的wrk的详细版本信息<br>                                                      <br>  <span class="hljs-params">&lt;N&gt;</span>代表数字参数，支持国际单位 (<span class="hljs-number">1</span>k, <span class="hljs-number">1</span>M, <span class="hljs-number">1</span>G)<br>  <span class="hljs-params">&lt;T&gt;</span>代表时间参数，支持时间单位 (<span class="hljs-number">2</span>s, <span class="hljs-number">2</span>m, <span class="hljs-number">2</span>h)<br></code></pre></td></tr></table></figure>
+<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><div class="code-wrapper"><pre><code class="hljs dts">wrk <span class="hljs-params">&lt;选项&gt;</span> <span class="hljs-params">&lt;被测HTTP服务的URL&gt;</span>                            
+<span class="hljs-symbol">  Options:</span>                                            
+    -c, --connections <span class="hljs-params">&lt;N&gt;</span>  跟服务器建立并保持的TCP连接数量  
+    -d, --duration    <span class="hljs-params">&lt;T&gt;</span>  压测时间           
+    -t, --threads     <span class="hljs-params">&lt;N&gt;</span>  使用多少个线程进行压测   
+                                                      
+    -s, --script      <span class="hljs-params">&lt;S&gt;</span>  指定Lua脚本路径       
+    -H, --header      <span class="hljs-params">&lt;H&gt;</span>  为每一个HTTP请求添加HTTP头      
+        --latency          在压测结束后，打印延迟统计信息   
+        --timeout     <span class="hljs-params">&lt;T&gt;</span>  超时时间     
+    -v, --version          打印正在使用的wrk的详细版本信息
+                                                      
+  <span class="hljs-params">&lt;N&gt;</span>代表数字参数，支持国际单位 (<span class="hljs-number">1</span>k, <span class="hljs-number">1</span>M, <span class="hljs-number">1</span>G)
+  <span class="hljs-params">&lt;T&gt;</span>代表时间参数，支持时间单位 (<span class="hljs-number">2</span>s, <span class="hljs-number">2</span>m, <span class="hljs-number">2</span>h)</code></pre></div>
 
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs erlang-repl">wrk -t8 -c200 -d30s --latency  <span class="hljs-string">&quot;http://www.bing.com&quot;</span><br><br>输出：<br>Running <span class="hljs-number">30</span>s test @ http://www.bing.com<br>  <span class="hljs-number">8</span> threads and <span class="hljs-number">200</span> connections<br>  Thread Stats   Avg      Stdev     Max   +/- Stdev<br>    Latency    <span class="hljs-number">46.67</span>ms  <span class="hljs-number">215.38</span>ms   <span class="hljs-number">1.67</span>s    <span class="hljs-number">95.59</span><span class="hljs-comment">%</span><br>    Req/Sec     <span class="hljs-number">7.91</span>k     <span class="hljs-number">1.15</span>k   <span class="hljs-number">10.26</span>k    <span class="hljs-number">70.77</span><span class="hljs-comment">%</span><br>  Latency Distribution<br>     <span class="hljs-number">50</span><span class="hljs-comment">%    2.93ms</span><br>     <span class="hljs-number">75</span><span class="hljs-comment">%    3.78ms</span><br>     <span class="hljs-number">90</span><span class="hljs-comment">%    4.73ms</span><br>     <span class="hljs-number">99</span><span class="hljs-comment">%    1.35s </span><br>  <span class="hljs-number">1790465</span> requests in <span class="hljs-number">30.01</span>s, <span class="hljs-number">684.08</span>MB read<br>Requests/sec:  <span class="hljs-number">59658.29</span><br><br><br>Running <span class="hljs-number">30</span>s test @ http://www.bing.com （压测时间<span class="hljs-number">30</span>s）<br>  <span class="hljs-number">8</span> threads and <span class="hljs-number">200</span> connections （共<span class="hljs-number">8</span>个测试线程，<span class="hljs-number">200</span>个连接）<br>  Thread Stats   Avg      Stdev     Max   +/- Stdev<br>              （平均值） （标准差）（最大值）（正负一个标准差所占比例）<br>    Latency    <span class="hljs-number">46.67</span>ms  <span class="hljs-number">215.38</span>ms   <span class="hljs-number">1.67</span>s    <span class="hljs-number">95.59</span><span class="hljs-comment">%</span><br>    （延迟）<br>    Req/Sec     <span class="hljs-number">7.91</span>k     <span class="hljs-number">1.15</span>k   <span class="hljs-number">10.26</span>k    <span class="hljs-number">70.77</span><span class="hljs-comment">%</span><br>    （处理中的请求数）<br>  Latency Distribution （延迟分布）<br>     <span class="hljs-number">50</span><span class="hljs-comment">%    2.93ms</span><br>     <span class="hljs-number">75</span><span class="hljs-comment">%    3.78ms</span><br>     <span class="hljs-number">90</span><span class="hljs-comment">%    4.73ms</span><br>     <span class="hljs-number">99</span><span class="hljs-comment">%    1.35s （99分位的延迟）</span><br>  <span class="hljs-number">1790465</span> requests in <span class="hljs-number">30.01</span>s, <span class="hljs-number">684.08</span>MB read （<span class="hljs-number">30.01</span>秒内共处理完成了<span class="hljs-number">1790465</span>个请求，读取了<span class="hljs-number">684.08</span>MB数据）<br>Requests/sec:  <span class="hljs-number">59658.29</span> （平均每秒处理完成<span class="hljs-number">59658.29</span>个请求）<br>Transfer/sec:     <span class="hljs-number">22.79</span>MB （平均每秒读取数据<span class="hljs-number">22.79</span>MB）<br></code></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><div class="code-wrapper"><pre><code class="hljs erlang-repl">wrk -t8 -c200 -d30s --latency  <span class="hljs-string">&quot;http://www.bing.com&quot;</span>
 
-<h2 id="lua脚本使用"><a href="#lua脚本使用" class="headerlink" title="lua脚本使用"></a>lua脚本使用</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">--data.lua</span><br><span class="hljs-keyword">local</span> data=  <span class="hljs-string">&quot;&#123;.count.:1&#125;&quot;</span><br>wrk.headers[<span class="hljs-string">&quot;Content-Type&quot;</span>] =  <span class="hljs-string">&quot;application/jason&quot;</span><br>wrk.method  =  <span class="hljs-string">&quot;POST&quot;</span><br><span class="hljs-function"><span class="hljs-keyword">function</span>  <span class="hljs-title">request</span><span class="hljs-params">()</span></span><br>	<span class="hljs-keyword">return</span> wrk.<span class="hljs-built_in">format</span>(<span class="hljs-string">&#x27;POST&#x27;</span>, <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, data)<br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+输出：
+Running <span class="hljs-number">30</span>s test @ http://www.bing.com
+  <span class="hljs-number">8</span> threads and <span class="hljs-number">200</span> connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    <span class="hljs-number">46.67</span>ms  <span class="hljs-number">215.38</span>ms   <span class="hljs-number">1.67</span>s    <span class="hljs-number">95.59</span><span class="hljs-comment">%</span>
+    Req/Sec     <span class="hljs-number">7.91</span>k     <span class="hljs-number">1.15</span>k   <span class="hljs-number">10.26</span>k    <span class="hljs-number">70.77</span><span class="hljs-comment">%</span>
+  Latency Distribution
+     <span class="hljs-number">50</span><span class="hljs-comment">%    2.93ms</span>
+     <span class="hljs-number">75</span><span class="hljs-comment">%    3.78ms</span>
+     <span class="hljs-number">90</span><span class="hljs-comment">%    4.73ms</span>
+     <span class="hljs-number">99</span><span class="hljs-comment">%    1.35s </span>
+  <span class="hljs-number">1790465</span> requests in <span class="hljs-number">30.01</span>s, <span class="hljs-number">684.08</span>MB read
+Requests/sec:  <span class="hljs-number">59658.29</span>
+
+
+Running <span class="hljs-number">30</span>s test @ http://www.bing.com （压测时间<span class="hljs-number">30</span>s）
+  <span class="hljs-number">8</span> threads and <span class="hljs-number">200</span> connections （共<span class="hljs-number">8</span>个测试线程，<span class="hljs-number">200</span>个连接）
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+              （平均值） （标准差）（最大值）（正负一个标准差所占比例）
+    Latency    <span class="hljs-number">46.67</span>ms  <span class="hljs-number">215.38</span>ms   <span class="hljs-number">1.67</span>s    <span class="hljs-number">95.59</span><span class="hljs-comment">%</span>
+    （延迟）
+    Req/Sec     <span class="hljs-number">7.91</span>k     <span class="hljs-number">1.15</span>k   <span class="hljs-number">10.26</span>k    <span class="hljs-number">70.77</span><span class="hljs-comment">%</span>
+    （处理中的请求数）
+  Latency Distribution （延迟分布）
+     <span class="hljs-number">50</span><span class="hljs-comment">%    2.93ms</span>
+     <span class="hljs-number">75</span><span class="hljs-comment">%    3.78ms</span>
+     <span class="hljs-number">90</span><span class="hljs-comment">%    4.73ms</span>
+     <span class="hljs-number">99</span><span class="hljs-comment">%    1.35s （99分位的延迟）</span>
+  <span class="hljs-number">1790465</span> requests in <span class="hljs-number">30.01</span>s, <span class="hljs-number">684.08</span>MB read （<span class="hljs-number">30.01</span>秒内共处理完成了<span class="hljs-number">1790465</span>个请求，读取了<span class="hljs-number">684.08</span>MB数据）
+Requests/sec:  <span class="hljs-number">59658.29</span> （平均每秒处理完成<span class="hljs-number">59658.29</span>个请求）
+Transfer/sec:     <span class="hljs-number">22.79</span>MB （平均每秒读取数据<span class="hljs-number">22.79</span>MB）</code></pre></div>
+
+<h2 id="lua脚本使用"><a href="#lua脚本使用" class="headerlink" title="lua脚本使用"></a>lua脚本使用</h2><div class="code-wrapper"><pre><code class="hljs lua"><span class="hljs-comment">--data.lua</span>
+<span class="hljs-keyword">local</span> data=  <span class="hljs-string">&quot;&#123;.count.:1&#125;&quot;</span>
+wrk.headers[<span class="hljs-string">&quot;Content-Type&quot;</span>] =  <span class="hljs-string">&quot;application/jason&quot;</span>
+wrk.method  =  <span class="hljs-string">&quot;POST&quot;</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span>  <span class="hljs-title">request</span><span class="hljs-params">()</span></span>
+	<span class="hljs-keyword">return</span> wrk.<span class="hljs-built_in">format</span>(<span class="hljs-string">&#x27;POST&#x27;</span>, <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, data)
+<span class="hljs-keyword">end</span></code></pre></div>
 <p>测试：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wrk</span> -t<span class="hljs-number">500</span> -c<span class="hljs-number">1000</span> -d<span class="hljs-number">1</span>s  --script=data.lua --latency https://github.<span class="hljs-number">13</span>sai.com/<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">wrk</span> -t<span class="hljs-number">500</span> -c<span class="hljs-number">1000</span> -d<span class="hljs-number">1</span>s  --script=data.lua --latency https://github.<span class="hljs-number">13</span>sai.com/</code></pre></div>
 
 <p>个人用了几次，感觉比ab好用，推荐一下。</p>
 <p>参考：<br><a target="_blank" rel="noopener" href="http://zhaox.github.io/benchmark/2016/12/28/wrk-guidelines">Http压测工具wrk使用指南</a><br><a target="_blank" rel="noopener" href="https://github.com/wg/wrk">wrk</a></p>

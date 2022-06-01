@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          823 字
+          813 字
         
       </span>
     
@@ -872,16 +872,22 @@
 <ol start="2">
 <li>安装</li>
 </ol>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">phpize<br><span class="hljs-regexp">//</span> --with-php-config 路径自己修改<br>.<span class="hljs-regexp">/configure --with-php-config=xxx/</span>php-config<br>make &amp;&amp; make install <br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">phpize
+<span class="hljs-regexp">//</span> --with-php-config 路径自己修改
+.<span class="hljs-regexp">/configure --with-php-config=xxx/</span>php-config
+make &amp;&amp; make install</code></pre></div>
 
 <p>如果没装rabbitmq-c，应该会报错。</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">configure: error: Please reinstall <span class="hljs-keyword">the</span> librabbitmq distribution itself <span class="hljs-keyword">or</span> (re)install librabbitmq development package <span class="hljs-keyword">if</span> <span class="hljs-keyword">it</span> available <span class="hljs-keyword">in</span> your <span class="hljs-keyword">system</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs livecodeserver">configure: error: Please reinstall <span class="hljs-keyword">the</span> librabbitmq distribution itself <span class="hljs-keyword">or</span> (re)install librabbitmq development package <span class="hljs-keyword">if</span> <span class="hljs-keyword">it</span> available <span class="hljs-keyword">in</span> your <span class="hljs-keyword">system</span></code></pre></div>
 
 <p><a target="_blank" rel="noopener" href="https://github.com/alanxz/rabbitmq-c/releases">下载rabbitmq-c</a></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd rabbitmq-c-<span class="hljs-number">0.8</span>.<span class="hljs-number">0</span><br>.<span class="hljs-regexp">/configure --prefix=/u</span>sr<span class="hljs-regexp">/local/</span>rabbitmq-c<br>make &amp;&amp; make install<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">cd rabbitmq-c-<span class="hljs-number">0.8</span>.<span class="hljs-number">0</span>
+.<span class="hljs-regexp">/configure --prefix=/u</span>sr<span class="hljs-regexp">/local/</span>rabbitmq-c
+make &amp;&amp; make install</code></pre></div>
 
 <p>重新编译amqp</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/configure --with-php-config=xxx/</span>php-config --with-amqp --with-librabbitmq-dir=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/rabbitmq-c/</span><br>make &amp;&amp; make install<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">.<span class="hljs-regexp">/configure --with-php-config=xxx/</span>php-config --with-amqp --with-librabbitmq-dir=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/rabbitmq-c/</span>
+make &amp;&amp; make install</code></pre></div>
 
 <p>make时提示缺少amqp_ssl_socket.h<br>fatal error: ‘amqp_ssl_socket.h’ file not found<br>#include &lt;amqp_ssl_socket.h&gt;</p>
 <p>这里可以看一下 <a target="_blank" rel="noopener" href="https://github.com/alanxz/rabbitmq-c/issues/463">https://github.com/alanxz/rabbitmq-c/issues/463</a></p>

@@ -862,7 +862,7 @@
             
             <div class="markdown-body">
               
-               <p>表单代码<br/></p><pre class="brush:html;toolbar:false">&lt;html&gt;
+               <p>表单代码<br/></p><div class="code-wrapper"><pre class="brush:html;toolbar:false">&lt;html&gt;
 &lt;body&gt;
 &lt;form&nbsp;action=&quot;&quot;&nbsp;method=&quot;post&quot;&nbsp;enctype=&quot;multipart/form-data&quot;&gt;
 &lt;label&nbsp;for=&quot;file&quot;&gt;Filename:&lt;/label&gt;
@@ -872,7 +872,7 @@
 &lt;/form&gt;
 &lt;img&nbsp;src=&quot;&lt;?php&nbsp;echo&nbsp;&quot;upload/&quot;&nbsp;.&nbsp;$_FILES[&quot;file&quot;][&quot;name&quot;];?&gt;&quot;&gt;
 &lt;/body&gt;
-&lt;/html&gt;</pre><p>注意此处</p><pre class="brush:html;toolbar:false">enctype=&quot;multipart/form-data&quot;</pre><p>必不可少。</p><p><br/></p><p>本页上传代码</p><pre class="brush:php;toolbar:false">&lt;?php
+&lt;/html&gt;</pre></div><p>注意此处</p><div class="code-wrapper"><pre class="brush:html;toolbar:false">enctype=&quot;multipart/form-data&quot;</pre></div><p>必不可少。</p><p><br/></p><p>本页上传代码</p><div class="code-wrapper"><pre class="brush:php;toolbar:false">&lt;?php
 //限制格式、大小
 if&nbsp;((($_FILES[&quot;file&quot;][&quot;type&quot;]&nbsp;==&nbsp;&quot;image/gif&quot;)&nbsp;||&nbsp;($_FILES[&quot;file&quot;][&quot;type&quot;]&nbsp;==&nbsp;&quot;image/jpeg&quot;)&nbsp;||&nbsp;($_FILES[&quot;file&quot;][&quot;type&quot;]&nbsp;==&nbsp;&quot;image/pjpeg&quot;))&nbsp;&amp;&amp;&nbsp;($_FILES[&quot;file&quot;][&quot;size&quot;]&nbsp;&lt;&nbsp;20000)){
     if&nbsp;($_FILES[&quot;file&quot;][&quot;error&quot;]&nbsp;&gt;&nbsp;0){
@@ -893,7 +893,7 @@ if&nbsp;((($_FILES[&quot;file&quot;][&quot;type&quot;]&nbsp;==&nbsp;&quot;image/
 }else{
     echo&nbsp;&quot;文件格式不对或超过限制大小&quot;;
 }
-?&gt;</pre><p><br/></p><p>这样，我们便能实现简单的图片上传了。当然，文件类比，修改即可。</p>
+?&gt;</pre></div><p><br/></p><p>这样，我们便能实现简单的图片上传了。当然，文件类比，修改即可。</p>
 
               
             </div>

@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.4k 字
+          4k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          37 分钟
+          34 分钟
         
       </span>
     
@@ -529,7 +529,126 @@
 <hr>
 <p>我们在library\Https目录下新建Request、Response，开始编写请求和输出的代码。</p>
 <h3 id="Request"><a href="#Request" class="headerlink" title="Request"></a>Request</h3><p>我们实现几个常用的方法，get、post、method等，这里主要用$_SERVER实现，为了复用我们定义了三个私有属性存储get参数、post参数和method。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 处理请求</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Https</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Components</span>\<span class="hljs-title">Base</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Request</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取请求方法</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> string</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMethod</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_METHOD&#x27;</span>])) &#123;<br>            <span class="hljs-keyword">return</span> strtoupper(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_METHOD&#x27;</span>]);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;GET&#x27;</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 请求头</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $name</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $defaultValue</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> mixed|null</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHeader</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$name</span> = ucfirst(<span class="hljs-variable">$name</span>);<br>        <span class="hljs-keyword">if</span> (function_exists(<span class="hljs-string">&#x27;apache_request_headers&#x27;</span>)) &#123;<br>            <span class="hljs-variable">$headers</span> = apache_request_headers();<br>            <span class="hljs-keyword">return</span> <span class="hljs-variable">$headers</span>[<span class="hljs-variable">$name</span>]?? <span class="hljs-variable">$defaultValue</span>;<br>        &#125;<br>        <span class="hljs-variable">$name</span> = strtoupper(<span class="hljs-variable">$name</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$_SERVER</span>[<span class="hljs-variable">$name</span>]?? <span class="hljs-variable">$defaultValue</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取get参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $name</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $defaultValue</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> |null</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$name</span> = <span class="hljs-literal">null</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$name</span> === <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getQueryParams();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getQueryParam(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getQueryParam</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$params</span> = <span class="hljs-keyword">$this</span>-&gt;getQueryParams();<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$params</span>[<span class="hljs-variable">$name</span>]) ? <span class="hljs-variable">$params</span>[<span class="hljs-variable">$name</span>] : <span class="hljs-variable">$defaultValue</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getQueryParams</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-keyword">$this</span>-&gt;queryParams)) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;queryParams = <span class="hljs-variable">$_GET</span>;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;queryParams;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取post参数</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $name</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $defaultValue</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> array|mixed|null</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">post</span>(<span class="hljs-params"><span class="hljs-variable">$name</span> = <span class="hljs-literal">null</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$name</span> === <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getBodyParams();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getBodyParam(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBodyParam</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$params</span> = <span class="hljs-keyword">$this</span>-&gt;getBodyParams();<br>        <span class="hljs-keyword">if</span> (is_object(<span class="hljs-variable">$params</span>)) &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-variable">$params</span>-&gt;&#123;<span class="hljs-variable">$name</span>&#125;;<br>            &#125; <span class="hljs-keyword">catch</span> (\<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$e</span>) &#123;<br>                <span class="hljs-keyword">return</span> <span class="hljs-variable">$defaultValue</span>;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$params</span>[<span class="hljs-variable">$name</span>]) ? <span class="hljs-variable">$params</span>[<span class="hljs-variable">$name</span>] : <span class="hljs-variable">$defaultValue</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBodyParams</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$contentType</span> = strtolower(<span class="hljs-keyword">$this</span>-&gt;getHeader(<span class="hljs-string">&#x27;Content-Type&#x27;</span>));<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$contentType</span> == <span class="hljs-string">&#x27;multipart/form-data&#x27;</span>) &#123;<br>            <span class="hljs-keyword">$this</span>-&gt;bodyParams = <span class="hljs-variable">$_POST</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">$this</span>-&gt;bodyParams = \json_decode(file_get_contents(<span class="hljs-string">&quot;php://input&quot;</span>), <span class="hljs-literal">true</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;bodyParams?? [];<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * get参数数组</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$queryParams</span> = [];<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * post参数数组</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$bodyParams</span> = [];<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$method</span>;<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 处理请求</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Https</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Components</span>\<span class="hljs-title">Base</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Request</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 获取请求方法</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> string</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMethod</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_METHOD&#x27;</span>])) &#123;
+            <span class="hljs-keyword">return</span> strtoupper(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_METHOD&#x27;</span>]);
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;GET&#x27;</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 请求头</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $name</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $defaultValue</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> mixed|null</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getHeader</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$name</span> = ucfirst(<span class="hljs-variable">$name</span>);
+        <span class="hljs-keyword">if</span> (function_exists(<span class="hljs-string">&#x27;apache_request_headers&#x27;</span>)) &#123;
+            <span class="hljs-variable">$headers</span> = apache_request_headers();
+            <span class="hljs-keyword">return</span> <span class="hljs-variable">$headers</span>[<span class="hljs-variable">$name</span>]?? <span class="hljs-variable">$defaultValue</span>;
+        &#125;
+        <span class="hljs-variable">$name</span> = strtoupper(<span class="hljs-variable">$name</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$_SERVER</span>[<span class="hljs-variable">$name</span>]?? <span class="hljs-variable">$defaultValue</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 获取get参数</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $name</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $defaultValue</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> |null</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$name</span> = <span class="hljs-literal">null</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$name</span> === <span class="hljs-literal">null</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getQueryParams();
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getQueryParam(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span>);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getQueryParam</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$params</span> = <span class="hljs-keyword">$this</span>-&gt;getQueryParams();
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$params</span>[<span class="hljs-variable">$name</span>]) ? <span class="hljs-variable">$params</span>[<span class="hljs-variable">$name</span>] : <span class="hljs-variable">$defaultValue</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getQueryParams</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-keyword">$this</span>-&gt;queryParams)) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;queryParams = <span class="hljs-variable">$_GET</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;queryParams;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 获取post参数</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $name</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> null $defaultValue</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> array|mixed|null</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">post</span>(<span class="hljs-params"><span class="hljs-variable">$name</span> = <span class="hljs-literal">null</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$name</span> === <span class="hljs-literal">null</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getBodyParams();
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;getBodyParam(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span>);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBodyParam</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$defaultValue</span> = <span class="hljs-literal">null</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$params</span> = <span class="hljs-keyword">$this</span>-&gt;getBodyParams();
+        <span class="hljs-keyword">if</span> (is_object(<span class="hljs-variable">$params</span>)) &#123;
+            <span class="hljs-keyword">try</span> &#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-variable">$params</span>-&gt;&#123;<span class="hljs-variable">$name</span>&#125;;
+            &#125; <span class="hljs-keyword">catch</span> (\<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$e</span>) &#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-variable">$defaultValue</span>;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$params</span>[<span class="hljs-variable">$name</span>]) ? <span class="hljs-variable">$params</span>[<span class="hljs-variable">$name</span>] : <span class="hljs-variable">$defaultValue</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBodyParams</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$contentType</span> = strtolower(<span class="hljs-keyword">$this</span>-&gt;getHeader(<span class="hljs-string">&#x27;Content-Type&#x27;</span>));
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$contentType</span> == <span class="hljs-string">&#x27;multipart/form-data&#x27;</span>) &#123;
+            <span class="hljs-keyword">$this</span>-&gt;bodyParams = <span class="hljs-variable">$_POST</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">$this</span>-&gt;bodyParams = \json_decode(file_get_contents(<span class="hljs-string">&quot;php://input&quot;</span>), <span class="hljs-literal">true</span>);
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;bodyParams?? [];
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * get参数数组</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$queryParams</span> = [];
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * post参数数组</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$bodyParams</span> = [];
+
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$method</span>;
+&#125;
+
+</code></pre></div>
 
 <p>知识点：</p>
 <ol>
@@ -550,7 +669,41 @@
 </ul>
 <hr>
 <h3 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h3><p>Response默认以使用广泛的json输出，暂时也只考虑json格式输出的情况。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 数据输出</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Https</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Components</span>\<span class="hljs-title">Base</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Response</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$code</span> = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$result</span> = [];<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;success&quot;</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">send</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        header(<span class="hljs-string">&#x27;Content-Type:application/json; charset=utf-8&#x27;</span>);<br>        <span class="hljs-keyword">echo</span> \json_encode([<br>            <span class="hljs-string">&#x27;data&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;result,<br>            <span class="hljs-string">&#x27;msg&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;msg,<br>            <span class="hljs-string">&#x27;code&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;code,<br>            <span class="hljs-string">&#x27;timestamp&#x27;</span> =&gt; time()<br>        ]);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">json</span>(<span class="hljs-params"><span class="hljs-variable">$data</span> = []</span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;result = array_merge(<span class="hljs-keyword">$this</span>-&gt;result, <span class="hljs-variable">$data</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 数据输出</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Https</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Components</span>\<span class="hljs-title">Base</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Response</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$code</span> = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$result</span> = [];
+
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;success&quot;</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">send</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        header(<span class="hljs-string">&#x27;Content-Type:application/json; charset=utf-8&#x27;</span>);
+        <span class="hljs-keyword">echo</span> \json_encode([
+            <span class="hljs-string">&#x27;data&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;result,
+            <span class="hljs-string">&#x27;msg&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;msg,
+            <span class="hljs-string">&#x27;code&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;code,
+            <span class="hljs-string">&#x27;timestamp&#x27;</span> =&gt; time()
+        ]);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">json</span>(<span class="hljs-params"><span class="hljs-variable">$data</span> = []</span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;result = array_merge(<span class="hljs-keyword">$this</span>-&gt;result, <span class="hljs-variable">$data</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>;
+    &#125;
+&#125;
+</code></pre></div>
 
 <p>知识点：</p>
 <ol>
@@ -558,7 +711,43 @@
 <li>json_encode ( mixed $value [, int $options = 0 [, int $depth = 512 ]] ) : string — 对变量进行 JSON 编码，<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/json.constants.php">options可以预定义常量</a>，如 JSON_UNESCAPED_UNICODE，JSON_UNESCAPED_SLASHES。</li>
 </ol>
 <h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>结合输出对象，我们在创建一个基类控制器，也放在相同的Https目录，我们控制创建一个构造函数，实例化一个Response，并实现一个通用的json：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 基类控制器</span><br><span class="hljs-comment"> * 预定义json方法，便于其他控制器使用</span><br><span class="hljs-comment"> * 返回格式</span><br><span class="hljs-comment"> &#123;</span><br><span class="hljs-comment">    &quot;data&quot;: [],</span><br><span class="hljs-comment">    &quot;msg&quot;: &quot;success&quot;,</span><br><span class="hljs-comment">    &quot;code&quot;: 0,</span><br><span class="hljs-comment">    &quot;timestamp&quot;: 1572231957</span><br><span class="hljs-comment">&#125;</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Https</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Controller</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$response</span>;<br><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$code</span> = <span class="hljs-number">200</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;response = <span class="hljs-keyword">new</span> Response();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">json</span>(<span class="hljs-params"><span class="hljs-variable">$data</span> = []</span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json(<span class="hljs-variable">$data</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json([<span class="hljs-string">&#x27;hello&#x27;</span> =&gt; <span class="hljs-string">&#x27;saif&#x27;</span>]);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 基类控制器</span>
+<span class="hljs-comment"> * 预定义json方法，便于其他控制器使用</span>
+<span class="hljs-comment"> * 返回格式</span>
+<span class="hljs-comment"> &#123;</span>
+<span class="hljs-comment">    &quot;data&quot;: [],</span>
+<span class="hljs-comment">    &quot;msg&quot;: &quot;success&quot;,</span>
+<span class="hljs-comment">    &quot;code&quot;: 0,</span>
+<span class="hljs-comment">    &quot;timestamp&quot;: 1572231957</span>
+<span class="hljs-comment">&#125;</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Https</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Controller</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$response</span>;
+
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$code</span> = <span class="hljs-number">200</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;response = <span class="hljs-keyword">new</span> Response();
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">json</span>(<span class="hljs-params"><span class="hljs-variable">$data</span> = []</span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json(<span class="hljs-variable">$data</span>);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"><span class="hljs-variable">$params</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;response-&gt;json([<span class="hljs-string">&#x27;hello&#x27;</span> =&gt; <span class="hljs-string">&#x27;saif&#x27;</span>]);
+    &#125;
+&#125;
+</code></pre></div>
 
 <p>app应用里的控制器都必须继承这个基类控制器。</p>
 

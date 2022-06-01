@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          933 字
+          893 字
         
       </span>
     
@@ -446,12 +446,39 @@
               
               <p>table表格需要增加提示文案说明，没有现成的属性添加，我们可以通过<code>render-header</code>来渲染表头。</p>
 <p>代码如下：</p>
-<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;价格&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:render-header</span>=<span class="hljs-string">&quot;renderTipsHeader&quot;</span></span></span><br><span class="hljs-tag"><span class="xml">      &gt;</span></span><br><span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span><br><span class="xml">          </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">scope.row.amount</span> &#125;&#125;</span><span class="xml"></span><br><span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span><br><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs handlebars"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span>
+<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span>
+<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;价格&quot;</span></span></span>
+<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:render-header</span>=<span class="hljs-string">&quot;renderTipsHeader&quot;</span></span></span>
+<span class="hljs-tag"><span class="xml">      &gt;</span></span>
+<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span>
+<span class="xml">          </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">scope.row.amount</span> &#125;&#125;</span><span class="xml"></span>
+<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
+<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span></code></pre></div>
 <p>renderTipsHeader：</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">renderTipsHeader</span> (h,&#123;<span class="hljs-selector-tag">column</span>&#125;) &#123;<br>      <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">h</span>(<br>        <span class="hljs-string">&#x27;div&#x27;</span>,[ <br>             h(<span class="hljs-string">&#x27;span&#x27;</span>, column.label),<br>             h(<span class="hljs-string">&#x27;el-tooltip&#x27;</span>,&#123;<br>　　　　      <span class="hljs-attribute">props</span>:&#123;<br>　　　　　　　　<span class="hljs-attribute">effect</span>:<span class="hljs-string">&#x27;dark&#x27;</span>,<br>　　　　　　　　<span class="hljs-attribute">content</span>:<span class="hljs-string">&#x27;提示文案&#x27;</span>,<br>　　　　　　　　<span class="hljs-attribute">placement</span>:<span class="hljs-string">&#x27;top&#x27;</span><br>　　　　　　&#125;,　　　 <br>　　　　 &#125;,[<br>                 h(<span class="hljs-string">&#x27;i&#x27;</span>, &#123;<br>                     <span class="hljs-attribute">class</span>:<span class="hljs-string">&#x27;el-icon-question&#x27;</span>,<br>                     <span class="hljs-attribute">style</span>:<span class="hljs-string">&#x27;color:#409EFF;margin-left:5px;&#x27;</span><br>                 &#125;)<br>            ])<br>        ]<br>    );<br> &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs less"><span class="hljs-selector-tag">renderTipsHeader</span> (h,&#123;<span class="hljs-selector-tag">column</span>&#125;) &#123;
+      <span class="hljs-selector-tag">return</span> <span class="hljs-selector-tag">h</span>(
+        <span class="hljs-string">&#x27;div&#x27;</span>,[ 
+             h(<span class="hljs-string">&#x27;span&#x27;</span>, column.label),
+             h(<span class="hljs-string">&#x27;el-tooltip&#x27;</span>,&#123;
+　　　　      <span class="hljs-attribute">props</span>:&#123;
+　　　　　　　　<span class="hljs-attribute">effect</span>:<span class="hljs-string">&#x27;dark&#x27;</span>,
+　　　　　　　　<span class="hljs-attribute">content</span>:<span class="hljs-string">&#x27;提示文案&#x27;</span>,
+　　　　　　　　<span class="hljs-attribute">placement</span>:<span class="hljs-string">&#x27;top&#x27;</span>
+　　　　　　&#125;,　　　 
+　　　　 &#125;,[
+                 h(<span class="hljs-string">&#x27;i&#x27;</span>, &#123;
+                     <span class="hljs-attribute">class</span>:<span class="hljs-string">&#x27;el-icon-question&#x27;</span>,
+                     <span class="hljs-attribute">style</span>:<span class="hljs-string">&#x27;color:#409EFF;margin-left:5px;&#x27;</span>
+                 &#125;)
+            ])
+        ]
+    );
+ &#125;</code></pre></div>
 
 <p>效果如图：<br><img src="https://cdn.learnku.com/uploads/images/202004/29/41489/I9iAzrrrkU.png!large" srcset="/img/loading.gif" lazyload></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">render-<span class="hljs-selector-tag">header</span> 列标题 Label 区域渲染使用的 Function <br><span class="hljs-function"><span class="hljs-title">Function</span><span class="hljs-params">(h, &#123; column, <span class="hljs-variable">$index</span> &#125;)</span></span> <br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stylus">render-<span class="hljs-selector-tag">header</span> 列标题 Label 区域渲染使用的 Function 
+<span class="hljs-function"><span class="hljs-title">Function</span><span class="hljs-params">(h, &#123; column, <span class="hljs-variable">$index</span> &#125;)</span></span></code></pre></div>
 <p>感兴趣可以打印出来看看，这里还有更复杂的应用–<a target="_blank" rel="noopener" href="https://github.com/Darkerxi/ElementUI-Table-column_render-header">https://github.com/Darkerxi/ElementUI-Table-column_render-header</a></p>
 <hr>
 <p>参考文章：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jmwlhj/p/11004378.html" title="element-ui自定义table表头，修改标题样式、添加tooltip及 :render-header使用简介">element-ui自定义table表头，修改标题样式、添加tooltip及 :render-header使用简介</a></p>

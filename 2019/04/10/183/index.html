@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          832 字
+          806 字
         
       </span>
     
@@ -439,10 +439,28 @@
 <p>浏览器打开， <a target="_blank" rel="noopener" href="http://localhost:9100/%EF%BC%8C%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E5%88%9A%E5%BC%80%E5%90%AF%E5%8A%A8%E7%9A%84ES%E5%AE%9E%E4%BE%8B%E3%80%82">http://localhost:9100/，可以看到刚开启动的ES实例。</a></p>
 <h3 id="伪集群"><a href="#伪集群" class="headerlink" title="伪集群"></a>伪集群</h3><p>打开config下得elasticsearch.yml</p>
 <p>加入以下配置：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 自定义配置</span><br><span class="hljs-attr">cluster.name:</span> <span class="hljs-string">sai_es</span><br><span class="hljs-attr">node.name:</span> <span class="hljs-string">es0</span><br><span class="hljs-attr">node.master:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">http.port:</span> <span class="hljs-number">9200</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs yaml"><span class="hljs-comment"># 自定义配置</span>
+<span class="hljs-attr">cluster.name:</span> <span class="hljs-string">sai_es</span>
+<span class="hljs-attr">node.name:</span> <span class="hljs-string">es0</span>
+<span class="hljs-attr">node.master:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">http.port:</span> <span class="hljs-number">9200</span></code></pre></div>
 
 <p>复制es文件夹到es1,es2,修改配置:</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">es1:</span><br><span class="hljs-comment"># 自定义配置</span><br><span class="hljs-attr">cluster.name:</span> <span class="hljs-string">sai_es</span><br><span class="hljs-attr">node.name:</span> <span class="hljs-string">es1</span><br><span class="hljs-attr">node.master:</span> <span class="hljs-literal">false</span><br><span class="hljs-attr">http.port:</span> <span class="hljs-number">9201</span><br><span class="hljs-attr">discovery.zen.ping.unicast.hosts:</span> [<span class="hljs-string">&quot;127.0.0.1&quot;</span>]<br><br><span class="hljs-attr">es2:</span><br><span class="hljs-comment"># 自定义配置</span><br><span class="hljs-attr">cluster.name:</span> <span class="hljs-string">sai_es</span><br><span class="hljs-attr">node.name:</span> <span class="hljs-string">es2</span><br><span class="hljs-attr">node.master:</span> <span class="hljs-literal">false</span><br><span class="hljs-attr">http.port:</span> <span class="hljs-number">9202</span><br><span class="hljs-attr">discovery.zen.ping.unicast.hosts:</span> [<span class="hljs-string">&quot;127.0.0.1&quot;</span>]<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">es1:</span>
+<span class="hljs-comment"># 自定义配置</span>
+<span class="hljs-attr">cluster.name:</span> <span class="hljs-string">sai_es</span>
+<span class="hljs-attr">node.name:</span> <span class="hljs-string">es1</span>
+<span class="hljs-attr">node.master:</span> <span class="hljs-literal">false</span>
+<span class="hljs-attr">http.port:</span> <span class="hljs-number">9201</span>
+<span class="hljs-attr">discovery.zen.ping.unicast.hosts:</span> [<span class="hljs-string">&quot;127.0.0.1&quot;</span>]
+
+<span class="hljs-attr">es2:</span>
+<span class="hljs-comment"># 自定义配置</span>
+<span class="hljs-attr">cluster.name:</span> <span class="hljs-string">sai_es</span>
+<span class="hljs-attr">node.name:</span> <span class="hljs-string">es2</span>
+<span class="hljs-attr">node.master:</span> <span class="hljs-literal">false</span>
+<span class="hljs-attr">http.port:</span> <span class="hljs-number">9202</span>
+<span class="hljs-attr">discovery.zen.ping.unicast.hosts:</span> [<span class="hljs-string">&quot;127.0.0.1&quot;</span>]</code></pre></div>
 
 <p>注意，此时要保证es1，es2下面data目录为空，否则启动时会因为冲突id连接不上es0。</p>
 <p>然后启动es1，es2，通过head插件，我们可以看到集群搭建完成！sai_es集群下有3个实例：es0，es1，es2。</p>

@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.6k 字
+          1.5k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          14 分钟
+          13 分钟
         
       </span>
     
@@ -866,13 +866,95 @@
               
               <p>Laravel中的App\Exceptions\Handler 类负责记录应用程序触发的所有异常，这在我们开发过程中十分方便，总是try…catch使代码太过繁琐且可读性大大降低，那么怎么使用它处理异常为<code>json</code>呢？</p>
 <p>我们可以新建一个class，用来处理异常返回。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Author: sai</span><br><span class="hljs-comment"> * Date: 2020/1/15</span><br><span class="hljs-comment"> * Time: 14:31</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exceptions</span>;<br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ApiException</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">Exception</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">const</span> ERROR_CODE = <span class="hljs-number">1001</span>;<br>    <span class="hljs-keyword">const</span> ERROR_MSG  = <span class="hljs-string">&#x27;ApiException&#x27;</span>;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$data</span> = [];<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * BusinessException constructor.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> string $message</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> string $code</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> array $data</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-keyword">string</span> <span class="hljs-variable">$message</span>, <span class="hljs-keyword">string</span> <span class="hljs-variable">$code</span>, <span class="hljs-variable">$data</span> = []</span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;code = <span class="hljs-variable">$code</span>  ? : <span class="hljs-built_in">self</span>::ERROR_CODE;<br>        <span class="hljs-keyword">$this</span>-&gt;message  = <span class="hljs-variable">$message</span> ? : <span class="hljs-built_in">self</span>::ERROR_MSG;<br>        <span class="hljs-keyword">$this</span>-&gt;data = <span class="hljs-variable">$data</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> array</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getData</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;data;<br>    &#125;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 * 异常输出</span><br><span class="hljs-comment">	 */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"><span class="hljs-variable">$request</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> response()-&gt;json([<br>            <span class="hljs-string">&#x27;data&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;getData(),<br>            <span class="hljs-string">&#x27;code&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;getCode(),<br>            <span class="hljs-string">&#x27;messgae&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;getMessage(),<br>        ], <span class="hljs-number">200</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Author: sai</span>
+<span class="hljs-comment"> * Date: 2020/1/15</span>
+<span class="hljs-comment"> * Time: 14:31</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exceptions</span>;
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ApiException</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">Exception</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">const</span> ERROR_CODE = <span class="hljs-number">1001</span>;
+    <span class="hljs-keyword">const</span> ERROR_MSG  = <span class="hljs-string">&#x27;ApiException&#x27;</span>;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$data</span> = [];
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * BusinessException constructor.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> string $message</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> string $code</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> array $data</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-keyword">string</span> <span class="hljs-variable">$message</span>, <span class="hljs-keyword">string</span> <span class="hljs-variable">$code</span>, <span class="hljs-variable">$data</span> = []</span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;code = <span class="hljs-variable">$code</span>  ? : <span class="hljs-built_in">self</span>::ERROR_CODE;
+        <span class="hljs-keyword">$this</span>-&gt;message  = <span class="hljs-variable">$message</span> ? : <span class="hljs-built_in">self</span>::ERROR_MSG;
+        <span class="hljs-keyword">$this</span>-&gt;data = <span class="hljs-variable">$data</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> array</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getData</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;data;
+    &#125;
+
+	<span class="hljs-comment">/**</span>
+<span class="hljs-comment">	 * 异常输出</span>
+<span class="hljs-comment">	 */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"><span class="hljs-variable">$request</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> response()-&gt;json([
+            <span class="hljs-string">&#x27;data&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;getData(),
+            <span class="hljs-string">&#x27;code&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;getCode(),
+            <span class="hljs-string">&#x27;messgae&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;getMessage(),
+        ], <span class="hljs-number">200</span>);
+    &#125;
+&#125;</code></pre></div>
 
 <p>然后我们在Handler加入，加入<code>$dontReport</code>，便不会使用自带的错误处理，而使用自定义的处理。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exceptions</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Exception</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Foundation</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">Handler</span> <span class="hljs-title">as</span> <span class="hljs-title">ExceptionHandler</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Handler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ExceptionHandler</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 一些不需管或不需要抛出的异常</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$dontReport</span> = [<br>        ApiException::class,<br>    ];<br><br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exceptions</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Exception</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Foundation</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">Handler</span> <span class="hljs-title">as</span> <span class="hljs-title">ExceptionHandler</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Handler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ExceptionHandler</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 一些不需管或不需要抛出的异常</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$dontReport</span> = [
+        ApiException::class,
+    ];
+
+    ...
+&#125;</code></pre></div>
 
 <p>我们测试一下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">ApiException</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Request</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HomeController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params">Request <span class="hljs-variable">$request</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ApiException(<span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-number">10001</span>, [<span class="hljs-string">&#x27;oh&#x27;</span> =&gt; <span class="hljs-string">&#x27;no&#x27;</span>]);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exceptions</span>\<span class="hljs-title">ApiException</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Request</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HomeController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params">Request <span class="hljs-variable">$request</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ApiException(<span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-number">10001</span>, [<span class="hljs-string">&#x27;oh&#x27;</span> =&gt; <span class="hljs-string">&#x27;no&#x27;</span>]);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    &#125;
+&#125;
+</code></pre></div>
 <p>查看输出：</p>
 <p><img src="https://cdn.learnku.com/uploads/images/202001/20/41489/PdsyaJkryT.png!large" srcset="/img/loading.gif" lazyload alt="Laravel统一错误处理"></p>
 <p>测试ok，我们可以愉快的使用啦。当然，其他形式的错误输出可以自行扩展。</p>

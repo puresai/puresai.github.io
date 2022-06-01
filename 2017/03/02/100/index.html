@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          394 字
+          389 字
         
       </span>
     
@@ -865,17 +865,18 @@
             <div class="markdown-body">
               
               <p>最近同事TP开发时遇到引入不同项目模板文件的问题，查找后发现可以这么用：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">&lt;<span class="hljs-keyword">include</span> <span class="hljs-keyword">file</span>=<span class="hljs-string">&quot;主题名@模块名:操作名&quot;</span> /&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs cmake">&lt;<span class="hljs-keyword">include</span> <span class="hljs-keyword">file</span>=<span class="hljs-string">&quot;主题名@模块名:操作名&quot;</span> /&gt;</code></pre></div>
 
 <p>demo:</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">&lt;<span class="hljs-keyword">include</span> <span class="hljs-keyword">file</span>=<span class="hljs-string">&quot;Home@Index:index&quot;</span> /&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs cmake">&lt;<span class="hljs-keyword">include</span> <span class="hljs-keyword">file</span>=<span class="hljs-string">&quot;Home@Index:index&quot;</span> /&gt;</code></pre></div>
 
 <p>然而，需要引用Tpl里面的公共文件，这就闹腾了，后面脑洞大开，写成了这样。</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">&lt;<span class="hljs-keyword">include</span> <span class="hljs-keyword">file</span>=<span class="hljs-string">&quot;Home@:header&quot;</span> /&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs cmake">&lt;<span class="hljs-keyword">include</span> <span class="hljs-keyword">file</span>=<span class="hljs-string">&quot;Home@:header&quot;</span> /&gt;</code></pre></div>
 <p>目录结构如下：Admin/Index/index引入Home公共Tpl下的header</p>
 <p><img src="/upload/ueditor/image/20170302/1488443206528808.png" srcset="/img/loading.gif" lazyload alt="目录结构"></p>
 <p>此外想到不同模块掉方法的方法A，也是十分常见的。</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">语法：<br><span class="hljs-function"><span class="hljs-title">A</span><span class="hljs-params">(<span class="hljs-string">&#x27;[项目://][分组/]模块&#x27;</span>,<span class="hljs-string">&#x27;控制器层名称&#x27;</span>)</span></span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stylus">语法：
+<span class="hljs-function"><span class="hljs-title">A</span><span class="hljs-params">(<span class="hljs-string">&#x27;[项目://][分组/]模块&#x27;</span>,<span class="hljs-string">&#x27;控制器层名称&#x27;</span>)</span></span></code></pre></div>
 
 <p>用起来也很好。</p>
 <p>就是这些了，这就是不同项目调用模板与调用方法的方法。</p>

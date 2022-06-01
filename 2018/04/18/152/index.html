@@ -536,7 +536,7 @@
               
               <p>去年年底做新功能时考虑使用触发器，来聊聊触发器。</p>
 <p>触发器是与表有关的数据库对象，在满足定义条件时触发，并执行触发器中定义的语句集合。触发器的这种特性可以协助应用在数据库端确保数据的完整性。</p>
-<pre><code class="sql">DELIMITER;;//定义结束符
+<div class="code-wrapper"><pre><code class="sql">DELIMITER;;//定义结束符
 CREATE TRIGGER `updateData` AFTER UPDATE ON `buyer` FOR EACH ROW begin
     set @phone = right(new.phone,11); // 取手机号
     set @main_id = (select id from main where u_id = new.u_id); // 从表main取id
@@ -557,7 +557,7 @@ DELIMITER ;
 
 性能问题：
 通过测试，若我每秒钟向数据库中插入700条左右的告警信息，此时若使用触发器，每秒中只会插入数据库中50左右，若不开启触发器，那么700条全部可以插入数据库中。（来自网络）
-</code></pre>
+</code></pre></div>
 
               
             </div>

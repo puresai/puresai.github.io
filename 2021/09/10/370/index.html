@@ -292,7 +292,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.8k 字
+          1.6k 字
         
       </span>
     
@@ -304,7 +304,7 @@
         
         
           <!-- compatible with older versions-->
-          15 分钟
+          14 分钟
         
       </span>
     
@@ -426,11 +426,12 @@
             <div class="markdown-body">
               
               <p>github已经有人弄好了，直接clone一下，</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/deviantony/docker-elk.git<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">git <span class="hljs-built_in">clone</span> https://github.com/deviantony/docker-elk.git</code></pre></div>
 
 <p>进入kibana目录kibana.yml修改密码，注意字符串加引号。</p>
 <p>再进入docker-compose.yml修改es密码，注意字符串加引号。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 启动</span><br>docker compose up -d<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment"># 启动</span>
+docker compose up -d</code></pre></div>
 
 <p>tips:</p>
 <ol>
@@ -438,7 +439,85 @@
 <li>es插件可以下载到elasticsearch/plugins，然后挂载一下，或者构建镜像过程中copy进去。</li>
 </ol>
 <p>下面是我修改的docker-compose.yml，可供参考。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3.2&#x27;</span><br><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">elasticsearch:</span><br>    <span class="hljs-attr">build:</span><br>      <span class="hljs-attr">context:</span> <span class="hljs-string">elasticsearch/</span><br>      <span class="hljs-attr">args:</span><br>        <span class="hljs-attr">ELK_VERSION:</span> <span class="hljs-string">$ELK_VERSION</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span><br>        <span class="hljs-attr">source:</span> <span class="hljs-string">./elasticsearch/config/elasticsearch.yml</span><br>        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/elasticsearch/config/elasticsearch.yml</span><br>        <span class="hljs-attr">read_only:</span> <span class="hljs-literal">true</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">volume</span><br>        <span class="hljs-attr">source:</span> <span class="hljs-string">elasticsearch</span><br>        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/elasticsearch/data</span><br>    <span class="hljs-comment"># 增加 es 插件  </span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span><br>        <span class="hljs-attr">source:</span> <span class="hljs-string">./elasticsearch/plugins</span><br>        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/elasticsearch/plugins</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;9200:9200&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;9300:9300&quot;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">ES_JAVA_OPTS:</span> <span class="hljs-string">&quot;-Xmx256m -Xms256m&quot;</span><br>      <span class="hljs-attr">ELASTIC_PASSWORD:</span> <span class="hljs-string">&quot;123456&quot;</span><br>      <span class="hljs-attr">discovery.type:</span> <span class="hljs-string">single-node</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">elk</span><br><br>  <span class="hljs-attr">logstash:</span><br>    <span class="hljs-attr">build:</span><br>      <span class="hljs-attr">context:</span> <span class="hljs-string">logstash/</span><br>      <span class="hljs-attr">args:</span><br>        <span class="hljs-attr">ELK_VERSION:</span> <span class="hljs-string">$ELK_VERSION</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span><br>        <span class="hljs-attr">source:</span> <span class="hljs-string">./logstash/config/logstash.yml</span><br>        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/logstash/config/logstash.yml</span><br>        <span class="hljs-attr">read_only:</span> <span class="hljs-literal">true</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span><br>        <span class="hljs-attr">source:</span> <span class="hljs-string">./logstash/pipeline</span><br>        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/logstash/pipeline</span><br>        <span class="hljs-attr">read_only:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5044:5044&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5000:5000/tcp&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5000:5000/udp&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;9600:9600&quot;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">LS_JAVA_OPTS:</span> <span class="hljs-string">&quot;-Xmx256m -Xms256m&quot;</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">elk</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">elasticsearch</span><br><br>  <span class="hljs-attr">kibana:</span><br>    <span class="hljs-attr">build:</span><br>      <span class="hljs-attr">context:</span> <span class="hljs-string">kibana/</span><br>      <span class="hljs-attr">args:</span><br>        <span class="hljs-attr">ELK_VERSION:</span> <span class="hljs-string">$ELK_VERSION</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span><br>        <span class="hljs-attr">source:</span> <span class="hljs-string">./kibana/config/kibana.yml</span><br>        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/kibana/config/kibana.yml</span><br>        <span class="hljs-attr">read_only:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5601:5601&quot;</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">elk</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">elasticsearch</span><br><br><span class="hljs-attr">networks:</span><br>  <span class="hljs-attr">elk:</span><br>    <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span><br><br><span class="hljs-attr">volumes:</span><br>  <span class="hljs-attr">elasticsearch:</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3.2&#x27;</span>
+
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">elasticsearch:</span>
+    <span class="hljs-attr">build:</span>
+      <span class="hljs-attr">context:</span> <span class="hljs-string">elasticsearch/</span>
+      <span class="hljs-attr">args:</span>
+        <span class="hljs-attr">ELK_VERSION:</span> <span class="hljs-string">$ELK_VERSION</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span>
+        <span class="hljs-attr">source:</span> <span class="hljs-string">./elasticsearch/config/elasticsearch.yml</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/elasticsearch/config/elasticsearch.yml</span>
+        <span class="hljs-attr">read_only:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">volume</span>
+        <span class="hljs-attr">source:</span> <span class="hljs-string">elasticsearch</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/elasticsearch/data</span>
+    <span class="hljs-comment"># 增加 es 插件  </span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span>
+        <span class="hljs-attr">source:</span> <span class="hljs-string">./elasticsearch/plugins</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/elasticsearch/plugins</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;9200:9200&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;9300:9300&quot;</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">ES_JAVA_OPTS:</span> <span class="hljs-string">&quot;-Xmx256m -Xms256m&quot;</span>
+      <span class="hljs-attr">ELASTIC_PASSWORD:</span> <span class="hljs-string">&quot;123456&quot;</span>
+      <span class="hljs-attr">discovery.type:</span> <span class="hljs-string">single-node</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">elk</span>
+
+  <span class="hljs-attr">logstash:</span>
+    <span class="hljs-attr">build:</span>
+      <span class="hljs-attr">context:</span> <span class="hljs-string">logstash/</span>
+      <span class="hljs-attr">args:</span>
+        <span class="hljs-attr">ELK_VERSION:</span> <span class="hljs-string">$ELK_VERSION</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span>
+        <span class="hljs-attr">source:</span> <span class="hljs-string">./logstash/config/logstash.yml</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/logstash/config/logstash.yml</span>
+        <span class="hljs-attr">read_only:</span> <span class="hljs-literal">true</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span>
+        <span class="hljs-attr">source:</span> <span class="hljs-string">./logstash/pipeline</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/logstash/pipeline</span>
+        <span class="hljs-attr">read_only:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5044:5044&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5000:5000/tcp&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5000:5000/udp&quot;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;9600:9600&quot;</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">LS_JAVA_OPTS:</span> <span class="hljs-string">&quot;-Xmx256m -Xms256m&quot;</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">elk</span>
+    <span class="hljs-attr">depends_on:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">elasticsearch</span>
+
+  <span class="hljs-attr">kibana:</span>
+    <span class="hljs-attr">build:</span>
+      <span class="hljs-attr">context:</span> <span class="hljs-string">kibana/</span>
+      <span class="hljs-attr">args:</span>
+        <span class="hljs-attr">ELK_VERSION:</span> <span class="hljs-string">$ELK_VERSION</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">bind</span>
+        <span class="hljs-attr">source:</span> <span class="hljs-string">./kibana/config/kibana.yml</span>
+        <span class="hljs-attr">target:</span> <span class="hljs-string">/usr/share/kibana/config/kibana.yml</span>
+        <span class="hljs-attr">read_only:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5601:5601&quot;</span>
+    <span class="hljs-attr">networks:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">elk</span>
+    <span class="hljs-attr">depends_on:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">elasticsearch</span>
+
+<span class="hljs-attr">networks:</span>
+  <span class="hljs-attr">elk:</span>
+    <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span>
+
+<span class="hljs-attr">volumes:</span>
+  <span class="hljs-attr">elasticsearch:</span></code></pre></div>
 
 <p>启动成功就可以进kibana玩耍了，es 比较吃机器内存，但相比 gitlab 感觉好一丢丢。</p>
 

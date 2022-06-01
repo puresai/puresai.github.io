@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          254 字
+          250 字
         
       </span>
     
@@ -866,10 +866,12 @@
               
               <p>日志是很重要的东西，那么如何配置能让Laravel更好管理和查看呢？</p>
 <ol>
-<li>按日查看<br>设置简单，在.env加入APP_LOG=daily，另外可定义最大日志保存天数<br>在配置文件config/app.php中添加如下代码：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs language">log_max_files=&gt;30<br></code></pre></td></tr></table></figure></li>
+<li>按日查看<br>设置简单，在.env加入APP_LOG=daily，另外可定义最大日志保存天数<br>在配置文件config/app.php中添加如下代码：<div class="code-wrapper"><pre><code class="hljs language">log_max_files=&gt;30</code></pre></div></li>
 </ol>
 <ol start="2">
-<li>收集重要日志<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs language">Log::useFiles(storage_path(logs/important.log));<br>// 按日，存储30天的<br>Log::useDailyFiles(storage_path(logs/importantDaily.log, 30));<br></code></pre></td></tr></table></figure></li>
+<li>收集重要日志<div class="code-wrapper"><pre><code class="hljs language">Log::useFiles(storage_path(logs/important.log));
+// 按日，存储30天的
+Log::useDailyFiles(storage_path(logs/importantDaily.log, 30));</code></pre></div></li>
 </ol>
 
               

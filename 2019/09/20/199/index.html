@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.4k 字
+          3.1k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          29 分钟
+          27 分钟
         
       </span>
     
@@ -866,10 +866,155 @@
               
               <p>一个生成器函数看起来像一个普通的函数，不同的是普通函数返回一个值，而一个生成器可以yield生成许多它所需要的值。</p>
 <p>生成器提供了一种更容易的方法来实现简单的对象迭代，相比较定义类实现 Iterator 接口的方式，性能开销和复杂性大大降低。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xrange</span>(<span class="hljs-params"><span class="hljs-variable">$start</span>, <span class="hljs-variable">$limit</span>, <span class="hljs-variable">$step</span> = <span class="hljs-number">1</span></span>) </span>&#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$start</span> &lt; <span class="hljs-variable">$limit</span>) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$step</span> &lt;= <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">LogicException</span>(<span class="hljs-string">&#x27;Step must be +ve&#x27;</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-variable">$start</span>; <span class="hljs-variable">$i</span> &lt;= <span class="hljs-variable">$limit</span>; <span class="hljs-variable">$i</span> += <span class="hljs-variable">$step</span>) &#123;<br>            <span class="hljs-keyword">yield</span> <span class="hljs-variable">$i</span>;<br>        &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$step</span> &gt;= <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">LogicException</span>(<span class="hljs-string">&#x27;Step must be -ve&#x27;</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-variable">$start</span>; <span class="hljs-variable">$i</span> &gt;= <span class="hljs-variable">$limit</span>; <span class="hljs-variable">$i</span> += <span class="hljs-variable">$step</span>) &#123;<br>            <span class="hljs-keyword">yield</span> <span class="hljs-variable">$i</span>;<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * 注意下面range()和xrange()输出的结果是一样的。</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Single digit odd numbers from range():  &#x27;</span>;<br><span class="hljs-keyword">foreach</span> (range(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$number</span>) &#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$number</span> &quot;</span>;<br>&#125;<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;\n&quot;</span>;<br><br><span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Single digit odd numbers from xrange(): &#x27;</span>;<br><span class="hljs-keyword">foreach</span> (xrange(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$number</span>) &#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$number</span> &quot;</span>;<br>&#125;<br><br><span class="hljs-comment">// 输出内容</span><br>Single digit odd numbers <span class="hljs-keyword">from</span> range():  <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span><br>Single digit odd numbers <span class="hljs-keyword">from</span> xrange(): <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xrange</span>(<span class="hljs-params"><span class="hljs-variable">$start</span>, <span class="hljs-variable">$limit</span>, <span class="hljs-variable">$step</span> = <span class="hljs-number">1</span></span>) </span>&#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$start</span> &lt; <span class="hljs-variable">$limit</span>) &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$step</span> &lt;= <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">LogicException</span>(<span class="hljs-string">&#x27;Step must be +ve&#x27;</span>);
+        &#125;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-variable">$start</span>; <span class="hljs-variable">$i</span> &lt;= <span class="hljs-variable">$limit</span>; <span class="hljs-variable">$i</span> += <span class="hljs-variable">$step</span>) &#123;
+            <span class="hljs-keyword">yield</span> <span class="hljs-variable">$i</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$step</span> &gt;= <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">LogicException</span>(<span class="hljs-string">&#x27;Step must be -ve&#x27;</span>);
+        &#125;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-variable">$start</span>; <span class="hljs-variable">$i</span> &gt;= <span class="hljs-variable">$limit</span>; <span class="hljs-variable">$i</span> += <span class="hljs-variable">$step</span>) &#123;
+            <span class="hljs-keyword">yield</span> <span class="hljs-variable">$i</span>;
+        &#125;
+    &#125;
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment"> * 注意下面range()和xrange()输出的结果是一样的。</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Single digit odd numbers from range():  &#x27;</span>;
+<span class="hljs-keyword">foreach</span> (range(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$number</span>) &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$number</span> &quot;</span>;
+&#125;
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;\n&quot;</span>;
+
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Single digit odd numbers from xrange(): &#x27;</span>;
+<span class="hljs-keyword">foreach</span> (xrange(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$number</span>) &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$number</span> &quot;</span>;
+&#125;
+
+<span class="hljs-comment">// 输出内容</span>
+Single digit odd numbers <span class="hljs-keyword">from</span> range():  <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span>
+Single digit odd numbers <span class="hljs-keyword">from</span> xrange(): <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span></code></pre></div>
 
 <p>集合laravel与业务（更新uv）的例子：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 数据修复</span><br><span class="hljs-comment"> * Author: sai</span><br><span class="hljs-comment"> * Date: 2019/9/19</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Console</span>\<span class="hljs-title">Commands</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">StatisticModel</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Console</span>\<span class="hljs-title">Command</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">DB</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">Redis</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DataStatistic</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Command</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * The name and signature of the console command.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@var</span> string</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$signature</span> = <span class="hljs-string">&#x27;DataStatistic&#x27;</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * The console command description.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@var</span> string</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$description</span> = <span class="hljs-string">&#x27;DataStatistic&#x27;</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Create a new command instance.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-built_in">parent</span>::__construct();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStr</span>(<span class="hljs-params">...<span class="hljs-variable">$param</span></span>)</span>&#123;<br>        <span class="hljs-variable">$str</span> = <span class="hljs-string">&#x27;&#x27;</span>;<br>        <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$param</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span>) &#123;<br>            <span class="hljs-comment">//处理数组</span><br>            <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$value</span>)) &#123;<br>                <span class="hljs-variable">$value</span> = md5(json_encode(<span class="hljs-variable">$value</span>));<br>            &#125;<br>            <span class="hljs-variable">$str</span> .= <span class="hljs-variable">$value</span>;<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$str</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">// 单独输出到updateChapter.log文件</span><br>        \Log::useFiles(storage_path().<span class="hljs-string">&#x27;/logs/data.log&#x27;</span>);<br>        <span class="hljs-variable">$iTime</span> = time();<br>        \Log::info(<span class="hljs-string">&#x27;start&#x27;</span>, [<span class="hljs-string">&#x27;timestamp&#x27;</span> =&gt; <span class="hljs-variable">$iTime</span>]);<br>        <span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>;<br>        <span class="hljs-variable">$ret</span> =  <span class="hljs-keyword">$this</span>-&gt;traverse();<br>        <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$ret</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$v</span>) &#123;<br>            <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$v</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$value</span>) &#123;<br>                <span class="hljs-variable">$key</span> = <span class="hljs-keyword">$this</span>-&gt;parseStr(<span class="hljs-string">&#x27;wx:&#x27;</span>, <span class="hljs-variable">$value</span>-&gt;wx_id);<br>                <span class="hljs-variable">$count</span> = (<span class="hljs-keyword">int</span>) Redis::pfcount(<span class="hljs-variable">$key</span>);<br>                <span class="hljs-comment">// redis里的uv更大时更新，并记录更新前后数据</span><br>                <span class="hljs-keyword">if</span> (<span class="hljs-variable">$count</span> &gt; <span class="hljs-variable">$value</span>-&gt;uv) &#123;<br>                    \Log::info(<span class="hljs-string">&#x27;update id:&#x27;</span>.<span class="hljs-variable">$value</span>-&gt;id, [<span class="hljs-variable">$value</span>-&gt;uv =&gt; <span class="hljs-variable">$count</span>]);<br>                    <span class="hljs-variable">$i</span>++;<br>                    (<span class="hljs-keyword">new</span> StatisticModel([<span class="hljs-string">&#x27;hash_id&#x27;</span> =&gt; <span class="hljs-variable">$value</span>-&gt;wx_id]))-&gt;where(<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-variable">$value</span>-&gt;id)-&gt;update([<span class="hljs-string">&#x27;uv&#x27;</span> =&gt; <span class="hljs-variable">$count</span>, <span class="hljs-string">&#x27;update_time&#x27;</span> =&gt; <span class="hljs-variable">$iTime</span>]);<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-comment">// 记录更新时间与数量</span><br>        \Log::info(<span class="hljs-string">&#x27;end&#x27;</span>, [<span class="hljs-string">&#x27;timestamp&#x27;</span>=&gt;time(), <span class="hljs-string">&#x27;count&#x27;</span> =&gt; <span class="hljs-variable">$i</span>,<span class="hljs-string">&#x27;interval&#x27;</span> =&gt; time() - <span class="hljs-variable">$iTime</span>]);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">traverse</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$page</span> = <span class="hljs-number">3000</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-number">1</span>; <span class="hljs-variable">$i</span> &lt; <span class="hljs-number">6</span>; <span class="hljs-variable">$i</span>++) &#123;<br>            <span class="hljs-variable">$count</span> = DB::table(<span class="hljs-string">&#x27;wx_statistics_&#x27;</span>.<span class="hljs-variable">$i</span>)-&gt;count();<br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable">$count</span> &lt; <span class="hljs-number">1</span>) &#123;<br>                <span class="hljs-comment">// 记录进度</span><br>                \Log::info(<span class="hljs-string">&#x27;update schedule&#x27;</span>, [<span class="hljs-string">&#x27;table success&#x27;</span> =&gt; <span class="hljs-variable">$i</span>]);<br>                <span class="hljs-keyword">continue</span>;<br>            &#125;<br>            <span class="hljs-variable">$num</span> = ceil(<span class="hljs-variable">$count</span>/<span class="hljs-variable">$page</span>);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-variable">$j</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$j</span> &lt; <span class="hljs-variable">$num</span>; <span class="hljs-variable">$j</span>++) &#123;<br>                <span class="hljs-variable">$ret</span> = DB::table(<span class="hljs-string">&#x27;wx_statistics_&#x27;</span>.<span class="hljs-variable">$i</span>)<br>                    -&gt;select([<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;wx_id&#x27;</span>, <span class="hljs-string">&#x27;uv&#x27;</span>])<br>                    -&gt;orderBy(<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;asc&#x27;</span>)<br>                    -&gt;skip(<span class="hljs-variable">$j</span>*<span class="hljs-variable">$page</span>)<br>                    -&gt;take(<span class="hljs-variable">$page</span>)<br>                    -&gt;get()<br>                    -&gt;toArray();<br><br>                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$ret</span>)) &#123;<br>                    <span class="hljs-keyword">continue</span>;<br>                &#125;<br>                <span class="hljs-keyword">yield</span> <span class="hljs-variable">$ret</span>;<br>            &#125;<br><br>            \Log::info(<span class="hljs-string">&#x27;update schedule&#x27;</span>, [<span class="hljs-string">&#x27;table success&#x27;</span> =&gt; <span class="hljs-variable">$i</span>]);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 数据修复</span>
+<span class="hljs-comment"> * Author: sai</span>
+<span class="hljs-comment"> * Date: 2019/9/19</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Console</span>\<span class="hljs-title">Commands</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">StatisticModel</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Console</span>\<span class="hljs-title">Command</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">DB</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">Redis</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DataStatistic</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Command</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * The name and signature of the console command.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@var</span> string</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$signature</span> = <span class="hljs-string">&#x27;DataStatistic&#x27;</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * The console command description.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@var</span> string</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$description</span> = <span class="hljs-string">&#x27;DataStatistic&#x27;</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Create a new command instance.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-built_in">parent</span>::__construct();
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseStr</span>(<span class="hljs-params">...<span class="hljs-variable">$param</span></span>)</span>&#123;
+        <span class="hljs-variable">$str</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+        <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$param</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span>) &#123;
+            <span class="hljs-comment">//处理数组</span>
+            <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$value</span>)) &#123;
+                <span class="hljs-variable">$value</span> = md5(json_encode(<span class="hljs-variable">$value</span>));
+            &#125;
+            <span class="hljs-variable">$str</span> .= <span class="hljs-variable">$value</span>;
+        &#125;
+
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$str</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-comment">// 单独输出到updateChapter.log文件</span>
+        \Log::useFiles(storage_path().<span class="hljs-string">&#x27;/logs/data.log&#x27;</span>);
+        <span class="hljs-variable">$iTime</span> = time();
+        \Log::info(<span class="hljs-string">&#x27;start&#x27;</span>, [<span class="hljs-string">&#x27;timestamp&#x27;</span> =&gt; <span class="hljs-variable">$iTime</span>]);
+        <span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>;
+        <span class="hljs-variable">$ret</span> =  <span class="hljs-keyword">$this</span>-&gt;traverse();
+        <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$ret</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$v</span>) &#123;
+            <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$v</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$value</span>) &#123;
+                <span class="hljs-variable">$key</span> = <span class="hljs-keyword">$this</span>-&gt;parseStr(<span class="hljs-string">&#x27;wx:&#x27;</span>, <span class="hljs-variable">$value</span>-&gt;wx_id);
+                <span class="hljs-variable">$count</span> = (<span class="hljs-keyword">int</span>) Redis::pfcount(<span class="hljs-variable">$key</span>);
+                <span class="hljs-comment">// redis里的uv更大时更新，并记录更新前后数据</span>
+                <span class="hljs-keyword">if</span> (<span class="hljs-variable">$count</span> &gt; <span class="hljs-variable">$value</span>-&gt;uv) &#123;
+                    \Log::info(<span class="hljs-string">&#x27;update id:&#x27;</span>.<span class="hljs-variable">$value</span>-&gt;id, [<span class="hljs-variable">$value</span>-&gt;uv =&gt; <span class="hljs-variable">$count</span>]);
+                    <span class="hljs-variable">$i</span>++;
+                    (<span class="hljs-keyword">new</span> StatisticModel([<span class="hljs-string">&#x27;hash_id&#x27;</span> =&gt; <span class="hljs-variable">$value</span>-&gt;wx_id]))-&gt;where(<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-variable">$value</span>-&gt;id)-&gt;update([<span class="hljs-string">&#x27;uv&#x27;</span> =&gt; <span class="hljs-variable">$count</span>, <span class="hljs-string">&#x27;update_time&#x27;</span> =&gt; <span class="hljs-variable">$iTime</span>]);
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-comment">// 记录更新时间与数量</span>
+        \Log::info(<span class="hljs-string">&#x27;end&#x27;</span>, [<span class="hljs-string">&#x27;timestamp&#x27;</span>=&gt;time(), <span class="hljs-string">&#x27;count&#x27;</span> =&gt; <span class="hljs-variable">$i</span>,<span class="hljs-string">&#x27;interval&#x27;</span> =&gt; time() - <span class="hljs-variable">$iTime</span>]);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">traverse</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$page</span> = <span class="hljs-number">3000</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-number">1</span>; <span class="hljs-variable">$i</span> &lt; <span class="hljs-number">6</span>; <span class="hljs-variable">$i</span>++) &#123;
+            <span class="hljs-variable">$count</span> = DB::table(<span class="hljs-string">&#x27;wx_statistics_&#x27;</span>.<span class="hljs-variable">$i</span>)-&gt;count();
+            <span class="hljs-keyword">if</span> (<span class="hljs-variable">$count</span> &lt; <span class="hljs-number">1</span>) &#123;
+                <span class="hljs-comment">// 记录进度</span>
+                \Log::info(<span class="hljs-string">&#x27;update schedule&#x27;</span>, [<span class="hljs-string">&#x27;table success&#x27;</span> =&gt; <span class="hljs-variable">$i</span>]);
+                <span class="hljs-keyword">continue</span>;
+            &#125;
+            <span class="hljs-variable">$num</span> = ceil(<span class="hljs-variable">$count</span>/<span class="hljs-variable">$page</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-variable">$j</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$j</span> &lt; <span class="hljs-variable">$num</span>; <span class="hljs-variable">$j</span>++) &#123;
+                <span class="hljs-variable">$ret</span> = DB::table(<span class="hljs-string">&#x27;wx_statistics_&#x27;</span>.<span class="hljs-variable">$i</span>)
+                    -&gt;select([<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;wx_id&#x27;</span>, <span class="hljs-string">&#x27;uv&#x27;</span>])
+                    -&gt;orderBy(<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;asc&#x27;</span>)
+                    -&gt;skip(<span class="hljs-variable">$j</span>*<span class="hljs-variable">$page</span>)
+                    -&gt;take(<span class="hljs-variable">$page</span>)
+                    -&gt;get()
+                    -&gt;toArray();
+
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$ret</span>)) &#123;
+                    <span class="hljs-keyword">continue</span>;
+                &#125;
+                <span class="hljs-keyword">yield</span> <span class="hljs-variable">$ret</span>;
+            &#125;
+
+            \Log::info(<span class="hljs-string">&#x27;update schedule&#x27;</span>, [<span class="hljs-string">&#x27;table success&#x27;</span> =&gt; <span class="hljs-variable">$i</span>]);
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+&#125;</code></pre></div>
               
             </div>
             <hr/>

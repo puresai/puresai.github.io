@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          707 字
+          670 字
         
       </span>
     
@@ -561,7 +561,29 @@
 <blockquote>
 <p>反引号Back quote，表示字符串字面量，与双引号不同，它不支持任何转义序列，但支持换行书写。字面量 raw literal string 的意思是，你定义时写的啥样，它就啥样，你有换行，它就换行。你写转义字符，它也就展示转义字符。</p>
 </blockquote>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs go">a := <span class="hljs-string">&#x27;a&#x27;</span><br>b := <span class="hljs-string">&quot;b\naa&quot;</span><br>c := <span class="hljs-string">`c</span><br><span class="hljs-string">3ww`</span><br><span class="hljs-keyword">var</span> d <span class="hljs-keyword">byte</span> = <span class="hljs-string">&#x27;d&#x27;</span><br>fmt.Println(b)<br>fmt.Println(c)<br>fmt.Printf(<span class="hljs-string">&quot;Single quote type:%T\n&quot;</span>, a)<br>fmt.Printf(<span class="hljs-string">&quot;Double quote type:%T\n&quot;</span>, b)<br>fmt.Printf(<span class="hljs-string">&quot;Back quote type:%T\n&quot;</span>, c)<br>fmt.Printf(<span class="hljs-string">&quot;Single quote type:%T\n&quot;</span>, d)<br><br><br>output:<br>------<br>b<br>aa<br>c<br>        <span class="hljs-number">3</span>ww<br>Single quote <span class="hljs-keyword">type</span>:<span class="hljs-keyword">int32</span><br>Double quote <span class="hljs-keyword">type</span>:<span class="hljs-keyword">string</span><br>Back quote <span class="hljs-keyword">type</span>:<span class="hljs-keyword">string</span><br>Single quote <span class="hljs-keyword">type</span>:<span class="hljs-keyword">uint8</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go">a := <span class="hljs-string">&#x27;a&#x27;</span>
+b := <span class="hljs-string">&quot;b\naa&quot;</span>
+c := <span class="hljs-string">`c</span>
+<span class="hljs-string">3ww`</span>
+<span class="hljs-keyword">var</span> d <span class="hljs-keyword">byte</span> = <span class="hljs-string">&#x27;d&#x27;</span>
+fmt.Println(b)
+fmt.Println(c)
+fmt.Printf(<span class="hljs-string">&quot;Single quote type:%T\n&quot;</span>, a)
+fmt.Printf(<span class="hljs-string">&quot;Double quote type:%T\n&quot;</span>, b)
+fmt.Printf(<span class="hljs-string">&quot;Back quote type:%T\n&quot;</span>, c)
+fmt.Printf(<span class="hljs-string">&quot;Single quote type:%T\n&quot;</span>, d)
+
+
+output:
+------
+b
+aa
+c
+        <span class="hljs-number">3</span>ww
+Single quote <span class="hljs-keyword">type</span>:<span class="hljs-keyword">int32</span>
+Double quote <span class="hljs-keyword">type</span>:<span class="hljs-keyword">string</span>
+Back quote <span class="hljs-keyword">type</span>:<span class="hljs-keyword">string</span>
+Single quote <span class="hljs-keyword">type</span>:<span class="hljs-keyword">uint8</span></code></pre></div>
 
               
             </div>

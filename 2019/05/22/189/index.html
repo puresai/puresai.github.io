@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          447 字
+          441 字
         
       </span>
     
@@ -871,11 +871,15 @@
 <li>修改Laravel模板变量符-双大括号</li>
 </ol>
 <p>可以在控制器调用view方法之前加入</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs lua">Blade::setContentTags(<span class="hljs-string">[[, ]]</span>);<br>Blade::setEscapedContentTags(&#123;[@, @]&#125;);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs lua">Blade::setContentTags(<span class="hljs-string">[[, ]]</span>);
+Blade::setEscapedContentTags(&#123;[@, @]&#125;);</code></pre></div>
 <p>便可以用{[@, @]}替代原来的双大括号。</p>
 <hr>
 <h2 id="2-加载html不使用blade模板引擎"><a href="#2-加载html不使用blade模板引擎" class="headerlink" title="2. 加载html不使用blade模板引擎"></a>2. 加载html不使用blade模板引擎</h2><p>除了这个还有一个问题，比如前后端分离的时候，我只想加载html，不需要渲染替换，这时候怎么办呢？</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Route::<span class="hljs-keyword">get</span>(/, <span class="hljs-keyword">function</span> () &#123;<br>        \<span class="hljs-keyword">View</span>::addExtension(html, php);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">view</span>()-&gt;file(<span class="hljs-keyword">index</span>.html);//注意此处路径是<span class="hljs-built_in">public</span><br>&#125;);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">Route::<span class="hljs-keyword">get</span>(/, <span class="hljs-keyword">function</span> () &#123;
+        \<span class="hljs-keyword">View</span>::addExtension(html, php);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">view</span>()-&gt;file(<span class="hljs-keyword">index</span>.html);//注意此处路径是<span class="hljs-built_in">public</span>
+&#125;);</code></pre></div>
 
 <p>就这样加载就ok 了。</p>
 

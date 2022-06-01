@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          9.9k 字
+          9k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          83 分钟
+          76 分钟
         
       </span>
     
@@ -865,15 +865,375 @@
               <p>Swoole：面向生产环境的 PHP 异步网络通信引擎</p>
 <p>很早就知道了swoole，但一直没有实际用到生产中，最近在重构博客，就想着做点东西，先swoole发邮件练练手。</p>
 <p>回顾下发邮件，我们使用PHPMailer来发送。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Created by PhpStorm.</span><br><span class="hljs-comment"> * User: 13sai</span><br><span class="hljs-comment"> * Date: 2018/11/29</span><br><span class="hljs-comment"> * Time: 11:16</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">require</span> <span class="hljs-string">&#x27;../vendor/autoload.php&#x27;</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">PHPMailer</span>\<span class="hljs-title">PHPMailer</span>\<span class="hljs-title">PHPMailer</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">PHPMailer</span>\<span class="hljs-title">PHPMailer</span>\<span class="hljs-title">Exception</span>;<br><br><br><span class="hljs-variable">$mail</span> = <span class="hljs-keyword">new</span> PHPMailer(<span class="hljs-literal">true</span>);<br><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">//Server settings</span><br>    <span class="hljs-comment">// $mail-&gt;SMTPDebug = 2;                                 // Enable verbose debug output</span><br>    <span class="hljs-variable">$mail</span>-&gt;isSMTP();                                      <span class="hljs-comment">// Set mailer to use SMTP</span><br>    <span class="hljs-variable">$mail</span>-&gt;Host = <span class="hljs-string">&#x27;smtp.163.com&#x27;</span>;  <span class="hljs-comment">// Specify main and backup SMTP servers</span><br>    <span class="hljs-variable">$mail</span>-&gt;SMTPAuth = <span class="hljs-literal">true</span>;                               <span class="hljs-comment">// Enable SMTP authentication</span><br>    <span class="hljs-variable">$mail</span>-&gt;Username = <span class="hljs-string">&#x27;sai@163.com&#x27;</span>;                 <span class="hljs-comment">// SMTP username</span><br>    <span class="hljs-variable">$mail</span>-&gt;Password = <span class="hljs-string">&#x27;*&#x27;</span>;                           <span class="hljs-comment">// SMTP password</span><br>    <span class="hljs-variable">$mail</span>-&gt;SMTPSecure = <span class="hljs-string">&#x27;tls&#x27;</span>;                            <span class="hljs-comment">// Enable TLS encryption, ssl also accepted</span><br>    <span class="hljs-variable">$mail</span>-&gt;Port = <span class="hljs-number">25</span>;                                    <span class="hljs-comment">// TCP port to connect to</span><br><br><br>    <span class="hljs-comment">//收件人</span><br>    <span class="hljs-variable">$mail</span>-&gt;setFrom(<span class="hljs-string">&#x27;sai@163.com&#x27;</span>, <span class="hljs-string">&#x27;13sai&#x27;</span>);<br>    <span class="hljs-variable">$mail</span>-&gt;addAddress(<span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>);               <span class="hljs-comment">// Name is optional</span><br>    <span class="hljs-variable">$mail</span>-&gt;addReplyTo(<span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>, <span class="hljs-string">&#x27;Information&#x27;</span>);<br><span class="hljs-comment">//    $mail-&gt;addCC(&#x27;cc@example.com&#x27;);</span><br><span class="hljs-comment">//    $mail-&gt;addBCC(&#x27;bcc@example.com&#x27;);</span><br><br><br>    <span class="hljs-comment">//附件</span><br>    <span class="hljs-variable">$mail</span>-&gt;addAttachment(<span class="hljs-string">&#x27;/var/file.tar.gz&#x27;</span>);         <span class="hljs-comment">// Add attachments</span><br>    <span class="hljs-variable">$mail</span>-&gt;addAttachment(<span class="hljs-string">&#x27;/tmp/image.jpg&#x27;</span>, <span class="hljs-string">&#x27;new.jpg&#x27;</span>);    <span class="hljs-comment">// Optional name</span><br><br><br>    <span class="hljs-comment">//html</span><br>    <span class="hljs-variable">$mail</span>-&gt;isHTML(<span class="hljs-literal">true</span>);                           <br>    <span class="hljs-variable">$mail</span>-&gt;Subject = <span class="hljs-string">&#x27;Here is the subject&#x27;</span>;<br>    <span class="hljs-variable">$mail</span>-&gt;Body    = <span class="hljs-string">&#x27;This is the HTML message body &lt;b&gt;in bold!&lt;/b&gt;&#x27;</span>;<br>    <span class="hljs-variable">$mail</span>-&gt;AltBody = <span class="hljs-string">&#x27;This is the body in plain text for non-HTML mail clients&#x27;</span>;<br><br><br>    <span class="hljs-variable">$mail</span>-&gt;send();<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Message has been sent&#x27;</span>;<br>&#125; <span class="hljs-keyword">catch</span> (<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$e</span>) &#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Message could not be sent.&#x27;</span>;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Mailer Error: &#x27;</span> . <span class="hljs-variable">$mail</span>-&gt;ErrorInfo;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Created by PhpStorm.</span>
+<span class="hljs-comment"> * User: 13sai</span>
+<span class="hljs-comment"> * Date: 2018/11/29</span>
+<span class="hljs-comment"> * Time: 11:16</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">&#x27;../vendor/autoload.php&#x27;</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">PHPMailer</span>\<span class="hljs-title">PHPMailer</span>\<span class="hljs-title">PHPMailer</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">PHPMailer</span>\<span class="hljs-title">PHPMailer</span>\<span class="hljs-title">Exception</span>;
+
+
+<span class="hljs-variable">$mail</span> = <span class="hljs-keyword">new</span> PHPMailer(<span class="hljs-literal">true</span>);
+<span class="hljs-keyword">try</span> &#123;
+    <span class="hljs-comment">//Server settings</span>
+    <span class="hljs-comment">// $mail-&gt;SMTPDebug = 2;                                 // Enable verbose debug output</span>
+    <span class="hljs-variable">$mail</span>-&gt;isSMTP();                                      <span class="hljs-comment">// Set mailer to use SMTP</span>
+    <span class="hljs-variable">$mail</span>-&gt;Host = <span class="hljs-string">&#x27;smtp.163.com&#x27;</span>;  <span class="hljs-comment">// Specify main and backup SMTP servers</span>
+    <span class="hljs-variable">$mail</span>-&gt;SMTPAuth = <span class="hljs-literal">true</span>;                               <span class="hljs-comment">// Enable SMTP authentication</span>
+    <span class="hljs-variable">$mail</span>-&gt;Username = <span class="hljs-string">&#x27;sai@163.com&#x27;</span>;                 <span class="hljs-comment">// SMTP username</span>
+    <span class="hljs-variable">$mail</span>-&gt;Password = <span class="hljs-string">&#x27;*&#x27;</span>;                           <span class="hljs-comment">// SMTP password</span>
+    <span class="hljs-variable">$mail</span>-&gt;SMTPSecure = <span class="hljs-string">&#x27;tls&#x27;</span>;                            <span class="hljs-comment">// Enable TLS encryption, ssl also accepted</span>
+    <span class="hljs-variable">$mail</span>-&gt;Port = <span class="hljs-number">25</span>;                                    <span class="hljs-comment">// TCP port to connect to</span>
+
+
+    <span class="hljs-comment">//收件人</span>
+    <span class="hljs-variable">$mail</span>-&gt;setFrom(<span class="hljs-string">&#x27;sai@163.com&#x27;</span>, <span class="hljs-string">&#x27;13sai&#x27;</span>);
+    <span class="hljs-variable">$mail</span>-&gt;addAddress(<span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>);               <span class="hljs-comment">// Name is optional</span>
+    <span class="hljs-variable">$mail</span>-&gt;addReplyTo(<span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>, <span class="hljs-string">&#x27;Information&#x27;</span>);
+<span class="hljs-comment">//    $mail-&gt;addCC(&#x27;cc@example.com&#x27;);</span>
+<span class="hljs-comment">//    $mail-&gt;addBCC(&#x27;bcc@example.com&#x27;);</span>
+
+
+    <span class="hljs-comment">//附件</span>
+    <span class="hljs-variable">$mail</span>-&gt;addAttachment(<span class="hljs-string">&#x27;/var/file.tar.gz&#x27;</span>);         <span class="hljs-comment">// Add attachments</span>
+    <span class="hljs-variable">$mail</span>-&gt;addAttachment(<span class="hljs-string">&#x27;/tmp/image.jpg&#x27;</span>, <span class="hljs-string">&#x27;new.jpg&#x27;</span>);    <span class="hljs-comment">// Optional name</span>
+
+
+    <span class="hljs-comment">//html</span>
+    <span class="hljs-variable">$mail</span>-&gt;isHTML(<span class="hljs-literal">true</span>);                           
+    <span class="hljs-variable">$mail</span>-&gt;Subject = <span class="hljs-string">&#x27;Here is the subject&#x27;</span>;
+    <span class="hljs-variable">$mail</span>-&gt;Body    = <span class="hljs-string">&#x27;This is the HTML message body &lt;b&gt;in bold!&lt;/b&gt;&#x27;</span>;
+    <span class="hljs-variable">$mail</span>-&gt;AltBody = <span class="hljs-string">&#x27;This is the body in plain text for non-HTML mail clients&#x27;</span>;
+
+
+    <span class="hljs-variable">$mail</span>-&gt;send();
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Message has been sent&#x27;</span>;
+&#125; <span class="hljs-keyword">catch</span> (<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$e</span>) &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Message could not be sent.&#x27;</span>;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Mailer Error: &#x27;</span> . <span class="hljs-variable">$mail</span>-&gt;ErrorInfo;
+&#125;</code></pre></div>
 
 
 <p>运行发送，收到邮件。</p>
-<h2 id="主程序"><a href="#主程序" class="headerlink" title="主程序"></a>主程序</h2><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br></pre></td><td class="code"><pre><code class="hljs perl">&lt;?php<br>/**<br>  Created by PhpStorm.<br>  User: <span class="hljs-number">13</span>sai<br>  Date: <span class="hljs-number">2018</span>/<span class="hljs-number">11</span>/<span class="hljs-number">29</span><br>  Time: <span class="hljs-number">14</span>:<span class="hljs-number">06</span><br>/<br><br><span class="hljs-keyword">require</span> dirname(DIR).<span class="hljs-string">&#x27;/vendor/autoload.php&#x27;</span>;<br><br><span class="hljs-keyword">use</span> PHPMailer\PHPMailer\PHPMailer;<br><span class="hljs-keyword">use</span> PHPMailer\PHPMailer\Exception;<br><br><br>class Mailer<br>&#123;<br>    protected $server;<br>    protected $host = <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>;<br>    protected $port = <span class="hljs-number">9502</span>;<br>    <span class="hljs-regexp">//</span> 进程名称<br>    protected $taskName = <span class="hljs-string">&#x27;swooleMailer&#x27;</span>;<br>    <span class="hljs-regexp">//</span> PID路径<br>    protected $pidPath = <span class="hljs-string">&#x27;/run/swooleMail.pid&#x27;</span>;<br>    <span class="hljs-regexp">//</span> 设置运行时参数<br>    protected $options = [<br>        <span class="hljs-string">&#x27;worker_num&#x27;</span> =&gt; <span class="hljs-number">4</span>, <span class="hljs-regexp">//</span>worker进程数,一般设置为CPU数的<span class="hljs-number">1</span>-<span class="hljs-number">4</span>倍<br>        <span class="hljs-string">&#x27;daemonize&#x27;</span> =&gt; true, <span class="hljs-regexp">//</span>启用守护进程<br>        <span class="hljs-string">&#x27;log_file&#x27;</span> =&gt; <span class="hljs-string">&#x27;/data/logs/swoole.log&#x27;</span>, <span class="hljs-regexp">//</span>指定swoole错误日志文件<br>        <span class="hljs-string">&#x27;log_level&#x27;</span> =&gt; <span class="hljs-number">0</span>, <span class="hljs-regexp">//</span>日志级别 范围是<span class="hljs-number">0</span>-<span class="hljs-number">5</span>，<span class="hljs-number">0</span>-DEBUG，<span class="hljs-number">1</span>-TRACE，<span class="hljs-number">2</span>-INFO，<span class="hljs-number">3</span>-NOTICE，<span class="hljs-number">4</span>-WARNING，<span class="hljs-number">5</span>-ERROR<br>        <span class="hljs-string">&#x27;dispatch_mode&#x27;</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-regexp">//</span>数据包分发策略,<span class="hljs-number">1</span>-轮询模式<br>        <span class="hljs-string">&#x27;task_worker_num&#x27;</span> =&gt; <span class="hljs-number">4</span>, <span class="hljs-regexp">//</span>task进程的数量<br>        <span class="hljs-string">&#x27;task_ipc_mode&#x27;</span> =&gt; <span class="hljs-number">3</span>, <span class="hljs-regexp">//</span>使用消息队列通信，并设置为争抢模式<br>        //<span class="hljs-string">&#x27;heartbeat_idle_time&#x27;</span> =&gt; <span class="hljs-number">600</span>, <span class="hljs-regexp">//</span>一个连接如果<span class="hljs-number">600</span>秒内未向服务器发送任何数据，此连接将被强制关闭<br>        //<span class="hljs-string">&#x27;heartbeat_check_interval&#x27;</span> =&gt; <span class="hljs-number">60</span>, <span class="hljs-regexp">//</span>启用心跳检测，每隔<span class="hljs-number">60</span>s轮循一次<br>    ];<br>    <span class="hljs-regexp">//</span> 邮件服务器配置<br>    protected $mailConfig = [<br>        <span class="hljs-string">&#x27;smtp_host&#x27;</span> =&gt; <span class="hljs-string">&#x27;smtp.163.com&#x27;</span>,<br>        <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;sai0556@163.com&#x27;</span>,<br>        <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;xmw1015&#x27;</span>,<span class="hljs-regexp">//</span> SMTP 密码/口令<br>        <span class="hljs-string">&#x27;secure&#x27;</span> =&gt; <span class="hljs-string">&#x27;ssl&#x27;</span>, <span class="hljs-regexp">//</span>Enable TLS encryption, ssl also accepted<br>        <span class="hljs-string">&#x27;port&#x27;</span> =&gt; <span class="hljs-number">465</span>, <span class="hljs-regexp">//</span> tcp邮件服务器端口<br>    ];<br><br><br>    public function __construct($mailConfig, $options = [])<br>    &#123;<br>        <span class="hljs-regexp">//</span> 构建Server对象，监听端口<br>        $this-&gt;server = new swoole_server($this-&gt;host, $this-&gt;port);<br><br><br>        <span class="hljs-keyword">if</span> (!empty($options)) &#123;<br>            $this-&gt;options = array_merge($this-&gt;options, $options);<br>        &#125;<br>        $this-&gt;server-&gt;set($this-&gt;options);<br><br><br>        $this-&gt;mailConfig = $mailConfig;<br><br><br>        <span class="hljs-regexp">//</span> 注册事件<br>        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Start&#x27;</span>, [$this, <span class="hljs-string">&#x27;onStart&#x27;</span>]);<br>        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Connect&#x27;</span>, [$this, <span class="hljs-string">&#x27;onConnect&#x27;</span>]);<br>        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Receive&#x27;</span>, [$this, <span class="hljs-string">&#x27;onReceive&#x27;</span>]);<br>        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Task&#x27;</span>, [$this, <span class="hljs-string">&#x27;onTask&#x27;</span>]);<br>        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Finish&#x27;</span>, [$this, <span class="hljs-string">&#x27;onFinish&#x27;</span>]);<br>        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Close&#x27;</span>, [$this, <span class="hljs-string">&#x27;onClose&#x27;</span>]);<br><br><br>        <span class="hljs-regexp">//</span> 启动服务<br>        //$this-&gt;server-&gt;start();<br>    &#125;<br><br><br>    protected function init()<br>    &#123;<br>        <span class="hljs-regexp">//</span><br>    &#125;<br><br><br>    public function start()<br>    &#123;<br>        <span class="hljs-regexp">//</span> Run worker<br>        $this-&gt;server-&gt;start();<br>    &#125;<br><br><br>    public function onStart($server)<br>    &#123;<br>        <span class="hljs-regexp">//</span> 设置进程名<br>        cli_set_process_title($this-&gt;taskName);<br>        <span class="hljs-regexp">//</span>记录进程id,脚本实现自动重启<br>        $pid = <span class="hljs-string">&quot;&#123;$server-&gt;master_pid&#125;</span><br><span class="hljs-string">&#123;$server-&gt;manager_pid&#125;&quot;</span>;<br>        file_put_contents($this-&gt;pidPath, $pid);<br>    &#125;<br><br><br>    //监听连接进入事件<br>    public function onConnect($server, $fd, $from_id)<br>    &#123;<br>        $server-&gt;<span class="hljs-keyword">send</span>($fd, <span class="hljs-string">&quot;Hello &#123;$fd&#125;!&quot;</span> );<br>    &#125;<br><br><br>    // 监听数据接收事件<br>    public function onReceive(swoole_server $server, $fd, $from_id, $data)<br>    &#123;<br>        $res[<span class="hljs-string">&#x27;result&#x27;</span>] = <span class="hljs-string">&#x27;success&#x27;</span>;<br>        $server-&gt;<span class="hljs-keyword">send</span>($fd, json_encode($res)); <span class="hljs-regexp">//</span> 同步返回消息给客户端<br>        $server-&gt;task($data);  <span class="hljs-regexp">//</span> 执行异步任务<br><br><br>    &#125;<br><br><br>    /*<br>      @param $server swoole_server swoole_server对象<br>      @param $task_id <span class="hljs-keyword">int</span> 任务id<br>      @param $from_id <span class="hljs-keyword">int</span> 投递任务的worker_id<br>      @param $data string 投递的数据<br>     /<br>    public function onTask(swoole_server $server, $task_id, $from_id, $data)<br>    &#123;<br>        $res[<span class="hljs-string">&#x27;result&#x27;</span>] = <span class="hljs-string">&#x27;failed&#x27;</span>;<br>        $req = json_decode($data, true);<br>        $action = $req[<span class="hljs-string">&#x27;action&#x27;</span>];<br>        echo date(<span class="hljs-string">&#x27;Y-m-d H:i:s&#x27;</span>).<span class="hljs-string">&quot; onTask: [&quot;</span>.$action.<span class="hljs-string">&quot;].</span><br><span class="hljs-string">&quot;</span>;<br>        switch ($action) &#123;<br>            case <span class="hljs-string">&#x27;sendMail&#x27;</span>: <span class="hljs-regexp">//</span>发送单个邮件<br>                $mailData = [<br>                    <span class="hljs-string">&#x27;emailAddress&#x27;</span> =&gt; $req[<span class="hljs-string">&#x27;to&#x27;</span>], <span class="hljs-regexp">//</span>接收方，改成自己的邮箱可以测试接收邮件<br>                    <span class="hljs-string">&#x27;subject&#x27;</span> =&gt; $req[<span class="hljs-string">&#x27;subject&#x27;</span>],<br>                    <span class="hljs-string">&#x27;body&#x27;</span> =&gt; $req[<span class="hljs-string">&#x27;body&#x27;</span>],<br>                ];<br>                $this-&gt;sendMail($mailData);<br>                <span class="hljs-keyword">break</span>;<br><br><br>            default:<br>                <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br><br><br>    /*<br>      @param $server swoole_server swoole_server对象<br>      @param $task_id <span class="hljs-keyword">int</span> 任务id<br>      @param $data string 任务返回的数据<br>     *<span class="hljs-regexp">/</span><br><span class="hljs-regexp">    public function onFinish(swoole_server $server, $task_id, $data)</span><br><span class="hljs-regexp">    &#123;</span><br><span class="hljs-regexp">        /</span><span class="hljs-regexp">/</span><br><span class="hljs-regexp">    &#125;</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">    /</span><span class="hljs-regexp">/ 监听连接关闭事件</span><br><span class="hljs-regexp">    public function onClose($server, $fd, $from_id) &#123;</span><br><span class="hljs-regexp">        echo &quot;Client &#123;$fd&#125; close connection</span><br><span class="hljs-regexp">&quot;;</span><br><span class="hljs-regexp">    &#125;</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">    public function stop()</span><br><span class="hljs-regexp">    &#123;</span><br><span class="hljs-regexp">        $this-&gt;server-&gt;stop();</span><br><span class="hljs-regexp">    &#125;</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">    private function sendMail($mailData = [])</span><br><span class="hljs-regexp">    &#123;</span><br><span class="hljs-regexp">        $mail = new PHPMailer(true);</span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp"></span><br><span class="hljs-regexp">        try &#123;</span><br><span class="hljs-regexp">            $mailConfig = $this-&gt;mailConfig;</span><br><span class="hljs-regexp">            $mail-&gt;isSMTP();                                   /</span><span class="hljs-regexp">/ TCP port to connect to</span><br><span class="hljs-regexp">            $mail-&gt;Host = $mailConfig[&#x27;smtp_host&#x27;];  /</span><span class="hljs-regexp">/ SMTP服务</span><br><span class="hljs-regexp">            $mail-&gt;SMTPAuth = true;                  /</span><span class="hljs-regexp">/ Enable SMTP authentication</span><br><span class="hljs-regexp">            $mail-&gt;Username = $mailConfig[&#x27;username&#x27;];    /</span><span class="hljs-regexp">/ SMTP 用户名</span><br><span class="hljs-regexp">            $mail-&gt;Password = $mailConfig[&#x27;password&#x27;];     /</span><span class="hljs-regexp">/ SMTP 密码/</span>口令<br>            $mail-&gt;SMTPSecure = $mailConfig[<span class="hljs-string">&#x27;secure&#x27;</span>];     <span class="hljs-regexp">//</span> Enable TLS encryption, ssl also accepted<br>            $mail-&gt;Port = $mailConfig[<span class="hljs-string">&#x27;port&#x27;</span>];    <span class="hljs-regexp">//</span> TCP 端口<br><br><br>            //Recipients<br>            $mail-&gt;setFrom(<span class="hljs-string">&#x27;sai0556@163.com&#x27;</span>, <span class="hljs-string">&#x27;13sai&#x27;</span>);<br>            $mail-&gt;addAddress(<span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>);               <span class="hljs-regexp">//</span> Name is optional<br>            $mail-&gt;addReplyTo(<span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>, <span class="hljs-string">&#x27;Information&#x27;</span>);<br><br><br>            <span class="hljs-regexp">//</span>Content<br>            $mail-&gt;isHTML(true);                                  <span class="hljs-regexp">//</span> Set email <span class="hljs-keyword">format</span> to HTML<br>            $mail-&gt;Subject = <span class="hljs-string">&#x27;Here is the subject&#x27;</span>;<br>            $mail-&gt;Body    = <span class="hljs-string">&#x27;This is the HTML message body &lt;b&gt;in bold!&lt;/b&gt;&#x27;</span>;<br>            $mail-&gt;AltBody = <span class="hljs-string">&#x27;This is the body in plain text for non-HTML mail clients&#x27;</span>;<br><br><br>            $mail-&gt;<span class="hljs-keyword">send</span>();<br>            echo <span class="hljs-string">&#x27;Message has been sent&#x27;</span>;<br>        &#125; catch (Exception $e) &#123;<br>            echo <span class="hljs-string">&#x27;Message could not be sent.&#x27;</span>;<br>            echo <span class="hljs-string">&#x27;Mailer Error: &#x27;</span> . $mail-&gt;ErrorInfo;<br>        &#125;<br><br><br>        try &#123;<br>            $mailConfig = $this-&gt;mailConfig;<br>            $mail-&gt;isSMTP();   <span class="hljs-regexp">//</span> Set mailer to <span class="hljs-keyword">use</span> SMTP<br>            $mail-&gt;Host = $mailConfig[<span class="hljs-string">&#x27;smtp_host&#x27;</span>];  <span class="hljs-regexp">//</span> SMTP服务<br>            $mail-&gt;SMTPAuth = true;                  <span class="hljs-regexp">//</span> Enable SMTP authentication<br>            $mail-&gt;Username = $mailConfig[<span class="hljs-string">&#x27;username&#x27;</span>];    <span class="hljs-regexp">//</span> SMTP 用户名<br>            $mail-&gt;Password = $mailConfig[<span class="hljs-string">&#x27;password&#x27;</span>];     <span class="hljs-regexp">//</span> SMTP 密码/口令<br>            $mail-&gt;SMTPSecure = $mailConfig[<span class="hljs-string">&#x27;secure&#x27;</span>];     <span class="hljs-regexp">//</span> Enable TLS encryption, ssl also accepted<br>            $mail-&gt;Port = $mailConfig[<span class="hljs-string">&#x27;port&#x27;</span>];    <span class="hljs-regexp">//</span> TCP 端口<br><br><br>            $mail-&gt;CharSet  = <span class="hljs-string">&quot;UTF-8&quot;</span>; <span class="hljs-regexp">//</span>字符集<br>            $mail-&gt;setFrom($mailConfig[<span class="hljs-string">&#x27;username&#x27;</span>], <span class="hljs-string">&#x27;13sai&#x27;</span>); <span class="hljs-regexp">//</span>发件人地址，名称<br>            $mail-&gt;addAddress($mailData[<span class="hljs-string">&#x27;emailAddress&#x27;</span>], <span class="hljs-string">&#x27;亲&#x27;</span>);     <span class="hljs-regexp">//</span> 收件人地址和名称<br>            //$mail-&gt;addCC(<span class="hljs-string">&#x27;hellowebanet@163.com&#x27;</span>); <span class="hljs-regexp">//</span> 抄送<br><br><br>            <span class="hljs-keyword">if</span> (isset($mailData[<span class="hljs-string">&#x27;attach&#x27;</span>])) &#123;<br>                $mail-&gt;addAttachment($mailData[<span class="hljs-string">&#x27;attach&#x27;</span>]);         <span class="hljs-regexp">//</span> 添加附件<br>            &#125;<br><br><br>            //$mail-&gt;addAttachment(<span class="hljs-string">&#x27;/tmp/image.jpg&#x27;</span>, <span class="hljs-string">&#x27;new.jpg&#x27;</span>);    <span class="hljs-regexp">//</span> Optional name<br><br><br>            //Content<br>            $mail-&gt;isHTML(true);                                  <span class="hljs-regexp">//</span> Set email <span class="hljs-keyword">format</span> to HTML<br>            $mail-&gt;Subject = $mailData[<span class="hljs-string">&#x27;subject&#x27;</span>];<br>            $mail-&gt;Body    = $mailData[<span class="hljs-string">&#x27;body&#x27;</span>];<br><br><br>            $mail-&gt;<span class="hljs-keyword">send</span>();<br>            <span class="hljs-keyword">return</span> true;<br>        &#125; catch (\Exception $e) &#123;<br>            echo <span class="hljs-string">&#x27;Message could not be sent. Mailer Error: &#x27;</span>. $mail-&gt;ErrorInfo;<br>            <span class="hljs-keyword">return</span> false;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="主程序"><a href="#主程序" class="headerlink" title="主程序"></a>主程序</h2><div class="code-wrapper"><pre><code class="hljs perl">&lt;?php
+/**
+  Created by PhpStorm.
+  User: <span class="hljs-number">13</span>sai
+  Date: <span class="hljs-number">2018</span>/<span class="hljs-number">11</span>/<span class="hljs-number">29</span>
+  Time: <span class="hljs-number">14</span>:<span class="hljs-number">06</span>
+/
+
+<span class="hljs-keyword">require</span> dirname(DIR).<span class="hljs-string">&#x27;/vendor/autoload.php&#x27;</span>;
+
+<span class="hljs-keyword">use</span> PHPMailer\PHPMailer\PHPMailer;
+<span class="hljs-keyword">use</span> PHPMailer\PHPMailer\Exception;
 
 
-<h2 id="服务："><a href="#服务：" class="headerlink" title="服务："></a>服务：</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs awk">&lt;?php<br>/*<br>  Created by PhpStorm.<br>  User: <span class="hljs-number">13</span>sai<br>  Date: <span class="hljs-number">2018</span><span class="hljs-regexp">/11/</span><span class="hljs-number">29</span><br>  Time: <span class="hljs-number">14</span>:<span class="hljs-number">09</span><br> /<br><br>require DIR . <span class="hljs-string">&#x27;/Mailer.php&#x27;</span>;<br><br><br><span class="hljs-variable">$config</span> = [<br>    <span class="hljs-string">&#x27;smtp_host&#x27;</span> =&gt; <span class="hljs-string">&#x27;smtp.163.com&#x27;</span>,<br>    <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;sai@163.com&#x27;</span>,<br>    <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,<br>    <span class="hljs-string">&#x27;secure&#x27;</span> =&gt; <span class="hljs-string">&#x27;ssl&#x27;</span>,<br>    <span class="hljs-string">&#x27;port&#x27;</span> =&gt; <span class="hljs-number">465</span><br>];<br><span class="hljs-variable">$server</span> = new Mailer(<span class="hljs-variable">$config</span>);<br><span class="hljs-variable">$server</span>-&gt;start();<br></code></pre></td></tr></table></figure>
-<h2 id="发送"><a href="#发送" class="headerlink" title="发送"></a>发送</h2><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs perl">&lt;?php<br>/**<br>  Created by PhpStorm.<br>  User: <span class="hljs-number">13</span>sai<br>  Date: <span class="hljs-number">2018</span>/<span class="hljs-number">11</span>/<span class="hljs-number">29</span><br>  Time: <span class="hljs-number">14</span>:<span class="hljs-number">14</span><br> /<br><br>class Client<br>&#123;<br>    private $client;<br><br><br>    public function __construct() &#123;<br>        $this-&gt;client = new swoole_client(SWOOLE_SOCK_TCP);<br>    &#125;<br><br><br>    public function <span class="hljs-keyword">send</span>() &#123;<br>        <span class="hljs-keyword">if</span>( !$this-&gt;client-&gt;<span class="hljs-keyword">connect</span>(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">9502</span> , <span class="hljs-number">1</span>) ) &#123;<br>            echo <span class="hljs-string">&quot;Error: &#123;$this-&gt;client-&gt;errMsg&#125;[&#123;$this-&gt;client-&gt;errCode&#125;]</span><br><span class="hljs-string">&quot;</span>;<br>        &#125;<br><br><br>        $action = <span class="hljs-string">&#x27;sendMail&#x27;</span>;<br>        $time = <span class="hljs-keyword">time</span>();<br>        $data = [<br>            <span class="hljs-string">&#x27;action&#x27;</span> =&gt; $action,<br>            <span class="hljs-string">&#x27;to&#x27;</span> =&gt; <span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>,<br>            <span class="hljs-string">&#x27;subject&#x27;</span> =&gt; <span class="hljs-string">&#x27;wow&#x27;</span>,<br>            <span class="hljs-string">&#x27;body&#x27;</span> =&gt; <span class="hljs-string">&#x27;hello, 13sai!&#x27;</span><br>        ];<br>        $msg = json_encode($data);<br><br><br>        $this-&gt;client-&gt;<span class="hljs-keyword">send</span>( $msg );<br>        $message = $this-&gt;client-&gt;<span class="hljs-keyword">recv</span>();<br>        echo <span class="hljs-string">&quot;Get Message From Server:&#123;$message&#125;</span><br><span class="hljs-string">&quot;</span>;<br>    &#125;<br>&#125;<br><br><br>$client = new Client();<br>$client-&gt;<span class="hljs-keyword">send</span>();<br></code></pre></td></tr></table></figure>
+class Mailer
+&#123;
+    protected $server;
+    protected $host = <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>;
+    protected $port = <span class="hljs-number">9502</span>;
+    <span class="hljs-regexp">//</span> 进程名称
+    protected $taskName = <span class="hljs-string">&#x27;swooleMailer&#x27;</span>;
+    <span class="hljs-regexp">//</span> PID路径
+    protected $pidPath = <span class="hljs-string">&#x27;/run/swooleMail.pid&#x27;</span>;
+    <span class="hljs-regexp">//</span> 设置运行时参数
+    protected $options = [
+        <span class="hljs-string">&#x27;worker_num&#x27;</span> =&gt; <span class="hljs-number">4</span>, <span class="hljs-regexp">//</span>worker进程数,一般设置为CPU数的<span class="hljs-number">1</span>-<span class="hljs-number">4</span>倍
+        <span class="hljs-string">&#x27;daemonize&#x27;</span> =&gt; true, <span class="hljs-regexp">//</span>启用守护进程
+        <span class="hljs-string">&#x27;log_file&#x27;</span> =&gt; <span class="hljs-string">&#x27;/data/logs/swoole.log&#x27;</span>, <span class="hljs-regexp">//</span>指定swoole错误日志文件
+        <span class="hljs-string">&#x27;log_level&#x27;</span> =&gt; <span class="hljs-number">0</span>, <span class="hljs-regexp">//</span>日志级别 范围是<span class="hljs-number">0</span>-<span class="hljs-number">5</span>，<span class="hljs-number">0</span>-DEBUG，<span class="hljs-number">1</span>-TRACE，<span class="hljs-number">2</span>-INFO，<span class="hljs-number">3</span>-NOTICE，<span class="hljs-number">4</span>-WARNING，<span class="hljs-number">5</span>-ERROR
+        <span class="hljs-string">&#x27;dispatch_mode&#x27;</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-regexp">//</span>数据包分发策略,<span class="hljs-number">1</span>-轮询模式
+        <span class="hljs-string">&#x27;task_worker_num&#x27;</span> =&gt; <span class="hljs-number">4</span>, <span class="hljs-regexp">//</span>task进程的数量
+        <span class="hljs-string">&#x27;task_ipc_mode&#x27;</span> =&gt; <span class="hljs-number">3</span>, <span class="hljs-regexp">//</span>使用消息队列通信，并设置为争抢模式
+        //<span class="hljs-string">&#x27;heartbeat_idle_time&#x27;</span> =&gt; <span class="hljs-number">600</span>, <span class="hljs-regexp">//</span>一个连接如果<span class="hljs-number">600</span>秒内未向服务器发送任何数据，此连接将被强制关闭
+        //<span class="hljs-string">&#x27;heartbeat_check_interval&#x27;</span> =&gt; <span class="hljs-number">60</span>, <span class="hljs-regexp">//</span>启用心跳检测，每隔<span class="hljs-number">60</span>s轮循一次
+    ];
+    <span class="hljs-regexp">//</span> 邮件服务器配置
+    protected $mailConfig = [
+        <span class="hljs-string">&#x27;smtp_host&#x27;</span> =&gt; <span class="hljs-string">&#x27;smtp.163.com&#x27;</span>,
+        <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;sai0556@163.com&#x27;</span>,
+        <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;xmw1015&#x27;</span>,<span class="hljs-regexp">//</span> SMTP 密码/口令
+        <span class="hljs-string">&#x27;secure&#x27;</span> =&gt; <span class="hljs-string">&#x27;ssl&#x27;</span>, <span class="hljs-regexp">//</span>Enable TLS encryption, ssl also accepted
+        <span class="hljs-string">&#x27;port&#x27;</span> =&gt; <span class="hljs-number">465</span>, <span class="hljs-regexp">//</span> tcp邮件服务器端口
+    ];
+
+
+    public function __construct($mailConfig, $options = [])
+    &#123;
+        <span class="hljs-regexp">//</span> 构建Server对象，监听端口
+        $this-&gt;server = new swoole_server($this-&gt;host, $this-&gt;port);
+
+
+        <span class="hljs-keyword">if</span> (!empty($options)) &#123;
+            $this-&gt;options = array_merge($this-&gt;options, $options);
+        &#125;
+        $this-&gt;server-&gt;set($this-&gt;options);
+
+
+        $this-&gt;mailConfig = $mailConfig;
+
+
+        <span class="hljs-regexp">//</span> 注册事件
+        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Start&#x27;</span>, [$this, <span class="hljs-string">&#x27;onStart&#x27;</span>]);
+        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Connect&#x27;</span>, [$this, <span class="hljs-string">&#x27;onConnect&#x27;</span>]);
+        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Receive&#x27;</span>, [$this, <span class="hljs-string">&#x27;onReceive&#x27;</span>]);
+        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Task&#x27;</span>, [$this, <span class="hljs-string">&#x27;onTask&#x27;</span>]);
+        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Finish&#x27;</span>, [$this, <span class="hljs-string">&#x27;onFinish&#x27;</span>]);
+        $this-&gt;server-&gt;on(<span class="hljs-string">&#x27;Close&#x27;</span>, [$this, <span class="hljs-string">&#x27;onClose&#x27;</span>]);
+
+
+        <span class="hljs-regexp">//</span> 启动服务
+        //$this-&gt;server-&gt;start();
+    &#125;
+
+
+    protected function init()
+    &#123;
+        <span class="hljs-regexp">//</span>
+    &#125;
+
+
+    public function start()
+    &#123;
+        <span class="hljs-regexp">//</span> Run worker
+        $this-&gt;server-&gt;start();
+    &#125;
+
+
+    public function onStart($server)
+    &#123;
+        <span class="hljs-regexp">//</span> 设置进程名
+        cli_set_process_title($this-&gt;taskName);
+        <span class="hljs-regexp">//</span>记录进程id,脚本实现自动重启
+        $pid = <span class="hljs-string">&quot;&#123;$server-&gt;master_pid&#125;</span>
+<span class="hljs-string">&#123;$server-&gt;manager_pid&#125;&quot;</span>;
+        file_put_contents($this-&gt;pidPath, $pid);
+    &#125;
+
+
+    //监听连接进入事件
+    public function onConnect($server, $fd, $from_id)
+    &#123;
+        $server-&gt;<span class="hljs-keyword">send</span>($fd, <span class="hljs-string">&quot;Hello &#123;$fd&#125;!&quot;</span> );
+    &#125;
+
+
+    // 监听数据接收事件
+    public function onReceive(swoole_server $server, $fd, $from_id, $data)
+    &#123;
+        $res[<span class="hljs-string">&#x27;result&#x27;</span>] = <span class="hljs-string">&#x27;success&#x27;</span>;
+        $server-&gt;<span class="hljs-keyword">send</span>($fd, json_encode($res)); <span class="hljs-regexp">//</span> 同步返回消息给客户端
+        $server-&gt;task($data);  <span class="hljs-regexp">//</span> 执行异步任务
+
+
+    &#125;
+
+
+    /*
+      @param $server swoole_server swoole_server对象
+      @param $task_id <span class="hljs-keyword">int</span> 任务id
+      @param $from_id <span class="hljs-keyword">int</span> 投递任务的worker_id
+      @param $data string 投递的数据
+     /
+    public function onTask(swoole_server $server, $task_id, $from_id, $data)
+    &#123;
+        $res[<span class="hljs-string">&#x27;result&#x27;</span>] = <span class="hljs-string">&#x27;failed&#x27;</span>;
+        $req = json_decode($data, true);
+        $action = $req[<span class="hljs-string">&#x27;action&#x27;</span>];
+        echo date(<span class="hljs-string">&#x27;Y-m-d H:i:s&#x27;</span>).<span class="hljs-string">&quot; onTask: [&quot;</span>.$action.<span class="hljs-string">&quot;].</span>
+<span class="hljs-string">&quot;</span>;
+        switch ($action) &#123;
+            case <span class="hljs-string">&#x27;sendMail&#x27;</span>: <span class="hljs-regexp">//</span>发送单个邮件
+                $mailData = [
+                    <span class="hljs-string">&#x27;emailAddress&#x27;</span> =&gt; $req[<span class="hljs-string">&#x27;to&#x27;</span>], <span class="hljs-regexp">//</span>接收方，改成自己的邮箱可以测试接收邮件
+                    <span class="hljs-string">&#x27;subject&#x27;</span> =&gt; $req[<span class="hljs-string">&#x27;subject&#x27;</span>],
+                    <span class="hljs-string">&#x27;body&#x27;</span> =&gt; $req[<span class="hljs-string">&#x27;body&#x27;</span>],
+                ];
+                $this-&gt;sendMail($mailData);
+                <span class="hljs-keyword">break</span>;
+
+
+            default:
+                <span class="hljs-keyword">break</span>;
+        &#125;
+    &#125;
+
+
+    /*
+      @param $server swoole_server swoole_server对象
+      @param $task_id <span class="hljs-keyword">int</span> 任务id
+      @param $data string 任务返回的数据
+     *<span class="hljs-regexp">/</span>
+<span class="hljs-regexp">    public function onFinish(swoole_server $server, $task_id, $data)</span>
+<span class="hljs-regexp">    &#123;</span>
+<span class="hljs-regexp">        /</span><span class="hljs-regexp">/</span>
+<span class="hljs-regexp">    &#125;</span>
+<span class="hljs-regexp"></span>
+<span class="hljs-regexp"></span>
+<span class="hljs-regexp">    /</span><span class="hljs-regexp">/ 监听连接关闭事件</span>
+<span class="hljs-regexp">    public function onClose($server, $fd, $from_id) &#123;</span>
+<span class="hljs-regexp">        echo &quot;Client &#123;$fd&#125; close connection</span>
+<span class="hljs-regexp">&quot;;</span>
+<span class="hljs-regexp">    &#125;</span>
+<span class="hljs-regexp"></span>
+<span class="hljs-regexp"></span>
+<span class="hljs-regexp">    public function stop()</span>
+<span class="hljs-regexp">    &#123;</span>
+<span class="hljs-regexp">        $this-&gt;server-&gt;stop();</span>
+<span class="hljs-regexp">    &#125;</span>
+<span class="hljs-regexp"></span>
+<span class="hljs-regexp"></span>
+<span class="hljs-regexp">    private function sendMail($mailData = [])</span>
+<span class="hljs-regexp">    &#123;</span>
+<span class="hljs-regexp">        $mail = new PHPMailer(true);</span>
+<span class="hljs-regexp"></span>
+<span class="hljs-regexp"></span>
+<span class="hljs-regexp">        try &#123;</span>
+<span class="hljs-regexp">            $mailConfig = $this-&gt;mailConfig;</span>
+<span class="hljs-regexp">            $mail-&gt;isSMTP();                                   /</span><span class="hljs-regexp">/ TCP port to connect to</span>
+<span class="hljs-regexp">            $mail-&gt;Host = $mailConfig[&#x27;smtp_host&#x27;];  /</span><span class="hljs-regexp">/ SMTP服务</span>
+<span class="hljs-regexp">            $mail-&gt;SMTPAuth = true;                  /</span><span class="hljs-regexp">/ Enable SMTP authentication</span>
+<span class="hljs-regexp">            $mail-&gt;Username = $mailConfig[&#x27;username&#x27;];    /</span><span class="hljs-regexp">/ SMTP 用户名</span>
+<span class="hljs-regexp">            $mail-&gt;Password = $mailConfig[&#x27;password&#x27;];     /</span><span class="hljs-regexp">/ SMTP 密码/</span>口令
+            $mail-&gt;SMTPSecure = $mailConfig[<span class="hljs-string">&#x27;secure&#x27;</span>];     <span class="hljs-regexp">//</span> Enable TLS encryption, ssl also accepted
+            $mail-&gt;Port = $mailConfig[<span class="hljs-string">&#x27;port&#x27;</span>];    <span class="hljs-regexp">//</span> TCP 端口
+
+
+            //Recipients
+            $mail-&gt;setFrom(<span class="hljs-string">&#x27;sai0556@163.com&#x27;</span>, <span class="hljs-string">&#x27;13sai&#x27;</span>);
+            $mail-&gt;addAddress(<span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>);               <span class="hljs-regexp">//</span> Name is optional
+            $mail-&gt;addReplyTo(<span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>, <span class="hljs-string">&#x27;Information&#x27;</span>);
+
+
+            <span class="hljs-regexp">//</span>Content
+            $mail-&gt;isHTML(true);                                  <span class="hljs-regexp">//</span> Set email <span class="hljs-keyword">format</span> to HTML
+            $mail-&gt;Subject = <span class="hljs-string">&#x27;Here is the subject&#x27;</span>;
+            $mail-&gt;Body    = <span class="hljs-string">&#x27;This is the HTML message body &lt;b&gt;in bold!&lt;/b&gt;&#x27;</span>;
+            $mail-&gt;AltBody = <span class="hljs-string">&#x27;This is the body in plain text for non-HTML mail clients&#x27;</span>;
+
+
+            $mail-&gt;<span class="hljs-keyword">send</span>();
+            echo <span class="hljs-string">&#x27;Message has been sent&#x27;</span>;
+        &#125; catch (Exception $e) &#123;
+            echo <span class="hljs-string">&#x27;Message could not be sent.&#x27;</span>;
+            echo <span class="hljs-string">&#x27;Mailer Error: &#x27;</span> . $mail-&gt;ErrorInfo;
+        &#125;
+
+
+        try &#123;
+            $mailConfig = $this-&gt;mailConfig;
+            $mail-&gt;isSMTP();   <span class="hljs-regexp">//</span> Set mailer to <span class="hljs-keyword">use</span> SMTP
+            $mail-&gt;Host = $mailConfig[<span class="hljs-string">&#x27;smtp_host&#x27;</span>];  <span class="hljs-regexp">//</span> SMTP服务
+            $mail-&gt;SMTPAuth = true;                  <span class="hljs-regexp">//</span> Enable SMTP authentication
+            $mail-&gt;Username = $mailConfig[<span class="hljs-string">&#x27;username&#x27;</span>];    <span class="hljs-regexp">//</span> SMTP 用户名
+            $mail-&gt;Password = $mailConfig[<span class="hljs-string">&#x27;password&#x27;</span>];     <span class="hljs-regexp">//</span> SMTP 密码/口令
+            $mail-&gt;SMTPSecure = $mailConfig[<span class="hljs-string">&#x27;secure&#x27;</span>];     <span class="hljs-regexp">//</span> Enable TLS encryption, ssl also accepted
+            $mail-&gt;Port = $mailConfig[<span class="hljs-string">&#x27;port&#x27;</span>];    <span class="hljs-regexp">//</span> TCP 端口
+
+
+            $mail-&gt;CharSet  = <span class="hljs-string">&quot;UTF-8&quot;</span>; <span class="hljs-regexp">//</span>字符集
+            $mail-&gt;setFrom($mailConfig[<span class="hljs-string">&#x27;username&#x27;</span>], <span class="hljs-string">&#x27;13sai&#x27;</span>); <span class="hljs-regexp">//</span>发件人地址，名称
+            $mail-&gt;addAddress($mailData[<span class="hljs-string">&#x27;emailAddress&#x27;</span>], <span class="hljs-string">&#x27;亲&#x27;</span>);     <span class="hljs-regexp">//</span> 收件人地址和名称
+            //$mail-&gt;addCC(<span class="hljs-string">&#x27;hellowebanet@163.com&#x27;</span>); <span class="hljs-regexp">//</span> 抄送
+
+
+            <span class="hljs-keyword">if</span> (isset($mailData[<span class="hljs-string">&#x27;attach&#x27;</span>])) &#123;
+                $mail-&gt;addAttachment($mailData[<span class="hljs-string">&#x27;attach&#x27;</span>]);         <span class="hljs-regexp">//</span> 添加附件
+            &#125;
+
+
+            //$mail-&gt;addAttachment(<span class="hljs-string">&#x27;/tmp/image.jpg&#x27;</span>, <span class="hljs-string">&#x27;new.jpg&#x27;</span>);    <span class="hljs-regexp">//</span> Optional name
+
+
+            //Content
+            $mail-&gt;isHTML(true);                                  <span class="hljs-regexp">//</span> Set email <span class="hljs-keyword">format</span> to HTML
+            $mail-&gt;Subject = $mailData[<span class="hljs-string">&#x27;subject&#x27;</span>];
+            $mail-&gt;Body    = $mailData[<span class="hljs-string">&#x27;body&#x27;</span>];
+
+
+            $mail-&gt;<span class="hljs-keyword">send</span>();
+            <span class="hljs-keyword">return</span> true;
+        &#125; catch (\Exception $e) &#123;
+            echo <span class="hljs-string">&#x27;Message could not be sent. Mailer Error: &#x27;</span>. $mail-&gt;ErrorInfo;
+            <span class="hljs-keyword">return</span> false;
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+
+<h2 id="服务："><a href="#服务：" class="headerlink" title="服务："></a>服务：</h2><div class="code-wrapper"><pre><code class="hljs awk">&lt;?php
+/*
+  Created by PhpStorm.
+  User: <span class="hljs-number">13</span>sai
+  Date: <span class="hljs-number">2018</span><span class="hljs-regexp">/11/</span><span class="hljs-number">29</span>
+  Time: <span class="hljs-number">14</span>:<span class="hljs-number">09</span>
+ /
+
+require DIR . <span class="hljs-string">&#x27;/Mailer.php&#x27;</span>;
+
+
+<span class="hljs-variable">$config</span> = [
+    <span class="hljs-string">&#x27;smtp_host&#x27;</span> =&gt; <span class="hljs-string">&#x27;smtp.163.com&#x27;</span>,
+    <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;sai@163.com&#x27;</span>,
+    <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,
+    <span class="hljs-string">&#x27;secure&#x27;</span> =&gt; <span class="hljs-string">&#x27;ssl&#x27;</span>,
+    <span class="hljs-string">&#x27;port&#x27;</span> =&gt; <span class="hljs-number">465</span>
+];
+<span class="hljs-variable">$server</span> = new Mailer(<span class="hljs-variable">$config</span>);
+<span class="hljs-variable">$server</span>-&gt;start();</code></pre></div>
+<h2 id="发送"><a href="#发送" class="headerlink" title="发送"></a>发送</h2><div class="code-wrapper"><pre><code class="hljs perl">&lt;?php
+/**
+  Created by PhpStorm.
+  User: <span class="hljs-number">13</span>sai
+  Date: <span class="hljs-number">2018</span>/<span class="hljs-number">11</span>/<span class="hljs-number">29</span>
+  Time: <span class="hljs-number">14</span>:<span class="hljs-number">14</span>
+ /
+
+class Client
+&#123;
+    private $client;
+
+
+    public function __construct() &#123;
+        $this-&gt;client = new swoole_client(SWOOLE_SOCK_TCP);
+    &#125;
+
+
+    public function <span class="hljs-keyword">send</span>() &#123;
+        <span class="hljs-keyword">if</span>( !$this-&gt;client-&gt;<span class="hljs-keyword">connect</span>(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">9502</span> , <span class="hljs-number">1</span>) ) &#123;
+            echo <span class="hljs-string">&quot;Error: &#123;$this-&gt;client-&gt;errMsg&#125;[&#123;$this-&gt;client-&gt;errCode&#125;]</span>
+<span class="hljs-string">&quot;</span>;
+        &#125;
+
+
+        $action = <span class="hljs-string">&#x27;sendMail&#x27;</span>;
+        $time = <span class="hljs-keyword">time</span>();
+        $data = [
+            <span class="hljs-string">&#x27;action&#x27;</span> =&gt; $action,
+            <span class="hljs-string">&#x27;to&#x27;</span> =&gt; <span class="hljs-string">&#x27;957042781@qq.com&#x27;</span>,
+            <span class="hljs-string">&#x27;subject&#x27;</span> =&gt; <span class="hljs-string">&#x27;wow&#x27;</span>,
+            <span class="hljs-string">&#x27;body&#x27;</span> =&gt; <span class="hljs-string">&#x27;hello, 13sai!&#x27;</span>
+        ];
+        $msg = json_encode($data);
+
+
+        $this-&gt;client-&gt;<span class="hljs-keyword">send</span>( $msg );
+        $message = $this-&gt;client-&gt;<span class="hljs-keyword">recv</span>();
+        echo <span class="hljs-string">&quot;Get Message From Server:&#123;$message&#125;</span>
+<span class="hljs-string">&quot;</span>;
+    &#125;
+&#125;
+
+
+$client = new Client();
+$client-&gt;<span class="hljs-keyword">send</span>();</code></pre></div>
 
 
 <p>测试通过！</p>

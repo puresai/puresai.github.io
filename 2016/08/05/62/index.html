@@ -871,20 +871,20 @@
             
             <div class="markdown-body">
               
-               <p>原理：获取微信内置浏览器的User Agent，并加以判断。</p><p>直接上代码：</p><p>js：</p><pre class="brush:js;toolbar:false">function&nbsp;isWeiXin(){
+               <p>原理：获取微信内置浏览器的User Agent，并加以判断。</p><p>直接上代码：</p><p>js：</p><div class="code-wrapper"><pre class="brush:js;toolbar:false">function&nbsp;isWeiXin(){
 &nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;ua&nbsp;=&nbsp;window.navigator.userAgent.toLowerCase();
 &nbsp;&nbsp;&nbsp;&nbsp;//var&nbsp;ua&nbsp;=&nbsp;navigator.userAgent.toLowerCase();&nbsp;二选一
 &nbsp;&nbsp;&nbsp;&nbsp;if(ua.match(/MicroMessenger/i)&nbsp;==&nbsp;&#39;micromessenger&#39;){
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(1);
 &nbsp;&nbsp;&nbsp;&nbsp;}else{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(0);
-}</pre><p>php</p><pre class="brush:php;toolbar:false">function&nbsp;isWeixin(){&nbsp;
+}</pre></div><p>php</p><div class="code-wrapper"><pre class="brush:php;toolbar:false">function&nbsp;isWeixin(){&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(&nbsp;strpos($_SERVER[&#39;HTTP_USER_AGENT&#39;],&nbsp;&#39;MicroMessenger&#39;)&nbsp;!==&nbsp;false&nbsp;)&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;true;
 &nbsp;&nbsp;&nbsp;&nbsp;}else{
     return&nbsp;false;
 &nbsp;&nbsp;&nbsp;&nbsp;}
-}</pre><p><br/></p>
+}</pre></div><p><br/></p>
 
               
             </div>

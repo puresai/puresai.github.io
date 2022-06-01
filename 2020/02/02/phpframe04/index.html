@@ -295,7 +295,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          7.5k 字
+          7.1k 字
         
       </span>
     
@@ -307,7 +307,7 @@
         
         
           <!-- compatible with older versions-->
-          63 分钟
+          60 分钟
         
       </span>
     
@@ -535,7 +535,65 @@
 <p>composer init</p>
 </blockquote>
 <p>命令行会跟你确认以下信息（以下信息可以自行DIY）</p>
-<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-comment"># 1. 输入项目命名空间</span><br><span class="hljs-comment"># 注意&lt;vendor&gt;/&lt;name&gt; 必须要符合 [a-z0-9_.-]+/[a-z0-9_.-]+</span><br>Package name (&lt;vendor&gt;/&lt;name&gt;) yourname/projectname<br><br><span class="hljs-comment"># 2. 项目描述</span><br>Description []:这是一个测试composer init 项目<br><br><span class="hljs-comment"># 3. 输入作者信息</span><br>Author [<span class="hljs-number">13sai</span> &lt;sai0556@qq.com&gt;, n <span class="hljs-keyword">to</span> skip]:<br><br><span class="hljs-comment"># 4. 输入最低稳定版本，stable, RC, beta, alpha, dev</span><br>Minimum Stability []:dev<br><br><span class="hljs-comment"># 5. 输入项目类型</span><br>Package Type (e.g. library, project, metapackage, composer-plugin) []:project<br><br><span class="hljs-comment"># 6. 输入授权类型</span><br>License []:MIT<br><br>Define your dependencies.<br><br><span class="hljs-comment"># 7. 输入依赖信息</span><br>Would you like <span class="hljs-keyword">to</span> define your dependencies (<span class="hljs-built_in">require</span>) interactively [<span class="hljs-literal">yes</span>]?<br><br><span class="hljs-comment"># 7.1. 如果需要依赖，则输入要安装的依赖</span><br>Search <span class="hljs-keyword">for</span> a package:php<br><br><span class="hljs-comment"># 7.2. 输入版本号</span><br>Enter the version constraint <span class="hljs-keyword">to</span> <span class="hljs-built_in">require</span> (<span class="hljs-keyword">or</span> leave blank <span class="hljs-keyword">to</span> use the latest version): &gt;=<span class="hljs-number">5.4</span>.<span class="hljs-number">0</span><br><br><span class="hljs-comment">#  如需多个依赖，则重复以上两个步骤(7.1/7.2)</span><br>Search <span class="hljs-keyword">for</span> a package:<br><br><span class="hljs-comment"># 8. 是否需要require-dev，</span><br>Would you like <span class="hljs-keyword">to</span> define your dev dependencies (<span class="hljs-built_in">require</span>-dev) interactively [<span class="hljs-literal">yes</span>]?<br><br><br>&#123;<br>    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;sai/saif&quot;</span>,<br>    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;php framework&quot;</span>,<br>    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;project&quot;</span>,<br>    <span class="hljs-string">&quot;require&quot;</span>: &#123;<br>    &#125;,<br>    <span class="hljs-string">&quot;license&quot;</span>: <span class="hljs-string">&quot;MIT&quot;</span>,<br>    <span class="hljs-string">&quot;authors&quot;</span>: [<br>        &#123;<br>            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;13sai&quot;</span>,<br>            <span class="hljs-string">&quot;email&quot;</span>: <span class="hljs-string">&quot;sai0556@qq.com&quot;</span><br>        &#125;<br>    ],<br>    <span class="hljs-string">&quot;minimum-stability&quot;</span>: <span class="hljs-string">&quot;dev&quot;</span><br>&#125;<br><br><span class="hljs-comment"># 9. 是否生成composer.json</span><br>Do you confirm generation [<span class="hljs-literal">yes</span>]?<br><br><span class="hljs-comment"># 现在安装依赖项吗</span><br>Would you like <span class="hljs-keyword">to</span> install dependencies now [<span class="hljs-literal">yes</span>]?<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs livescript"><span class="hljs-comment"># 1. 输入项目命名空间</span>
+<span class="hljs-comment"># 注意&lt;vendor&gt;/&lt;name&gt; 必须要符合 [a-z0-9_.-]+/[a-z0-9_.-]+</span>
+Package name (&lt;vendor&gt;/&lt;name&gt;) yourname/projectname
+
+<span class="hljs-comment"># 2. 项目描述</span>
+Description []:这是一个测试composer init 项目
+
+<span class="hljs-comment"># 3. 输入作者信息</span>
+Author [<span class="hljs-number">13sai</span> &lt;sai0556@qq.com&gt;, n <span class="hljs-keyword">to</span> skip]:
+
+<span class="hljs-comment"># 4. 输入最低稳定版本，stable, RC, beta, alpha, dev</span>
+Minimum Stability []:dev
+
+<span class="hljs-comment"># 5. 输入项目类型</span>
+Package Type (e.g. library, project, metapackage, composer-plugin) []:project
+
+<span class="hljs-comment"># 6. 输入授权类型</span>
+License []:MIT
+
+Define your dependencies.
+
+<span class="hljs-comment"># 7. 输入依赖信息</span>
+Would you like <span class="hljs-keyword">to</span> define your dependencies (<span class="hljs-built_in">require</span>) interactively [<span class="hljs-literal">yes</span>]?
+
+<span class="hljs-comment"># 7.1. 如果需要依赖，则输入要安装的依赖</span>
+Search <span class="hljs-keyword">for</span> a package:php
+
+<span class="hljs-comment"># 7.2. 输入版本号</span>
+Enter the version constraint <span class="hljs-keyword">to</span> <span class="hljs-built_in">require</span> (<span class="hljs-keyword">or</span> leave blank <span class="hljs-keyword">to</span> use the latest version): &gt;=<span class="hljs-number">5.4</span>.<span class="hljs-number">0</span>
+
+<span class="hljs-comment">#  如需多个依赖，则重复以上两个步骤(7.1/7.2)</span>
+Search <span class="hljs-keyword">for</span> a package:
+
+<span class="hljs-comment"># 8. 是否需要require-dev，</span>
+Would you like <span class="hljs-keyword">to</span> define your dev dependencies (<span class="hljs-built_in">require</span>-dev) interactively [<span class="hljs-literal">yes</span>]?
+
+
+&#123;
+    <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;sai/saif&quot;</span>,
+    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;php framework&quot;</span>,
+    <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;project&quot;</span>,
+    <span class="hljs-string">&quot;require&quot;</span>: &#123;
+    &#125;,
+    <span class="hljs-string">&quot;license&quot;</span>: <span class="hljs-string">&quot;MIT&quot;</span>,
+    <span class="hljs-string">&quot;authors&quot;</span>: [
+        &#123;
+            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;13sai&quot;</span>,
+            <span class="hljs-string">&quot;email&quot;</span>: <span class="hljs-string">&quot;sai0556@qq.com&quot;</span>
+        &#125;
+    ],
+    <span class="hljs-string">&quot;minimum-stability&quot;</span>: <span class="hljs-string">&quot;dev&quot;</span>
+&#125;
+
+<span class="hljs-comment"># 9. 是否生成composer.json</span>
+Do you confirm generation [<span class="hljs-literal">yes</span>]?
+
+<span class="hljs-comment"># 现在安装依赖项吗</span>
+Would you like <span class="hljs-keyword">to</span> install dependencies now [<span class="hljs-literal">yes</span>]?
+</code></pre></div>
 
 <p>我们的目录下会生成composer.json。</p>
 <hr>
@@ -603,7 +661,15 @@
 </ul>
 <p><img src="https://cdn.learnku.com/uploads/images/202002/18/41489/QE8AHxxoup.png!large" srcset="/img/loading.gif" lazyload alt="image"></p>
 <p>对应的我们在composer.json中加入一些autoload配置，用以自动加载，省去我们实现自动加载。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-string">&quot;autoload&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;psr-4&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;Library<span class="hljs-subst">\\</span>&quot;</span>: <span class="hljs-string">&quot;library/&quot;</span>,<br>        <span class="hljs-string">&quot;App<span class="hljs-subst">\\</span>&quot;</span>: <span class="hljs-string">&quot;app/&quot;</span><br>    &#125;,<br>    <span class="hljs-string">&quot;files&quot;</span>: [<br>        <span class="hljs-string">&quot;library/Functions.php&quot;</span><br>    ]<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs swift"><span class="hljs-string">&quot;autoload&quot;</span>: &#123;
+    <span class="hljs-string">&quot;psr-4&quot;</span>: &#123;
+        <span class="hljs-string">&quot;Library<span class="hljs-subst">\\</span>&quot;</span>: <span class="hljs-string">&quot;library/&quot;</span>,
+        <span class="hljs-string">&quot;App<span class="hljs-subst">\\</span>&quot;</span>: <span class="hljs-string">&quot;app/&quot;</span>
+    &#125;,
+    <span class="hljs-string">&quot;files&quot;</span>: [
+        <span class="hljs-string">&quot;library/Functions.php&quot;</span>
+    ]
+&#125;</code></pre></div>
 
 <p>执行一下，composer install或者composer dump-autoload即可。</p>
 <hr>
@@ -636,17 +702,177 @@
 <hr>
 <p>我们先不着急进行核心代码编写，不妨先做一下辅助工作，常用方法，异常处理等。</p>
 <h3 id="常用函数Functions"><a href="#常用函数Functions" class="headerlink" title="常用函数Functions"></a>常用函数Functions</h3><p>编写常用函数</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 常用函数</span><br><span class="hljs-comment"> */</span><br> <br><span class="hljs-keyword">if</span> (!function_exists(<span class="hljs-string">&quot;p&quot;</span>)) &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">p</span>(<span class="hljs-params"><span class="hljs-variable">$var</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (is_bool(<span class="hljs-variable">$var</span>)) &#123;<br>            var_dump(<span class="hljs-variable">$var</span>);<br>        &#125; <span class="hljs-keyword">elseif</span> (is_null(<span class="hljs-variable">$var</span>)) &#123;<br>            var_dump(<span class="hljs-literal">null</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;&lt;meta charset=&#x27;utf-8&#x27;/&gt;</span><br><span class="hljs-string">&lt;pre style=&#x27;position:relative;</span><br><span class="hljs-string">z-index:999;</span><br><span class="hljs-string">padding:10px;</span><br><span class="hljs-string">border-radius:5px;</span><br><span class="hljs-string">background:#f5f5f5;</span><br><span class="hljs-string">border:1px solid #aaa;</span><br><span class="hljs-string">font-size:14px;</span><br><span class="hljs-string">line-height:18px;</span><br><span class="hljs-string">opacity:0.8;&#x27;&gt;&quot;</span>.print_r(<span class="hljs-variable">$var</span>, <span class="hljs-literal">true</span>).<span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br><br>······<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 常用函数</span>
+<span class="hljs-comment"> */</span>
+ 
+<span class="hljs-keyword">if</span> (!function_exists(<span class="hljs-string">&quot;p&quot;</span>)) &#123;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">p</span>(<span class="hljs-params"><span class="hljs-variable">$var</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (is_bool(<span class="hljs-variable">$var</span>)) &#123;
+            var_dump(<span class="hljs-variable">$var</span>);
+        &#125; <span class="hljs-keyword">elseif</span> (is_null(<span class="hljs-variable">$var</span>)) &#123;
+            var_dump(<span class="hljs-literal">null</span>);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;&lt;meta charset=&#x27;utf-8&#x27;/&gt;</span>
+<span class="hljs-string">&lt;pre style=&#x27;position:relative;</span>
+<span class="hljs-string">z-index:999;</span>
+<span class="hljs-string">padding:10px;</span>
+<span class="hljs-string">border-radius:5px;</span>
+<span class="hljs-string">background:#f5f5f5;</span>
+<span class="hljs-string">border:1px solid #aaa;</span>
+<span class="hljs-string">font-size:14px;</span>
+<span class="hljs-string">line-height:18px;</span>
+<span class="hljs-string">opacity:0.8;&#x27;&gt;&quot;</span>.print_r(<span class="hljs-variable">$var</span>, <span class="hljs-literal">true</span>).<span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>);
+        &#125;
+    &#125;
+&#125;
+
+······
+</code></pre></div>
 
 
 <hr>
 <h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>在Exceptions目录下，定义一个最基础的异常SaiException：</p>
-<figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><code class="hljs zephir">&lt;?php<br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Exceptions</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SaiException</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">Exception</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">const</span> CODE_MAPPING = [<br>        <span class="hljs-number">100</span> =&gt; <span class="hljs-string">&#x27;Continue&#x27;</span>,<br>        <span class="hljs-number">101</span> =&gt; <span class="hljs-string">&#x27;Switching Protocols&#x27;</span>,<br>        <span class="hljs-number">102</span> =&gt; <span class="hljs-string">&#x27;Processing&#x27;</span>,<br><br>        <span class="hljs-number">200</span> =&gt; <span class="hljs-string">&#x27;OK&#x27;</span>,<br>        <span class="hljs-number">201</span> =&gt; <span class="hljs-string">&#x27;Created&#x27;</span>,<br>        <span class="hljs-number">202</span> =&gt; <span class="hljs-string">&#x27;Accepted&#x27;</span>,<br>        <span class="hljs-number">203</span> =&gt; <span class="hljs-string">&#x27;Non-Authoritative Information&#x27;</span>,<br>        <span class="hljs-number">204</span> =&gt; <span class="hljs-string">&#x27;No Content&#x27;</span>,<br>        <span class="hljs-number">205</span> =&gt; <span class="hljs-string">&#x27;Reset Content&#x27;</span>,<br>        <span class="hljs-number">206</span> =&gt; <span class="hljs-string">&#x27;Partial Content&#x27;</span>,<br>        <span class="hljs-number">207</span> =&gt; <span class="hljs-string">&#x27;Multi-Status&#x27;</span>,<br>        <span class="hljs-number">226</span> =&gt; <span class="hljs-string">&#x27;IM Used&#x27;</span>,<br><br>        <span class="hljs-number">300</span> =&gt; <span class="hljs-string">&#x27;Multiple Choices&#x27;</span>,<br>        <span class="hljs-number">301</span> =&gt; <span class="hljs-string">&#x27;Moved Permanently&#x27;</span>,<br>        <span class="hljs-number">302</span> =&gt; <span class="hljs-string">&#x27;Found&#x27;</span>,<br>        <span class="hljs-number">303</span> =&gt; <span class="hljs-string">&#x27;See Other&#x27;</span>,<br>        <span class="hljs-number">304</span> =&gt; <span class="hljs-string">&#x27;Not Modified&#x27;</span>,<br>        <span class="hljs-number">305</span> =&gt; <span class="hljs-string">&#x27;Use Proxy&#x27;</span>,<br>        <span class="hljs-number">306</span> =&gt; <span class="hljs-string">&#x27;Reserved&#x27;</span>,<br>        <span class="hljs-number">307</span> =&gt; <span class="hljs-string">&#x27;Temporary Redirect&#x27;</span>,<br><br>        <span class="hljs-number">400</span> =&gt; <span class="hljs-string">&#x27;Bad Request&#x27;</span>,<br>        <span class="hljs-number">401</span> =&gt; <span class="hljs-string">&#x27;Unauthorized&#x27;</span>,<br>        <span class="hljs-number">402</span> =&gt; <span class="hljs-string">&#x27;Payment Required&#x27;</span>,<br>        <span class="hljs-number">403</span> =&gt; <span class="hljs-string">&#x27;Forbidden&#x27;</span>,<br>        <span class="hljs-number">404</span> =&gt; <span class="hljs-string">&#x27;Not Found&#x27;</span>,<br>        <span class="hljs-number">405</span> =&gt; <span class="hljs-string">&#x27;Method Not Allowed&#x27;</span>,<br>        <span class="hljs-number">406</span> =&gt; <span class="hljs-string">&#x27;Not Acceptable&#x27;</span>,<br>        <span class="hljs-number">407</span> =&gt; <span class="hljs-string">&#x27;Proxy Authentication Required&#x27;</span>,<br>        <span class="hljs-number">408</span> =&gt; <span class="hljs-string">&#x27;Request Timeout&#x27;</span>,<br>        <span class="hljs-number">409</span> =&gt; <span class="hljs-string">&#x27;Conflict&#x27;</span>,<br>        <span class="hljs-number">410</span> =&gt; <span class="hljs-string">&#x27;Gone&#x27;</span>,<br>        <span class="hljs-number">411</span> =&gt; <span class="hljs-string">&#x27;Length Required&#x27;</span>,<br>        <span class="hljs-number">412</span> =&gt; <span class="hljs-string">&#x27;Precondition Failed&#x27;</span>,<br>        <span class="hljs-number">413</span> =&gt; <span class="hljs-string">&#x27;Request Entity Too Large&#x27;</span>,<br>        <span class="hljs-number">414</span> =&gt; <span class="hljs-string">&#x27;Request-URI Too Long&#x27;</span>,<br>        <span class="hljs-number">415</span> =&gt; <span class="hljs-string">&#x27;Unsupported Media Type&#x27;</span>,<br>        <span class="hljs-number">416</span> =&gt; <span class="hljs-string">&#x27;Requested Range Not Satisfiable&#x27;</span>,<br>        <span class="hljs-number">417</span> =&gt; <span class="hljs-string">&#x27;Expectation Failed&#x27;</span>,<br>        <span class="hljs-number">422</span> =&gt; <span class="hljs-string">&#x27;Unprocessable Entity&#x27;</span>,<br>        <span class="hljs-number">423</span> =&gt; <span class="hljs-string">&#x27;Locked&#x27;</span>,<br>        <span class="hljs-number">424</span> =&gt; <span class="hljs-string">&#x27;Failed Dependency&#x27;</span>,<br>        <span class="hljs-number">426</span> =&gt; <span class="hljs-string">&#x27;Upgrade Required&#x27;</span>,<br>        <span class="hljs-number">429</span> =&gt; <span class="hljs-string">&#x27;Too Many Request&#x27;</span>,<br><br>        <span class="hljs-number">500</span> =&gt; <span class="hljs-string">&#x27;Internal Server Error&#x27;</span>,<br>        <span class="hljs-number">501</span> =&gt; <span class="hljs-string">&#x27;Not Implemented&#x27;</span>,<br>        <span class="hljs-number">502</span> =&gt; <span class="hljs-string">&#x27;Bad Gateway&#x27;</span>,<br>        <span class="hljs-number">503</span> =&gt; <span class="hljs-string">&#x27;Service Unavailable&#x27;</span>,<br>        <span class="hljs-number">504</span> =&gt; <span class="hljs-string">&#x27;Gateway Timeout&#x27;</span>,<br>        <span class="hljs-number">505</span> =&gt; <span class="hljs-string">&#x27;HTTP Version Not Supported&#x27;</span>,<br>        <span class="hljs-number">506</span> =&gt; <span class="hljs-string">&#x27;Variant Also Negotiates&#x27;</span>,<br>        <span class="hljs-number">507</span> =&gt; <span class="hljs-string">&#x27;Insufficient Storage&#x27;</span>,<br>        <span class="hljs-number">510</span> =&gt; <span class="hljs-string">&#x27;Not Extended&#x27;</span>,<br><br>        <span class="hljs-number">1001</span> =&gt; <span class="hljs-string">&#x27;LACK PARAMS&#x27;</span>,<br>        <span class="hljs-number">1002</span> =&gt; <span class="hljs-string">&#x27;RETRY TOO MANY&#x27;</span>,<br>    ];<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 输出指定HTTP状态码的响应头信息</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> int $code</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $data</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">response</span><span class="hljs-params">($code, $data)</span></span>&#123;<br>        $code = array_key_exists($code, <span class="hljs-keyword">self</span>::CODE_MAPPING)? $code : <span class="hljs-number">500</span>;<br>        $desc = <span class="hljs-keyword">self</span>::CODE_MAPPING[$code];<br><br>        $protocol = $_SERVER[<span class="hljs-string">&#x27;SERVER_PROTOCOL&#x27;</span>];<br>        <span class="hljs-keyword">if</span> ( <span class="hljs-string">&#x27;HTTP/1.1&#x27;</span> != $protocol &amp;&amp; <span class="hljs-string">&#x27;HTTP/1.0&#x27;</span> != $protocol )<br>            $protocol = <span class="hljs-string">&#x27;HTTP/1.0&#x27;</span>;<br>        $header = <span class="hljs-string">&quot;$protocol $code $desc&quot;</span>;<br>        header($header);<br>        p($data);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs zephir">&lt;?php
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Exceptions</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SaiException</span> <span class="hljs-keyword">extends</span> \<span class="hljs-title">Exception</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">const</span> CODE_MAPPING = [
+        <span class="hljs-number">100</span> =&gt; <span class="hljs-string">&#x27;Continue&#x27;</span>,
+        <span class="hljs-number">101</span> =&gt; <span class="hljs-string">&#x27;Switching Protocols&#x27;</span>,
+        <span class="hljs-number">102</span> =&gt; <span class="hljs-string">&#x27;Processing&#x27;</span>,
+
+        <span class="hljs-number">200</span> =&gt; <span class="hljs-string">&#x27;OK&#x27;</span>,
+        <span class="hljs-number">201</span> =&gt; <span class="hljs-string">&#x27;Created&#x27;</span>,
+        <span class="hljs-number">202</span> =&gt; <span class="hljs-string">&#x27;Accepted&#x27;</span>,
+        <span class="hljs-number">203</span> =&gt; <span class="hljs-string">&#x27;Non-Authoritative Information&#x27;</span>,
+        <span class="hljs-number">204</span> =&gt; <span class="hljs-string">&#x27;No Content&#x27;</span>,
+        <span class="hljs-number">205</span> =&gt; <span class="hljs-string">&#x27;Reset Content&#x27;</span>,
+        <span class="hljs-number">206</span> =&gt; <span class="hljs-string">&#x27;Partial Content&#x27;</span>,
+        <span class="hljs-number">207</span> =&gt; <span class="hljs-string">&#x27;Multi-Status&#x27;</span>,
+        <span class="hljs-number">226</span> =&gt; <span class="hljs-string">&#x27;IM Used&#x27;</span>,
+
+        <span class="hljs-number">300</span> =&gt; <span class="hljs-string">&#x27;Multiple Choices&#x27;</span>,
+        <span class="hljs-number">301</span> =&gt; <span class="hljs-string">&#x27;Moved Permanently&#x27;</span>,
+        <span class="hljs-number">302</span> =&gt; <span class="hljs-string">&#x27;Found&#x27;</span>,
+        <span class="hljs-number">303</span> =&gt; <span class="hljs-string">&#x27;See Other&#x27;</span>,
+        <span class="hljs-number">304</span> =&gt; <span class="hljs-string">&#x27;Not Modified&#x27;</span>,
+        <span class="hljs-number">305</span> =&gt; <span class="hljs-string">&#x27;Use Proxy&#x27;</span>,
+        <span class="hljs-number">306</span> =&gt; <span class="hljs-string">&#x27;Reserved&#x27;</span>,
+        <span class="hljs-number">307</span> =&gt; <span class="hljs-string">&#x27;Temporary Redirect&#x27;</span>,
+
+        <span class="hljs-number">400</span> =&gt; <span class="hljs-string">&#x27;Bad Request&#x27;</span>,
+        <span class="hljs-number">401</span> =&gt; <span class="hljs-string">&#x27;Unauthorized&#x27;</span>,
+        <span class="hljs-number">402</span> =&gt; <span class="hljs-string">&#x27;Payment Required&#x27;</span>,
+        <span class="hljs-number">403</span> =&gt; <span class="hljs-string">&#x27;Forbidden&#x27;</span>,
+        <span class="hljs-number">404</span> =&gt; <span class="hljs-string">&#x27;Not Found&#x27;</span>,
+        <span class="hljs-number">405</span> =&gt; <span class="hljs-string">&#x27;Method Not Allowed&#x27;</span>,
+        <span class="hljs-number">406</span> =&gt; <span class="hljs-string">&#x27;Not Acceptable&#x27;</span>,
+        <span class="hljs-number">407</span> =&gt; <span class="hljs-string">&#x27;Proxy Authentication Required&#x27;</span>,
+        <span class="hljs-number">408</span> =&gt; <span class="hljs-string">&#x27;Request Timeout&#x27;</span>,
+        <span class="hljs-number">409</span> =&gt; <span class="hljs-string">&#x27;Conflict&#x27;</span>,
+        <span class="hljs-number">410</span> =&gt; <span class="hljs-string">&#x27;Gone&#x27;</span>,
+        <span class="hljs-number">411</span> =&gt; <span class="hljs-string">&#x27;Length Required&#x27;</span>,
+        <span class="hljs-number">412</span> =&gt; <span class="hljs-string">&#x27;Precondition Failed&#x27;</span>,
+        <span class="hljs-number">413</span> =&gt; <span class="hljs-string">&#x27;Request Entity Too Large&#x27;</span>,
+        <span class="hljs-number">414</span> =&gt; <span class="hljs-string">&#x27;Request-URI Too Long&#x27;</span>,
+        <span class="hljs-number">415</span> =&gt; <span class="hljs-string">&#x27;Unsupported Media Type&#x27;</span>,
+        <span class="hljs-number">416</span> =&gt; <span class="hljs-string">&#x27;Requested Range Not Satisfiable&#x27;</span>,
+        <span class="hljs-number">417</span> =&gt; <span class="hljs-string">&#x27;Expectation Failed&#x27;</span>,
+        <span class="hljs-number">422</span> =&gt; <span class="hljs-string">&#x27;Unprocessable Entity&#x27;</span>,
+        <span class="hljs-number">423</span> =&gt; <span class="hljs-string">&#x27;Locked&#x27;</span>,
+        <span class="hljs-number">424</span> =&gt; <span class="hljs-string">&#x27;Failed Dependency&#x27;</span>,
+        <span class="hljs-number">426</span> =&gt; <span class="hljs-string">&#x27;Upgrade Required&#x27;</span>,
+        <span class="hljs-number">429</span> =&gt; <span class="hljs-string">&#x27;Too Many Request&#x27;</span>,
+
+        <span class="hljs-number">500</span> =&gt; <span class="hljs-string">&#x27;Internal Server Error&#x27;</span>,
+        <span class="hljs-number">501</span> =&gt; <span class="hljs-string">&#x27;Not Implemented&#x27;</span>,
+        <span class="hljs-number">502</span> =&gt; <span class="hljs-string">&#x27;Bad Gateway&#x27;</span>,
+        <span class="hljs-number">503</span> =&gt; <span class="hljs-string">&#x27;Service Unavailable&#x27;</span>,
+        <span class="hljs-number">504</span> =&gt; <span class="hljs-string">&#x27;Gateway Timeout&#x27;</span>,
+        <span class="hljs-number">505</span> =&gt; <span class="hljs-string">&#x27;HTTP Version Not Supported&#x27;</span>,
+        <span class="hljs-number">506</span> =&gt; <span class="hljs-string">&#x27;Variant Also Negotiates&#x27;</span>,
+        <span class="hljs-number">507</span> =&gt; <span class="hljs-string">&#x27;Insufficient Storage&#x27;</span>,
+        <span class="hljs-number">510</span> =&gt; <span class="hljs-string">&#x27;Not Extended&#x27;</span>,
+
+        <span class="hljs-number">1001</span> =&gt; <span class="hljs-string">&#x27;LACK PARAMS&#x27;</span>,
+        <span class="hljs-number">1002</span> =&gt; <span class="hljs-string">&#x27;RETRY TOO MANY&#x27;</span>,
+    ];
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 输出指定HTTP状态码的响应头信息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> int $code</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> $data</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">response</span><span class="hljs-params">($code, $data)</span></span>&#123;
+        $code = array_key_exists($code, <span class="hljs-keyword">self</span>::CODE_MAPPING)? $code : <span class="hljs-number">500</span>;
+        $desc = <span class="hljs-keyword">self</span>::CODE_MAPPING[$code];
+
+        $protocol = $_SERVER[<span class="hljs-string">&#x27;SERVER_PROTOCOL&#x27;</span>];
+        <span class="hljs-keyword">if</span> ( <span class="hljs-string">&#x27;HTTP/1.1&#x27;</span> != $protocol &amp;&amp; <span class="hljs-string">&#x27;HTTP/1.0&#x27;</span> != $protocol )
+            $protocol = <span class="hljs-string">&#x27;HTTP/1.0&#x27;</span>;
+        $header = <span class="hljs-string">&quot;$protocol $code $desc&quot;</span>;
+        header($header);
+        p($data);
+    &#125;
+&#125;</code></pre></div>
 
 <p>几乎后面所有Exception的类都会继承这个异常类。</p>
 <hr>
 <p>在Components目录下新建基础的类Base：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Components</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span> <span class="hljs-keyword">implements</span> \<span class="hljs-title">ArrayAccess</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$_container</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__get</span>(<span class="hljs-params"><span class="hljs-variable">$name</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (method_exists(<span class="hljs-keyword">$this</span>, <span class="hljs-variable">$method</span> = <span class="hljs-string">&#x27;get&#x27;</span>.ucfirst(<span class="hljs-variable">$name</span>))) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;<span class="hljs-variable">$method</span>(<span class="hljs-variable">$name</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__set</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (method_exists(<span class="hljs-keyword">$this</span>, <span class="hljs-variable">$method</span> = <span class="hljs-string">&#x27;set&#x27;</span>.ucfirst(<span class="hljs-variable">$name</span>))) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;<span class="hljs-variable">$method</span>(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span>);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">offsetSet</span>(<span class="hljs-params"><span class="hljs-variable">$offset</span>, <span class="hljs-variable">$value</span></span>) </span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">if</span> (is_null(<span class="hljs-variable">$offset</span>)) &#123;<br>            <span class="hljs-keyword">$this</span>-&gt;_container[] = <span class="hljs-variable">$value</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>] = <span class="hljs-variable">$value</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">offsetExists</span>(<span class="hljs-params"><span class="hljs-variable">$offset</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>]);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">offsetUnset</span>(<span class="hljs-params"><span class="hljs-variable">$offset</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">unset</span>(<span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>]);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">offsetGet</span>(<span class="hljs-params"><span class="hljs-variable">$offset</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>]) ? <span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>] : <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Library</span>\<span class="hljs-title">Components</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span> <span class="hljs-keyword">implements</span> \<span class="hljs-title">ArrayAccess</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$_container</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__get</span>(<span class="hljs-params"><span class="hljs-variable">$name</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (method_exists(<span class="hljs-keyword">$this</span>, <span class="hljs-variable">$method</span> = <span class="hljs-string">&#x27;get&#x27;</span>.ucfirst(<span class="hljs-variable">$name</span>))) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;<span class="hljs-variable">$method</span>(<span class="hljs-variable">$name</span>);
+        &#125;
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__set</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (method_exists(<span class="hljs-keyword">$this</span>, <span class="hljs-variable">$method</span> = <span class="hljs-string">&#x27;set&#x27;</span>.ucfirst(<span class="hljs-variable">$name</span>))) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;<span class="hljs-variable">$method</span>(<span class="hljs-variable">$name</span>, <span class="hljs-variable">$value</span>);
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">offsetSet</span>(<span class="hljs-params"><span class="hljs-variable">$offset</span>, <span class="hljs-variable">$value</span></span>) </span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (is_null(<span class="hljs-variable">$offset</span>)) &#123;
+            <span class="hljs-keyword">$this</span>-&gt;_container[] = <span class="hljs-variable">$value</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>] = <span class="hljs-variable">$value</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">offsetExists</span>(<span class="hljs-params"><span class="hljs-variable">$offset</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>]);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">offsetUnset</span>(<span class="hljs-params"><span class="hljs-variable">$offset</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">unset</span>(<span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>]);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">offsetGet</span>(<span class="hljs-params"><span class="hljs-variable">$offset</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">isset</span>(<span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>]) ? <span class="hljs-keyword">$this</span>-&gt;_container[<span class="hljs-variable">$offset</span>] : <span class="hljs-literal">null</span>;
+    &#125;
+&#125;
+</code></pre></div>
 
 <p>这里有两个知识点：</p>
 <ol>

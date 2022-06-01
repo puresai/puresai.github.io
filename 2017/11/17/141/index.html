@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          31 分钟
+          30 分钟
         
       </span>
     
@@ -568,11 +568,24 @@
 <p>git config –global user.name “13sai”</p>
 </blockquote>
 <blockquote>
-<p>git config –global user.email “<a href="mailto:&#57;&#53;&#55;&#x30;&#x34;&#50;&#55;&#x38;&#x31;&#64;&#113;&#x71;&#46;&#x63;&#111;&#x6d;">&#57;&#53;&#55;&#x30;&#x34;&#50;&#55;&#x38;&#x31;&#64;&#113;&#x71;&#46;&#x63;&#111;&#x6d;</a>“</p>
+<p>git config –global user.email “<a href="mailto:&#57;&#53;&#x37;&#48;&#52;&#50;&#55;&#56;&#x31;&#64;&#113;&#x71;&#46;&#99;&#111;&#109;">&#57;&#53;&#x37;&#48;&#52;&#50;&#55;&#56;&#x31;&#64;&#113;&#x71;&#46;&#99;&#111;&#109;</a>“</p>
 </blockquote>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs vim">fata<span class="hljs-variable">l:</span> No configured push destination.解决：$ git remote <span class="hljs-built_in">add</span> -<span class="hljs-keyword">f</span> -t master -<span class="hljs-keyword">m</span> master origin gi<span class="hljs-variable">t:</span>//example.<span class="hljs-keyword">com</span>/git.git/fata<span class="hljs-variable">l:</span> The current branch test <span class="hljs-built_in">has</span> <span class="hljs-keyword">no</span> upstream branch.解决：git push --<span class="hljs-keyword">set</span>-upstream origin test模仿 git clone，但只跟踪选定的分支$ <span class="hljs-built_in">mkdir</span> project.git$ <span class="hljs-keyword">cd</span> project.git$ git init$ git remote <span class="hljs-built_in">add</span> -<span class="hljs-keyword">f</span> -t master -<span class="hljs-keyword">m</span> master origin gi<span class="hljs-variable">t:</span>//example.<span class="hljs-keyword">com</span>/git.git/<br>$ git merge originfatal：Unable <span class="hljs-keyword">to</span> create <span class="hljs-string">&#x27;E:/project/scrm/.git/index.lock&#x27;</span>: File <span class="hljs-built_in">exists</span>.rm -<span class="hljs-keyword">f</span> ./.git/<span class="hljs-built_in">index</span>.lock<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vim">fata<span class="hljs-variable">l:</span> No configured push destination.解决：$ git remote <span class="hljs-built_in">add</span> -<span class="hljs-keyword">f</span> -t master -<span class="hljs-keyword">m</span> master origin gi<span class="hljs-variable">t:</span>//example.<span class="hljs-keyword">com</span>/git.git/fata<span class="hljs-variable">l:</span> The current branch test <span class="hljs-built_in">has</span> <span class="hljs-keyword">no</span> upstream branch.解决：git push --<span class="hljs-keyword">set</span>-upstream origin test模仿 git clone，但只跟踪选定的分支$ <span class="hljs-built_in">mkdir</span> project.git$ <span class="hljs-keyword">cd</span> project.git$ git init$ git remote <span class="hljs-built_in">add</span> -<span class="hljs-keyword">f</span> -t master -<span class="hljs-keyword">m</span> master origin gi<span class="hljs-variable">t:</span>//example.<span class="hljs-keyword">com</span>/git.git/
+$ git merge originfatal：Unable <span class="hljs-keyword">to</span> create <span class="hljs-string">&#x27;E:/project/scrm/.git/index.lock&#x27;</span>: File <span class="hljs-built_in">exists</span>.rm -<span class="hljs-keyword">f</span> ./.git/<span class="hljs-built_in">index</span>.lock</code></pre></div>
 
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs applescript">git <span class="hljs-built_in">log</span><br>-p 查看差异<br>-n(n为正整数) 查看最近n次的提交<br><span class="hljs-comment">--pretty    按指定格式显示日志信息,可选项有：oneline,short,medium,full,fuller,email,raw以及format:&lt;string&gt;,默认为medium，可以通过修改配置文件来指定默认的方式。</span><br>e.g. git <span class="hljs-built_in">log</span> (<span class="hljs-comment">--pretty=)oneline</span><br><span class="hljs-comment">--stat  列出文件的修改行数</span><br><span class="hljs-comment">--sortstat      只显示--stat中最后行数修改添加移除的统计</span><br><span class="hljs-comment">--graph 以简单的图形方式列出提交记录</span><br><span class="hljs-comment">--abbrev-commit 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符。</span><br><span class="hljs-comment">--relative-date 使用较短的相对时间显示（比如，“2 weeks ago”）。</span><br><span class="hljs-comment">--name-only 仅在提交信息后显示已修改的文件清单。</span><br><span class="hljs-comment">--name-status 显示新增、修改、删除的文件清单。</span><br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs applescript">git <span class="hljs-built_in">log</span>
+-p 查看差异
+-n(n为正整数) 查看最近n次的提交
+<span class="hljs-comment">--pretty    按指定格式显示日志信息,可选项有：oneline,short,medium,full,fuller,email,raw以及format:&lt;string&gt;,默认为medium，可以通过修改配置文件来指定默认的方式。</span>
+e.g. git <span class="hljs-built_in">log</span> (<span class="hljs-comment">--pretty=)oneline</span>
+<span class="hljs-comment">--stat  列出文件的修改行数</span>
+<span class="hljs-comment">--sortstat      只显示--stat中最后行数修改添加移除的统计</span>
+<span class="hljs-comment">--graph 以简单的图形方式列出提交记录</span>
+<span class="hljs-comment">--abbrev-commit 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符。</span>
+<span class="hljs-comment">--relative-date 使用较短的相对时间显示（比如，“2 weeks ago”）。</span>
+<span class="hljs-comment">--name-only 仅在提交信息后显示已修改的文件清单。</span>
+<span class="hljs-comment">--name-status 显示新增、修改、删除的文件清单。</span>
+</code></pre></div>
 
 
 <p>——2017/12/01</p>
@@ -720,7 +733,17 @@
 </tbody>
 </table>
 
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs gams">fatal: <span class="hljs-keyword">No</span> configured push destination.<br>解决：<span class="hljs-symbol">$</span> git remote add -f -t master -m master origin git:<span class="hljs-comment">//example.com/git.git/</span><br>fatal: The current branch test has <span class="hljs-keyword">no</span> upstream branch.<br>解决：git push --<span class="hljs-keyword">set</span>-upstream <span class="hljs-comment">origin test</span><br><br>模仿 git <span class="hljs-comment">clone</span>，但只跟踪选定的分支<br>$ mkdir <span class="hljs-comment">project.git</span><br>$ cd <span class="hljs-comment">project.git</span><br>$ git <span class="hljs-comment">init</span><br>$ git <span class="hljs-comment">remote add -f -t master -m master origin git:</span>//<span class="hljs-comment">example.com</span>/git.git/<br>$ git <span class="hljs-comment">merge origin</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs gams">fatal: <span class="hljs-keyword">No</span> configured push destination.
+解决：<span class="hljs-symbol">$</span> git remote add -f -t master -m master origin git:<span class="hljs-comment">//example.com/git.git/</span>
+fatal: The current branch test has <span class="hljs-keyword">no</span> upstream branch.
+解决：git push --<span class="hljs-keyword">set</span>-upstream <span class="hljs-comment">origin test</span>
+
+模仿 git <span class="hljs-comment">clone</span>，但只跟踪选定的分支
+$ mkdir <span class="hljs-comment">project.git</span>
+$ cd <span class="hljs-comment">project.git</span>
+$ git <span class="hljs-comment">init</span>
+$ git <span class="hljs-comment">remote add -f -t master -m master origin git:</span>//<span class="hljs-comment">example.com</span>/git.git/
+$ git <span class="hljs-comment">merge origin</span></code></pre></div>
 
               
             </div>

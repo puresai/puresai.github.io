@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.5k 字
+          3.4k 字
         
       </span>
     
@@ -453,7 +453,7 @@
 <p><strong>采用定期删除+惰性删除就没其他问题了么?</strong></p>
 <p>不是的，如果定期删除没删除key。然后你也没即时去请求key，也就是说惰性删除也没生效。这样，redis的内存会越来越高。那么就应该采用内存淘汰机制。</p>
 <p>在redis.conf中有一行配置</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">maxmemory-<span class="hljs-keyword">policy</span> <span class="hljs-keyword">volatile</span>-lru<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">maxmemory-<span class="hljs-keyword">policy</span> <span class="hljs-keyword">volatile</span>-lru</code></pre></div>
 
 <p>该配置就是配内存淘汰策略的</p>
 <ul>
@@ -501,10 +501,21 @@
 </ul>
 <p>第一个问题很好解决，可以借鉴<code>LRU</code>实现的经验，维护一个待淘汰key的pool。第二个问题的解决办法是，记录key最后一个被访问的时间，然后随着时间推移，降低计数器。</p>
 <p><code>Redis</code>对象的结构如下：</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> redisObject &#123;<br>    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">type</span>:<span class="hljs-number">4</span>;<br>    <span class="hljs-keyword">unsigned</span> encoding:<span class="hljs-number">4</span>;<br>    <span class="hljs-keyword">unsigned</span> lru:LRU_BITS; <span class="hljs-comment">/* LRU time (relative to global lru_clock) or</span><br><span class="hljs-comment">                            * LFU data (least significant 8 bits frequency</span><br><span class="hljs-comment">                            * and most significant 16 bits access time). */</span><br>    <span class="hljs-keyword">int</span> refcount;<br>    <span class="hljs-keyword">void</span> *ptr;<br>&#125; robj;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> redisObject &#123;
+    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">type</span>:<span class="hljs-number">4</span>;
+    <span class="hljs-keyword">unsigned</span> encoding:<span class="hljs-number">4</span>;
+    <span class="hljs-keyword">unsigned</span> lru:LRU_BITS; <span class="hljs-comment">/* LRU time (relative to global lru_clock) or</span>
+<span class="hljs-comment">                            * LFU data (least significant 8 bits frequency</span>
+<span class="hljs-comment">                            * and most significant 16 bits access time). */</span>
+    <span class="hljs-keyword">int</span> refcount;
+    <span class="hljs-keyword">void</span> *ptr;
+&#125; robj;</code></pre></div>
 
 <p>在<code>LRU</code>算法中，24 bits的<code>lru</code>是用来记录<code>LRU time</code>的，在<code>LFU</code>中也可以使用这个字段，不过是分成16 bits与8 bits使用：</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc"><span class="hljs-section">     16 bits      8 bits</span><br><span class="hljs-section">+----------------+--------+</span><br><span class="hljs-section">+ Last decr time | LOG_C  |</span><br><span class="hljs-section">+----------------+--------+</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs asciidoc"><span class="hljs-section">     16 bits      8 bits</span>
+<span class="hljs-section">+----------------+--------+</span>
+<span class="hljs-section">+ Last decr time | LOG_C  |</span>
+<span class="hljs-section">+----------------+--------+</span></code></pre></div>
 
 <p>高16 bits用来记录最近一次计数器降低的时间<code>ldt</code>，单位是分钟，低8 bits记录计数器数值<code>counter</code>。</p>
 <h3 id="LFU配置"><a href="#LFU配置" class="headerlink" title="LFU配置"></a>LFU配置</h3><p><code>Redis</code>4.0之后为<code>maxmemory_policy</code>淘汰策略添加了两个<code>LFU</code>模式：</p>
@@ -513,7 +524,8 @@
 <li><code>allkeys-lfu</code>：对全部key采用<code>LFU</code>淘汰算法</li>
 </ul>
 <p>还有2个配置可以调整<code>LFU</code>算法：</p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">lfu-<span class="hljs-built_in">log</span>-<span class="hljs-built_in">factor</span> <span class="hljs-number">10</span><br>lfu-decay-<span class="hljs-built_in">time</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs maxima">lfu-<span class="hljs-built_in">log</span>-<span class="hljs-built_in">factor</span> <span class="hljs-number">10</span>
+lfu-decay-<span class="hljs-built_in">time</span> <span class="hljs-number">1</span></code></pre></div>
 
 <p><code>lfu-log-factor</code>可以调整计数器<code>counter</code>的增长速度，<code>lfu-log-factor</code>越大，<code>counter</code>增长的越慢。</p>
 <p><code>lfu-decay-time</code>是一个以分钟为单位的数值，可以调整<code>counter</code>的减少速度</p>

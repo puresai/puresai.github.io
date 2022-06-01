@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.6k 字
+          3.4k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          31 分钟
+          29 分钟
         
       </span>
     
@@ -426,28 +426,169 @@
               
               <p>先来看demo:</p>
 <p>父组件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div class=&quot;app-container calendar-list-container&quot;&gt;<br>    &lt;el-tabs v-model=&quot;activeName&quot; type=&quot;card&quot;&gt;<br>      &lt;el-tab-pane label=&quot;待审核&quot; name=&quot;first&quot;&gt;<br>        &lt;test-page status=&quot;1&quot; @toP=&quot;funct&quot;&gt;&lt;/test-page&gt;<br>      &lt;/el-tab-pane&gt;<br>      &lt;el-tab-pane label=&quot;全部&quot; name=&quot;second&quot;&gt;<br>        &lt;test-page status=&quot;0&quot;&gt;&lt;/test-page&gt;<br>      &lt;/el-tab-pane&gt;<br>    &lt;/el-tabs&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br>&lt;script&gt;<br>import TestPage from &#x27;@/views/components/TestPage&#x27;<br><br>export default &#123;<br>  components: &#123; TestPage &#125;,<br>  name: &quot;test&quot;,<br>  data() &#123;<br>    return &#123;<br>      activeName: &#x27;first&#x27;,<br>    &#125;;<br>  &#125;,<br>  methods: &#123;<br>    funct(v) &#123;<br>        console.warn(v)<br>    &#125;<br>  &#125;<br>&#125;;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;template&gt;
+  &lt;div class=&quot;app-container calendar-list-container&quot;&gt;
+    &lt;el-tabs v-model=&quot;activeName&quot; type=&quot;card&quot;&gt;
+      &lt;el-tab-pane label=&quot;待审核&quot; name=&quot;first&quot;&gt;
+        &lt;test-page status=&quot;1&quot; @toP=&quot;funct&quot;&gt;&lt;/test-page&gt;
+      &lt;/el-tab-pane&gt;
+      &lt;el-tab-pane label=&quot;全部&quot; name=&quot;second&quot;&gt;
+        &lt;test-page status=&quot;0&quot;&gt;&lt;/test-page&gt;
+      &lt;/el-tab-pane&gt;
+    &lt;/el-tabs&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+import TestPage from &#x27;@/views/components/TestPage&#x27;
+
+export default &#123;
+  components: &#123; TestPage &#125;,
+  name: &quot;test&quot;,
+  data() &#123;
+    return &#123;
+      activeName: &#x27;first&#x27;,
+    &#125;;
+  &#125;,
+  methods: &#123;
+    funct(v) &#123;
+        console.warn(v)
+    &#125;
+  &#125;
+&#125;;
+&lt;/script&gt;</code></pre></div>
 
 <p>子组件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;el-table<br>      key=&quot;tableList&quot;<br>      v-loading=&quot;listLoading&quot;<br>      :data=&quot;list&quot;<br>      element-loading-text=&quot;给我一点时间&quot;<br>      border<br>      fit<br>      highlight-current-row<br>      style=&quot;width: 100%&quot;<br>    &gt;<br>      &lt;el-table-column<br>        align=&quot;center&quot;<br>        label=&quot;id&quot;<br>      &gt;<br>        &lt;template slot-scope=&quot;scope&quot;&gt;<br>          &lt;span&gt;&#123;&#123; scope.row.id &#125;&#125;&lt;/span&gt;<br>        &lt;/template&gt;<br>      &lt;/el-table-column&gt;<br><br>      &lt;el-table-column<br>        align=&quot;center&quot;<br>        label=&quot;地点&quot;<br>      &gt;<br>        &lt;template slot-scope=&quot;scope&quot;&gt;<br>          &lt;span&gt;&#123;&#123; scope.row.address &#125;&#125;&lt;/span&gt;<br>        &lt;/template&gt;<br>      &lt;/el-table-column&gt;<br><br>      &lt;el-table-column<br>        align=&quot;center&quot;<br>        label=&quot;状态&quot;<br>      &gt;<br>        &lt;template slot-scope=&quot;scope&quot;&gt;<br>          &lt;el-tag type=&quot;info&quot; v-if=&quot;scope.row.status == 0&quot;&gt;已拒绝&lt;/el-tag&gt;<br>          &lt;el-tag v-if=&quot;scope.row.status == 1&quot;&gt;审核中&lt;/el-tag&gt;<br>          &lt;el-tag type=&quot;success&quot; v-if=&quot;scope.row.status == 2&quot;&gt;已通过&lt;/el-tag&gt;<br>        &lt;/template&gt;<br>      &lt;/el-table-column&gt;<br><br>      &lt;el-table-column<br>        align=&quot;center&quot;<br>        label=&quot;活动时间&quot;<br>      &gt;<br>        &lt;template slot-scope=&quot;scope&quot;&gt;<br>          &lt;span&gt;&#123;&#123; scope.row.start_date &#125;&#125;&lt;/span&gt;&lt;br&gt;至<br>          &lt;span&gt;&#123;&#123; scope.row.end_date &#125;&#125;&lt;/span&gt;<br>        &lt;/template&gt;<br>      &lt;/el-table-column&gt;<br><br>    &lt;/el-table&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br>&lt;script&gt;<br>...<br><br>export default &#123;<br>  name: &quot;TestPage&quot;,<br>  props: [&#x27;status&#x27;],<br>  data() &#123;<br>    return &#123;<br>      list: [],<br>      pagination: &quot;&quot;,<br>      listQuery: &#123;<br>        page: 1,<br>        limit: 20,<br>        status: 1,<br>        type:&#x27;&#x27;,<br>      &#125;,<br>      typeList: [],<br>      dialogFormVisible: false,<br>      temp: &#123;<br>          image : &#x27;&#x27;,<br>          user: &#123;<br>            nickname: &#x27;&#x27;,<br>          &#125;,<br>          college: &#123;<br>            name: &quot;&quot;,<br>          &#125;,<br>          materials: [],<br>      &#125;,<br>    &#125;;<br>  &#125;,<br>  created() &#123;<br>    this.listQuery.status = this.$props.status;<br>    this.getList();<br>    this.$emit(&#x27;toP&#x27;, this.listQuery)<br>  &#125;,<br>  methods: &#123;<br>    ...<br>  &#125;<br>&#125;;<br>&lt;/script&gt;<br>&lt;style&gt;<br>.row-container .el-row &#123;<br>    margin-bottom: 20px;<br>    &amp;:last-child &#123;<br>      margin-bottom: 0;<br>    &#125;<br>  &#125;<br>&lt;/style&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;el-table
+      key=&quot;tableList&quot;
+      v-loading=&quot;listLoading&quot;
+      :data=&quot;list&quot;
+      element-loading-text=&quot;给我一点时间&quot;
+      border
+      fit
+      highlight-current-row
+      style=&quot;width: 100%&quot;
+    &gt;
+      &lt;el-table-column
+        align=&quot;center&quot;
+        label=&quot;id&quot;
+      &gt;
+        &lt;template slot-scope=&quot;scope&quot;&gt;
+          &lt;span&gt;&#123;&#123; scope.row.id &#125;&#125;&lt;/span&gt;
+        &lt;/template&gt;
+      &lt;/el-table-column&gt;
+
+      &lt;el-table-column
+        align=&quot;center&quot;
+        label=&quot;地点&quot;
+      &gt;
+        &lt;template slot-scope=&quot;scope&quot;&gt;
+          &lt;span&gt;&#123;&#123; scope.row.address &#125;&#125;&lt;/span&gt;
+        &lt;/template&gt;
+      &lt;/el-table-column&gt;
+
+      &lt;el-table-column
+        align=&quot;center&quot;
+        label=&quot;状态&quot;
+      &gt;
+        &lt;template slot-scope=&quot;scope&quot;&gt;
+          &lt;el-tag type=&quot;info&quot; v-if=&quot;scope.row.status == 0&quot;&gt;已拒绝&lt;/el-tag&gt;
+          &lt;el-tag v-if=&quot;scope.row.status == 1&quot;&gt;审核中&lt;/el-tag&gt;
+          &lt;el-tag type=&quot;success&quot; v-if=&quot;scope.row.status == 2&quot;&gt;已通过&lt;/el-tag&gt;
+        &lt;/template&gt;
+      &lt;/el-table-column&gt;
+
+      &lt;el-table-column
+        align=&quot;center&quot;
+        label=&quot;活动时间&quot;
+      &gt;
+        &lt;template slot-scope=&quot;scope&quot;&gt;
+          &lt;span&gt;&#123;&#123; scope.row.start_date &#125;&#125;&lt;/span&gt;&lt;br&gt;至
+          &lt;span&gt;&#123;&#123; scope.row.end_date &#125;&#125;&lt;/span&gt;
+        &lt;/template&gt;
+      &lt;/el-table-column&gt;
+
+    &lt;/el-table&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script&gt;
+...
+
+export default &#123;
+  name: &quot;TestPage&quot;,
+  props: [&#x27;status&#x27;],
+  data() &#123;
+    return &#123;
+      list: [],
+      pagination: &quot;&quot;,
+      listQuery: &#123;
+        page: 1,
+        limit: 20,
+        status: 1,
+        type:&#x27;&#x27;,
+      &#125;,
+      typeList: [],
+      dialogFormVisible: false,
+      temp: &#123;
+          image : &#x27;&#x27;,
+          user: &#123;
+            nickname: &#x27;&#x27;,
+          &#125;,
+          college: &#123;
+            name: &quot;&quot;,
+          &#125;,
+          materials: [],
+      &#125;,
+    &#125;;
+  &#125;,
+  created() &#123;
+    this.listQuery.status = this.$props.status;
+    this.getList();
+    this.$emit(&#x27;toP&#x27;, this.listQuery)
+  &#125;,
+  methods: &#123;
+    ...
+  &#125;
+&#125;;
+&lt;/script&gt;
+&lt;style&gt;
+.row-container .el-row &#123;
+    margin-bottom: 20px;
+    &amp;:last-child &#123;
+      margin-bottom: 0;
+    &#125;
+  &#125;
+&lt;/style&gt;</code></pre></div>
 
 <p>这个demo简单使用了组件引入，及子组件于父组件通信。</p>
-<h2 id="引入子组件"><a href="#引入子组件" class="headerlink" title="引入子组件"></a>引入子组件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs vue">import TestPage from &#x27;@/views/components/TestPage&#x27;<br><br>export default &#123;<br>  components: &#123; TestPage &#125;,<br></code></pre></td></tr></table></figure>
+<h2 id="引入子组件"><a href="#引入子组件" class="headerlink" title="引入子组件"></a>引入子组件</h2><div class="code-wrapper"><pre><code class="hljs vue">import TestPage from &#x27;@/views/components/TestPage&#x27;
+
+export default &#123;
+  components: &#123; TestPage &#125;,</code></pre></div>
 
 <p>使用:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;test-page&gt;&lt;/test-page&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;test-page&gt;&lt;/test-page&gt;</code></pre></div>
 
 <h2 id="父组件传递数据到子组件"><a href="#父组件传递数据到子组件" class="headerlink" title="父组件传递数据到子组件"></a>父组件传递数据到子组件</h2><p>父组件的status就是传递的数据</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;test-page status=&quot;0&quot;&gt;&lt;/test-page&gt;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;test-page status=&quot;0&quot;&gt;&lt;/test-page&gt;</code></pre></div>
 
 <p>子组件接收：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vue">this.$props.status<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">this.$props.status</code></pre></div>
 
 <h2 id="子组件传递数据到父组件"><a href="#子组件传递数据到父组件" class="headerlink" title="子组件传递数据到父组件"></a>子组件传递数据到父组件</h2><p>子组件，其实是传递了一个toP事件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vue">this.$emit(&#x27;toP&#x27;, this.listQuery)<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">this.$emit(&#x27;toP&#x27;, this.listQuery)</code></pre></div>
 
 <p>父组件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;test-page @toP=&quot;funct&quot;&gt;&lt;/test-page&gt;<br><br>...<br><br>methods: &#123;<br>    funct(v) &#123;<br>        console.warn(v)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vue">&lt;test-page @toP=&quot;funct&quot;&gt;&lt;/test-page&gt;
+
+...
+
+methods: &#123;
+    funct(v) &#123;
+        console.warn(v)
+    &#125;
+&#125;</code></pre></div>
 
 <p>这里需要稍微注意的就是驼峰命名转**-**，使用相对简单。</p>
 

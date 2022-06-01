@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.2k 字
+          1.1k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          11 分钟
+          10 分钟
         
       </span>
     
@@ -865,10 +865,81 @@
               <blockquote>
 <p>PHP官方也说过，大概是说self调用的就是本身代码片段这个类，而static调用的是从堆内存中提取出来，访问的是当前实例化的那个类，那么 static 代表的就是那个类。</p>
 </blockquote>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> </span><br><span class="hljs-class"></span>&#123;  <br>    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$str</span> = <span class="hljs-string">&quot;This is class A&quot;</span>;  <br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStr</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;      <br>          <span class="hljs-keyword">echo</span> <span class="hljs-built_in">self</span>::<span class="hljs-variable">$str</span>;<br>    &#125;<br><br>&#125;<br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">A</span></span><br><span class="hljs-class"></span>&#123;  <br>    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$str</span> = <span class="hljs-string">&quot;This is class B&quot;</span>;<br>&#125;<br><br><br>B::getStr();<span class="hljs-comment">// 输出This is class A</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> </span><br><span class="hljs-class"></span>&#123;  <br>    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$str</span> = <span class="hljs-string">&quot;This is class A&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStr</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;      <br>        <span class="hljs-keyword">echo</span> <span class="hljs-built_in">static</span>::<span class="hljs-variable">$str</span>;<br>    &#125;<br><br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">A</span></span><br><span class="hljs-class"></span>&#123;  <br>    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$str</span> = <span class="hljs-string">&quot;This is class B&quot;</span>;<br>&#125;<br><br><br>B::getStr();<span class="hljs-comment">// 输出This is class B</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> </span>
+<span class="hljs-class"></span>&#123;  
+    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$str</span> = <span class="hljs-string">&quot;This is class A&quot;</span>;  
+    <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStr</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;      
+          <span class="hljs-keyword">echo</span> <span class="hljs-built_in">self</span>::<span class="hljs-variable">$str</span>;
+    &#125;
+
+&#125;
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">A</span></span>
+<span class="hljs-class"></span>&#123;  
+    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$str</span> = <span class="hljs-string">&quot;This is class B&quot;</span>;
+&#125;
+
+
+B::getStr();<span class="hljs-comment">// 输出This is class A</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> </span>
+<span class="hljs-class"></span>&#123;  
+    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$str</span> = <span class="hljs-string">&quot;This is class A&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStr</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;      
+        <span class="hljs-keyword">echo</span> <span class="hljs-built_in">static</span>::<span class="hljs-variable">$str</span>;
+    &#125;
+
+&#125;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">A</span></span>
+<span class="hljs-class"></span>&#123;  
+    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> <span class="hljs-variable">$str</span> = <span class="hljs-string">&quot;This is class B&quot;</span>;
+&#125;
+
+
+B::getStr();<span class="hljs-comment">// 输出This is class B</span></code></pre></div>
 
 <h2 id="self-就是这个类，是代码段里面的这个类。"><a href="#self-就是这个类，是代码段里面的这个类。" class="headerlink" title="self - 就是这个类，是代码段里面的这个类。"></a>self - 就是这个类，是代码段里面的这个类。</h2><p>static - PHP 5.3新特性。当前这个类，有点像$this的意思，从堆内存中提取出来，访问的是当前实例化的那个类，那么 static 代表的就是那个类。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span><br><span class="hljs-class"></span>&#123;    <br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSelf</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;        <br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">self</span>();<br>    &#125;    <br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStatic</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;        <br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">static</span>();<br>    &#125;<br><br>&#125;<br><br><br><span class="hljs-variable">$f</span> = <span class="hljs-keyword">new</span> A();<br><span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getSelf());<br><span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getStatic());<br><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">A</span></span>&#123;    <br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSelf2</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;        <br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">self</span>();<br>    &#125;    <br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStatic2</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;        <br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">static</span>();<br>    &#125;<br>&#125;<br><br><br><span class="hljs-variable">$f</span> = <span class="hljs-keyword">new</span> B();<br><span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getSelf());<br><span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getStatic());<br><span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getSelf2());<br><span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getStatic2());<span class="hljs-comment">// 输出AAABBB</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span>
+<span class="hljs-class"></span>&#123;    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSelf</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;        
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">self</span>();
+    &#125;    
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStatic</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;        
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">static</span>();
+    &#125;
+
+&#125;
+
+
+<span class="hljs-variable">$f</span> = <span class="hljs-keyword">new</span> A();
+<span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getSelf());
+<span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getStatic());
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">A</span></span>&#123;    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSelf2</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;        
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">self</span>();
+    &#125;    
+    
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getStatic2</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;        
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">static</span>();
+    &#125;
+&#125;
+
+
+<span class="hljs-variable">$f</span> = <span class="hljs-keyword">new</span> B();
+<span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getSelf());
+<span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getStatic());
+<span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getSelf2());
+<span class="hljs-keyword">print</span> get_class(<span class="hljs-variable">$f</span>-&gt;getStatic2());<span class="hljs-comment">// 输出AAABBB</span></code></pre></div>
               
             </div>
             <hr/>

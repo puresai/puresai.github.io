@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.2k 字
+          2k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          19 分钟
+          17 分钟
         
       </span>
     
@@ -409,15 +409,117 @@
               <p>之前公司用的influxdb是直接买的influxdb实例，最近厂商产品下线，不得不迁移到自己的机器，以下是迁移过程。</p>
 <p>考虑生产有现成的k8s集群，influxdb官网文档也有k8s部署说明，便直接将influxdb部署到k8s中。（版本1.8.x)</p>
 <h3 id="部署新的influxdb"><a href="#部署新的influxdb" class="headerlink" title="部署新的influxdb"></a>部署新的influxdb</h3><p>部署的yaml文件如下：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 单独弄个ns influxdb</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Namespace</span><br><span class="hljs-attr">metadata:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span><br><span class="hljs-meta">---</span><br><span class="hljs-comment"># 配置文件弄个ConfigMap，便于修改</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span><br><span class="hljs-attr">data:</span><br>  <span class="hljs-attr">influxdb.conf:</span> <span class="hljs-string">&gt;-</span><br><span class="hljs-string">    [meta]</span><br><span class="hljs-string">      dir = &quot;/var/lib/influxdb/meta&quot;</span><br><span class="hljs-string"></span><br>    [<span class="hljs-string">coordinator</span>]<br>      <span class="hljs-string">log-queries-after</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;60s&quot;</span><br>      <span class="hljs-string">max-select-series</span> <span class="hljs-string">=</span> <span class="hljs-number">10000</span><br>      <span class="hljs-string">write-timeout</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;30s&quot;</span><br>    [<span class="hljs-string">data</span>]<br>      <span class="hljs-string">dir</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;/var/lib/influxdb/data&quot;</span><br>      <span class="hljs-string">engine</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;tsm1&quot;</span><br>      <span class="hljs-string">wal-dir</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;/var/lib/influxdb/wal&quot;</span><br>      <span class="hljs-string">cache-max-memory-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;0&quot;</span><br>      <span class="hljs-string">cache-snapshot-memory-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;256m&quot;</span><br>      <span class="hljs-string">index-version</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;tsi1&quot;</span><br>      <span class="hljs-string">max-index-log-file-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;64k&quot;</span><br>      <span class="hljs-string">max-series-per-database</span> <span class="hljs-string">=</span> <span class="hljs-number">3000000</span><br>      <span class="hljs-string">max-values-per-tag</span> <span class="hljs-string">=</span> <span class="hljs-number">100000</span><br><br><span class="hljs-meta">---</span><br><span class="hljs-comment">## 挂个PersistentVolumeClaim</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-data</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">accessModes:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span><br>  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">csi-xxx</span> <span class="hljs-comment"># 自行配置</span><br>  <span class="hljs-attr">resources:</span><br>    <span class="hljs-attr">requests:</span><br>      <span class="hljs-attr">storage:</span> <span class="hljs-string">8Gi</span> <span class="hljs-comment"># 按需配置，存储数据较多可适当放大</span><br><span class="hljs-meta">---</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span><br><span class="hljs-attr">metadata:</span><br>    <span class="hljs-attr">labels:</span><br>        <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span><br>    <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span><br><span class="hljs-attr">spec:</span><br>    <span class="hljs-attr">replicas:</span> <span class="hljs-number">1</span><br>    <span class="hljs-attr">selector:</span><br>        <span class="hljs-attr">matchLabels:</span><br>            <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span><br>    <span class="hljs-attr">serviceName:</span> <span class="hljs-string">influxdb</span><br>    <span class="hljs-attr">template:</span><br>        <span class="hljs-attr">metadata:</span><br>            <span class="hljs-attr">labels:</span><br>                <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span><br>        <span class="hljs-attr">spec:</span><br>            <span class="hljs-attr">containers:</span><br>              <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">uhub.service.ucloud.cn/tv1234pub/influxdb:1.8.10</span><br>                <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span><br>                <span class="hljs-attr">ports:</span><br>                  <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">8086</span><br>                    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span><br>                <span class="hljs-attr">volumeMounts:</span><br>                  <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/lib/influxdb</span><br>                    <span class="hljs-attr">name:</span> <span class="hljs-string">data</span><br>                  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span><br>                    <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/etc/influxdb/influxdb.conf</span><br>                    <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">true</span><br>                    <span class="hljs-attr">subPath:</span> <span class="hljs-string">influxdb.conf</span><br>            <span class="hljs-attr">volumes:</span><br>              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">data</span><br>                <span class="hljs-attr">persistentVolumeClaim:</span><br>                  <span class="hljs-attr">claimName:</span> <span class="hljs-string">influxdb-data</span><br>              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">timezone-config</span><br>                <span class="hljs-attr">hostPath:</span><br>                  <span class="hljs-attr">path:</span> <span class="hljs-string">/usr/share/zoneinfo/Asia/Shanghai</span><br>              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span><br>                <span class="hljs-attr">configMap:</span><br>                  <span class="hljs-attr">defaultMode:</span> <span class="hljs-number">0600</span><br>                  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span><br><span class="hljs-meta">---</span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span><br><span class="hljs-attr">metadata:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span><br>    <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span><br><span class="hljs-attr">spec:</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span><br>        <span class="hljs-attr">port:</span> <span class="hljs-number">8086</span><br>        <span class="hljs-attr">targetPort:</span> <span class="hljs-number">8086</span><br>    <span class="hljs-attr">selector:</span><br>        <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span><br>    <span class="hljs-attr">type:</span> <span class="hljs-string">ClusterIP</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs yaml"><span class="hljs-comment"># 单独弄个ns influxdb</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Namespace</span>
+<span class="hljs-attr">metadata:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-comment"># 配置文件弄个ConfigMap，便于修改</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">influxdb.conf:</span> <span class="hljs-string">&gt;-</span>
+<span class="hljs-string">    [meta]</span>
+<span class="hljs-string">      dir = &quot;/var/lib/influxdb/meta&quot;</span>
+<span class="hljs-string"></span>
+    [<span class="hljs-string">coordinator</span>]
+      <span class="hljs-string">log-queries-after</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;60s&quot;</span>
+      <span class="hljs-string">max-select-series</span> <span class="hljs-string">=</span> <span class="hljs-number">10000</span>
+      <span class="hljs-string">write-timeout</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;30s&quot;</span>
+    [<span class="hljs-string">data</span>]
+      <span class="hljs-string">dir</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;/var/lib/influxdb/data&quot;</span>
+      <span class="hljs-string">engine</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;tsm1&quot;</span>
+      <span class="hljs-string">wal-dir</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;/var/lib/influxdb/wal&quot;</span>
+      <span class="hljs-string">cache-max-memory-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;0&quot;</span>
+      <span class="hljs-string">cache-snapshot-memory-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;256m&quot;</span>
+      <span class="hljs-string">index-version</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;tsi1&quot;</span>
+      <span class="hljs-string">max-index-log-file-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;64k&quot;</span>
+      <span class="hljs-string">max-series-per-database</span> <span class="hljs-string">=</span> <span class="hljs-number">3000000</span>
+      <span class="hljs-string">max-values-per-tag</span> <span class="hljs-string">=</span> <span class="hljs-number">100000</span>
+
+<span class="hljs-meta">---</span>
+<span class="hljs-comment">## 挂个PersistentVolumeClaim</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-data</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">csi-xxx</span> <span class="hljs-comment"># 自行配置</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">8Gi</span> <span class="hljs-comment"># 按需配置，存储数据较多可适当放大</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span>
+<span class="hljs-attr">metadata:</span>
+    <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-attr">spec:</span>
+    <span class="hljs-attr">replicas:</span> <span class="hljs-number">1</span>
+    <span class="hljs-attr">selector:</span>
+        <span class="hljs-attr">matchLabels:</span>
+            <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">serviceName:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">template:</span>
+        <span class="hljs-attr">metadata:</span>
+            <span class="hljs-attr">labels:</span>
+                <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span>
+        <span class="hljs-attr">spec:</span>
+            <span class="hljs-attr">containers:</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">uhub.service.ucloud.cn/tv1234pub/influxdb:1.8.10</span>
+                <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+                <span class="hljs-attr">ports:</span>
+                  <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">8086</span>
+                    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+                <span class="hljs-attr">volumeMounts:</span>
+                  <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/lib/influxdb</span>
+                    <span class="hljs-attr">name:</span> <span class="hljs-string">data</span>
+                  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span>
+                    <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/etc/influxdb/influxdb.conf</span>
+                    <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">true</span>
+                    <span class="hljs-attr">subPath:</span> <span class="hljs-string">influxdb.conf</span>
+            <span class="hljs-attr">volumes:</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">data</span>
+                <span class="hljs-attr">persistentVolumeClaim:</span>
+                  <span class="hljs-attr">claimName:</span> <span class="hljs-string">influxdb-data</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">timezone-config</span>
+                <span class="hljs-attr">hostPath:</span>
+                  <span class="hljs-attr">path:</span> <span class="hljs-string">/usr/share/zoneinfo/Asia/Shanghai</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span>
+                <span class="hljs-attr">configMap:</span>
+                  <span class="hljs-attr">defaultMode:</span> <span class="hljs-number">0600</span>
+                  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span>
+<span class="hljs-attr">metadata:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-attr">spec:</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+        <span class="hljs-attr">port:</span> <span class="hljs-number">8086</span>
+        <span class="hljs-attr">targetPort:</span> <span class="hljs-number">8086</span>
+    <span class="hljs-attr">selector:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">type:</span> <span class="hljs-string">ClusterIP</span></code></pre></div>
 
 <h3 id="dump-历史数据"><a href="#dump-历史数据" class="headerlink" title="dump 历史数据"></a>dump 历史数据</h3><p>dump 需要开启 8088 端口</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">influxd backup -portable -host 172.16.xx.xxx:8088 sai-snapshot<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">influxd backup -portable -host 172.16.xx.xxx:8088 sai-snapshot</code></pre></div>
 
 <h3 id="恢复数据"><a href="#恢复数据" class="headerlink" title="恢复数据"></a>恢复数据</h3><p>上传</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">kubectl cp -r sai-snapshot influxdb/influxdb-0:/root/<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">kubectl cp -r sai-snapshot influxdb/influxdb-0:/root/</code></pre></div>
 
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">influxd restore -portable ./sai-snapshot<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">influxd restore -portable ./sai-snapshot</code></pre></div>
 
 <h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>influx客户端查验数据即可。</p>
 

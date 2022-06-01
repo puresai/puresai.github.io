@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          16 分钟
+          15 分钟
         
       </span>
     
@@ -457,10 +457,30 @@
 <p>下载安装在合适的目录，我是安装在/usr/local/redis-5.0.0下，过程比较简单，不赘述了。</p>
 <p>同级下新建cluster，拷贝redis.conf文件进来，生成4个文件redis_2001.conf、redis_2002.conf、redis_2003.conf、redis_2004.conf，修改对应配置。</p>
 <p>主要配置如下</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs vala"><span class="hljs-meta"># 端口号</span><br>port <span class="hljs-number">2001</span><br><span class="hljs-meta"># 后台启动</span><br>daemonize yes<br><span class="hljs-meta"># 开启集群</span><br>cluster-enabled yes<br><span class="hljs-meta"># 集群节点配置文件</span><br>cluster-config-file nodes<span class="hljs-number">-2001.</span>conf<br><span class="hljs-meta"># 进程pid的文件位置</span><br>pidfile /<span class="hljs-keyword">var</span>/run/redis<span class="hljs-number">-2001.</span>pid<br><br><span class="hljs-meta"># 持久化配置</span><br><span class="hljs-meta"># 开启aof</span><br>appendonly yes<br><span class="hljs-meta"># aof文件路径</span><br>appendfilename <span class="hljs-string">&quot;appendonly-2001.aof&quot;</span><br><span class="hljs-meta"># rdb文件路径</span><br>dbfilename dump<span class="hljs-number">-2001.</span>rdb<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs vala"><span class="hljs-meta"># 端口号</span>
+port <span class="hljs-number">2001</span>
+<span class="hljs-meta"># 后台启动</span>
+daemonize yes
+<span class="hljs-meta"># 开启集群</span>
+cluster-enabled yes
+<span class="hljs-meta"># 集群节点配置文件</span>
+cluster-config-file nodes<span class="hljs-number">-2001.</span>conf
+<span class="hljs-meta"># 进程pid的文件位置</span>
+pidfile /<span class="hljs-keyword">var</span>/run/redis<span class="hljs-number">-2001.</span>pid
+
+<span class="hljs-meta"># 持久化配置</span>
+<span class="hljs-meta"># 开启aof</span>
+appendonly yes
+<span class="hljs-meta"># aof文件路径</span>
+appendfilename <span class="hljs-string">&quot;appendonly-2001.aof&quot;</span>
+<span class="hljs-meta"># rdb文件路径</span>
+dbfilename dump<span class="hljs-number">-2001.</span>rdb</code></pre></div>
 
 <p>启动redis，</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2001.</span>conf<br>redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2002.</span>conf<br>redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2003.</span>conf<br>redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2004.</span>conf<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2001.</span>conf
+redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2002.</span>conf
+redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2003.</span>conf
+redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2004.</span>conf</code></pre></div>
 
 
 <p>连接构建redis集群</p>
@@ -477,14 +497,20 @@
 <p>redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004 –cluster-replicas 1</p>
 </blockquote>
 <p>错误输出如下：</p>
-<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xquery">*** ERROR: Invalid configuration <span class="hljs-keyword">for</span> cluster creation.<br>*** Redis Cluster requires <span class="hljs-keyword">at</span> <span class="hljs-keyword">least</span> <span class="hljs-number">3</span> master nodes.<br>*** This <span class="hljs-literal">is</span><span class="hljs-built_in"> not</span> possible with <span class="hljs-number">4</span> nodes <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> replicas per <span class="hljs-type">node</span>.<br>*** At <span class="hljs-keyword">least</span> <span class="hljs-number">6</span> nodes are required.<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs xquery">*** ERROR: Invalid configuration <span class="hljs-keyword">for</span> cluster creation.
+*** Redis Cluster requires <span class="hljs-keyword">at</span> <span class="hljs-keyword">least</span> <span class="hljs-number">3</span> master nodes.
+*** This <span class="hljs-literal">is</span><span class="hljs-built_in"> not</span> possible with <span class="hljs-number">4</span> nodes <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> replicas per <span class="hljs-type">node</span>.
+*** At <span class="hljs-keyword">least</span> <span class="hljs-number">6</span> nodes are required.</code></pre></div>
 
 <p>因为是单机测试而已，去掉复制</p>
 <blockquote>
 <p>redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004</p>
 </blockquote>
 <p>然后有个保存配置的确认，yes之后成功！</p>
-<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs prolog">[<span class="hljs-symbol">OK</span>] <span class="hljs-symbol">All</span> nodes agree about slots configuration.<br>&gt;&gt;&gt; <span class="hljs-symbol">Check</span> for open slots...<br>&gt;&gt;&gt; <span class="hljs-symbol">Check</span> slots coverage...<br>[<span class="hljs-symbol">OK</span>] <span class="hljs-symbol">All</span> <span class="hljs-number">16384</span> slots covered.<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs prolog">[<span class="hljs-symbol">OK</span>] <span class="hljs-symbol">All</span> nodes agree about slots configuration.
+&gt;&gt;&gt; <span class="hljs-symbol">Check</span> for open slots...
+&gt;&gt;&gt; <span class="hljs-symbol">Check</span> slots coverage...
+[<span class="hljs-symbol">OK</span>] <span class="hljs-symbol">All</span> <span class="hljs-number">16384</span> slots covered.</code></pre></div>
 
 <p>进入客户端</p>
 <blockquote>
@@ -494,7 +520,10 @@
 <blockquote>
 <p>cluster nodes</p>
 </blockquote>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">90a734c7716a00060584acb82cb3dd7e437a5459</span> <span class="hljs-number">127.0.0.1:2003</span>@<span class="hljs-number">12003</span> master - <span class="hljs-number">0</span> <span class="hljs-number">1541042930063</span> <span class="hljs-number">3</span> connected <span class="hljs-number">8192</span>-<span class="hljs-number">12287</span><br><span class="hljs-attribute">7ac1fab72c275ba9549a9da71245fdd29a3920a6</span> <span class="hljs-number">127.0.0.1:2002</span>@<span class="hljs-number">12002</span> master - <span class="hljs-number">0</span> <span class="hljs-number">1541042930563</span> <span class="hljs-number">2</span> connected <span class="hljs-number">4096</span>-<span class="hljs-number">8191</span><br><span class="hljs-attribute">490035c372472798a224b6d00c249d8b41508b78</span> <span class="hljs-number">127.0.0.1:2001</span>@<span class="hljs-number">12001</span> myself,master - <span class="hljs-number">0</span> <span class="hljs-number">1541042928000</span> <span class="hljs-number">1</span> connected <span class="hljs-number">0</span>-<span class="hljs-number">4095</span><br><span class="hljs-attribute">9101d285b991c6dcb086cf3da4cd0eae7777ece0</span> <span class="hljs-number">127.0.0.1:2004</span>@<span class="hljs-number">12004</span> master - <span class="hljs-number">0</span> <span class="hljs-number">1541042929563</span> <span class="hljs-number">4</span> connected <span class="hljs-number">12288</span>-<span class="hljs-number">16383</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">90a734c7716a00060584acb82cb3dd7e437a5459</span> <span class="hljs-number">127.0.0.1:2003</span>@<span class="hljs-number">12003</span> master - <span class="hljs-number">0</span> <span class="hljs-number">1541042930063</span> <span class="hljs-number">3</span> connected <span class="hljs-number">8192</span>-<span class="hljs-number">12287</span>
+<span class="hljs-attribute">7ac1fab72c275ba9549a9da71245fdd29a3920a6</span> <span class="hljs-number">127.0.0.1:2002</span>@<span class="hljs-number">12002</span> master - <span class="hljs-number">0</span> <span class="hljs-number">1541042930563</span> <span class="hljs-number">2</span> connected <span class="hljs-number">4096</span>-<span class="hljs-number">8191</span>
+<span class="hljs-attribute">490035c372472798a224b6d00c249d8b41508b78</span> <span class="hljs-number">127.0.0.1:2001</span>@<span class="hljs-number">12001</span> myself,master - <span class="hljs-number">0</span> <span class="hljs-number">1541042928000</span> <span class="hljs-number">1</span> connected <span class="hljs-number">0</span>-<span class="hljs-number">4095</span>
+<span class="hljs-attribute">9101d285b991c6dcb086cf3da4cd0eae7777ece0</span> <span class="hljs-number">127.0.0.1:2004</span>@<span class="hljs-number">12004</span> master - <span class="hljs-number">0</span> <span class="hljs-number">1541042929563</span> <span class="hljs-number">4</span> connected <span class="hljs-number">12288</span>-<span class="hljs-number">16383</span></code></pre></div>
 
 <p>可以看出集群已搭建成功！</p>
 <p>对应的php可以使用predis操作redis，当然\Redis也足够好用了,up to u。</p>

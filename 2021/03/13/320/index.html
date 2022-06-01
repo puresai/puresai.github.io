@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          12 分钟
+          11 分钟
         
       </span>
     
@@ -411,22 +411,39 @@
               <p>印象中之前mac装k8s挺麻烦，之前装的版本较低v1.14.7。最近总提示我更新，刚好更新一下，顺便记录下过程。</p>
 <h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><ol>
 <li>下载安装[docker-desktop]<a target="_blank" rel="noopener" href="https://www.docker.com/products/docker-desktop">https://www.docker.com/products/docker-desktop</a></li>
-<li>修改Docker Engine配置，修改镜像源<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;registry-mirrors&quot;</span>: [<br>    <span class="hljs-string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span>,<br>    <span class="hljs-string">&quot;https://hub-mirror.c.163.com&quot;</span>,<br>    <span class="hljs-string">&quot;http://f1361db2.m.daocloud.io&quot;</span><br>  ],<br>  <span class="hljs-attr">&quot;experimental&quot;</span>: <span class="hljs-literal">false</span>,<br>  <span class="hljs-attr">&quot;features&quot;</span>: &#123;<br>    <span class="hljs-attr">&quot;buildkit&quot;</span>: <span class="hljs-literal">true</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
-<li>安装k8s.gcr.io等组件<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/AliyunContainerService/</span>k8s-<span class="hljs-keyword">for</span>-docker-desktop.git<br><span class="hljs-regexp">//</span>切换到你的k8s版本，我的是v1.<span class="hljs-number">19.7</span><br>git checkout v1.<span class="hljs-number">19.7</span><br></code></pre></td></tr></table></figure></li>
+<li>修改Docker Engine配置，修改镜像源<div class="code-wrapper"><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;registry-mirrors&quot;</span>: [
+    <span class="hljs-string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span>,
+    <span class="hljs-string">&quot;https://hub-mirror.c.163.com&quot;</span>,
+    <span class="hljs-string">&quot;http://f1361db2.m.daocloud.io&quot;</span>
+  ],
+  <span class="hljs-attr">&quot;experimental&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">&quot;features&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;buildkit&quot;</span>: <span class="hljs-literal">true</span>
+  &#125;
+&#125;</code></pre></div></li>
+<li>安装k8s.gcr.io等组件<div class="code-wrapper"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/AliyunContainerService/</span>k8s-<span class="hljs-keyword">for</span>-docker-desktop.git
+<span class="hljs-regexp">//</span>切换到你的k8s版本，我的是v1.<span class="hljs-number">19.7</span>
+git checkout v1.<span class="hljs-number">19.7</span></code></pre></div></li>
 </ol>
 <p>执行</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./load_images.sh</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs jboss-cli"><span class="hljs-string">./load_images.sh</span></code></pre></div>
 
 <p>安装k8s依赖。<br>4. Enable Kubernetes，重启，Kubernetes启动比Docker慢多了，稍微等一会就好。</p>
 <h2 id="安装kubernetes-dashboard"><a href="#安装kubernetes-dashboard" class="headerlink" title="安装kubernetes/dashboard"></a>安装kubernetes/dashboard</h2><p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/kubernetes/dashboard">https://github.com/kubernetes/dashboard</a></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">kubectl apply -f https:<span class="hljs-regexp">//</span>raw.githubusercontent.com<span class="hljs-regexp">/kubernetes/</span>dashboard<span class="hljs-regexp">/v2.2.0/</span>aio<span class="hljs-regexp">/deploy/</span>recommended.yaml<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">kubectl apply -f https:<span class="hljs-regexp">//</span>raw.githubusercontent.com<span class="hljs-regexp">/kubernetes/</span>dashboard<span class="hljs-regexp">/v2.2.0/</span>aio<span class="hljs-regexp">/deploy/</span>recommended.yaml</code></pre></div>
 <p>如果执行超时，可以把yaml文件下载到本地运行。</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">kubectl</span> get pod --namespace=kubernetes-dashboard<br><br><span class="hljs-attribute">output</span>:<br><span class="hljs-attribute">NAME</span>                                         READY   STATUS    RESTARTS   AGE<br><span class="hljs-attribute">dashboard</span>-metrics-scraper-<span class="hljs-number">79</span>c<span class="hljs-number">5968</span>bdc-xvrzd   <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">0</span>          <span class="hljs-number">4</span>m<span class="hljs-number">13</span>s<br><span class="hljs-attribute">kubernetes</span>-dashboard-<span class="hljs-number">9</span>f<span class="hljs-number">9799597</span>-<span class="hljs-number">9</span>kmbk         <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">0</span>          <span class="hljs-number">4</span>m<span class="hljs-number">13</span>s<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">kubectl</span> get pod --namespace=kubernetes-dashboard
+
+<span class="hljs-attribute">output</span>:
+<span class="hljs-attribute">NAME</span>                                         READY   STATUS    RESTARTS   AGE
+<span class="hljs-attribute">dashboard</span>-metrics-scraper-<span class="hljs-number">79</span>c<span class="hljs-number">5968</span>bdc-xvrzd   <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">0</span>          <span class="hljs-number">4</span>m<span class="hljs-number">13</span>s
+<span class="hljs-attribute">kubernetes</span>-dashboard-<span class="hljs-number">9</span>f<span class="hljs-number">9799597</span>-<span class="hljs-number">9</span>kmbk         <span class="hljs-number">1</span>/<span class="hljs-number">1</span>     Running   <span class="hljs-number">0</span>          <span class="hljs-number">4</span>m<span class="hljs-number">13</span>s</code></pre></div>
 <p>可以看到成功安装ubernetes-dashboard。</p>
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">kubectl proxy</span><br></code></pre></td></tr></table></figure>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><div class="code-wrapper"><pre><code class="hljs ebnf"><span class="hljs-attribute">kubectl proxy</span></code></pre></div>
 <h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>打开浏览器：<a target="_blank" rel="noopener" href="http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login">http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login</a></p>
 <p>选择Token登录，用下方命令获取token，登录成功，可以看到界面。<br><img src="https://github.com/kubernetes/dashboard/raw/master/docs/images/dashboard-ui.png" srcset="/img/loading.gif" lazyload alt="kubernetes-dashboard"></p>
-<h3 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">kubectl -n kube-system describe <span class="hljs-constructor">$(<span class="hljs-params">kubectl</span> -<span class="hljs-params">n</span> <span class="hljs-params">kube</span>-<span class="hljs-params">system</span> <span class="hljs-params">get</span> <span class="hljs-params">secret</span> -<span class="hljs-params">n</span> <span class="hljs-params">kube</span>-<span class="hljs-params">system</span> -<span class="hljs-params">o</span> <span class="hljs-params">name</span> | <span class="hljs-params">grep</span> <span class="hljs-params">namespace</span>)</span> <span class="hljs-pattern-match">| grep token</span><br></code></pre></td></tr></table></figure>
+<h3 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h3><div class="code-wrapper"><pre><code class="hljs reasonml">kubectl -n kube-system describe <span class="hljs-constructor">$(<span class="hljs-params">kubectl</span> -<span class="hljs-params">n</span> <span class="hljs-params">kube</span>-<span class="hljs-params">system</span> <span class="hljs-params">get</span> <span class="hljs-params">secret</span> -<span class="hljs-params">n</span> <span class="hljs-params">kube</span>-<span class="hljs-params">system</span> -<span class="hljs-params">o</span> <span class="hljs-params">name</span> | <span class="hljs-params">grep</span> <span class="hljs-params">namespace</span>)</span> <span class="hljs-pattern-match">| grep token</span></code></pre></div>
 
 
 

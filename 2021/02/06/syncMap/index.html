@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.6k 字
+          3.4k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          31 分钟
+          29 分钟
         
       </span>
     
@@ -444,30 +444,148 @@
               
               <p>sync.Map 是1.9版本才加入的，是线程并发安全的map，类型可以看做map[interface{}]interface{}。</p>
 <h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p>Map</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Map <span class="hljs-keyword">struct</span> &#123;<br>    mu Mutex    <span class="hljs-comment">//互斥锁，用于锁定dirty map</span><br><br>    read atomic.Value <span class="hljs-comment">//优先读map,支持原子操作，源码注释写了readOnly不是说read是只读，而是它的结构体是readOnly</span><br><br>    dirty <span class="hljs-keyword">map</span>[<span class="hljs-keyword">interface</span>&#123;&#125;]*entry <span class="hljs-comment">// dirty是一个当前最新的map，允许读写</span><br><br>    misses <span class="hljs-keyword">int</span> <span class="hljs-comment">// 主要记录read读取不到数据加锁读取read map以及dirty map的次数，当misses等于dirty的长度时，会将dirty复制到read</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Map <span class="hljs-keyword">struct</span> &#123;
+    mu Mutex    <span class="hljs-comment">//互斥锁，用于锁定dirty map</span>
+
+    read atomic.Value <span class="hljs-comment">//优先读map,支持原子操作，源码注释写了readOnly不是说read是只读，而是它的结构体是readOnly</span>
+
+    dirty <span class="hljs-keyword">map</span>[<span class="hljs-keyword">interface</span>&#123;&#125;]*entry <span class="hljs-comment">// dirty是一个当前最新的map，允许读写</span>
+
+    misses <span class="hljs-keyword">int</span> <span class="hljs-comment">// 主要记录read读取不到数据加锁读取read map以及dirty map的次数，当misses等于dirty的长度时，会将dirty复制到read</span>
+&#125;</code></pre></div>
 
 <p>readOnly</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> readOnly <span class="hljs-keyword">struct</span> &#123;<br>    m       <span class="hljs-keyword">map</span>[<span class="hljs-keyword">interface</span>&#123;&#125;]*entry<br>    amended <span class="hljs-keyword">bool</span> <span class="hljs-comment">// 如果数据在dirty中但没有在read中，该值为true,作为修改标识</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> readOnly <span class="hljs-keyword">struct</span> &#123;
+    m       <span class="hljs-keyword">map</span>[<span class="hljs-keyword">interface</span>&#123;&#125;]*entry
+    amended <span class="hljs-keyword">bool</span> <span class="hljs-comment">// 如果数据在dirty中但没有在read中，该值为true,作为修改标识</span>
+&#125;</code></pre></div>
 
 <p>entry</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> entry <span class="hljs-keyword">struct</span> &#123;<br>    <span class="hljs-comment">// nil: 表示为被删除，调用Delete()可以将read map中的元素置为nil</span><br>    <span class="hljs-comment">// expunged: 也是表示被删除，但是该键只在read而没有在dirty中，这种情况出现在将read复制到dirty中，即复制的过程会先将nil标记为expunged，然后不将其复制到dirty</span><br>    <span class="hljs-comment">// 其他: 表示存着真正的数据</span><br>    p unsafe.Pointer <span class="hljs-comment">// *interface&#123;&#125;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> entry <span class="hljs-keyword">struct</span> &#123;
+    <span class="hljs-comment">// nil: 表示为被删除，调用Delete()可以将read map中的元素置为nil</span>
+    <span class="hljs-comment">// expunged: 也是表示被删除，但是该键只在read而没有在dirty中，这种情况出现在将read复制到dirty中，即复制的过程会先将nil标记为expunged，然后不将其复制到dirty</span>
+    <span class="hljs-comment">// 其他: 表示存着真正的数据</span>
+    p unsafe.Pointer <span class="hljs-comment">// *interface&#123;&#125;</span>
+&#125;</code></pre></div>
 
 <h2 id="Load-查找"><a href="#Load-查找" class="headerlink" title="Load 查找"></a>Load 查找</h2><p>根据key来查找 value， 函数为 Load()，源码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Load</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(value <span class="hljs-keyword">interface</span>&#123;&#125;, ok <span class="hljs-keyword">bool</span>)</span></span> &#123;<br>    <span class="hljs-comment">// 首先从只读ready的map中查找，这时不需要加锁</span><br>    read, _ := m.read.Load().(readOnly)<br>    e, ok := read.m[key]<br>    <br>    <span class="hljs-comment">// 如果没有找到，并且read.amended为true，说明dirty中有新数据，从dirty中查找，开始加锁了</span><br>    <span class="hljs-keyword">if</span> !ok &amp;&amp; read.amended &#123;<br>        m.mu.Lock() <span class="hljs-comment">// 加锁</span><br>        <br>       <span class="hljs-comment">// 又在 readonly 中检查一遍，因为在加锁的时候 dirty 的数据可能已经迁移到了read中</span><br>        read, _ = m.read.Load().(readOnly)<br>        e, ok = read.m[key]<br>        <br>        <span class="hljs-comment">// read 还没有找到，并且dirty中有数据</span><br>        <span class="hljs-keyword">if</span> !ok &amp;&amp; read.amended &#123;<br>            e, ok = m.dirty[key] <span class="hljs-comment">//从 dirty 中查找数据</span><br>            <br>            <span class="hljs-comment">// 不管m.dirty中存不存在，都将misses + 1</span><br>            <span class="hljs-comment">// missLocked() 中满足条件后就会把m.dirty中数据迁移到m.read中</span><br>            m.missLocked()<br>        &#125;<br>        m.mu.Unlock()<br>    &#125;<br>    <span class="hljs-keyword">if</span> !ok &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">false</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> e.load()<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Load</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(value <span class="hljs-keyword">interface</span>&#123;&#125;, ok <span class="hljs-keyword">bool</span>)</span></span> &#123;
+    <span class="hljs-comment">// 首先从只读ready的map中查找，这时不需要加锁</span>
+    read, _ := m.read.Load().(readOnly)
+    e, ok := read.m[key]
+    
+    <span class="hljs-comment">// 如果没有找到，并且read.amended为true，说明dirty中有新数据，从dirty中查找，开始加锁了</span>
+    <span class="hljs-keyword">if</span> !ok &amp;&amp; read.amended &#123;
+        m.mu.Lock() <span class="hljs-comment">// 加锁</span>
+        
+       <span class="hljs-comment">// 又在 readonly 中检查一遍，因为在加锁的时候 dirty 的数据可能已经迁移到了read中</span>
+        read, _ = m.read.Load().(readOnly)
+        e, ok = read.m[key]
+        
+        <span class="hljs-comment">// read 还没有找到，并且dirty中有数据</span>
+        <span class="hljs-keyword">if</span> !ok &amp;&amp; read.amended &#123;
+            e, ok = m.dirty[key] <span class="hljs-comment">//从 dirty 中查找数据</span>
+            
+            <span class="hljs-comment">// 不管m.dirty中存不存在，都将misses + 1</span>
+            <span class="hljs-comment">// missLocked() 中满足条件后就会把m.dirty中数据迁移到m.read中</span>
+            m.missLocked()
+        &#125;
+        m.mu.Unlock()
+    &#125;
+    <span class="hljs-keyword">if</span> !ok &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">false</span>
+    &#125;
+    <span class="hljs-keyword">return</span> e.load()
+&#125;</code></pre></div>
 
 <p>从函数可以看出，如果查询的键值正好在m.read中，不需要加锁，直接返回结果，优化了性能。</p>
 <p>即使不在read中，经过几次miss后， m.dirty中的数据也会迁移到m.read中，这时又可以从read中查找。所以对于更新／增加较少，加载存在的key很多的case，性能基本和无锁的map类似。</p>
 <p><strong>missLockerd 迁移数据</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">missLocked</span><span class="hljs-params">()</span></span> &#123;<br>    m.misses++<br>    <span class="hljs-keyword">if</span> m.misses &lt; <span class="hljs-built_in">len</span>(m.dirty) &#123;<span class="hljs-comment">//misses次数小于 dirty的长度，就不迁移数据，直接返回</span><br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    m.read.Store(readOnly&#123;m: m.dirty&#125;) <span class="hljs-comment">//开始迁移数据</span><br>    m.dirty = <span class="hljs-literal">nil</span>   <span class="hljs-comment">//迁移完dirty就赋值为nil</span><br>    m.misses = <span class="hljs-number">0</span>  <span class="hljs-comment">//迁移完 misses归0</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">missLocked</span><span class="hljs-params">()</span></span> &#123;
+    m.misses++
+    <span class="hljs-keyword">if</span> m.misses &lt; <span class="hljs-built_in">len</span>(m.dirty) &#123;<span class="hljs-comment">//misses次数小于 dirty的长度，就不迁移数据，直接返回</span>
+        <span class="hljs-keyword">return</span>
+    &#125;
+    m.read.Store(readOnly&#123;m: m.dirty&#125;) <span class="hljs-comment">//开始迁移数据</span>
+    m.dirty = <span class="hljs-literal">nil</span>   <span class="hljs-comment">//迁移完dirty就赋值为nil</span>
+    m.misses = <span class="hljs-number">0</span>  <span class="hljs-comment">//迁移完 misses归0</span>
+&#125;</code></pre></div>
 
-<h2 id="Store-存储"><a href="#Store-存储" class="headerlink" title="Store 存储"></a><strong>Store 存储</strong></h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Store</span><span class="hljs-params">(key, value <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>   <span class="hljs-comment">// 直接在read中查找值，找到了，就尝试 tryStore() 更新值</span><br>    read, _ := m.read.Load().(readOnly)<br>    <span class="hljs-keyword">if</span> e, ok := read.m[key]; ok &amp;&amp; e.tryStore(&amp;value) &#123;<br>        <span class="hljs-keyword">return</span><br>    &#125;<br>    <br>    <span class="hljs-comment">// m.read 中不存在</span><br>    m.mu.Lock()<br>    read, _ = m.read.Load().(readOnly)<br>    <span class="hljs-keyword">if</span> e, ok := read.m[key]; ok &#123;<br>        <span class="hljs-keyword">if</span> e.unexpungeLocked() &#123; <span class="hljs-comment">// 未被标记成删除，前面讲到entry数据结构时，里面的p值有3种。1.nil 2.expunged，这个值含义有点复杂，可以看看前面entry数据结构 3.正常值</span><br>            <br>            m.dirty[key] = e <span class="hljs-comment">// 加入到dirty里</span><br>        &#125;<br>        e.storeLocked(&amp;value) <span class="hljs-comment">// 更新值</span><br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> e, ok := m.dirty[key]; ok &#123; <span class="hljs-comment">// 存在于 dirty 中，直接更新</span><br>        e.storeLocked(&amp;value)<br>    &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 新的值</span><br>        <span class="hljs-keyword">if</span> !read.amended &#123; <span class="hljs-comment">// m.dirty 中没有新数据，增加到 m.dirty 中</span><br>            <span class="hljs-comment">// We&#x27;re adding the first new key to the dirty map.</span><br>            <span class="hljs-comment">// Make sure it is allocated and mark the read-only map as incomplete.</span><br>            m.dirtyLocked() <span class="hljs-comment">// 从 m.read中复制未删除的数据</span><br>            m.read.Store(readOnly&#123;m: read.m, amended: <span class="hljs-literal">true</span>&#125;) <br>        &#125;<br>        m.dirty[key] = newEntry(value) <span class="hljs-comment">//将这个entry加入到m.dirty中</span><br>    &#125;<br>    m.mu.Unlock()<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="Store-存储"><a href="#Store-存储" class="headerlink" title="Store 存储"></a><strong>Store 存储</strong></h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Store</span><span class="hljs-params">(key, value <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+   <span class="hljs-comment">// 直接在read中查找值，找到了，就尝试 tryStore() 更新值</span>
+    read, _ := m.read.Load().(readOnly)
+    <span class="hljs-keyword">if</span> e, ok := read.m[key]; ok &amp;&amp; e.tryStore(&amp;value) &#123;
+        <span class="hljs-keyword">return</span>
+    &#125;
+    
+    <span class="hljs-comment">// m.read 中不存在</span>
+    m.mu.Lock()
+    read, _ = m.read.Load().(readOnly)
+    <span class="hljs-keyword">if</span> e, ok := read.m[key]; ok &#123;
+        <span class="hljs-keyword">if</span> e.unexpungeLocked() &#123; <span class="hljs-comment">// 未被标记成删除，前面讲到entry数据结构时，里面的p值有3种。1.nil 2.expunged，这个值含义有点复杂，可以看看前面entry数据结构 3.正常值</span>
+            
+            m.dirty[key] = e <span class="hljs-comment">// 加入到dirty里</span>
+        &#125;
+        e.storeLocked(&amp;value) <span class="hljs-comment">// 更新值</span>
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> e, ok := m.dirty[key]; ok &#123; <span class="hljs-comment">// 存在于 dirty 中，直接更新</span>
+        e.storeLocked(&amp;value)
+    &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 新的值</span>
+        <span class="hljs-keyword">if</span> !read.amended &#123; <span class="hljs-comment">// m.dirty 中没有新数据，增加到 m.dirty 中</span>
+            <span class="hljs-comment">// We&#x27;re adding the first new key to the dirty map.</span>
+            <span class="hljs-comment">// Make sure it is allocated and mark the read-only map as incomplete.</span>
+            m.dirtyLocked() <span class="hljs-comment">// 从 m.read中复制未删除的数据</span>
+            m.read.Store(readOnly&#123;m: read.m, amended: <span class="hljs-literal">true</span>&#125;) 
+        &#125;
+        m.dirty[key] = newEntry(value) <span class="hljs-comment">//将这个entry加入到m.dirty中</span>
+    &#125;
+    m.mu.Unlock()
+&#125;</code></pre></div>
 
 <p>操作都是先从m.read开始，不满足条件再加锁，然后操作m.dirty。</p>
-<h2 id="Delete-删除"><a href="#Delete-删除" class="headerlink" title="Delete 删除"></a><strong>Delete 删除</strong></h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Delete</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>    <span class="hljs-comment">// 从 m.read 中开始查找</span><br>    read, _ := m.read.Load().(readOnly)<br>    e, ok := read.m[key]<br>    <br>    <span class="hljs-keyword">if</span> !ok &amp;&amp; read.amended &#123; <span class="hljs-comment">// m.read中没有找到，并且可能存在于m.dirty中，加锁查找</span><br>        m.mu.Lock() <span class="hljs-comment">// 加锁</span><br>        read, _ = m.read.Load().(readOnly) <span class="hljs-comment">// 再在m.read中查找一次</span><br>        e, ok = read.m[key]<br>        <span class="hljs-keyword">if</span> !ok &amp;&amp; read.amended &#123; <span class="hljs-comment">//m.read中又没找到，amended标志位true，说明在m.dirty中</span><br>            <span class="hljs-built_in">delete</span>(m.dirty, key) <span class="hljs-comment">// 删除</span><br>        &#125;<br>        m.mu.Unlock()<br>    &#125;<br>    <span class="hljs-keyword">if</span> ok &#123; <span class="hljs-comment">// 在 m.ready 中就直接删除</span><br>        e.<span class="hljs-built_in">delete</span>()<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="Delete-删除"><a href="#Delete-删除" class="headerlink" title="Delete 删除"></a><strong>Delete 删除</strong></h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Delete</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+    <span class="hljs-comment">// 从 m.read 中开始查找</span>
+    read, _ := m.read.Load().(readOnly)
+    e, ok := read.m[key]
+    
+    <span class="hljs-keyword">if</span> !ok &amp;&amp; read.amended &#123; <span class="hljs-comment">// m.read中没有找到，并且可能存在于m.dirty中，加锁查找</span>
+        m.mu.Lock() <span class="hljs-comment">// 加锁</span>
+        read, _ = m.read.Load().(readOnly) <span class="hljs-comment">// 再在m.read中查找一次</span>
+        e, ok = read.m[key]
+        <span class="hljs-keyword">if</span> !ok &amp;&amp; read.amended &#123; <span class="hljs-comment">//m.read中又没找到，amended标志位true，说明在m.dirty中</span>
+            <span class="hljs-built_in">delete</span>(m.dirty, key) <span class="hljs-comment">// 删除</span>
+        &#125;
+        m.mu.Unlock()
+    &#125;
+    <span class="hljs-keyword">if</span> ok &#123; <span class="hljs-comment">// 在 m.ready 中就直接删除</span>
+        e.<span class="hljs-built_in">delete</span>()
+    &#125;
+&#125;</code></pre></div>
 
 
 
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;sync&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> sm sync.Map<br><br>	sm.Store(<span class="hljs-string">&quot;www&quot;</span>, <span class="hljs-string">&quot;2343125&quot;</span>)<br>	sm.Store(<span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-number">111</span>)<br><br>	<span class="hljs-keyword">var</span> v <span class="hljs-keyword">interface</span>&#123;&#125;<br><br>	v, _ = sm.Load(<span class="hljs-string">&quot;www&quot;</span>)<br>	fmt.Printf(<span class="hljs-string">&quot;%T&quot;</span>, v)<br>	sm.Delete(<span class="hljs-string">&quot;test&quot;</span>)<br>	v, _ = sm.Load(<span class="hljs-string">&quot;test&quot;</span>)<br>	fmt.Printf(<span class="hljs-string">&quot;%T&quot;</span>, v)<br>&#125;<br><br><span class="hljs-comment">// string&lt;nil&gt;</span><br></code></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;sync&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> sm sync.Map
+
+	sm.Store(<span class="hljs-string">&quot;www&quot;</span>, <span class="hljs-string">&quot;2343125&quot;</span>)
+	sm.Store(<span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-number">111</span>)
+
+	<span class="hljs-keyword">var</span> v <span class="hljs-keyword">interface</span>&#123;&#125;
+
+	v, _ = sm.Load(<span class="hljs-string">&quot;www&quot;</span>)
+	fmt.Printf(<span class="hljs-string">&quot;%T&quot;</span>, v)
+	sm.Delete(<span class="hljs-string">&quot;test&quot;</span>)
+	v, _ = sm.Load(<span class="hljs-string">&quot;test&quot;</span>)
+	fmt.Printf(<span class="hljs-string">&quot;%T&quot;</span>, v)
+&#125;
+
+<span class="hljs-comment">// string&lt;nil&gt;</span></code></pre></div>
 
 
 

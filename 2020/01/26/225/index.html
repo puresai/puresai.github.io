@@ -294,7 +294,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.3k 字
+          1.2k 字
         
       </span>
     
@@ -458,10 +458,53 @@
 <blockquote>
 <p>SCAN 命令是一个基于游标的迭代器（cursor based iterator）： SCAN 命令每次被调用之后， 都会向用户返回一个新的游标， 用户在下次迭代时需要使用这个新游标作为 SCAN 命令的游标参数， 以此来延续之前的迭代过程。当 SCAN 命令的游标参数被设置为 0 时， 服务器将开始一次新的迭代， 而当服务器向用户返回值为 0 的游标时， 表示迭代已结束。</p>
 </blockquote>
-<h2 id="生成key"><a href="#生成key" class="headerlink" title="生成key"></a>生成key</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">// 生成1000个</span><br><span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> \Redis();<br><span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>, <span class="hljs-number">10</span>);<br><span class="hljs-variable">$redis</span>-&gt;select(<span class="hljs-number">2</span>);<br><br><span class="hljs-variable">$arr</span> = [<br>    <span class="hljs-string">&#x27;rwer&#x27;</span>,<br>    <span class="hljs-string">&#x27;24erw&#x27;</span>,<br>    <span class="hljs-string">&#x27;rterq4&#x27;</span>,<br>    <span class="hljs-string">&#x27;sdgfd5&#x27;</span>,<br>    <span class="hljs-string">&#x27;dgsdg&#x27;</span>,<br>    <span class="hljs-string">&#x27;sfst&#x27;</span>,<br>];<br><br><span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$i</span>&lt;<span class="hljs-number">1000</span>; <span class="hljs-variable">$i</span>++) &#123;<br>    <span class="hljs-variable">$redis</span>-&gt;set(md5(<span class="hljs-variable">$i</span>.<span class="hljs-variable">$arr</span>[<span class="hljs-variable">$i</span>%<span class="hljs-number">6</span>]), md5(<span class="hljs-variable">$arr</span>[<span class="hljs-variable">$i</span>%<span class="hljs-number">6</span>].<span class="hljs-string">&#x27;sdfsd&#x27;</span>));<br>&#125;<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;OK&quot;</span>.PHP_EOL;<br></code></pre></td></tr></table></figure>
+<h2 id="生成key"><a href="#生成key" class="headerlink" title="生成key"></a>生成key</h2><div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">// 生成1000个</span>
+<span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> \Redis();
+<span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>, <span class="hljs-number">10</span>);
+<span class="hljs-variable">$redis</span>-&gt;select(<span class="hljs-number">2</span>);
+
+<span class="hljs-variable">$arr</span> = [
+    <span class="hljs-string">&#x27;rwer&#x27;</span>,
+    <span class="hljs-string">&#x27;24erw&#x27;</span>,
+    <span class="hljs-string">&#x27;rterq4&#x27;</span>,
+    <span class="hljs-string">&#x27;sdgfd5&#x27;</span>,
+    <span class="hljs-string">&#x27;dgsdg&#x27;</span>,
+    <span class="hljs-string">&#x27;sfst&#x27;</span>,
+];
+
+<span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$i</span>&lt;<span class="hljs-number">1000</span>; <span class="hljs-variable">$i</span>++) &#123;
+    <span class="hljs-variable">$redis</span>-&gt;set(md5(<span class="hljs-variable">$i</span>.<span class="hljs-variable">$arr</span>[<span class="hljs-variable">$i</span>%<span class="hljs-number">6</span>]), md5(<span class="hljs-variable">$arr</span>[<span class="hljs-variable">$i</span>%<span class="hljs-number">6</span>].<span class="hljs-string">&#x27;sdfsd&#x27;</span>));
+&#125;
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;OK&quot;</span>.PHP_EOL;</code></pre></div>
 <h2 id="keys查看个数"><a href="#keys查看个数" class="headerlink" title="keys查看个数"></a>keys查看个数</h2><p><code>keys c*</code></p>
 <p><img src="https://cdn.learnku.com/uploads/images/202001/26/41489/1h6zy6J8lM.png!large" srcset="/img/loading.gif" lazyload alt="Redis中使用scan替换keys"></p>
-<h2 id="scan遍历"><a href="#scan遍历" class="headerlink" title="scan遍历"></a>scan遍历</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> \Redis();<br><span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>, <span class="hljs-number">10</span>);<br><span class="hljs-variable">$redis</span>-&gt;select(<span class="hljs-number">2</span>);<br><span class="hljs-variable">$iterator</span> = <span class="hljs-literal">null</span>;<br><span class="hljs-comment">// 遍历前缀</span><br><span class="hljs-variable">$pattern</span> = <span class="hljs-string">&#x27;c*&#x27;</span>;<br><span class="hljs-variable">$count</span> = <span class="hljs-number">100</span>;<br><span class="hljs-comment">// 务必设置，如果没扫描到，继续扫描，而不是返回空，否则while直接退出，遍历就会不准确</span><br><span class="hljs-variable">$redis</span>-&gt;setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);<br><br><span class="hljs-variable">$total</span> = [];<br><span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>;<br><br><span class="hljs-comment">// $count可以不设置，非必需参数</span><br><span class="hljs-keyword">while</span>(<span class="hljs-variable">$arr</span> = <span class="hljs-variable">$redis</span>-&gt;scan(<span class="hljs-variable">$iterator</span>, <span class="hljs-variable">$pattern</span>, <span class="hljs-variable">$count</span>)) &#123;<br>    <span class="hljs-variable">$arrVal</span> = <span class="hljs-variable">$redis</span>-&gt;mget(<span class="hljs-variable">$arr</span>);<br>    <span class="hljs-variable">$ret</span> = array_combine(<span class="hljs-variable">$arr</span>, <span class="hljs-variable">$arrVal</span>);<br>    <span class="hljs-variable">$total</span> = array_merge(<span class="hljs-variable">$total</span>, <span class="hljs-variable">$ret</span>);<br>    <span class="hljs-variable">$i</span>++;<br>&#125;<br><br><span class="hljs-comment">// var_dump($total);</span><br><br>var_dump(<span class="hljs-variable">$i</span>);<br><span class="hljs-keyword">echo</span> count(<span class="hljs-variable">$total</span>).PHP_EOL;<br></code></pre></td></tr></table></figure>
+<h2 id="scan遍历"><a href="#scan遍历" class="headerlink" title="scan遍历"></a>scan遍历</h2><div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> \Redis();
+<span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>, <span class="hljs-number">10</span>);
+<span class="hljs-variable">$redis</span>-&gt;select(<span class="hljs-number">2</span>);
+<span class="hljs-variable">$iterator</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-comment">// 遍历前缀</span>
+<span class="hljs-variable">$pattern</span> = <span class="hljs-string">&#x27;c*&#x27;</span>;
+<span class="hljs-variable">$count</span> = <span class="hljs-number">100</span>;
+<span class="hljs-comment">// 务必设置，如果没扫描到，继续扫描，而不是返回空，否则while直接退出，遍历就会不准确</span>
+<span class="hljs-variable">$redis</span>-&gt;setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
+
+<span class="hljs-variable">$total</span> = [];
+<span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">// $count可以不设置，非必需参数</span>
+<span class="hljs-keyword">while</span>(<span class="hljs-variable">$arr</span> = <span class="hljs-variable">$redis</span>-&gt;scan(<span class="hljs-variable">$iterator</span>, <span class="hljs-variable">$pattern</span>, <span class="hljs-variable">$count</span>)) &#123;
+    <span class="hljs-variable">$arrVal</span> = <span class="hljs-variable">$redis</span>-&gt;mget(<span class="hljs-variable">$arr</span>);
+    <span class="hljs-variable">$ret</span> = array_combine(<span class="hljs-variable">$arr</span>, <span class="hljs-variable">$arrVal</span>);
+    <span class="hljs-variable">$total</span> = array_merge(<span class="hljs-variable">$total</span>, <span class="hljs-variable">$ret</span>);
+    <span class="hljs-variable">$i</span>++;
+&#125;
+
+<span class="hljs-comment">// var_dump($total);</span>
+
+var_dump(<span class="hljs-variable">$i</span>);
+<span class="hljs-keyword">echo</span> count(<span class="hljs-variable">$total</span>).PHP_EOL;</code></pre></div>
 
 <p><img src="https://cdn.learnku.com/uploads/images/202001/26/41489/RR8bffjcP6.png!large" srcset="/img/loading.gif" lazyload alt="Redis中使用scan替换keys"></p>
 <p>当然你也可以不使用\Redis::OPT_SCAN, \Redis::SCAN_RETRY这两个参数，自行循环，判断返回值是不是false，也能遍历成功。</p>

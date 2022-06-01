@@ -484,7 +484,12 @@
 <li>串行化，顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。</li>
 </ul>
 <p><img src="/images/qiniu/7dea45932a6b722eb069d2264d0066f8.png" srcset="/img/loading.gif" lazyload alt="隔离级别"></p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs armasm">我们来看看在不同的隔离级别下，事务A会有哪些不同的返回结果，也就是图里面<span class="hljs-built_in">V1</span>、<span class="hljs-built_in">V2</span>、<span class="hljs-built_in">V3</span>的返回值分别是什么。<br><br>若隔离级别是“读未提交”， 则<span class="hljs-built_in">V1</span>的值就是<span class="hljs-number">2</span>。这时候事务B虽然还没有提交，但是结果已经被A看到了。因此，<span class="hljs-built_in">V2</span>、<span class="hljs-built_in">V3</span>也都是<span class="hljs-number">2</span>。<br>若隔离级别是“读提交”，则<span class="hljs-built_in">V1</span>是<span class="hljs-number">1</span>，<span class="hljs-built_in">V2</span>的值是<span class="hljs-number">2</span>。事务B的更新在提交后才能被A看到。所以， <span class="hljs-built_in">V3</span>的值也是<span class="hljs-number">2</span>。<br>若隔离级别是“可重复读”，则<span class="hljs-built_in">V1</span>、<span class="hljs-built_in">V2</span>是<span class="hljs-number">1</span>，<span class="hljs-built_in">V3</span>是<span class="hljs-number">2</span>。之所以<span class="hljs-built_in">V2</span>还是<span class="hljs-number">1</span>，遵循的就是这个要求：事务在执行期间看到的数据前后必须是一致的。<br>若隔离级别是“串行化”，则在事务B执行“将<span class="hljs-number">1</span>改成<span class="hljs-number">2</span>”的时候，会被锁住。直到事务A提交后，事务B才可以继续执行。所以从A的角度看， <span class="hljs-built_in">V1</span>、<span class="hljs-built_in">V2</span>值是<span class="hljs-number">1</span>，<span class="hljs-built_in">V3</span>的值是<span class="hljs-number">2</span>。<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs armasm">我们来看看在不同的隔离级别下，事务A会有哪些不同的返回结果，也就是图里面<span class="hljs-built_in">V1</span>、<span class="hljs-built_in">V2</span>、<span class="hljs-built_in">V3</span>的返回值分别是什么。
+
+若隔离级别是“读未提交”， 则<span class="hljs-built_in">V1</span>的值就是<span class="hljs-number">2</span>。这时候事务B虽然还没有提交，但是结果已经被A看到了。因此，<span class="hljs-built_in">V2</span>、<span class="hljs-built_in">V3</span>也都是<span class="hljs-number">2</span>。
+若隔离级别是“读提交”，则<span class="hljs-built_in">V1</span>是<span class="hljs-number">1</span>，<span class="hljs-built_in">V2</span>的值是<span class="hljs-number">2</span>。事务B的更新在提交后才能被A看到。所以， <span class="hljs-built_in">V3</span>的值也是<span class="hljs-number">2</span>。
+若隔离级别是“可重复读”，则<span class="hljs-built_in">V1</span>、<span class="hljs-built_in">V2</span>是<span class="hljs-number">1</span>，<span class="hljs-built_in">V3</span>是<span class="hljs-number">2</span>。之所以<span class="hljs-built_in">V2</span>还是<span class="hljs-number">1</span>，遵循的就是这个要求：事务在执行期间看到的数据前后必须是一致的。
+若隔离级别是“串行化”，则在事务B执行“将<span class="hljs-number">1</span>改成<span class="hljs-number">2</span>”的时候，会被锁住。直到事务A提交后，事务B才可以继续执行。所以从A的角度看， <span class="hljs-built_in">V1</span>、<span class="hljs-built_in">V2</span>值是<span class="hljs-number">1</span>，<span class="hljs-built_in">V3</span>的值是<span class="hljs-number">2</span>。</code></pre></div>
 
 <p>查看隔离级别：</p>
 <blockquote>
@@ -506,7 +511,19 @@
 <p>长事务意味着系统里面会存在很老的事务视图。由于这些事务随时可能访问数据库里面的任何数据，所以这个事务提交之前，数据库里面它可能用到的回滚记录都必须保留，这就会导致大量占用存储空间。</p>
 <p>在MySQL 5.5及以前的版本，回滚日志是跟数据字典一起放在ibdata文件里的，即使长事务最终提交，回滚段被清理，文件也不会变小。我见过数据只有20GB，而回滚段有200GB的库。最终只好为了清理回滚段，重建整个库。</p>
 <p>除了对回滚段的影响，长事务还占用锁资源，也可能拖垮整个库，这事需要注意的。</p>
-<h3 id="相关语法"><a href="#相关语法" class="headerlink" title="相关语法"></a>相关语法</h3><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs inform7">START TRANSACTION<br>    <span class="hljs-comment">[transaction_characteristic <span class="hljs-comment">[, transaction_characteristic]</span> ...]</span><br><br>transaction_characteristic: &#123;<br>    WITH CONSISTENT SNAPSHOT<br>  | READ WRITE<br>  | READ ONLY<br>&#125;<br><br>BEGIN <span class="hljs-comment">[WORK]</span><br>COMMIT <span class="hljs-comment">[WORK]</span> <span class="hljs-comment">[AND <span class="hljs-comment">[NO]</span> CHAIN]</span> <span class="hljs-comment">[<span class="hljs-comment">[NO]</span> RELEASE]</span><br>ROLLBACK <span class="hljs-comment">[WORK]</span> <span class="hljs-comment">[AND <span class="hljs-comment">[NO]</span> CHAIN]</span> <span class="hljs-comment">[<span class="hljs-comment">[NO]</span> RELEASE]</span><br>SET autocommit = &#123;0 | 1&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="相关语法"><a href="#相关语法" class="headerlink" title="相关语法"></a>相关语法</h3><div class="code-wrapper"><pre><code class="hljs inform7">START TRANSACTION
+    <span class="hljs-comment">[transaction_characteristic <span class="hljs-comment">[, transaction_characteristic]</span> ...]</span>
+
+transaction_characteristic: &#123;
+    WITH CONSISTENT SNAPSHOT
+  | READ WRITE
+  | READ ONLY
+&#125;
+
+BEGIN <span class="hljs-comment">[WORK]</span>
+COMMIT <span class="hljs-comment">[WORK]</span> <span class="hljs-comment">[AND <span class="hljs-comment">[NO]</span> CHAIN]</span> <span class="hljs-comment">[<span class="hljs-comment">[NO]</span> RELEASE]</span>
+ROLLBACK <span class="hljs-comment">[WORK]</span> <span class="hljs-comment">[AND <span class="hljs-comment">[NO]</span> CHAIN]</span> <span class="hljs-comment">[<span class="hljs-comment">[NO]</span> RELEASE]</span>
+SET autocommit = &#123;0 | 1&#125;</code></pre></div>
 
 <p>这些语句提供对事务使用的控制 ：</p>
 <ul>

@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          259 字
+          255 字
         
       </span>
     
@@ -864,9 +864,11 @@
               
               <p>需要转义下</p>
 <p>php字符串中双引号替换:</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-variable">$tmp_data</span> = str_replace(<span class="hljs-string">&quot;&quot;&quot;,&quot;&quot;,$tmp_data);双引号替换为空字符串</span><br><span class="hljs-string"></span><br><span class="hljs-string">$tmp_data = str_replace(&quot;&quot;&quot;</span>,<span class="hljs-string">&quot;&#x27;&quot;</span>,<span class="hljs-variable">$tmp_data</span>);双引号替换为单引号 <br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-variable">$tmp_data</span> = str_replace(<span class="hljs-string">&quot;&quot;&quot;,&quot;&quot;,$tmp_data);双引号替换为空字符串</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">$tmp_data = str_replace(&quot;&quot;&quot;</span>,<span class="hljs-string">&quot;&#x27;&quot;</span>,<span class="hljs-variable">$tmp_data</span>);双引号替换为单引号</code></pre></div>
 <p>php字符串中替换反斜杠</p>
-<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autoit">$tmp_data = str_replace(<span class="hljs-string">&quot;\&quot;</span>,<span class="hljs-string">&quot;&quot;</span>,$tmp_data)<span class="hljs-comment">; 反斜杠替换为空字符串</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs autoit">$tmp_data = str_replace(<span class="hljs-string">&quot;\&quot;</span>,<span class="hljs-string">&quot;&quot;</span>,$tmp_data)<span class="hljs-comment">; 反斜杠替换为空字符串</span></code></pre></div>
 
               
             </div>

@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3k 字
+          2.9k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          26 分钟
+          24 分钟
         
       </span>
     
@@ -460,33 +460,131 @@
 <li>unsafe.Pointer</li>
 </ul>
 <p>对于每一个类型，支持5种操作，我们以int32分别说明下这些操作：</p>
-<h3 id="SwapX"><a href="#SwapX" class="headerlink" title="SwapX"></a>SwapX</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将新值保存到*addr并返回旧值。</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SwapInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, <span class="hljs-built_in">new</span> <span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(old <span class="hljs-keyword">int32</span>)</span></span><br><br>源码：<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Xchg</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, <span class="hljs-built_in">new</span> <span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;<br>	old := *ptr<br>	*ptr = <span class="hljs-built_in">new</span><br>	<span class="hljs-keyword">return</span> old<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="SwapX"><a href="#SwapX" class="headerlink" title="SwapX"></a>SwapX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将新值保存到*addr并返回旧值。</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SwapInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, <span class="hljs-built_in">new</span> <span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(old <span class="hljs-keyword">int32</span>)</span></span>
 
-<h3 id="CompareAndSwapX"><a href="#CompareAndSwapX" class="headerlink" title="CompareAndSwapX"></a>CompareAndSwapX</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的比较*addr和old，如果相同则将new赋值给*addr并返回真。</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CompareAndSwapInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, old, <span class="hljs-built_in">new</span> <span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(swapped <span class="hljs-keyword">bool</span>)</span></span><br><br>源码：<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Cas</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, old, <span class="hljs-built_in">new</span> <span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">bool</span></span> &#123;<br>	<span class="hljs-keyword">if</span> *ptr == old &#123;<br>		*ptr = <span class="hljs-built_in">new</span><br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>&#125;<br></code></pre></td></tr></table></figure>
+源码：
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Xchg</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, <span class="hljs-built_in">new</span> <span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;
+	old := *ptr
+	*ptr = <span class="hljs-built_in">new</span>
+	<span class="hljs-keyword">return</span> old
+&#125;</code></pre></div>
 
-<h3 id="AddX"><a href="#AddX" class="headerlink" title="AddX"></a>AddX</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将val的值添加到*addr并返回新值</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">AddInt64</span><span class="hljs-params">(addr *<span class="hljs-keyword">int64</span>, delta <span class="hljs-keyword">int64</span>)</span> <span class="hljs-params">(<span class="hljs-built_in">new</span> <span class="hljs-keyword">int64</span>)</span></span><br><br>源码：<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Xadd</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, delta <span class="hljs-keyword">int32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;<br>	<span class="hljs-built_in">new</span> := *ptr + <span class="hljs-keyword">uint32</span>(delta)<br>	*ptr = <span class="hljs-built_in">new</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-built_in">new</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="CompareAndSwapX"><a href="#CompareAndSwapX" class="headerlink" title="CompareAndSwapX"></a>CompareAndSwapX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的比较*addr和old，如果相同则将new赋值给*addr并返回真。</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CompareAndSwapInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, old, <span class="hljs-built_in">new</span> <span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(swapped <span class="hljs-keyword">bool</span>)</span></span>
 
-<h3 id="LoadX"><a href="#LoadX" class="headerlink" title="LoadX"></a>LoadX</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的获取*addr的值</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">LoadInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(val <span class="hljs-keyword">int32</span>)</span></span><br><br>源码：<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Load</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;<br>	<span class="hljs-keyword">return</span> *ptr<br>&#125;<br></code></pre></td></tr></table></figure>
+源码：
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Cas</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, old, <span class="hljs-built_in">new</span> <span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">bool</span></span> &#123;
+	<span class="hljs-keyword">if</span> *ptr == old &#123;
+		*ptr = <span class="hljs-built_in">new</span>
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+	&#125;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+&#125;</code></pre></div>
 
-<h3 id="StoreX"><a href="#StoreX" class="headerlink" title="StoreX"></a>StoreX</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将val的值保存到*addr</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">StoreInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, val <span class="hljs-keyword">int32</span>)</span></span><br><br>源码：<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Store</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, val <span class="hljs-keyword">uint32</span>)</span></span> &#123;<br>	*ptr = val<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="AddX"><a href="#AddX" class="headerlink" title="AddX"></a>AddX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将val的值添加到*addr并返回新值</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">AddInt64</span><span class="hljs-params">(addr *<span class="hljs-keyword">int64</span>, delta <span class="hljs-keyword">int64</span>)</span> <span class="hljs-params">(<span class="hljs-built_in">new</span> <span class="hljs-keyword">int64</span>)</span></span>
+
+源码：
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Xadd</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, delta <span class="hljs-keyword">int32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;
+	<span class="hljs-built_in">new</span> := *ptr + <span class="hljs-keyword">uint32</span>(delta)
+	*ptr = <span class="hljs-built_in">new</span>
+	<span class="hljs-keyword">return</span> <span class="hljs-built_in">new</span>
+&#125;</code></pre></div>
+
+<h3 id="LoadX"><a href="#LoadX" class="headerlink" title="LoadX"></a>LoadX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的获取*addr的值</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">LoadInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(val <span class="hljs-keyword">int32</span>)</span></span>
+
+源码：
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Load</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;
+	<span class="hljs-keyword">return</span> *ptr
+&#125;</code></pre></div>
+
+<h3 id="StoreX"><a href="#StoreX" class="headerlink" title="StoreX"></a>StoreX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将val的值保存到*addr</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">StoreInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, val <span class="hljs-keyword">int32</span>)</span></span>
+
+源码：
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Store</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, val <span class="hljs-keyword">uint32</span>)</span></span> &#123;
+	*ptr = val
+&#125;</code></pre></div>
 
 <p>源码其实比较简单了，我就不过多说明了。</p>
 <h3 id="atomic-Value"><a href="#atomic-Value" class="headerlink" title="atomic.Value"></a>atomic.Value</h3><p>另外，atomic对支持的类型做了扩展，atomic.Value被设计用来存储任意类型的数据。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Value <span class="hljs-keyword">struct</span> &#123;<br>	v <span class="hljs-keyword">interface</span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Value <span class="hljs-keyword">struct</span> &#123;
+	v <span class="hljs-keyword">interface</span>&#123;&#125;
+&#125;</code></pre></div>
 
 <p>为了方便，定义了一个ifaceWords类型，它的作用是将<code>interface&#123;&#125;</code>类型分解，得到其中的两个字段，作为interface的内部表示格式，typ代表原始类型，data代表真正的值。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> ifaceWords <span class="hljs-keyword">struct</span> &#123;<br>	typ  unsafe.Pointer<br>	data unsafe.Pointer<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> ifaceWords <span class="hljs-keyword">struct</span> &#123;
+	typ  unsafe.Pointer
+	data unsafe.Pointer
+&#125;</code></pre></div>
 
 <p>提供了Store和Load两个方法。</p>
 <p><strong>Store</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(v *Value)</span> <span class="hljs-title">Store</span><span class="hljs-params">(x <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>        <span class="hljs-comment">// x为nil，直接panic</span><br>	<span class="hljs-keyword">if</span> x == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;sync/atomic: store of nil value into Value&quot;</span>)<br>	&#125;<br>	<span class="hljs-comment">// 将现有的值和要写入的值转换为ifaceWords类型，这样下一步就能获取到它们的原始类型和真正的值</span><br>	vp := (*ifaceWords)(unsafe.Pointer(v))<br>	xp := (*ifaceWords)(unsafe.Pointer(&amp;x))<br>	<span class="hljs-keyword">for</span> &#123;<br>		<span class="hljs-comment">// 获取现有的值的type</span><br>		typ := LoadPointer(&amp;vp.typ)<br>		<span class="hljs-comment">// 如果typ为nil说明这是第一次调用Store</span><br>		<span class="hljs-keyword">if</span> typ == <span class="hljs-literal">nil</span> &#123;<br>			<span class="hljs-comment">// 如果是第一次调用，就占住当前的processor，不允许其他goroutine再抢，runtime_procPin方法会先获取当前goroutine</span><br>			runtime_procPin()<br>			<span class="hljs-comment">// 使用CAS操作，先尝试将typ设置为^uintptr(0)这个中间状态</span><br>			<span class="hljs-comment">// 如果失败，则证明已经有别的goroutine抢先完成了赋值操作</span><br>			<span class="hljs-comment">// 那它就解除抢占锁，继续循环等待</span><br>			<span class="hljs-keyword">if</span> !CompareAndSwapPointer(&amp;vp.typ, <span class="hljs-literal">nil</span>, unsafe.Pointer(^<span class="hljs-keyword">uintptr</span>(<span class="hljs-number">0</span>))) &#123;<br>				runtime_procUnpin()<br>				<span class="hljs-keyword">continue</span><br>			&#125;<br>			<span class="hljs-comment">// 如果设置成功，就原子性的更新对应的指针，最后解除抢占锁</span><br>			StorePointer(&amp;vp.data, xp.data)<br>			StorePointer(&amp;vp.typ, xp.typ)<br>			runtime_procUnpin()<br>			<span class="hljs-keyword">return</span><br>		&#125;<br>		<span class="hljs-comment">// 如果typ为^uintptr(0)说明第一次写入还没有完成，继续循环等待</span><br>		<span class="hljs-keyword">if</span> <span class="hljs-keyword">uintptr</span>(typ) == ^<span class="hljs-keyword">uintptr</span>(<span class="hljs-number">0</span>) &#123;<br>			<span class="hljs-keyword">continue</span><br>		&#125;<br>		<span class="hljs-comment">// 如果要写入的类型和现有的类型不一致，则panic</span><br>		<span class="hljs-keyword">if</span> typ != xp.typ &#123;<br>			<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;sync/atomic: store of inconsistently typed value into Value&quot;</span>)<br>		&#125;<br>		<span class="hljs-comment">// 更新data，跳出循环</span><br>		StorePointer(&amp;vp.data, xp.data)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(v *Value)</span> <span class="hljs-title">Store</span><span class="hljs-params">(x <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+        <span class="hljs-comment">// x为nil，直接panic</span>
+	<span class="hljs-keyword">if</span> x == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;sync/atomic: store of nil value into Value&quot;</span>)
+	&#125;
+	<span class="hljs-comment">// 将现有的值和要写入的值转换为ifaceWords类型，这样下一步就能获取到它们的原始类型和真正的值</span>
+	vp := (*ifaceWords)(unsafe.Pointer(v))
+	xp := (*ifaceWords)(unsafe.Pointer(&amp;x))
+	<span class="hljs-keyword">for</span> &#123;
+		<span class="hljs-comment">// 获取现有的值的type</span>
+		typ := LoadPointer(&amp;vp.typ)
+		<span class="hljs-comment">// 如果typ为nil说明这是第一次调用Store</span>
+		<span class="hljs-keyword">if</span> typ == <span class="hljs-literal">nil</span> &#123;
+			<span class="hljs-comment">// 如果是第一次调用，就占住当前的processor，不允许其他goroutine再抢，runtime_procPin方法会先获取当前goroutine</span>
+			runtime_procPin()
+			<span class="hljs-comment">// 使用CAS操作，先尝试将typ设置为^uintptr(0)这个中间状态</span>
+			<span class="hljs-comment">// 如果失败，则证明已经有别的goroutine抢先完成了赋值操作</span>
+			<span class="hljs-comment">// 那它就解除抢占锁，继续循环等待</span>
+			<span class="hljs-keyword">if</span> !CompareAndSwapPointer(&amp;vp.typ, <span class="hljs-literal">nil</span>, unsafe.Pointer(^<span class="hljs-keyword">uintptr</span>(<span class="hljs-number">0</span>))) &#123;
+				runtime_procUnpin()
+				<span class="hljs-keyword">continue</span>
+			&#125;
+			<span class="hljs-comment">// 如果设置成功，就原子性的更新对应的指针，最后解除抢占锁</span>
+			StorePointer(&amp;vp.data, xp.data)
+			StorePointer(&amp;vp.typ, xp.typ)
+			runtime_procUnpin()
+			<span class="hljs-keyword">return</span>
+		&#125;
+		<span class="hljs-comment">// 如果typ为^uintptr(0)说明第一次写入还没有完成，继续循环等待</span>
+		<span class="hljs-keyword">if</span> <span class="hljs-keyword">uintptr</span>(typ) == ^<span class="hljs-keyword">uintptr</span>(<span class="hljs-number">0</span>) &#123;
+			<span class="hljs-keyword">continue</span>
+		&#125;
+		<span class="hljs-comment">// 如果要写入的类型和现有的类型不一致，则panic</span>
+		<span class="hljs-keyword">if</span> typ != xp.typ &#123;
+			<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;sync/atomic: store of inconsistently typed value into Value&quot;</span>)
+		&#125;
+		<span class="hljs-comment">// 更新data，跳出循环</span>
+		StorePointer(&amp;vp.data, xp.data)
+		<span class="hljs-keyword">return</span>
+	&#125;
+&#125;</code></pre></div>
 
 
 
 
 
 <p><strong>Load</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(v *Value)</span> <span class="hljs-title">Load</span><span class="hljs-params">()</span> <span class="hljs-params">(x <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>        <span class="hljs-comment">// 将*Value指针类型转换为*ifaceWords指针类型</span><br>	vp := (*ifaceWords)(unsafe.Pointer(v))<br>	<span class="hljs-comment">// 原子性的获取到v的类型typ的指针</span><br>	typ := LoadPointer(&amp;vp.typ)<br>	<span class="hljs-comment">// 如果没有写入或者正在写入，先返回，^uintptr(0)代表过渡状态，这和Store是对应的</span><br>	<span class="hljs-keyword">if</span> typ == <span class="hljs-literal">nil</span> || <span class="hljs-keyword">uintptr</span>(typ) == ^<span class="hljs-keyword">uintptr</span>(<span class="hljs-number">0</span>) &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>	&#125;<br>	<span class="hljs-comment">// 原子性的获取到v的真正的值data的指针，然后返回</span><br>	data := LoadPointer(&amp;vp.data)<br>	xp := (*ifaceWords)(unsafe.Pointer(&amp;x))<br>	xp.typ = typ<br>	xp.data = data<br>	<span class="hljs-keyword">return</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(v *Value)</span> <span class="hljs-title">Load</span><span class="hljs-params">()</span> <span class="hljs-params">(x <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+        <span class="hljs-comment">// 将*Value指针类型转换为*ifaceWords指针类型</span>
+	vp := (*ifaceWords)(unsafe.Pointer(v))
+	<span class="hljs-comment">// 原子性的获取到v的类型typ的指针</span>
+	typ := LoadPointer(&amp;vp.typ)
+	<span class="hljs-comment">// 如果没有写入或者正在写入，先返回，^uintptr(0)代表过渡状态，这和Store是对应的</span>
+	<span class="hljs-keyword">if</span> typ == <span class="hljs-literal">nil</span> || <span class="hljs-keyword">uintptr</span>(typ) == ^<span class="hljs-keyword">uintptr</span>(<span class="hljs-number">0</span>) &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+	&#125;
+	<span class="hljs-comment">// 原子性的获取到v的真正的值data的指针，然后返回</span>
+	data := LoadPointer(&amp;vp.data)
+	xp := (*ifaceWords)(unsafe.Pointer(&amp;x))
+	xp.typ = typ
+	xp.data = data
+	<span class="hljs-keyword">return</span>
+&#125;</code></pre></div>
 
 <p>PS:解读的源码，如无特别说明，版本为1.15.6</p>
 <hr>

@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          304 字
+          302 字
         
       </span>
     
@@ -483,7 +483,8 @@
 <p>OOM killer（Out-Of-Memory killer），该机制会监控那些占用内存过大，尤其是瞬间很快消耗大量内存的进程，为了防止内存耗尽而内核会把该进程杀掉。</p>
 </blockquote>
 <p>起因：导出相当大的数据时导致内存溢出的问题，服务器负载很大，然后OOM这个进程每次就把我导出的进程干趴下了。</p>
-<h3 id="文件最大打开数"><a href="#文件最大打开数" class="headerlink" title="文件最大打开数"></a>文件最大打开数</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">ulimit -n  <span class="hljs-regexp">//</span>查看文件最大打开数<br>lsof |wc -l  <span class="hljs-regexp">//</span>当前文件打开数量<br></code></pre></td></tr></table></figure>
+<h3 id="文件最大打开数"><a href="#文件最大打开数" class="headerlink" title="文件最大打开数"></a>文件最大打开数</h3><div class="code-wrapper"><pre><code class="hljs awk">ulimit -n  <span class="hljs-regexp">//</span>查看文件最大打开数
+lsof |wc -l  <span class="hljs-regexp">//</span>当前文件打开数量</code></pre></div>
 
 <p>起因：守护进程里有个程序，一直在fopen，导致文件打开数过大，服务器挂掉了。</p>
 <p>解决方案比较简单，就不赘述了。</p>

@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          718 字
+          712 字
         
       </span>
     
@@ -536,7 +536,12 @@
 <p>那么如何来恢复呢？</p>
 <p>如果有备份的话，当然去寻找最新的，然后恢复，如果不在意新增的数据，那么这样就足够了。</p>
 <p>来看一下备份，</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 备份某个数据库某些表</span><br>mysqldump [options] db_name [tbl_name ...] &gt; bak.sql<br><span class="hljs-comment">// 备份多个数据库</span><br>mysqldump [options] --databases db_name ...&gt; bak.sql<br><span class="hljs-comment">// 备份所有数据库</span><br>mysqldump [options] --all-databases&gt; bak.sql<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">// 备份某个数据库某些表</span>
+mysqldump [options] db_name [tbl_name ...] &gt; bak.sql
+<span class="hljs-comment">// 备份多个数据库</span>
+mysqldump [options] --databases db_name ...&gt; bak.sql
+<span class="hljs-comment">// 备份所有数据库</span>
+mysqldump [options] --all-databases&gt; bak.sql</code></pre></div>
 
 <p>个人建议单个备份，好独立操作。</p>
 <p>了解更多请看：<br><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html">mysqldump</a></p>

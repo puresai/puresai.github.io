@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2k 字
+          1.9k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          18 分钟
+          16 分钟
         
       </span>
     
@@ -485,7 +485,66 @@
 <p>/lib/systemd/system</p>
 </blockquote>
 <p>依次新建</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-comment">// mysqld.service</span><br><br>[Unit]<br><span class="hljs-keyword">Description</span>=mysql<br>After=network.target<br>[Service]<br>Type=forking<br>ExecStart=<span class="hljs-regexp">/usr/</span>bin/mysql.server<br>ExecReload=<span class="hljs-regexp">/bin/</span>systemctl restart mysqld.service<br>ExecStop=<span class="hljs-regexp">/bin/</span>systemctl stop mysqld.service<br>PrivateTmp=<span class="hljs-keyword">true</span><br>[Install]<br>WantedBy=multi-user.target<br><br><br>----------<br><span class="hljs-comment">//nginx.service</span><br><br>[Unit]<br><span class="hljs-keyword">Description</span>=nginx<br>After=network.target<br>[Service]<br>Type=forking<br>ExecStart=<span class="hljs-regexp">/usr/</span>bin/nginx<br>ExecReload=<span class="hljs-regexp">/usr/</span>bin/nginx -s reload<br>ExecStop=<span class="hljs-regexp">/usr/</span>bin/nginx -s quit<br>PrivateTmp=<span class="hljs-keyword">true</span><br>[Install]<br>WantedBy=multi-user.target<br><br><br>----------<br><span class="hljs-comment">// php-fpm.service</span><br><br>[Unit]<br><span class="hljs-keyword">Description</span>=php-fpm<br>After=network.target<br>[Service]<br>Type=forking<br>ExecStart=<span class="hljs-regexp">/usr/</span>bin/php-fpm<br>ExecReload=ps -ef|<span class="hljs-keyword">grep</span> php-fpm|awk -F   &#123;<span class="hljs-keyword">print</span> &#125;|xargs kill -USR2<br>ExecStop=ps -ef|<span class="hljs-keyword">grep</span> php-fpm|awk -F   &#123;<span class="hljs-keyword">print</span> &#125;|xargs kill -<span class="hljs-keyword">INT</span><br>PrivateTmp=<span class="hljs-keyword">true</span><br>[Install]<br>WantedBy=multi-user.target<br><br><br>----------<br><br><span class="hljs-comment">// redis.service</span><br>[Unit]<br><span class="hljs-keyword">Description</span>=redis<br>After=network.target<br>[Service]<br>Type=forking<br>ExecStart=<span class="hljs-regexp">/usr/</span>bin<span class="hljs-regexp">/redis-server /u</span>sr<span class="hljs-regexp">/local/</span>redis-<span class="hljs-number">5.0</span>.<span class="hljs-number">0</span>/redis.conf<br>ExecStop=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis-5.0.0/</span>redis-cli shutdown<br>PrivateTmp=<span class="hljs-keyword">true</span><br>[Install]<br>WantedBy=multi-user.target<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs gradle"><span class="hljs-comment">// mysqld.service</span>
+
+[Unit]
+<span class="hljs-keyword">Description</span>=mysql
+After=network.target
+[Service]
+Type=forking
+ExecStart=<span class="hljs-regexp">/usr/</span>bin/mysql.server
+ExecReload=<span class="hljs-regexp">/bin/</span>systemctl restart mysqld.service
+ExecStop=<span class="hljs-regexp">/bin/</span>systemctl stop mysqld.service
+PrivateTmp=<span class="hljs-keyword">true</span>
+[Install]
+WantedBy=multi-user.target
+
+
+----------
+<span class="hljs-comment">//nginx.service</span>
+
+[Unit]
+<span class="hljs-keyword">Description</span>=nginx
+After=network.target
+[Service]
+Type=forking
+ExecStart=<span class="hljs-regexp">/usr/</span>bin/nginx
+ExecReload=<span class="hljs-regexp">/usr/</span>bin/nginx -s reload
+ExecStop=<span class="hljs-regexp">/usr/</span>bin/nginx -s quit
+PrivateTmp=<span class="hljs-keyword">true</span>
+[Install]
+WantedBy=multi-user.target
+
+
+----------
+<span class="hljs-comment">// php-fpm.service</span>
+
+[Unit]
+<span class="hljs-keyword">Description</span>=php-fpm
+After=network.target
+[Service]
+Type=forking
+ExecStart=<span class="hljs-regexp">/usr/</span>bin/php-fpm
+ExecReload=ps -ef|<span class="hljs-keyword">grep</span> php-fpm|awk -F   &#123;<span class="hljs-keyword">print</span> &#125;|xargs kill -USR2
+ExecStop=ps -ef|<span class="hljs-keyword">grep</span> php-fpm|awk -F   &#123;<span class="hljs-keyword">print</span> &#125;|xargs kill -<span class="hljs-keyword">INT</span>
+PrivateTmp=<span class="hljs-keyword">true</span>
+[Install]
+WantedBy=multi-user.target
+
+
+----------
+
+<span class="hljs-comment">// redis.service</span>
+[Unit]
+<span class="hljs-keyword">Description</span>=redis
+After=network.target
+[Service]
+Type=forking
+ExecStart=<span class="hljs-regexp">/usr/</span>bin<span class="hljs-regexp">/redis-server /u</span>sr<span class="hljs-regexp">/local/</span>redis-<span class="hljs-number">5.0</span>.<span class="hljs-number">0</span>/redis.conf
+ExecStop=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis-5.0.0/</span>redis-cli shutdown
+PrivateTmp=<span class="hljs-keyword">true</span>
+[Install]
+WantedBy=multi-user.target</code></pre></div>
 
 <blockquote>
 <p>ExecStart,ExecStop,ExecReload各有不同，自行修改</p>
@@ -496,7 +555,40 @@
 </blockquote>
 <p>测试一下。</p>
 <p>脚本说明</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">主要有以下三部分<br>[unit] :定义与Unit类型无关的通用选项；用于提供unit的描述信息、 unit行为及依赖关系等<br><br>[Service]：与特定类型相关的专用选项；此处为Service类型<br><br>[Install]：定义由“ systemctl enable”以及&quot;systemctl disable“命令在实现服务启用或禁用时用到的一些选项<br><br><br><span class="hljs-code">----------</span><br><span class="hljs-code">Service参数</span><br><span class="hljs-code"></span><br><span class="hljs-code">EnvironmentFile：环境配置文件</span><br><span class="hljs-code">ExecStart：指明启动unit要运行命令或脚本的绝对路径</span><br><span class="hljs-code">ExecStartPre： ExecStart前运行</span><br><span class="hljs-code">ExecStartPost： ExecStart后运行</span><br><span class="hljs-code">ExecRsload: 重启当前服务时执行的命令</span><br><span class="hljs-code">ExecStopPost：停止当前服务之后执行的命令</span><br><span class="hljs-code">ExecStartSec：自动重启当前服务间隔的秒数</span><br><span class="hljs-code">ExecStop：指明停止unit要运行的命令或脚本</span><br><span class="hljs-code">Restart：当设定Restart=1时，则当次daemon服务意外终止后，会再次自动启动此服务。</span><br><span class="hljs-code">TimeoutSec：定义 Systemd 停止当前服务之前等待的秒数。</span><br><span class="hljs-code">Environment：指定环境变量。</span><br><span class="hljs-code"></span><br><span class="hljs-code"></span><br><span class="hljs-code">----------</span><br><br><br>Install参数：<br><br>Alias：别名，可使用systemctl command Alias.service<br>RequiredBy：被哪些units所依赖，强依赖<br>WantedBy：被哪些units所依赖，弱依赖<br>Also：安装本服务的时候还要安装别的相关服务<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs asciidoc">主要有以下三部分
+[unit] :定义与Unit类型无关的通用选项；用于提供unit的描述信息、 unit行为及依赖关系等
+
+[Service]：与特定类型相关的专用选项；此处为Service类型
+
+[Install]：定义由“ systemctl enable”以及&quot;systemctl disable“命令在实现服务启用或禁用时用到的一些选项
+
+
+<span class="hljs-code">----------</span>
+<span class="hljs-code">Service参数</span>
+<span class="hljs-code"></span>
+<span class="hljs-code">EnvironmentFile：环境配置文件</span>
+<span class="hljs-code">ExecStart：指明启动unit要运行命令或脚本的绝对路径</span>
+<span class="hljs-code">ExecStartPre： ExecStart前运行</span>
+<span class="hljs-code">ExecStartPost： ExecStart后运行</span>
+<span class="hljs-code">ExecRsload: 重启当前服务时执行的命令</span>
+<span class="hljs-code">ExecStopPost：停止当前服务之后执行的命令</span>
+<span class="hljs-code">ExecStartSec：自动重启当前服务间隔的秒数</span>
+<span class="hljs-code">ExecStop：指明停止unit要运行的命令或脚本</span>
+<span class="hljs-code">Restart：当设定Restart=1时，则当次daemon服务意外终止后，会再次自动启动此服务。</span>
+<span class="hljs-code">TimeoutSec：定义 Systemd 停止当前服务之前等待的秒数。</span>
+<span class="hljs-code">Environment：指定环境变量。</span>
+<span class="hljs-code"></span>
+<span class="hljs-code"></span>
+<span class="hljs-code">----------</span>
+
+
+Install参数：
+
+Alias：别名，可使用systemctl command Alias.service
+RequiredBy：被哪些units所依赖，强依赖
+WantedBy：被哪些units所依赖，弱依赖
+Also：安装本服务的时候还要安装别的相关服务
+</code></pre></div>
 
 
 <p>更多请看：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/92208194d700">在linux下创建自定义服务</a><br><a target="_blank" rel="noopener" href="http://blog.51cto.com/gavin0/2156626">linux中的unit的配置文件</a></p>

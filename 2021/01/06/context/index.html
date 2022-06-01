@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          6.2k 字
+          5.9k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          52 分钟
+          50 分钟
         
       </span>
     
@@ -556,39 +556,226 @@
 <td>接口类型返回字符串</td>
 </tr>
 </tbody></table>
-<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">type</span> Context interface &#123;<br>	<span class="hljs-comment">// 获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求；第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消</span><br>	<span class="hljs-constructor">Deadline()</span> (deadline time.Time, ok <span class="hljs-built_in">bool</span>)<br><br>	<span class="hljs-comment">// 返回一个只读的chan，类型为struct&#123;&#125;，我们在goroutine中，如果该方法返回的chan可以读取，则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。</span><br>	<span class="hljs-constructor">Done()</span> &lt;-chan <span class="hljs-keyword">struct</span>&#123;&#125;<br><br>	<span class="hljs-comment">// 在 channel Done 关闭后，返回 context 取消原因</span><br>	<span class="hljs-constructor">Err()</span> error<br><br>	<span class="hljs-comment">// 获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是并发安全的</span><br>	<span class="hljs-constructor">Value(<span class="hljs-params">key</span> <span class="hljs-params">interface</span>&#123;&#125;)</span> interface&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-keyword">type</span> Context interface &#123;
+	<span class="hljs-comment">// 获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求；第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消</span>
+	<span class="hljs-constructor">Deadline()</span> (deadline time.Time, ok <span class="hljs-built_in">bool</span>)
 
-<h2 id="canceler"><a href="#canceler" class="headerlink" title="canceler"></a>canceler</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> canceler <span class="hljs-keyword">interface</span> &#123;<br>	cancel(removeFromParent <span class="hljs-keyword">bool</span>, err error)<br>	Done() &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">struct</span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+	<span class="hljs-comment">// 返回一个只读的chan，类型为struct&#123;&#125;，我们在goroutine中，如果该方法返回的chan可以读取，则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。</span>
+	<span class="hljs-constructor">Done()</span> &lt;-chan <span class="hljs-keyword">struct</span>&#123;&#125;
+
+	<span class="hljs-comment">// 在 channel Done 关闭后，返回 context 取消原因</span>
+	<span class="hljs-constructor">Err()</span> error
+
+	<span class="hljs-comment">// 获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是并发安全的</span>
+	<span class="hljs-constructor">Value(<span class="hljs-params">key</span> <span class="hljs-params">interface</span>&#123;&#125;)</span> interface&#123;&#125;
+&#125;</code></pre></div>
+
+<h2 id="canceler"><a href="#canceler" class="headerlink" title="canceler"></a>canceler</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> canceler <span class="hljs-keyword">interface</span> &#123;
+	cancel(removeFromParent <span class="hljs-keyword">bool</span>, err error)
+	Done() &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">struct</span>&#123;&#125;
+&#125;</code></pre></div>
 <p>实现了上面定义的两个方法的 Context，就表明该 Context 是可取消的。源码中有两个类型实现了 canceler 接口：*cancelCtx 和 *timerCtx。注意是加了 * 号的，是这两个结构体的指针实现了 canceler 接口。</p>
 <p>接口设计成这个样子的原因：</p>
 <ul>
 <li>“取消”操作应该是建议性，而非强制性</li>
 <li>“取消”操作应该可传递</li>
 </ul>
-<h2 id="emptyCtx"><a href="#emptyCtx" class="headerlink" title="emptyCtx"></a>emptyCtx</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> emptyCtx <span class="hljs-keyword">int</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Deadline</span><span class="hljs-params">()</span> <span class="hljs-params">(deadline time.Time, ok <span class="hljs-keyword">bool</span>)</span></span> &#123;<br>	<span class="hljs-keyword">return</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Done</span><span class="hljs-params">()</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">struct</span></span>&#123;&#125; &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Err</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Value</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">interface</span></span>&#123;&#125; &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *emptyCtx)</span> <span class="hljs-title">String</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;<br>	<span class="hljs-keyword">switch</span> e &#123;<br>	<span class="hljs-keyword">case</span> background:<br>		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;context.Background&quot;</span><br>	<span class="hljs-keyword">case</span> todo:<br>		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;context.TODO&quot;</span><br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;unknown empty Context&quot;</span><br>&#125;<br>cancelCtx<br><span class="hljs-keyword">type</span> cancelCtx <span class="hljs-keyword">struct</span> &#123;<br>	Context<br><br>	mu       sync.Mutex            <span class="hljs-comment">// 互斥锁</span><br>	done     <span class="hljs-keyword">chan</span> <span class="hljs-keyword">struct</span>&#123;&#125;        <br>	children <span class="hljs-keyword">map</span>[canceler]<span class="hljs-keyword">struct</span>&#123;&#125; <br>	err      error <br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="emptyCtx"><a href="#emptyCtx" class="headerlink" title="emptyCtx"></a>emptyCtx</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> emptyCtx <span class="hljs-keyword">int</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Deadline</span><span class="hljs-params">()</span> <span class="hljs-params">(deadline time.Time, ok <span class="hljs-keyword">bool</span>)</span></span> &#123;
+	<span class="hljs-keyword">return</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Done</span><span class="hljs-params">()</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">struct</span></span>&#123;&#125; &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Err</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(*emptyCtx)</span> <span class="hljs-title">Value</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">interface</span></span>&#123;&#125; &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *emptyCtx)</span> <span class="hljs-title">String</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;
+	<span class="hljs-keyword">switch</span> e &#123;
+	<span class="hljs-keyword">case</span> background:
+		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;context.Background&quot;</span>
+	<span class="hljs-keyword">case</span> todo:
+		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;context.TODO&quot;</span>
+	&#125;
+	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;unknown empty Context&quot;</span>
+&#125;
+cancelCtx
+<span class="hljs-keyword">type</span> cancelCtx <span class="hljs-keyword">struct</span> &#123;
+	Context
+
+	mu       sync.Mutex            <span class="hljs-comment">// 互斥锁</span>
+	done     <span class="hljs-keyword">chan</span> <span class="hljs-keyword">struct</span>&#123;&#125;        
+	children <span class="hljs-keyword">map</span>[canceler]<span class="hljs-keyword">struct</span>&#123;&#125; 
+	err      error 
+&#125;</code></pre></div>
 
 <p>我们重点看一下这个方法</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *cancelCtx)</span> <span class="hljs-title">cancel</span><span class="hljs-params">(removeFromParent <span class="hljs-keyword">bool</span>, err error)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;context: internal error: missing cancel error&quot;</span>)<br>	&#125;<br>	c.mu.Lock()<br>	<span class="hljs-keyword">if</span> c.err != <span class="hljs-literal">nil</span> &#123;<br>		c.mu.Unlock()<br>		<span class="hljs-keyword">return</span> <span class="hljs-comment">// 已经被其他协程取消</span><br>	&#125;<br>	<span class="hljs-comment">// 给 err 字段赋值</span><br>	c.err = err<br>	<span class="hljs-comment">// 关闭 channel，通知其他协程</span><br>	<span class="hljs-keyword">if</span> c.done == <span class="hljs-literal">nil</span> &#123;<br>		c.done = closedchan<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-built_in">close</span>(c.done)<br>	&#125;<br>	<br>	<span class="hljs-comment">// 遍历它的所有子节点</span><br>	<span class="hljs-keyword">for</span> child := <span class="hljs-keyword">range</span> c.children &#123;<br>                <span class="hljs-comment">// 递归地取消所有子节点</span><br>		child.cancel(<span class="hljs-literal">false</span>, err)<br>	&#125;<br>	<span class="hljs-comment">// 将子节点置空</span><br>	c.children = <span class="hljs-literal">nil</span><br>	c.mu.Unlock()<br><br>	<span class="hljs-keyword">if</span> removeFromParent &#123;<br>	        <span class="hljs-comment">// 从父节点中移除自己 </span><br>		removeChild(c.Context, c)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *cancelCtx)</span> <span class="hljs-title">cancel</span><span class="hljs-params">(removeFromParent <span class="hljs-keyword">bool</span>, err error)</span></span> &#123;
+	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;context: internal error: missing cancel error&quot;</span>)
+	&#125;
+	c.mu.Lock()
+	<span class="hljs-keyword">if</span> c.err != <span class="hljs-literal">nil</span> &#123;
+		c.mu.Unlock()
+		<span class="hljs-keyword">return</span> <span class="hljs-comment">// 已经被其他协程取消</span>
+	&#125;
+	<span class="hljs-comment">// 给 err 字段赋值</span>
+	c.err = err
+	<span class="hljs-comment">// 关闭 channel，通知其他协程</span>
+	<span class="hljs-keyword">if</span> c.done == <span class="hljs-literal">nil</span> &#123;
+		c.done = closedchan
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		<span class="hljs-built_in">close</span>(c.done)
+	&#125;
+	
+	<span class="hljs-comment">// 遍历它的所有子节点</span>
+	<span class="hljs-keyword">for</span> child := <span class="hljs-keyword">range</span> c.children &#123;
+                <span class="hljs-comment">// 递归地取消所有子节点</span>
+		child.cancel(<span class="hljs-literal">false</span>, err)
+	&#125;
+	<span class="hljs-comment">// 将子节点置空</span>
+	c.children = <span class="hljs-literal">nil</span>
+	c.mu.Unlock()
+
+	<span class="hljs-keyword">if</span> removeFromParent &#123;
+	        <span class="hljs-comment">// 从父节点中移除自己 </span>
+		removeChild(c.Context, c)
+	&#125;
+&#125;</code></pre></div>
 
 <p>cancel()方法的功能就是关闭 channel：c.done；递归地取消它的所有子节点；从父节点从删除自己。达到的效果是通过关闭 channel，将取消信号传递给了它的所有子节点。</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">func <span class="hljs-constructor">WithCancel(<span class="hljs-params">parent</span> Context)</span> (ctx Context, cancel CancelFunc)<br>func <span class="hljs-constructor">WithDeadline(<span class="hljs-params">parent</span> Context, <span class="hljs-params">deadline</span> <span class="hljs-params">time</span>.Time)</span> (Context, CancelFunc)<br>func <span class="hljs-constructor">WithTimeout(<span class="hljs-params">parent</span> Context, <span class="hljs-params">timeout</span> <span class="hljs-params">time</span>.Duration)</span> (Context, CancelFunc)<br>func <span class="hljs-constructor">WithValue(<span class="hljs-params">parent</span> Context, <span class="hljs-params">key</span>, <span class="hljs-params">val</span> <span class="hljs-params">interface</span>&#123;&#125;)</span> Context<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs reasonml">func <span class="hljs-constructor">WithCancel(<span class="hljs-params">parent</span> Context)</span> (ctx Context, cancel CancelFunc)
+func <span class="hljs-constructor">WithDeadline(<span class="hljs-params">parent</span> Context, <span class="hljs-params">deadline</span> <span class="hljs-params">time</span>.Time)</span> (Context, CancelFunc)
+func <span class="hljs-constructor">WithTimeout(<span class="hljs-params">parent</span> Context, <span class="hljs-params">timeout</span> <span class="hljs-params">time</span>.Duration)</span> (Context, CancelFunc)
+func <span class="hljs-constructor">WithValue(<span class="hljs-params">parent</span> Context, <span class="hljs-params">key</span>, <span class="hljs-params">val</span> <span class="hljs-params">interface</span>&#123;&#125;)</span> Context</code></pre></div>
 
 <p>上面四个可以理解为Context的继承衍生。</p>
 <p>对于我们日常使用来说，学会Context的继承的4个方法和Background、TODO基本就够了。</p>
 <h1 id="Context使用场景"><a href="#Context使用场景" class="headerlink" title="Context使用场景"></a>Context使用场景</h1><ol>
 <li><p>超时请求</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs css">package <span class="hljs-selector-tag">main</span><br><br>import (<br>    &quot;context&quot;<br>    &quot;fmt&quot;<br>    &quot;<span class="hljs-selector-tag">time</span>&quot;<br>)<br><br>func <span class="hljs-selector-tag">main</span>() &#123;<br>    ctx, cancel := context.<span class="hljs-built_in">WithTimeout</span>(context.<span class="hljs-built_in">Background</span>(), <span class="hljs-number">50</span>*time.Millisecond)<br>    defer <span class="hljs-built_in">cancel</span>()<br><br>    select &#123;<br>    case &lt;-time.<span class="hljs-built_in">After</span>(<span class="hljs-number">1</span> * time.Second):<br>        fmt.<span class="hljs-built_in">Println</span>(<span class="hljs-string">&quot;overslept&quot;</span>)<br>    case &lt;-ctx.<span class="hljs-built_in">Done</span>():<br>        fmt.<span class="hljs-built_in">Println</span>(ctx.<span class="hljs-built_in">Err</span>()) // prints <span class="hljs-string">&quot;context deadline exceeded&quot;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<div class="code-wrapper"><pre><code class="hljs css">package <span class="hljs-selector-tag">main</span>
+
+import (
+    &quot;context&quot;
+    &quot;fmt&quot;
+    &quot;<span class="hljs-selector-tag">time</span>&quot;
+)
+
+func <span class="hljs-selector-tag">main</span>() &#123;
+    ctx, cancel := context.<span class="hljs-built_in">WithTimeout</span>(context.<span class="hljs-built_in">Background</span>(), <span class="hljs-number">50</span>*time.Millisecond)
+    defer <span class="hljs-built_in">cancel</span>()
+
+    select &#123;
+    case &lt;-time.<span class="hljs-built_in">After</span>(<span class="hljs-number">1</span> * time.Second):
+        fmt.<span class="hljs-built_in">Println</span>(<span class="hljs-string">&quot;overslept&quot;</span>)
+    case &lt;-ctx.<span class="hljs-built_in">Done</span>():
+        fmt.<span class="hljs-built_in">Println</span>(ctx.<span class="hljs-built_in">Err</span>()) // prints <span class="hljs-string">&quot;context deadline exceeded&quot;</span>
+    &#125;
+&#125;</code></pre></div></li>
 <li><p>共享数据</p>
 </li>
 </ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	ctx := context.Background()<br>	process(ctx)<br><br>	ctx = context.WithValue(ctx, <span class="hljs-string">&quot;traceId&quot;</span>, <span class="hljs-string">&quot;qcrao-2019&quot;</span>)<br>	process(ctx)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">process</span><span class="hljs-params">(ctx context.Context)</span></span> &#123;<br>	traceId, ok := ctx.Value(<span class="hljs-string">&quot;traceId&quot;</span>).(<span class="hljs-keyword">string</span>)<br>	<span class="hljs-keyword">if</span> ok &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;process over. trace_id=%s\n&quot;</span>, traceId)<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;process over. no trace_id\n&quot;</span>)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	ctx := context.Background()
+	process(ctx)
+
+	ctx = context.WithValue(ctx, <span class="hljs-string">&quot;traceId&quot;</span>, <span class="hljs-string">&quot;qcrao-2019&quot;</span>)
+	process(ctx)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">process</span><span class="hljs-params">(ctx context.Context)</span></span> &#123;
+	traceId, ok := ctx.Value(<span class="hljs-string">&quot;traceId&quot;</span>).(<span class="hljs-keyword">string</span>)
+	<span class="hljs-keyword">if</span> ok &#123;
+		fmt.Printf(<span class="hljs-string">&quot;process over. trace_id=%s\n&quot;</span>, traceId)
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		fmt.Printf(<span class="hljs-string">&quot;process over. no trace_id\n&quot;</span>)
+	&#125;
+&#125;</code></pre></div>
 
 <p>这个在web开发中很实用，传递session、token等信息。</p>
 <ol start="3">
-<li>防止 goroutine 泄漏<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;time&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">gen</span><span class="hljs-params">()</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">int</span></span> &#123;<br>	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">var</span> n <span class="hljs-keyword">int</span><br>		<span class="hljs-keyword">for</span> &#123;<br>			ch &lt;- n<br>			n++<br>			time.Sleep(time.Second)<br>		&#125;<br>	&#125;()<br>	<span class="hljs-keyword">return</span> ch<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> n := <span class="hljs-keyword">range</span> gen() &#123;<br>		fmt.Println(n)<br>		<span class="hljs-keyword">if</span> n == <span class="hljs-number">5</span> &#123;<br>			<span class="hljs-keyword">break</span><br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>防止 goroutine 泄漏<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;time&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">gen</span><span class="hljs-params">()</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">int</span></span> &#123;
+	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-keyword">var</span> n <span class="hljs-keyword">int</span>
+		<span class="hljs-keyword">for</span> &#123;
+			ch &lt;- n
+			n++
+			time.Sleep(time.Second)
+		&#125;
+	&#125;()
+	<span class="hljs-keyword">return</span> ch
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">for</span> n := <span class="hljs-keyword">range</span> gen() &#123;
+		fmt.Println(n)
+		<span class="hljs-keyword">if</span> n == <span class="hljs-number">5</span> &#123;
+			<span class="hljs-keyword">break</span>
+		&#125;
+	&#125;
+&#125;</code></pre></div></li>
 </ol>
 <p>当 n = 5 的时候，直接 break 。但是 gen 的协程就会执行无限循环，永远不会停下来。发生了 goroutine 泄漏。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;time&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;context&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">gen</span><span class="hljs-params">(ctx context.Context)</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">int</span></span> &#123;<br>	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">var</span> n <span class="hljs-keyword">int</span><br>		<span class="hljs-keyword">for</span> &#123;<br>			<span class="hljs-keyword">select</span> &#123;<br>			<span class="hljs-keyword">case</span> &lt;-ctx.Done():<br>				<span class="hljs-keyword">return</span><br>			<span class="hljs-keyword">case</span> ch &lt;- n:<br>				n++<br>				time.Sleep(time.Second)<br>			&#125;<br>		&#125;<br>	&#125;()<br>	<span class="hljs-keyword">return</span> ch<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	ctx, cancel := context.WithCancel(context.Background())<br>	<span class="hljs-keyword">defer</span> cancel() <span class="hljs-comment">// 避免其他地方忘记 cancel，且重复调用不影响</span><br><br>	<span class="hljs-keyword">for</span> n := <span class="hljs-keyword">range</span> gen(ctx) &#123;<br>		fmt.Println(n)<br>		<span class="hljs-keyword">if</span> n == <span class="hljs-number">5</span> &#123;<br>			cancel()<br>			<span class="hljs-keyword">break</span><br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;time&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;context&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">gen</span><span class="hljs-params">(ctx context.Context)</span> &lt;-<span class="hljs-title">chan</span> <span class="hljs-title">int</span></span> &#123;
+	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-keyword">var</span> n <span class="hljs-keyword">int</span>
+		<span class="hljs-keyword">for</span> &#123;
+			<span class="hljs-keyword">select</span> &#123;
+			<span class="hljs-keyword">case</span> &lt;-ctx.Done():
+				<span class="hljs-keyword">return</span>
+			<span class="hljs-keyword">case</span> ch &lt;- n:
+				n++
+				time.Sleep(time.Second)
+			&#125;
+		&#125;
+	&#125;()
+	<span class="hljs-keyword">return</span> ch
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	ctx, cancel := context.WithCancel(context.Background())
+	<span class="hljs-keyword">defer</span> cancel() <span class="hljs-comment">// 避免其他地方忘记 cancel，且重复调用不影响</span>
+
+	<span class="hljs-keyword">for</span> n := <span class="hljs-keyword">range</span> gen(ctx) &#123;
+		fmt.Println(n)
+		<span class="hljs-keyword">if</span> n == <span class="hljs-number">5</span> &#123;
+			cancel()
+			<span class="hljs-keyword">break</span>
+		&#125;
+	&#125;
+&#125;</code></pre></div>
 
 <h1 id="Context-使用原则"><a href="#Context-使用原则" class="headerlink" title="Context 使用原则"></a>Context 使用原则</h1><p>最后记住几个主要的使用原则：</p>
 <ul>

@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.3k 字
+          2.2k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          20 分钟
+          18 分钟
         
       </span>
     
@@ -869,15 +869,107 @@
 <li>队列写入数据库</li>
 </ul>
 <p>表设计</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `admin_log` (<br>  `id` <span class="hljs-type">int</span>(<span class="hljs-number">10</span>) unsigned <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,<br>  `user_id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>  `path` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>  `<span class="hljs-keyword">method</span>` <span class="hljs-type">varchar</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>  `ip` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>  `input` text <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>  `created_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,<br>  <span class="hljs-keyword">PRIMARY</span> KEY (`id`)<br>) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_unicode_ci ROW_FORMAT<span class="hljs-operator">=</span><span class="hljs-keyword">DYNAMIC</span>;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `admin_log` (
+  `id` <span class="hljs-type">int</span>(<span class="hljs-number">10</span>) unsigned <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,
+  `user_id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,
+  `path` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,
+  `<span class="hljs-keyword">method</span>` <span class="hljs-type">varchar</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,
+  `ip` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,
+  `input` text <span class="hljs-keyword">COLLATE</span> utf8mb4_unicode_ci <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,
+  `created_at` <span class="hljs-type">timestamp</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span>,
+  <span class="hljs-keyword">PRIMARY</span> KEY (`id`)
+) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8mb4 <span class="hljs-keyword">COLLATE</span><span class="hljs-operator">=</span>utf8mb4_unicode_ci ROW_FORMAT<span class="hljs-operator">=</span><span class="hljs-keyword">DYNAMIC</span>;</code></pre></div>
 
 <p>新建中间件AdminLogMiddleware，在后台路由中加入此中间件即可，</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Author: sai</span><br><span class="hljs-comment"> * Date: 2020/4/1</span><br><span class="hljs-comment"> * Time: 16:19</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Middleware</span>;<br><br><br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Jobs</span>\<span class="hljs-title">OperationLogJob</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Closure</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Auth</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminLogMiddleware</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 处理传入的参数</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  \Illuminate\Http\Request  $request</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  \Closure  $next</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  string  $role</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> mixed</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-built_in">Closure</span> <span class="hljs-variable">$next</span>, <span class="hljs-variable">$role</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>		<span class="hljs-comment">// 剔除GET，OPTIONS请求</span><br>        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$method</span> = <span class="hljs-variable">$request</span>-&gt;getMethod(), [<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;OPTIONS&#x27;</span>])) &#123;<br>            <span class="hljs-variable">$data</span> = [<br>                <span class="hljs-string">&#x27;user_id&#x27;</span> =&gt; Auth::guard(<span class="hljs-string">&#x27;admin&#x27;</span>)-&gt;id(),<br>                <span class="hljs-string">&#x27;path&#x27;</span> =&gt; <span class="hljs-variable">$request</span>-&gt;getPathInfo(),<br>                <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-variable">$method</span>,<br>                <span class="hljs-string">&#x27;ip&#x27;</span> =&gt; <span class="hljs-variable">$request</span>-&gt;getClientIp(),<br>                <span class="hljs-string">&#x27;input&#x27;</span> =&gt; \json_encode(<span class="hljs-variable">$request</span>-&gt;all(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),<br>            ];<br>			<br>			<span class="hljs-comment">// 异步写入，提高操作流畅性</span><br>            <span class="hljs-variable">$job</span> = (<span class="hljs-keyword">new</span> OperationLogJob(<span class="hljs-variable">$data</span>));<br>            dispatch(<span class="hljs-variable">$job</span>);<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$next</span>(<span class="hljs-variable">$request</span>);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Author: sai</span>
+<span class="hljs-comment"> * Date: 2020/4/1</span>
+<span class="hljs-comment"> * Time: 16:19</span>
+<span class="hljs-comment"> */</span>
 
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Jobs</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">AdminLog</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Bus</span>\<span class="hljs-title">Queueable</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Contracts</span>\<span class="hljs-title">Queue</span>\<span class="hljs-title">ShouldQueue</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Foundation</span>\<span class="hljs-title">Bus</span>\<span class="hljs-title">Dispatchable</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Queue</span>\<span class="hljs-title">InteractsWithQueue</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Queue</span>\<span class="hljs-title">SerializesModels</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OperationLogJob</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ShouldQueue</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">use</span> <span class="hljs-title">Dispatchable</span>, <span class="hljs-title">InteractsWithQueue</span>, <span class="hljs-title">Queueable</span>, <span class="hljs-title">SerializesModels</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Create a new job instance.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$data</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">//</span><br>        <span class="hljs-keyword">$this</span>-&gt;queue = <span class="hljs-string">&#x27;adminLog&#x27;</span>;<br>        <span class="hljs-keyword">$this</span>-&gt;data = <span class="hljs-variable">$data</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$data</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * Execute the job.</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">//</span><br>        AdminLog::create(<span class="hljs-keyword">$this</span>-&gt;data);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Middleware</span>;
+
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Jobs</span>\<span class="hljs-title">OperationLogJob</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Closure</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Auth</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AdminLogMiddleware</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 处理传入的参数</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  \Illuminate\Http\Request  $request</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  \Closure  $next</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span>  string  $role</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> mixed</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"><span class="hljs-variable">$request</span>, <span class="hljs-built_in">Closure</span> <span class="hljs-variable">$next</span>, <span class="hljs-variable">$role</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+		<span class="hljs-comment">// 剔除GET，OPTIONS请求</span>
+        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$method</span> = <span class="hljs-variable">$request</span>-&gt;getMethod(), [<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;OPTIONS&#x27;</span>])) &#123;
+            <span class="hljs-variable">$data</span> = [
+                <span class="hljs-string">&#x27;user_id&#x27;</span> =&gt; Auth::guard(<span class="hljs-string">&#x27;admin&#x27;</span>)-&gt;id(),
+                <span class="hljs-string">&#x27;path&#x27;</span> =&gt; <span class="hljs-variable">$request</span>-&gt;getPathInfo(),
+                <span class="hljs-string">&#x27;method&#x27;</span> =&gt; <span class="hljs-variable">$method</span>,
+                <span class="hljs-string">&#x27;ip&#x27;</span> =&gt; <span class="hljs-variable">$request</span>-&gt;getClientIp(),
+                <span class="hljs-string">&#x27;input&#x27;</span> =&gt; \json_encode(<span class="hljs-variable">$request</span>-&gt;all(), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),
+            ];
+			
+			<span class="hljs-comment">// 异步写入，提高操作流畅性</span>
+            <span class="hljs-variable">$job</span> = (<span class="hljs-keyword">new</span> OperationLogJob(<span class="hljs-variable">$data</span>));
+            dispatch(<span class="hljs-variable">$job</span>);
+        &#125;
+
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$next</span>(<span class="hljs-variable">$request</span>);
+    &#125;
+
+&#125;</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Jobs</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">AdminLog</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Bus</span>\<span class="hljs-title">Queueable</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Contracts</span>\<span class="hljs-title">Queue</span>\<span class="hljs-title">ShouldQueue</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Foundation</span>\<span class="hljs-title">Bus</span>\<span class="hljs-title">Dispatchable</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Queue</span>\<span class="hljs-title">InteractsWithQueue</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Queue</span>\<span class="hljs-title">SerializesModels</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OperationLogJob</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ShouldQueue</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Dispatchable</span>, <span class="hljs-title">InteractsWithQueue</span>, <span class="hljs-title">Queueable</span>, <span class="hljs-title">SerializesModels</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Create a new job instance.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$data</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-comment">//</span>
+        <span class="hljs-keyword">$this</span>-&gt;queue = <span class="hljs-string">&#x27;adminLog&#x27;</span>;
+        <span class="hljs-keyword">$this</span>-&gt;data = <span class="hljs-variable">$data</span>;
+    &#125;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$data</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Execute the job.</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> void</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handle</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-comment">//</span>
+        AdminLog::create(<span class="hljs-keyword">$this</span>-&gt;data);
+    &#125;
+&#125;</code></pre></div>
 
 <p>执行队列：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">php artisan queue:work --queue=adminLog<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs cpp">php artisan queue:work --queue=adminLog</code></pre></div>
 
 <p>当然，也可以不写入数据库，写在log文件里，这里就不展开了。</p>
 <p>另外，为了方便，也可以给后台统一加入AdminLogMiddleware中间件，把不需要做记录的路由加入配置文件，在中间件加入判断，省去在路由配置去区分是否需要记录。</p>

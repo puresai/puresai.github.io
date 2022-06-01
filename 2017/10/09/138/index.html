@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          584 字
+          576 字
         
       </span>
     
@@ -474,7 +474,14 @@
 <p>这样我们就选择使用SVN自带的hooks来做web站点代码更新。</p>
 <p>进入对应版本库下的hooks目录，复制 post-commit.tmpl为post-commit。</p>
 <p>打开，修改代码如下：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk">export.UTF-<span class="hljs-number">8</span> <br>REPOS=<span class="hljs-string">&quot;$1&quot;</span> <br>REV=<span class="hljs-string">&quot;$2&quot;</span> <br>SVN_PATH=<span class="hljs-regexp">/usr/</span>bin/svn <span class="hljs-comment">#注意，此处是svn命令目录 </span><br>WEB_PATH=<span class="hljs-regexp">/web/</span>trunk <span class="hljs-comment">#站点目录 </span><br>LOG_PATH=<span class="hljs-regexp">/home/</span>svn<span class="hljs-regexp">/trunk/</span>svn.log <br>echo <span class="hljs-string">&quot;##########开始提交 &quot;</span> `date <span class="hljs-string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>` <span class="hljs-string">&#x27;##################&#x27;</span> &gt;&gt; <span class="hljs-variable">$LOG_PATH</span> <br><span class="hljs-variable">$SVN_PATH</span> update --username <span class="hljs-number">13</span>sai --password <span class="hljs-number">123456</span> <span class="hljs-variable">$WEB_PATH</span> --no-auth-cache &gt;&gt; <span class="hljs-variable">$LOG_PATH</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">export.UTF-<span class="hljs-number">8</span> 
+REPOS=<span class="hljs-string">&quot;$1&quot;</span> 
+REV=<span class="hljs-string">&quot;$2&quot;</span> 
+SVN_PATH=<span class="hljs-regexp">/usr/</span>bin/svn <span class="hljs-comment">#注意，此处是svn命令目录 </span>
+WEB_PATH=<span class="hljs-regexp">/web/</span>trunk <span class="hljs-comment">#站点目录 </span>
+LOG_PATH=<span class="hljs-regexp">/home/</span>svn<span class="hljs-regexp">/trunk/</span>svn.log 
+echo <span class="hljs-string">&quot;##########开始提交 &quot;</span> `date <span class="hljs-string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>` <span class="hljs-string">&#x27;##################&#x27;</span> &gt;&gt; <span class="hljs-variable">$LOG_PATH</span> 
+<span class="hljs-variable">$SVN_PATH</span> update --username <span class="hljs-number">13</span>sai --password <span class="hljs-number">123456</span> <span class="hljs-variable">$WEB_PATH</span> --no-auth-cache &gt;&gt; <span class="hljs-variable">$LOG_PATH</span></code></pre></div>
 
 <p>记得要修改下post-commit的执行权限，然后测试，如果成功了，那恭喜你！</p>
 

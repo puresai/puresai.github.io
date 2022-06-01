@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3k 字
+          2.8k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          26 分钟
+          24 分钟
         
       </span>
     
@@ -866,16 +866,40 @@
               
               <p>相比导入，项目中导出场景更多，估摸着现在有十多个导出了，之前写了导入，这会才把导出补上。</p>
 <p>安装之前说过，这里说一下配置，虽然已有默认配置，但还是有修改配置的场景，所以建议生成配置文件。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//生成config/excel.php</span><br>php artisan vendor:publish --provider=<span class="hljs-string">&quot;Maatwebsite\Excel\ExcelServiceProvider&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">//生成config/excel.php</span>
+php artisan vendor:publish --provider=<span class="hljs-string">&quot;Maatwebsite\Excel\ExcelServiceProvider&quot;</span></code></pre></div>
 
 <p>配置只提一个，其他注释蛮细的，</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-string">&#x27;csv&#x27;</span> =&gt; [<br>	<span class="hljs-string">&#x27;delimiter&#x27;</span>              =&gt; <span class="hljs-string">&#x27;,&#x27;</span>,<br>	<span class="hljs-string">&#x27;enclosure&#x27;</span>              =&gt; <span class="hljs-string">&#x27;&quot;&#x27;</span>,<br>	<span class="hljs-string">&#x27;line_ending&#x27;</span>            =&gt; PHP_EOL,<br>	<span class="hljs-comment">// 导出csv中文乱码，把use_bom设为true即可</span><br>	<span class="hljs-string">&#x27;use_bom&#x27;</span>                =&gt; <span class="hljs-keyword">true</span>,<br>	<span class="hljs-string">&#x27;include_separator_line&#x27;</span> =&gt; <span class="hljs-keyword">false</span>,<br>	<span class="hljs-string">&#x27;excel_compatibility&#x27;</span>    =&gt; <span class="hljs-keyword">false</span>,<br>],<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs dart"><span class="hljs-string">&#x27;csv&#x27;</span> =&gt; [
+	<span class="hljs-string">&#x27;delimiter&#x27;</span>              =&gt; <span class="hljs-string">&#x27;,&#x27;</span>,
+	<span class="hljs-string">&#x27;enclosure&#x27;</span>              =&gt; <span class="hljs-string">&#x27;&quot;&#x27;</span>,
+	<span class="hljs-string">&#x27;line_ending&#x27;</span>            =&gt; PHP_EOL,
+	<span class="hljs-comment">// 导出csv中文乱码，把use_bom设为true即可</span>
+	<span class="hljs-string">&#x27;use_bom&#x27;</span>                =&gt; <span class="hljs-keyword">true</span>,
+	<span class="hljs-string">&#x27;include_separator_line&#x27;</span> =&gt; <span class="hljs-keyword">false</span>,
+	<span class="hljs-string">&#x27;excel_compatibility&#x27;</span>    =&gt; <span class="hljs-keyword">false</span>,
+],</code></pre></div>
 
 <p>接下来，来完成一个导出的demo说明下常用的一些点。</p>
-<h2 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">php artisan make:export MultiExport<br></code></pre></td></tr></table></figure>
+<h2 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h2><div class="code-wrapper"><pre><code class="hljs php">php artisan make:export MultiExport</code></pre></div>
 
 <p>生成文件如下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">FromCollection</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MultiExport</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">FromCollection</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@return</span> \Illuminate\Support\Collection</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">collection</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-comment">//</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">FromCollection</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MultiExport</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">FromCollection</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">    * <span class="hljs-doctag">@return</span> \Illuminate\Support\Collection</span>
+<span class="hljs-comment">    */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">collection</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-comment">//</span>
+    &#125;
+&#125;</code></pre></div>
 <ul>
 <li>自定义sheet，增加 WithTitle</li>
 <li>自定义列名，增加WithHeadings</li>
@@ -883,10 +907,109 @@
 <li>多个sheet，替换FromCollection使用WithMultipleSheets</li>
 </ul>
 <p>经过改造：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 多重导出</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>\<span class="hljs-title">MultiExportA</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>\<span class="hljs-title">MultiExportB</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">WithMultipleSheets</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MultiExport</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">WithMultipleSheets</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$date</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$date</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;date = <span class="hljs-variable">$date</span>;<br>    &#125;<br><br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sheets</span>(<span class="hljs-params"></span>): <span class="hljs-title">array</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$sheets</span> = [];<br><br>        <span class="hljs-variable">$sheets</span>[] = <span class="hljs-keyword">new</span> MultiExportA(<span class="hljs-keyword">$this</span>-&gt;date);<br>        <span class="hljs-variable">$sheets</span>[] = <span class="hljs-keyword">new</span> MultiExportB(<span class="hljs-keyword">$this</span>-&gt;date);<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$sheets</span>;<br>    &#125;<br>&#125;<br><br>---<br><span class="hljs-comment">// MultiExportA，MultiExportB类比即可</span><br><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>;<br><br><span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">FromArray</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">WithHeadings</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">WithTitle</span>;<br><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">ExportA</span>;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MultiExportA</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">FromArray</span>, <span class="hljs-title">WithTitle</span>, <span class="hljs-title">WithHeadings</span></span><br><span class="hljs-class"></span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-variable">$date</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$date</span>, <span class="hljs-variable">$cityId</span></span>)</span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">$this</span>-&gt;date = <span class="hljs-variable">$date</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">headings</span>(<span class="hljs-params"></span>): <span class="hljs-title">array</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> [<br>            <span class="hljs-string">&#x27;ID&#x27;</span>,<br>            <span class="hljs-string">&#x27;名称&#x27;</span>,<br>            <span class="hljs-string">&#x27;价格&#x27;</span>,<br>            <span class="hljs-string">&#x27;手机&#x27;</span><br>        ];<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">    * <span class="hljs-doctag">@return</span> array</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">array</span>(<span class="hljs-params"></span>) : <span class="hljs-title">array</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-variable">$data</span> = ExportA::where(<span class="hljs-string">&#x27;date&#x27;</span>, <span class="hljs-keyword">$this</span>-&gt;date)<br>            -&gt;get()<br>            -&gt;toArray();<br><br>        <span class="hljs-variable">$ret</span> = [];<br>        <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$data</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$val</span>) &#123;<br>            <span class="hljs-comment">// 一段神奇的代码计算出了价格</span><br>            <span class="hljs-variable">$price</span> = ...;<br>            <span class="hljs-variable">$ret</span>[] = [<br>                <span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-variable">$val</span>[<span class="hljs-string">&#x27;id&#x27;</span>].<span class="hljs-string">&quot;\t&quot;</span>,<br>                <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-variable">$val</span>[<span class="hljs-string">&#x27;name&#x27;</span>],<br>                <span class="hljs-string">&#x27;price&#x27;</span> =&gt; <span class="hljs-variable">$price</span>,<br>                <span class="hljs-comment">// 转换为文本，编码excel使用了科学计数法</span><br>                <span class="hljs-string">&#x27;mobile&#x27;</span> =&gt; <span class="hljs-variable">$val</span>[<span class="hljs-string">&#x27;mobile&#x27;</span>].<span class="hljs-string">&quot;\t&quot;</span>,<br>            ];<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable">$ret</span>;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> string</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">title</span>(<span class="hljs-params"></span>): <span class="hljs-title">string</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;表格A&#x27;</span>;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 多重导出</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>\<span class="hljs-title">MultiExportA</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>\<span class="hljs-title">MultiExportB</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">WithMultipleSheets</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MultiExport</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">WithMultipleSheets</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$date</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$date</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;date = <span class="hljs-variable">$date</span>;
+    &#125;
+
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sheets</span>(<span class="hljs-params"></span>): <span class="hljs-title">array</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$sheets</span> = [];
+
+        <span class="hljs-variable">$sheets</span>[] = <span class="hljs-keyword">new</span> MultiExportA(<span class="hljs-keyword">$this</span>-&gt;date);
+        <span class="hljs-variable">$sheets</span>[] = <span class="hljs-keyword">new</span> MultiExportB(<span class="hljs-keyword">$this</span>-&gt;date);
+
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$sheets</span>;
+    &#125;
+&#125;
+
+---
+<span class="hljs-comment">// MultiExportA，MultiExportB类比即可</span>
+<span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Exports</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">FromArray</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">WithHeadings</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Maatwebsite</span>\<span class="hljs-title">Excel</span>\<span class="hljs-title">Concerns</span>\<span class="hljs-title">WithTitle</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">ExportA</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MultiExportA</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">FromArray</span>, <span class="hljs-title">WithTitle</span>, <span class="hljs-title">WithHeadings</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-variable">$date</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$date</span>, <span class="hljs-variable">$cityId</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;date = <span class="hljs-variable">$date</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">headings</span>(<span class="hljs-params"></span>): <span class="hljs-title">array</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> [
+            <span class="hljs-string">&#x27;ID&#x27;</span>,
+            <span class="hljs-string">&#x27;名称&#x27;</span>,
+            <span class="hljs-string">&#x27;价格&#x27;</span>,
+            <span class="hljs-string">&#x27;手机&#x27;</span>
+        ];
+    &#125;
+
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">    * <span class="hljs-doctag">@return</span> array</span>
+<span class="hljs-comment">    */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">array</span>(<span class="hljs-params"></span>) : <span class="hljs-title">array</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$data</span> = ExportA::where(<span class="hljs-string">&#x27;date&#x27;</span>, <span class="hljs-keyword">$this</span>-&gt;date)
+            -&gt;get()
+            -&gt;toArray();
+
+        <span class="hljs-variable">$ret</span> = [];
+        <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$data</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$val</span>) &#123;
+            <span class="hljs-comment">// 一段神奇的代码计算出了价格</span>
+            <span class="hljs-variable">$price</span> = ...;
+            <span class="hljs-variable">$ret</span>[] = [
+                <span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-variable">$val</span>[<span class="hljs-string">&#x27;id&#x27;</span>].<span class="hljs-string">&quot;\t&quot;</span>,
+                <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-variable">$val</span>[<span class="hljs-string">&#x27;name&#x27;</span>],
+                <span class="hljs-string">&#x27;price&#x27;</span> =&gt; <span class="hljs-variable">$price</span>,
+                <span class="hljs-comment">// 转换为文本，编码excel使用了科学计数法</span>
+                <span class="hljs-string">&#x27;mobile&#x27;</span> =&gt; <span class="hljs-variable">$val</span>[<span class="hljs-string">&#x27;mobile&#x27;</span>].<span class="hljs-string">&quot;\t&quot;</span>,
+            ];
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$ret</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> string</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">title</span>(<span class="hljs-params"></span>): <span class="hljs-title">string</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;表格A&#x27;</span>;
+    &#125;
+&#125;
+</code></pre></div>
 
 <p>使用</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// 保存</span><br><span class="hljs-variable">$obj</span> = <span class="hljs-keyword">new</span> MultiExport(<span class="hljs-variable">$date</span>);<br>Excel::store(<span class="hljs-variable">$obj</span>, <span class="hljs-string">&#x27;MultiExport&#x27;</span>.<span class="hljs-variable">$date</span>.<span class="hljs-string">&#x27;.xlsx&#x27;</span>);<br><br><span class="hljs-comment">// 下载csv</span><br>Excel::download(<span class="hljs-variable">$obj</span>, <span class="hljs-string">&#x27;MultiExport&#x27;</span>.<span class="hljs-variable">$date</span>.<span class="hljs-string">&#x27;.csv&#x27;</span>, \Maatwebsite\Excel\Excel::CSV, [<span class="hljs-string">&#x27;Content-Type&#x27;</span> =&gt; <span class="hljs-string">&#x27;text/csv&#x27;</span>]);<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">// 保存</span>
+<span class="hljs-variable">$obj</span> = <span class="hljs-keyword">new</span> MultiExport(<span class="hljs-variable">$date</span>);
+Excel::store(<span class="hljs-variable">$obj</span>, <span class="hljs-string">&#x27;MultiExport&#x27;</span>.<span class="hljs-variable">$date</span>.<span class="hljs-string">&#x27;.xlsx&#x27;</span>);
+
+<span class="hljs-comment">// 下载csv</span>
+Excel::download(<span class="hljs-variable">$obj</span>, <span class="hljs-string">&#x27;MultiExport&#x27;</span>.<span class="hljs-variable">$date</span>.<span class="hljs-string">&#x27;.csv&#x27;</span>, \Maatwebsite\Excel\Excel::CSV, [<span class="hljs-string">&#x27;Content-Type&#x27;</span> =&gt; <span class="hljs-string">&#x27;text/csv&#x27;</span>]);</code></pre></div>
 
 <h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><p>当数据量过大的时候，导出时很可能会内存溢出了。建议：</p>
 <ul>

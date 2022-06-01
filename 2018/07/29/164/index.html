@@ -480,20 +480,24 @@
               
               <p>最近公司有新项目上线，新买了服务器，便需要搭建环境，便实操了一下。</p>
 <h2 id="lnmp包装"><a href="#lnmp包装" class="headerlink" title="lnmp包装"></a>lnmp包装</h2><p>lnmp的安装时比较轻松的，一行代码，</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> http://soft.vpser.net/lnmp/lnmp<span class="hljs-number">1</span>.<span class="hljs-number">5</span>.tar.gz -cO lnmp<span class="hljs-number">1</span>.<span class="hljs-number">5</span>.tar.gz &amp;&amp; tar zxf lnmp<span class="hljs-number">1</span>.<span class="hljs-number">5</span>.tar.gz &amp;&amp; cd lnmp<span class="hljs-number">1</span>.<span class="hljs-number">5</span> &amp;&amp; ./install.sh lnmp<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> http://soft.vpser.net/lnmp/lnmp<span class="hljs-number">1</span>.<span class="hljs-number">5</span>.tar.gz -cO lnmp<span class="hljs-number">1</span>.<span class="hljs-number">5</span>.tar.gz &amp;&amp; tar zxf lnmp<span class="hljs-number">1</span>.<span class="hljs-number">5</span>.tar.gz &amp;&amp; cd lnmp<span class="hljs-number">1</span>.<span class="hljs-number">5</span> &amp;&amp; ./install.sh lnmp</code></pre></div>
 
 <p>然后会提示你选择的nginx版本，输入mysql密码，php版本，选择之后坐等安装，大概需要半个小时。</p>
 <p>如果显示Nginx: OK，MySQL: OK，PHP: OK。就表示安装成功了。</p>
-<h2 id="扩展安装（以redis扩展为例）"><a href="#扩展安装（以redis扩展为例）" class="headerlink" title="扩展安装（以redis扩展为例）"></a>扩展安装（以redis扩展为例）</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk">wget https:<span class="hljs-regexp">//</span>codeload.github.com<span class="hljs-regexp">/phpredis/</span>phpredis<span class="hljs-regexp">/zip/</span>develop -O phpredis.zip<br>unzip phpredis.zip<br>cd /phpredis-develop<br><span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/php/</span>bin<span class="hljs-regexp">/phpize./</span>configure --with-php-config=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/php/</span>bin/php-config<br>make &amp;&amp; make install   <span class="hljs-regexp">//</span>编译安装<br></code></pre></td></tr></table></figure>
+<h2 id="扩展安装（以redis扩展为例）"><a href="#扩展安装（以redis扩展为例）" class="headerlink" title="扩展安装（以redis扩展为例）"></a>扩展安装（以redis扩展为例）</h2><div class="code-wrapper"><pre><code class="hljs awk">wget https:<span class="hljs-regexp">//</span>codeload.github.com<span class="hljs-regexp">/phpredis/</span>phpredis<span class="hljs-regexp">/zip/</span>develop -O phpredis.zip
+unzip phpredis.zip
+cd /phpredis-develop
+<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/php/</span>bin<span class="hljs-regexp">/phpize./</span>configure --with-php-config=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/php/</span>bin/php-config
+make &amp;&amp; make install   <span class="hljs-regexp">//</span>编译安装</code></pre></div>
 <p>在php.ini中加入</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">extension</span>=redis.so<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-attr">extension</span>=redis.so</code></pre></div>
 
 <p>重启php-fpm，通过<code>php -m</code>命令查看</p>
- <p>最近公司有新项目上线，新买了服务器，便需要搭建环境，便实操了一下。</p><p><br/></p><ol class=" list-paddingleft-2" style="list-style-type: decimal;"><li><p>lnmp包装</p><p><br/></p></li></ol><p>lnmp的安装时比较轻松的，一行代码，<br/></p><pre class="brush:as3;toolbar:false">wget&nbsp;http://soft.vpser.net/lnmp/lnmp1.5.tar.gz&nbsp;-cO&nbsp;lnmp1.5.tar.gz&nbsp;&amp;&amp;&nbsp;tar&nbsp;zxf&nbsp;lnmp1.5.tar.gz&nbsp;&amp;&amp;&nbsp;cd&nbsp;lnmp1.5&nbsp;&amp;&amp;&nbsp;./install.sh&nbsp;lnmp</pre><p>然后会提示你选择的nginx版本，输入mysql密码，php版本，选择之后坐等安装，大概需要半个小时。<br/></p><p><br/></p><p>如果显示Nginx: OK，MySQL: OK，PHP: OK。</p><p>就表示安装成功了。</p><p><br/></p><p>2. 扩展安装（以redis扩展为例）</p><pre class="brush:php;toolbar:false;">wget&nbsp;https://codeload.github.com/phpredis/phpredis/zip/develop&nbsp;-O&nbsp;phpredis.zip
+ <p>最近公司有新项目上线，新买了服务器，便需要搭建环境，便实操了一下。</p><p><br/></p><ol class=" list-paddingleft-2" style="list-style-type: decimal;"><li><p>lnmp包装</p><p><br/></p></li></ol><p>lnmp的安装时比较轻松的，一行代码，<br/></p><div class="code-wrapper"><pre class="brush:as3;toolbar:false">wget&nbsp;http://soft.vpser.net/lnmp/lnmp1.5.tar.gz&nbsp;-cO&nbsp;lnmp1.5.tar.gz&nbsp;&amp;&amp;&nbsp;tar&nbsp;zxf&nbsp;lnmp1.5.tar.gz&nbsp;&amp;&amp;&nbsp;cd&nbsp;lnmp1.5&nbsp;&amp;&amp;&nbsp;./install.sh&nbsp;lnmp</pre></div><p>然后会提示你选择的nginx版本，输入mysql密码，php版本，选择之后坐等安装，大概需要半个小时。<br/></p><p><br/></p><p>如果显示Nginx: OK，MySQL: OK，PHP: OK。</p><p>就表示安装成功了。</p><p><br/></p><p>2. 扩展安装（以redis扩展为例）</p><div class="code-wrapper"><pre class="brush:php;toolbar:false;">wget&nbsp;https://codeload.github.com/phpredis/phpredis/zip/develop&nbsp;-O&nbsp;phpredis.zip
 unzip&nbsp;phpredis.zip
 cd&nbsp;/phpredis-develop
 /usr/local/php/bin/phpize./configure&nbsp;--with-php-config=/usr/local/php/bin/php-config
-make&nbsp;&amp;&amp;&nbsp;make&nbsp;install&nbsp;&nbsp;&nbsp;//编译安装</pre><p>在php.ini中加入</p><pre class="brush:bash;toolbar:false">extension=redis.so</pre><p>重启php-fpm，通过php -m命令查看。</p>
+make&nbsp;&amp;&amp;&nbsp;make&nbsp;install&nbsp;&nbsp;&nbsp;//编译安装</pre></div><p>在php.ini中加入</p><div class="code-wrapper"><pre class="brush:bash;toolbar:false">extension=redis.so</pre></div><p>重启php-fpm，通过php -m命令查看。</p>
 
               
             </div>

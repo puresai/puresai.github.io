@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.6k 字
+          3.5k 字
         
       </span>
     
@@ -463,7 +463,15 @@
 <ul>
 <li>容器构建镜像</li>
 </ul>
-<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">Usage:docker <span class="hljs-keyword">build</span> [OPTIONS] <span class="hljs-keyword">PATH</span> | URL | -<br>OPTIONS:<br>-t ，--tag list  #构建后的镜像名称<br>-f， --file <span class="hljs-keyword">string</span> #指定Dockerfiile文件位置<br>示例:<br>- <span class="hljs-number">1</span>，docker <span class="hljs-keyword">build</span> .<br>- <span class="hljs-number">2</span>，docker <span class="hljs-keyword">build</span> -t redis:v1 .<br>- <span class="hljs-number">3</span>，docker <span class="hljs-keyword">build</span> -t redis:v2 -f /<span class="hljs-keyword">path</span>/Dockerfile /<span class="hljs-keyword">path</span><br>一般常用第<span class="hljs-number">2</span>种方式构建，我们在构建时都会切换到Dockerfile文件的目录下进行构建，所以不需要指定-f参数 <br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs n1ql">Usage:docker <span class="hljs-keyword">build</span> [OPTIONS] <span class="hljs-keyword">PATH</span> | URL | -
+OPTIONS:
+-t ，--tag list  #构建后的镜像名称
+-f， --file <span class="hljs-keyword">string</span> #指定Dockerfiile文件位置
+示例:
+- <span class="hljs-number">1</span>，docker <span class="hljs-keyword">build</span> .
+- <span class="hljs-number">2</span>，docker <span class="hljs-keyword">build</span> -t redis:v1 .
+- <span class="hljs-number">3</span>，docker <span class="hljs-keyword">build</span> -t redis:v2 -f /<span class="hljs-keyword">path</span>/Dockerfile /<span class="hljs-keyword">path</span>
+一般常用第<span class="hljs-number">2</span>种方式构建，我们在构建时都会切换到Dockerfile文件的目录下进行构建，所以不需要指定-f参数</code></pre></div>
 
 <ul>
 <li>进入容器（未必一定是bash命令）</li>
@@ -531,22 +539,26 @@
 <ul>
 <li>镜像的保存</li>
 </ul>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> save ae<span class="hljs-number">513</span>a<span class="hljs-number">47849</span>c &gt; nginx-save.tar<br><span class="hljs-attribute">or</span><br><span class="hljs-attribute">docker</span> save -o nginx-save.tar ae<span class="hljs-number">513</span>a<span class="hljs-number">47849</span>c<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> save ae<span class="hljs-number">513</span>a<span class="hljs-number">47849</span>c &gt; nginx-save.tar
+<span class="hljs-attribute">or</span>
+<span class="hljs-attribute">docker</span> save -o nginx-save.tar ae<span class="hljs-number">513</span>a<span class="hljs-number">47849</span>c</code></pre></div>
 
 <ul>
 <li>镜像的导入</li>
 </ul>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs maxima">docker <span class="hljs-built_in">load</span> &lt; nginx-<span class="hljs-built_in">save</span>.tar<br><span class="hljs-keyword">or</span><br>docker <span class="hljs-built_in">load</span> -i nginx-<span class="hljs-built_in">save</span>.tar<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs maxima">docker <span class="hljs-built_in">load</span> &lt; nginx-<span class="hljs-built_in">save</span>.tar
+<span class="hljs-keyword">or</span>
+docker <span class="hljs-built_in">load</span> -i nginx-<span class="hljs-built_in">save</span>.tar</code></pre></div>
 
 <ul>
 <li>容器的导出</li>
 </ul>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">docker export -o mysql-`date +<span class="hljs-variable">%Y%</span>m%d`.tar <span class="hljs-number">220</span>aee82cfea<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs autohotkey">docker export -o mysql-`date +<span class="hljs-variable">%Y%</span>m%d`.tar <span class="hljs-number">220</span>aee82cfea</code></pre></div>
 
 <ul>
 <li>容器的导入</li>
 </ul>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> import  my_ubuntu_v<span class="hljs-number">3</span>.tar runoob/ubuntu:v<span class="hljs-number">4</span>  <br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> import  my_ubuntu_v<span class="hljs-number">3</span>.tar runoob/ubuntu:v<span class="hljs-number">4</span></code></pre></div>
 
 <p>镜像和容器导出和导入的区别:</p>
 <p>1.镜像导入是复制的过程<br>2.容器导入是将当前容器变成一个新的镜像</p>
@@ -637,9 +649,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/12/goexample9/" title="golang限流器">
+                      <a href="/2021/02/12/goexample8/" title="goruntine和channel">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">golang限流器</span>
+                        <span class="hidden-mobile">goruntine和channel</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

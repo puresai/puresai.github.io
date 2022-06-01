@@ -873,7 +873,7 @@
             
             <div class="markdown-body">
               
-               <p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">需要做一个必须勾选协议才能购买的表单，往往要判断是否勾选checkbox，之前遇到过，但没有好好解决，这次又遇到，边彻底解决这个问题。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">其实这个问题的核心是获取checked属性的问题并加以判断，网上文章很多，大致方法有三：</p><pre style="font-family: Monaco, Consolas, Courier, &#39;Lucida Console&#39;, monospace; widows: auto;">&lt;form&nbsp;role=&quot;form&quot;&nbsp;action=&quot;&quot;&nbsp;method=&quot;post&quot;&nbsp;onsubmit=&quot;return&nbsp;jQuery(this).validationEngine(&#39;validate&#39;);&quot;&nbsp;id=&quot;form&quot;&gt;
+               <p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">需要做一个必须勾选协议才能购买的表单，往往要判断是否勾选checkbox，之前遇到过，但没有好好解决，这次又遇到，边彻底解决这个问题。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">其实这个问题的核心是获取checked属性的问题并加以判断，网上文章很多，大致方法有三：</p><div class="code-wrapper"><pre style="font-family: Monaco, Consolas, Courier, &#39;Lucida Console&#39;, monospace; widows: auto;">&lt;form&nbsp;role=&quot;form&quot;&nbsp;action=&quot;&quot;&nbsp;method=&quot;post&quot;&nbsp;onsubmit=&quot;return&nbsp;jQuery(this).validationEngine(&#39;validate&#39;);&quot;&nbsp;id=&quot;form&quot;&gt;
 &nbsp;&nbsp;&lt;div&nbsp;class=&quot;box-body&quot;&gt;
 &nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;class=&quot;form-group&quot;&gt;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;label&nbsp;for=&quot;m_login_name&quot;&gt;购买数量&lt;/label&gt;
@@ -893,7 +893,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button&nbsp;type=&quot;button&quot;&nbsp;class=&quot;btn&nbsp;btn-primary&quot;&nbsp;id=&quot;buy&quot;&gt;立即购买&lt;/button&gt;
 &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;
 &nbsp;&nbsp;&lt;/div&gt;
-&lt;/form&gt;</pre><pre style="font-family: Monaco, Consolas, Courier, &#39;Lucida Console&#39;, monospace; widows: auto;">第一种is(&#39;:checked&#39;)
+&lt;/form&gt;</pre></div><div class="code-wrapper"><pre style="font-family: Monaco, Consolas, Courier, &#39;Lucida Console&#39;, monospace; widows: auto;">第一种is(&#39;:checked&#39;)
 &lt;script&nbsp;type=&quot;text/javascript&quot;&gt;
 ;$(function(){
 &nbsp;&nbsp;&nbsp;&nbsp;$(&#39;#buy&#39;).on(&#39;click&#39;,function(){
@@ -902,7 +902,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;});
 })
-&lt;/script&gt;</pre><pre style="font-family: Monaco, Consolas, Courier, &#39;Lucida Console&#39;, monospace; widows: auto;">第二种attr(&#39;checked&#39;)
+&lt;/script&gt;</pre></div><div class="code-wrapper"><pre style="font-family: Monaco, Consolas, Courier, &#39;Lucida Console&#39;, monospace; widows: auto;">第二种attr(&#39;checked&#39;)
 &lt;script&nbsp;type=&quot;text/javascript&quot;&gt;
 ;$(function(){
 &nbsp;&nbsp;&nbsp;&nbsp;$(&#39;#buy&#39;).on(&#39;click&#39;,function(){
@@ -911,7 +911,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;});
 })
-&lt;/script&gt;</pre><pre style="font-family: Monaco, Consolas, Courier, &#39;Lucida Console&#39;, monospace; widows: auto;">第三种checked
+&lt;/script&gt;</pre></div><div class="code-wrapper"><pre style="font-family: Monaco, Consolas, Courier, &#39;Lucida Console&#39;, monospace; widows: auto;">第三种checked
 &lt;script&nbsp;type=&quot;text/javascript&quot;&gt;
 ;$(function(){
 &nbsp;&nbsp;&nbsp;&nbsp;$(&#39;#buy&#39;).on(&#39;click&#39;,function(){
@@ -920,7 +920,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;});
 })
-&lt;/script&gt;</pre><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">亲测（firefox，chrome），仅有is(&#39;:checked&#39;)成功获取，选中则true，未选中则为false。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">attr会根据初始值，若初始值选中就是checked，否则undefined，点击选择时不会变化值。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">checked则一直都是undefined。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);"><br style="background-color: inherit;"/></p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">然后想到上次用到的prop，替换掉attr，成功获取，选中则true，未选中则为false。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">结语：获取checkbox请使用prop(&#39;checked&#39;)或is(&#39;:checked&#39;)，那什么都是骗人的。</p><p><br/></p>
+&lt;/script&gt;</pre></div><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">亲测（firefox，chrome），仅有is(&#39;:checked&#39;)成功获取，选中则true，未选中则为false。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">attr会根据初始值，若初始值选中就是checked，否则undefined，点击选择时不会变化值。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">checked则一直都是undefined。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);"><br style="background-color: inherit;"/></p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">然后想到上次用到的prop，替换掉attr，成功获取，选中则true，未选中则为false。</p><p style="white-space: normal; widows: auto; background-color: rgb(255, 255, 255);">结语：获取checkbox请使用prop(&#39;checked&#39;)或is(&#39;:checked&#39;)，那什么都是骗人的。</p><p><br/></p>
 
               
             </div>

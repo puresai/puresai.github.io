@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.7k 字
+          1.6k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          15 分钟
+          14 分钟
         
       </span>
     
@@ -448,19 +448,19 @@
     
       
       
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
+        <a href="/2021/02/12/goexample9/" title="golang限流器"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">goruntine和channel</span>
+          <span class="category-post">golang限流器</span>
         </a>
       
     
       
       
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">golang限流器</span>
+          <span class="category-post">goruntine和channel</span>
         </a>
       
     
@@ -494,32 +494,78 @@
 <hr>
 <p>实在没想到好一点的例子，不知道大伙有没有对象，不如以girl friend为例来弄个demo 吧，女同学请new一个boyfrind。当然了，new什么都行，随你喜欢…….</p>
 <p>我们定义一个女朋友对象：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> GirlFriend <span class="hljs-keyword">struct</span> &#123;<br>	height    <span class="hljs-keyword">int</span> <span class="hljs-comment">// 身高</span><br>	weight    <span class="hljs-keyword">int</span> <span class="hljs-comment">// 体重</span><br>	age       <span class="hljs-keyword">int</span> <span class="hljs-comment">// 年龄</span><br>	name      <span class="hljs-keyword">string</span> <span class="hljs-comment">// 姓名</span><br>	content   <span class="hljs-keyword">string</span> <span class="hljs-comment">// 结束语</span><br>	greetings <span class="hljs-keyword">string</span> <span class="hljs-comment">// 问候语</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> GirlFriend <span class="hljs-keyword">struct</span> &#123;
+	height    <span class="hljs-keyword">int</span> <span class="hljs-comment">// 身高</span>
+	weight    <span class="hljs-keyword">int</span> <span class="hljs-comment">// 体重</span>
+	age       <span class="hljs-keyword">int</span> <span class="hljs-comment">// 年龄</span>
+	name      <span class="hljs-keyword">string</span> <span class="hljs-comment">// 姓名</span>
+	content   <span class="hljs-keyword">string</span> <span class="hljs-comment">// 结束语</span>
+	greetings <span class="hljs-keyword">string</span> <span class="hljs-comment">// 问候语</span>
+&#125;</code></pre></div>
 
 
 
 <p>我们可以自定义身高，体重，年龄，姓名：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetHeight</span><span class="hljs-params">(v <span class="hljs-keyword">int</span>)</span></span> &#123;<br>	gf.height = v<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetWeight</span><span class="hljs-params">(v <span class="hljs-keyword">int</span>)</span></span> &#123;<br>	gf.weight = v<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetAge</span><span class="hljs-params">(v <span class="hljs-keyword">int</span>)</span></span> &#123;<br>	gf.age = v<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetName</span><span class="hljs-params">(v <span class="hljs-keyword">string</span>)</span></span> &#123;<br>	gf.name = v<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetHeight</span><span class="hljs-params">(v <span class="hljs-keyword">int</span>)</span></span> &#123;
+	gf.height = v
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetWeight</span><span class="hljs-params">(v <span class="hljs-keyword">int</span>)</span></span> &#123;
+	gf.weight = v
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetAge</span><span class="hljs-params">(v <span class="hljs-keyword">int</span>)</span></span> &#123;
+	gf.age = v
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetName</span><span class="hljs-params">(v <span class="hljs-keyword">string</span>)</span></span> &#123;
+	gf.name = v
+&#125;</code></pre></div>
 
 
 
 <p>喜欢使用链式操作的可以这么来，把女朋友return回去即可：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetContent</span><span class="hljs-params">(v <span class="hljs-keyword">string</span>)</span> *<span class="hljs-title">GirlFriend</span></span> &#123;<br>	gf.content = v<br>	<span class="hljs-keyword">return</span> gf<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetGreeting</span><span class="hljs-params">(v <span class="hljs-keyword">string</span>)</span> *<span class="hljs-title">GirlFriend</span></span> &#123;<br>	gf.greetings = v<br>	<span class="hljs-keyword">return</span> gf<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetContent</span><span class="hljs-params">(v <span class="hljs-keyword">string</span>)</span> *<span class="hljs-title">GirlFriend</span></span> &#123;
+	gf.content = v
+	<span class="hljs-keyword">return</span> gf
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">SetGreeting</span><span class="hljs-params">(v <span class="hljs-keyword">string</span>)</span> *<span class="hljs-title">GirlFriend</span></span> &#123;
+	gf.greetings = v
+	<span class="hljs-keyword">return</span> gf
+&#125;</code></pre></div>
 
 
 
 <p>我们当然还有实现一下，没有女朋友，new一个：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewOne</span><span class="hljs-params">()</span> *<span class="hljs-title">GirlFriend</span></span> &#123;<br>	<span class="hljs-keyword">return</span> &amp;GirlFriend&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewOne</span><span class="hljs-params">()</span> *<span class="hljs-title">GirlFriend</span></span> &#123;
+	<span class="hljs-keyword">return</span> &amp;GirlFriend&#123;&#125;
+&#125;</code></pre></div>
 
 
 
 <p>new出来了，当然要秀一下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">Show</span><span class="hljs-params">()</span></span> &#123;<br>	fmt.Println(gf.greetings + <span class="hljs-string">&quot;我是&quot;</span> + gf.name + <span class="hljs-string">&quot;,今年&quot;</span> + strconv.Itoa(gf.age) + <span class="hljs-string">&quot;岁，身高&quot;</span> + strconv.Itoa(gf.height) + <span class="hljs-string">&quot;cm,体重&quot;</span> + strconv.Itoa(gf.weight) + <span class="hljs-string">&quot;kg。&quot;</span> + gf.content)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(gf *GirlFriend)</span> <span class="hljs-title">Show</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(gf.greetings + <span class="hljs-string">&quot;我是&quot;</span> + gf.name + <span class="hljs-string">&quot;,今年&quot;</span> + strconv.Itoa(gf.age) + <span class="hljs-string">&quot;岁，身高&quot;</span> + strconv.Itoa(gf.height) + <span class="hljs-string">&quot;cm,体重&quot;</span> + strconv.Itoa(gf.weight) + <span class="hljs-string">&quot;kg。&quot;</span> + gf.content)
+&#125;</code></pre></div>
 
 
 
 <p>我们来运行一个：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;demo5-OOP/oop&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	gf := oop.NewOne()<br>	gf.SetName(<span class="hljs-string">&quot;Lily&quot;</span>)<br>	gf.SetHeight(<span class="hljs-number">170</span>)<br>	gf.SetWeight(<span class="hljs-number">50</span>)<br>	gf.SetGreeting(<span class="hljs-string">&quot;hello,&quot;</span>).SetContent(<span class="hljs-string">&quot;thanks for your great creavity!&quot;</span>).SetAge(<span class="hljs-number">24</span>)<br>	gf.Show()<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;demo5-OOP/oop&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	gf := oop.NewOne()
+	gf.SetName(<span class="hljs-string">&quot;Lily&quot;</span>)
+	gf.SetHeight(<span class="hljs-number">170</span>)
+	gf.SetWeight(<span class="hljs-number">50</span>)
+	gf.SetGreeting(<span class="hljs-string">&quot;hello,&quot;</span>).SetContent(<span class="hljs-string">&quot;thanks for your great creavity!&quot;</span>).SetAge(<span class="hljs-number">24</span>)
+	gf.Show()
+&#125;</code></pre></div>
 
 
 

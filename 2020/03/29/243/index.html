@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.8k 字
+          2.6k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          24 分钟
+          22 分钟
         
       </span>
     
@@ -553,7 +553,119 @@
             <div class="markdown-body">
               
               <p>类型转换是经常使用到的，汇总了一些比较常见的用法，分享给你～</p>
-<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><code class="hljs nim">package main<br><br>/**<br>	变量类型转换<br>*/<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;reflect&quot;</span><br>	<span class="hljs-string">&quot;strconv&quot;</span><br>)<br><br><span class="hljs-keyword">func</span> main() &#123;<br>    v := <span class="hljs-string">&quot;hello world&quot;</span><br>    fmt.<span class="hljs-type">Println</span>(typeofFmt(v))<br>	fmt.<span class="hljs-type">Println</span>(typeofReflect(v))<br><br>	str := <span class="hljs-string">&quot;1245&quot;</span><br>	fmt.<span class="hljs-type">Println</span>(stringToInt(str))<br>	fmt.<span class="hljs-type">Println</span>(stringToInt64(str))<br><br>	a := <span class="hljs-number">3545</span>;<br>	<span class="hljs-keyword">var</span> b <span class="hljs-built_in">int64</span>;<br>	b = <span class="hljs-number">98</span>;<br>	fmt.<span class="hljs-type">Println</span>(int64ToString(b))<br>	fmt.<span class="hljs-type">Println</span>(intToString(a))<br><br>	<span class="hljs-keyword">var</span> f <span class="hljs-built_in">float64</span><br>	f = <span class="hljs-number">3</span>.<span class="hljs-number">45</span><br>	fmt.<span class="hljs-type">Println</span>(floatToString(f))<br><br>	str = <span class="hljs-string">&quot;1.24&quot;</span><br>	fmt.<span class="hljs-type">Println</span>(stringToFloat(str))<br><br>	//<span class="hljs-built_in">int</span>到<span class="hljs-built_in">int64</span><br>	fmt.<span class="hljs-type">Println</span>(<span class="hljs-built_in">int64</span>(<span class="hljs-number">1234</span>))<br><br><br>	//<span class="hljs-built_in">int</span> 转化为 <span class="hljs-built_in">float</span><br>	score := <span class="hljs-number">100</span><br>	fmt.<span class="hljs-type">Println</span>(<span class="hljs-built_in">float64</span>(score))<br>&#125;<br><br><br>// 利用fmt<br><span class="hljs-keyword">func</span> typeofFmt(v <span class="hljs-keyword">interface</span>&#123;&#125;) <span class="hljs-built_in">string</span> &#123;<br>    <span class="hljs-keyword">return</span> fmt.<span class="hljs-type">Sprintf</span>(<span class="hljs-string">&quot;%T&quot;</span>, v)<br>&#125;<br><br>// 利用reflect<br><span class="hljs-keyword">func</span> typeofReflect(v <span class="hljs-keyword">interface</span>&#123;&#125;) <span class="hljs-built_in">string</span> &#123;<br>    <span class="hljs-keyword">return</span> reflect.<span class="hljs-type">TypeOf</span>(v).<span class="hljs-type">String</span>()<br>&#125;<br><br>// <span class="hljs-built_in">string</span>转<span class="hljs-built_in">int</span><br><span class="hljs-keyword">func</span> stringToInt(a <span class="hljs-built_in">string</span>) <span class="hljs-built_in">int</span> &#123;<br>	d,_ := strconv.<span class="hljs-type">Atoi</span>(a)<br>	<span class="hljs-keyword">return</span>  d<br>&#125;<br>//<span class="hljs-type">Atoi</span>是<span class="hljs-type">ParseInt</span>(s, <span class="hljs-number">10</span>, <span class="hljs-number">0</span>)的简写。<br><br><br>// <span class="hljs-built_in">string</span>转<span class="hljs-built_in">int64</span><br><span class="hljs-keyword">func</span> stringToInt64(a <span class="hljs-built_in">string</span>) <span class="hljs-built_in">int64</span> &#123;<br>	d, _ := strconv.<span class="hljs-type">ParseInt</span>(a, <span class="hljs-number">10</span>, <span class="hljs-number">64</span>) <br>	<span class="hljs-keyword">return</span>  d<br>&#125;<br>/**<br><span class="hljs-keyword">func</span> <span class="hljs-type">ParseInt</span>(s <span class="hljs-built_in">string</span>, base <span class="hljs-built_in">int</span>, bitSize <span class="hljs-built_in">int</span>) (i <span class="hljs-built_in">int64</span>, err error)<br>返回字符串表示的整数值，接受正负号。<br>base指定进制（<span class="hljs-number">2</span>到<span class="hljs-number">36</span>），如果base为<span class="hljs-number">0</span>，则会从字符串前置判断，<span class="hljs-string">&quot;0x&quot;</span>是<span class="hljs-number">16</span>进制，<span class="hljs-string">&quot;0&quot;</span>是<span class="hljs-number">8</span>进制，否则是<span class="hljs-number">10</span>进制；<br>bitSize指定结果必须能无溢出赋值的整数类型，<span class="hljs-number">0</span>、<span class="hljs-number">8</span>、<span class="hljs-number">16</span>、<span class="hljs-number">32</span>、<span class="hljs-number">64</span> 分别代表 <span class="hljs-built_in">int</span>、<span class="hljs-built_in">int8</span>、<span class="hljs-built_in">int16</span>、<span class="hljs-built_in">int32</span>、<span class="hljs-built_in">int64</span>；返回的err是*<span class="hljs-type">NumErr</span>类型的，如果语法有误，err.<span class="hljs-type">Error</span> = <span class="hljs-type">ErrSyntax</span>；如果结果超出类型范围err.<span class="hljs-type">Error</span> = <span class="hljs-type">ErrRange</span>。<br>*/<br><br>// <span class="hljs-built_in">int</span>转<span class="hljs-built_in">string</span><br><span class="hljs-keyword">func</span> intToString(a <span class="hljs-built_in">int</span>) <span class="hljs-built_in">string</span> &#123;<br>	str := strconv.<span class="hljs-type">Itoa</span>(a) <br>	<span class="hljs-keyword">return</span> str<br>&#125;<br><br>// <span class="hljs-built_in">int64</span>转<span class="hljs-built_in">string</span><br><span class="hljs-keyword">func</span> int64ToString(a <span class="hljs-built_in">int64</span>) <span class="hljs-built_in">string</span> &#123;<br>	str := strconv.<span class="hljs-type">FormatInt</span>(a,<span class="hljs-number">10</span>)<br>	<span class="hljs-keyword">return</span> str<br>&#125;<br>/**<br><span class="hljs-keyword">func</span> <span class="hljs-type">FormatInt</span>(i <span class="hljs-built_in">int64</span>, base <span class="hljs-built_in">int</span>) <span class="hljs-built_in">string</span><br>返回i的base进制的字符串表示。base 必须在<span class="hljs-number">2</span>到<span class="hljs-number">36</span>之间，结果中会使用小写字母&#x27;a&#x27;到&#x27;z&#x27;表示大于<span class="hljs-number">10</span>的数字。<br>*/<br><br>// <span class="hljs-built_in">float</span>转<span class="hljs-built_in">string</span><br><span class="hljs-keyword">func</span> floatToString (f <span class="hljs-built_in">float64</span>) <span class="hljs-built_in">string</span> &#123;<br>	<span class="hljs-keyword">return</span> strconv.<span class="hljs-type">FormatFloat</span>(f,&#x27;f&#x27;,-<span class="hljs-number">1</span>,<span class="hljs-number">32</span>)<br>&#125;<br>/**<br><span class="hljs-keyword">func</span> <span class="hljs-type">FormatFloat</span>(f <span class="hljs-built_in">float64</span>, fmt byte, prec, bitSize <span class="hljs-built_in">int</span>) <span class="hljs-built_in">string</span><br>bitSize表示f的来源类型（<span class="hljs-number">32</span>：<span class="hljs-built_in">float32</span>、<span class="hljs-number">64</span>：<span class="hljs-built_in">float64</span>），会据此进行舍入。<br>fmt表示格式：&#x27;f&#x27;（-ddd.dddd）、&#x27;b&#x27;（-ddddp±ddd，指数为二进制）、&#x27;e&#x27;（-d.dddde±dd，十进制指数）、&#x27;E&#x27;（-d.ddddE±dd，十进制指数）、&#x27;g&#x27;（指数很大时用&#x27;e&#x27;格式，否则&#x27;f&#x27;格式）、&#x27;G&#x27;（指数很大时用&#x27;E&#x27;格式，否则&#x27;f&#x27;格式）。<br>prec控制精度（排除指数部分）：对&#x27;f&#x27;、&#x27;e&#x27;、&#x27;E&#x27;，它表示小数点后的数字个数；对&#x27;g&#x27;、&#x27;G&#x27;，它控制总的数字个数。如果prec 为-<span class="hljs-number">1</span>，则代表使用最少数量的、但又必需的数字来表示f。<br>*/<br><br>// <span class="hljs-built_in">string</span>转<span class="hljs-built_in">float</span><br><span class="hljs-keyword">func</span> stringToFloat(s <span class="hljs-built_in">string</span>) <span class="hljs-built_in">float64</span> &#123;<br>	f,_ := strconv.<span class="hljs-type">ParseFloat</span>(s,<span class="hljs-number">64</span>)<br>	<span class="hljs-keyword">return</span> f<br>&#125;<br>/**<br><span class="hljs-keyword">func</span> <span class="hljs-type">ParseFloat</span>(s <span class="hljs-built_in">string</span>, bitSize <span class="hljs-built_in">int</span>) (f <span class="hljs-built_in">float64</span>, err error)<br>解析一个表示浮点数的字符串并返回其值。<br><br>如果s合乎语法规则，函数会返回最为接近s表示值的一个浮点数（使用<span class="hljs-type">IEEE754</span>规范舍入）。bitSize指定了期望的接收类型，<span class="hljs-number">32</span>是<span class="hljs-built_in">float32</span>（返回值可以不改变精确值的赋值给<span class="hljs-built_in">float32</span>），<span class="hljs-number">64</span>是<span class="hljs-built_in">float64</span>；返回值err是*<span class="hljs-type">NumErr</span>类型的，语法有误的，err.<span class="hljs-type">Error</span>=<span class="hljs-type">ErrSyntax</span>；结果超出表示范围的，返回值f为±<span class="hljs-type">Inf</span>，err.<span class="hljs-type">Error</span>= <span class="hljs-type">ErrRange</span>。<br>*/<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs nim">package main
+
+/**
+	变量类型转换
+*/
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;reflect&quot;</span>
+	<span class="hljs-string">&quot;strconv&quot;</span>
+)
+
+<span class="hljs-keyword">func</span> main() &#123;
+    v := <span class="hljs-string">&quot;hello world&quot;</span>
+    fmt.<span class="hljs-type">Println</span>(typeofFmt(v))
+	fmt.<span class="hljs-type">Println</span>(typeofReflect(v))
+
+	str := <span class="hljs-string">&quot;1245&quot;</span>
+	fmt.<span class="hljs-type">Println</span>(stringToInt(str))
+	fmt.<span class="hljs-type">Println</span>(stringToInt64(str))
+
+	a := <span class="hljs-number">3545</span>;
+	<span class="hljs-keyword">var</span> b <span class="hljs-built_in">int64</span>;
+	b = <span class="hljs-number">98</span>;
+	fmt.<span class="hljs-type">Println</span>(int64ToString(b))
+	fmt.<span class="hljs-type">Println</span>(intToString(a))
+
+	<span class="hljs-keyword">var</span> f <span class="hljs-built_in">float64</span>
+	f = <span class="hljs-number">3</span>.<span class="hljs-number">45</span>
+	fmt.<span class="hljs-type">Println</span>(floatToString(f))
+
+	str = <span class="hljs-string">&quot;1.24&quot;</span>
+	fmt.<span class="hljs-type">Println</span>(stringToFloat(str))
+
+	//<span class="hljs-built_in">int</span>到<span class="hljs-built_in">int64</span>
+	fmt.<span class="hljs-type">Println</span>(<span class="hljs-built_in">int64</span>(<span class="hljs-number">1234</span>))
+
+
+	//<span class="hljs-built_in">int</span> 转化为 <span class="hljs-built_in">float</span>
+	score := <span class="hljs-number">100</span>
+	fmt.<span class="hljs-type">Println</span>(<span class="hljs-built_in">float64</span>(score))
+&#125;
+
+
+// 利用fmt
+<span class="hljs-keyword">func</span> typeofFmt(v <span class="hljs-keyword">interface</span>&#123;&#125;) <span class="hljs-built_in">string</span> &#123;
+    <span class="hljs-keyword">return</span> fmt.<span class="hljs-type">Sprintf</span>(<span class="hljs-string">&quot;%T&quot;</span>, v)
+&#125;
+
+// 利用reflect
+<span class="hljs-keyword">func</span> typeofReflect(v <span class="hljs-keyword">interface</span>&#123;&#125;) <span class="hljs-built_in">string</span> &#123;
+    <span class="hljs-keyword">return</span> reflect.<span class="hljs-type">TypeOf</span>(v).<span class="hljs-type">String</span>()
+&#125;
+
+// <span class="hljs-built_in">string</span>转<span class="hljs-built_in">int</span>
+<span class="hljs-keyword">func</span> stringToInt(a <span class="hljs-built_in">string</span>) <span class="hljs-built_in">int</span> &#123;
+	d,_ := strconv.<span class="hljs-type">Atoi</span>(a)
+	<span class="hljs-keyword">return</span>  d
+&#125;
+//<span class="hljs-type">Atoi</span>是<span class="hljs-type">ParseInt</span>(s, <span class="hljs-number">10</span>, <span class="hljs-number">0</span>)的简写。
+
+
+// <span class="hljs-built_in">string</span>转<span class="hljs-built_in">int64</span>
+<span class="hljs-keyword">func</span> stringToInt64(a <span class="hljs-built_in">string</span>) <span class="hljs-built_in">int64</span> &#123;
+	d, _ := strconv.<span class="hljs-type">ParseInt</span>(a, <span class="hljs-number">10</span>, <span class="hljs-number">64</span>) 
+	<span class="hljs-keyword">return</span>  d
+&#125;
+/**
+<span class="hljs-keyword">func</span> <span class="hljs-type">ParseInt</span>(s <span class="hljs-built_in">string</span>, base <span class="hljs-built_in">int</span>, bitSize <span class="hljs-built_in">int</span>) (i <span class="hljs-built_in">int64</span>, err error)
+返回字符串表示的整数值，接受正负号。
+base指定进制（<span class="hljs-number">2</span>到<span class="hljs-number">36</span>），如果base为<span class="hljs-number">0</span>，则会从字符串前置判断，<span class="hljs-string">&quot;0x&quot;</span>是<span class="hljs-number">16</span>进制，<span class="hljs-string">&quot;0&quot;</span>是<span class="hljs-number">8</span>进制，否则是<span class="hljs-number">10</span>进制；
+bitSize指定结果必须能无溢出赋值的整数类型，<span class="hljs-number">0</span>、<span class="hljs-number">8</span>、<span class="hljs-number">16</span>、<span class="hljs-number">32</span>、<span class="hljs-number">64</span> 分别代表 <span class="hljs-built_in">int</span>、<span class="hljs-built_in">int8</span>、<span class="hljs-built_in">int16</span>、<span class="hljs-built_in">int32</span>、<span class="hljs-built_in">int64</span>；返回的err是*<span class="hljs-type">NumErr</span>类型的，如果语法有误，err.<span class="hljs-type">Error</span> = <span class="hljs-type">ErrSyntax</span>；如果结果超出类型范围err.<span class="hljs-type">Error</span> = <span class="hljs-type">ErrRange</span>。
+*/
+
+// <span class="hljs-built_in">int</span>转<span class="hljs-built_in">string</span>
+<span class="hljs-keyword">func</span> intToString(a <span class="hljs-built_in">int</span>) <span class="hljs-built_in">string</span> &#123;
+	str := strconv.<span class="hljs-type">Itoa</span>(a) 
+	<span class="hljs-keyword">return</span> str
+&#125;
+
+// <span class="hljs-built_in">int64</span>转<span class="hljs-built_in">string</span>
+<span class="hljs-keyword">func</span> int64ToString(a <span class="hljs-built_in">int64</span>) <span class="hljs-built_in">string</span> &#123;
+	str := strconv.<span class="hljs-type">FormatInt</span>(a,<span class="hljs-number">10</span>)
+	<span class="hljs-keyword">return</span> str
+&#125;
+/**
+<span class="hljs-keyword">func</span> <span class="hljs-type">FormatInt</span>(i <span class="hljs-built_in">int64</span>, base <span class="hljs-built_in">int</span>) <span class="hljs-built_in">string</span>
+返回i的base进制的字符串表示。base 必须在<span class="hljs-number">2</span>到<span class="hljs-number">36</span>之间，结果中会使用小写字母&#x27;a&#x27;到&#x27;z&#x27;表示大于<span class="hljs-number">10</span>的数字。
+*/
+
+// <span class="hljs-built_in">float</span>转<span class="hljs-built_in">string</span>
+<span class="hljs-keyword">func</span> floatToString (f <span class="hljs-built_in">float64</span>) <span class="hljs-built_in">string</span> &#123;
+	<span class="hljs-keyword">return</span> strconv.<span class="hljs-type">FormatFloat</span>(f,&#x27;f&#x27;,-<span class="hljs-number">1</span>,<span class="hljs-number">32</span>)
+&#125;
+/**
+<span class="hljs-keyword">func</span> <span class="hljs-type">FormatFloat</span>(f <span class="hljs-built_in">float64</span>, fmt byte, prec, bitSize <span class="hljs-built_in">int</span>) <span class="hljs-built_in">string</span>
+bitSize表示f的来源类型（<span class="hljs-number">32</span>：<span class="hljs-built_in">float32</span>、<span class="hljs-number">64</span>：<span class="hljs-built_in">float64</span>），会据此进行舍入。
+fmt表示格式：&#x27;f&#x27;（-ddd.dddd）、&#x27;b&#x27;（-ddddp±ddd，指数为二进制）、&#x27;e&#x27;（-d.dddde±dd，十进制指数）、&#x27;E&#x27;（-d.ddddE±dd，十进制指数）、&#x27;g&#x27;（指数很大时用&#x27;e&#x27;格式，否则&#x27;f&#x27;格式）、&#x27;G&#x27;（指数很大时用&#x27;E&#x27;格式，否则&#x27;f&#x27;格式）。
+prec控制精度（排除指数部分）：对&#x27;f&#x27;、&#x27;e&#x27;、&#x27;E&#x27;，它表示小数点后的数字个数；对&#x27;g&#x27;、&#x27;G&#x27;，它控制总的数字个数。如果prec 为-<span class="hljs-number">1</span>，则代表使用最少数量的、但又必需的数字来表示f。
+*/
+
+// <span class="hljs-built_in">string</span>转<span class="hljs-built_in">float</span>
+<span class="hljs-keyword">func</span> stringToFloat(s <span class="hljs-built_in">string</span>) <span class="hljs-built_in">float64</span> &#123;
+	f,_ := strconv.<span class="hljs-type">ParseFloat</span>(s,<span class="hljs-number">64</span>)
+	<span class="hljs-keyword">return</span> f
+&#125;
+/**
+<span class="hljs-keyword">func</span> <span class="hljs-type">ParseFloat</span>(s <span class="hljs-built_in">string</span>, bitSize <span class="hljs-built_in">int</span>) (f <span class="hljs-built_in">float64</span>, err error)
+解析一个表示浮点数的字符串并返回其值。
+
+如果s合乎语法规则，函数会返回最为接近s表示值的一个浮点数（使用<span class="hljs-type">IEEE754</span>规范舍入）。bitSize指定了期望的接收类型，<span class="hljs-number">32</span>是<span class="hljs-built_in">float32</span>（返回值可以不改变精确值的赋值给<span class="hljs-built_in">float32</span>），<span class="hljs-number">64</span>是<span class="hljs-built_in">float64</span>；返回值err是*<span class="hljs-type">NumErr</span>类型的，语法有误的，err.<span class="hljs-type">Error</span>=<span class="hljs-type">ErrSyntax</span>；结果超出表示范围的，返回值f为±<span class="hljs-type">Inf</span>，err.<span class="hljs-type">Error</span>= <span class="hljs-type">ErrRange</span>。
+*/
+</code></pre></div>
 
 
 <p>更多类型转换相关可查看标准库：<br>- <a target="_blank" rel="noopener" href="https://studygolang.com/pkgdoc" title="strconv">strconv</a></p>

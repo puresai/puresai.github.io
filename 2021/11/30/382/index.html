@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.2k 字
+          3k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          27 分钟
+          26 分钟
         
       </span>
     
@@ -421,12 +421,87 @@
 <p>go mod init elastic-web</p>
 <p>kubebuilder init –domain com.13sai</p>
 </blockquote>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">kubebuilder create api --group sai --version v1 --kind ElasticWeb<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">kubebuilder create api --group sai --version v1 --kind ElasticWeb</code></pre></div>
 
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">/*</span><br><span class="hljs-comment">Copyright 2021.</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span><br><span class="hljs-comment">you may not use this file except in compliance with the License.</span><br><span class="hljs-comment">You may obtain a copy of the License at</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">    http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">Unless required by applicable law or agreed to in writing, software</span><br><span class="hljs-comment">distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="hljs-comment">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="hljs-comment">See the License for the specific language governing permissions and</span><br><span class="hljs-comment">limitations under the License.</span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-keyword">package</span> v1<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/spf13/cast&quot;</span><br>	metav1 <span class="hljs-string">&quot;k8s.io/apimachinery/pkg/apis/meta/v1&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> ElasticWebSpec <span class="hljs-keyword">struct</span> &#123;<br>	<span class="hljs-comment">// 镜像</span><br>	Image     <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;image&quot;`</span><br>	<span class="hljs-comment">// 端口</span><br>	Port      *<span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;port&quot;`</span><br>	<span class="hljs-comment">// 单个 pod 的 qps</span><br>	SingleQPS *<span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;singleQPS&quot;`</span><br>	<span class="hljs-comment">// 总 qps</span><br>	TotalQPS  *<span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;totalQPS&quot;`</span><br>&#125;<br><br><span class="hljs-comment">// ElasticWebStatus defines the observed state of ElasticWeb</span><br><span class="hljs-keyword">type</span> ElasticWebStatus <span class="hljs-keyword">struct</span> &#123;<br>	<span class="hljs-comment">// 实际 qps</span><br>	RealQPS *<span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;realQPS&quot;`</span><br>&#125;<br><br><span class="hljs-keyword">type</span> ElasticWeb <span class="hljs-keyword">struct</span> &#123;<br>	metav1.TypeMeta   <span class="hljs-string">`json:&quot;,inline&quot;`</span><br>	metav1.ObjectMeta <span class="hljs-string">`json:&quot;metadata,omitempty&quot;`</span><br>	Spec   ElasticWebSpec   <span class="hljs-string">`json:&quot;spec,omitempty&quot;`</span><br>	Status ElasticWebStatus <span class="hljs-string">`json:&quot;status,omitempty&quot;`</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(web *ElasticWeb)</span> <span class="hljs-title">String</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;<br>	realQPS := <span class="hljs-string">&quot;&quot;</span><br>	<span class="hljs-keyword">if</span> web.Status.RealQPS == <span class="hljs-literal">nil</span> &#123;<br>		realQPS = <span class="hljs-string">&quot;nil&quot;</span><br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		realQPS = cast.ToString(*web.Status.RealQPS)<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;Image [%s], Port [%d], SingleQPS [%d], TotalQPS [%d], RealQPS [%s]&quot;</span>, web.Spec.Image, *web.Spec.Port, *web.Spec.SingleQPS, *web.Spec.TotalQPS, realQPS)<br>&#125;<br><br><span class="hljs-comment">// ElasticWebList contains a list of ElasticWeb</span><br><span class="hljs-keyword">type</span> ElasticWebList <span class="hljs-keyword">struct</span> &#123;<br>	metav1.TypeMeta <span class="hljs-string">`json:&quot;,inline&quot;`</span><br>	metav1.ListMeta <span class="hljs-string">`json:&quot;metadata,omitempty&quot;`</span><br>	Items           []ElasticWeb <span class="hljs-string">`json:&quot;items&quot;`</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> &#123;<br>	SchemeBuilder.Register(&amp;ElasticWeb&#123;&#125;, &amp;ElasticWebList&#123;&#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">/*</span>
+<span class="hljs-comment">Copyright 2021.</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="hljs-comment">you may not use this file except in compliance with the License.</span>
+<span class="hljs-comment">You may obtain a copy of the License at</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">    http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">Unless required by applicable law or agreed to in writing, software</span>
+<span class="hljs-comment">distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="hljs-comment">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="hljs-comment">See the License for the specific language governing permissions and</span>
+<span class="hljs-comment">limitations under the License.</span>
+<span class="hljs-comment">*/</span>
+
+<span class="hljs-keyword">package</span> v1
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+
+	<span class="hljs-string">&quot;github.com/spf13/cast&quot;</span>
+	metav1 <span class="hljs-string">&quot;k8s.io/apimachinery/pkg/apis/meta/v1&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> ElasticWebSpec <span class="hljs-keyword">struct</span> &#123;
+	<span class="hljs-comment">// 镜像</span>
+	Image     <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;image&quot;`</span>
+	<span class="hljs-comment">// 端口</span>
+	Port      *<span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;port&quot;`</span>
+	<span class="hljs-comment">// 单个 pod 的 qps</span>
+	SingleQPS *<span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;singleQPS&quot;`</span>
+	<span class="hljs-comment">// 总 qps</span>
+	TotalQPS  *<span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;totalQPS&quot;`</span>
+&#125;
+
+<span class="hljs-comment">// ElasticWebStatus defines the observed state of ElasticWeb</span>
+<span class="hljs-keyword">type</span> ElasticWebStatus <span class="hljs-keyword">struct</span> &#123;
+	<span class="hljs-comment">// 实际 qps</span>
+	RealQPS *<span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;realQPS&quot;`</span>
+&#125;
+
+<span class="hljs-keyword">type</span> ElasticWeb <span class="hljs-keyword">struct</span> &#123;
+	metav1.TypeMeta   <span class="hljs-string">`json:&quot;,inline&quot;`</span>
+	metav1.ObjectMeta <span class="hljs-string">`json:&quot;metadata,omitempty&quot;`</span>
+	Spec   ElasticWebSpec   <span class="hljs-string">`json:&quot;spec,omitempty&quot;`</span>
+	Status ElasticWebStatus <span class="hljs-string">`json:&quot;status,omitempty&quot;`</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(web *ElasticWeb)</span> <span class="hljs-title">String</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;
+	realQPS := <span class="hljs-string">&quot;&quot;</span>
+	<span class="hljs-keyword">if</span> web.Status.RealQPS == <span class="hljs-literal">nil</span> &#123;
+		realQPS = <span class="hljs-string">&quot;nil&quot;</span>
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		realQPS = cast.ToString(*web.Status.RealQPS)
+	&#125;
+
+	<span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;Image [%s], Port [%d], SingleQPS [%d], TotalQPS [%d], RealQPS [%s]&quot;</span>, web.Spec.Image, *web.Spec.Port, *web.Spec.SingleQPS, *web.Spec.TotalQPS, realQPS)
+&#125;
+
+<span class="hljs-comment">// ElasticWebList contains a list of ElasticWeb</span>
+<span class="hljs-keyword">type</span> ElasticWebList <span class="hljs-keyword">struct</span> &#123;
+	metav1.TypeMeta <span class="hljs-string">`json:&quot;,inline&quot;`</span>
+	metav1.ListMeta <span class="hljs-string">`json:&quot;metadata,omitempty&quot;`</span>
+	Items           []ElasticWeb <span class="hljs-string">`json:&quot;items&quot;`</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> &#123;
+	SchemeBuilder.Register(&amp;ElasticWeb&#123;&#125;, &amp;ElasticWebList&#123;&#125;)
+&#125;</code></pre></div>
 <p>设置RBAC权限：</p>
 <p>elasticweb_controller.go:</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">//+kubebuilder:rbac:groups=k8s.com.13sai,resources=elasticwebs,verbs=get;list;watch;create;update;patch;delete</span><br><span class="hljs-comment">//+kubebuilder:rbac:groups=k8s.com.13sai,resources=elasticwebs/status,verbs=get;update;patch</span><br><span class="hljs-comment">//+kubebuilder:rbac:groups=k8s.com.13sai,resources=elasticwebs/finalizers,verbs=update</span><br><br><span class="hljs-comment">// RBAC 新增</span><br><span class="hljs-comment">//+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete</span><br><span class="hljs-comment">//+kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">//+kubebuilder:rbac:groups=k8s.com.13sai,resources=elasticwebs,verbs=get;list;watch;create;update;patch;delete</span>
+<span class="hljs-comment">//+kubebuilder:rbac:groups=k8s.com.13sai,resources=elasticwebs/status,verbs=get;update;patch</span>
+<span class="hljs-comment">//+kubebuilder:rbac:groups=k8s.com.13sai,resources=elasticwebs/finalizers,verbs=update</span>
+
+<span class="hljs-comment">// RBAC 新增</span>
+<span class="hljs-comment">//+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete</span>
+<span class="hljs-comment">//+kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete</span></code></pre></div>
 
 <p>代码比较枯燥，<br>主要方法都在controller，</p>
 <ul>
@@ -446,7 +521,25 @@
 <blockquote>
 <p>make run </p>
 </blockquote>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Namespace</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">sai-test</span><br>  <span class="hljs-attr">labels:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">test</span><br><span class="hljs-meta">---</span><br><span class="hljs-meta"></span><br><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">k8s.com.13sai/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">ElasticWeb</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">sai-test</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">elasticweb-sample</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-comment"># Add fields here</span><br>  <span class="hljs-attr">image:</span> <span class="hljs-string">nginx:1.20.2-alpine</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">80</span><br>  <span class="hljs-attr">singleQPS:</span> <span class="hljs-number">1000</span><br>  <span class="hljs-attr">totalQPS:</span> <span class="hljs-number">8800</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Namespace</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">sai-test</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">test</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-meta"></span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">k8s.com.13sai/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ElasticWeb</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">sai-test</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">elasticweb-sample</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-comment"># Add fields here</span>
+  <span class="hljs-attr">image:</span> <span class="hljs-string">nginx:1.20.2-alpine</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
+  <span class="hljs-attr">singleQPS:</span> <span class="hljs-number">1000</span>
+  <span class="hljs-attr">totalQPS:</span> <span class="hljs-number">8800</span></code></pre></div>
 
 
 <blockquote>

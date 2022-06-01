@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          367 字
+          348 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          4 分钟
+          3 分钟
         
       </span>
     
@@ -408,7 +408,20 @@
               
               <p>项目中要做一些按日进行的统计，之前的任务都没跑，写个脚本执行下。</p>
 <p>plus.sh</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br>START_DATE=<span class="hljs-variable">$1</span><br>END_DATE=<span class="hljs-variable">$2</span><br>EXEC_COMMAND=<span class="hljs-variable">$3</span><br><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;start_date: &#x27;</span><span class="hljs-variable">$START_DATE</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;end_date: &#x27;</span><span class="hljs-variable">$END_DATE</span><br>i=<span class="hljs-variable">$START_DATE</span><br><span class="hljs-keyword">while</span> [[ <span class="hljs-variable">$i</span> &lt; `date -d <span class="hljs-string">&quot;+1 day <span class="hljs-variable">$END_DATE</span>&quot;</span> +%Y%m%d` ]]<br>  <span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>    <span class="hljs-variable">$EXEC_COMMAND</span> <span class="hljs-variable">$i</span><br>    i=`date -d <span class="hljs-string">&quot;+1 day <span class="hljs-variable">$i</span>&quot;</span> +%Y%m%d`<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span>
+START_DATE=<span class="hljs-variable">$1</span>
+END_DATE=<span class="hljs-variable">$2</span>
+EXEC_COMMAND=<span class="hljs-variable">$3</span>
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;start_date: &#x27;</span><span class="hljs-variable">$START_DATE</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;end_date: &#x27;</span><span class="hljs-variable">$END_DATE</span>
+i=<span class="hljs-variable">$START_DATE</span>
+<span class="hljs-keyword">while</span> [[ <span class="hljs-variable">$i</span> &lt; `date -d <span class="hljs-string">&quot;+1 day <span class="hljs-variable">$END_DATE</span>&quot;</span> +%Y%m%d` ]]
+  <span class="hljs-keyword">do</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span>
+    <span class="hljs-variable">$EXEC_COMMAND</span> <span class="hljs-variable">$i</span>
+    i=`date -d <span class="hljs-string">&quot;+1 day <span class="hljs-variable">$i</span>&quot;</span> +%Y%m%d`
+<span class="hljs-keyword">done</span></code></pre></div>
 
 <p>执行</p>
 <blockquote>

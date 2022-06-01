@@ -864,7 +864,7 @@
             
             <div class="markdown-body">
               
-               <p>最近需要使用PHP合成证书图片，便于用户保存，就考虑使用的php的GD库，在图片上加文字。</p><p>原理比较简单，请看代码：</p><pre class="brush:php;toolbar:false">&lt;?php
+               <p>最近需要使用PHP合成证书图片，便于用户保存，就考虑使用的php的GD库，在图片上加文字。</p><p>原理比较简单，请看代码：</p><div class="code-wrapper"><pre class="brush:php;toolbar:false">&lt;?php
 //指定图片路径
 $src&nbsp;=&nbsp;&#39;time.jpg&#39;;
 //获取图片信息
@@ -876,7 +876,7 @@ $type&nbsp;=&nbsp;image_type_to_extension($info[2],false);
 <p>//文字颜色<br>$col2&nbsp;=&nbsp;imagecolorallocate($image,500,100,0);</p>
 <p>//指定字体内容与字体<br>$content&nbsp;=&nbsp;&quot;小清新&quot;;<br>$font&nbsp;=&nbsp;&#39;C:\Windows\Fonts\simfang.ttf&#39;;</p>
 <p>//给图片添加文字<br>imagefttext($image,24,0,80,180,$col2,$font,$content);</p>
-<p>//指定输入类型<br>header(&quot;Content-type:&quot;.$info[&#39;mime&#39;]);<br>imagejpeg($image);<br>//保存图片&nbsp;&nbsp;imagejpeg($image,&#39;12.jpg&#39;);<br>imagedestroy($image);<br>?&gt;</pre><p><img src="/upload/ueditor/image/20170307/1488849055113477.jpg" srcset="/img/loading.gif" lazyload title="1488849055113477.jpg" alt="tupian.php.jpg"/></p><p>注意：</p><p><span style="color: rgb(255, 0, 0);">中文要用imagefttext，并指定的字体要支持中文。</span><br/></p></p>
+<p>//指定输入类型<br>header(&quot;Content-type:&quot;.$info[&#39;mime&#39;]);<br>imagejpeg($image);<br>//保存图片&nbsp;&nbsp;imagejpeg($image,&#39;12.jpg&#39;);<br>imagedestroy($image);<br>?&gt;</pre></div><p><img src="/upload/ueditor/image/20170307/1488849055113477.jpg" srcset="/img/loading.gif" lazyload title="1488849055113477.jpg" alt="tupian.php.jpg"/></p><p>注意：</p><p><span style="color: rgb(255, 0, 0);">中文要用imagefttext，并指定的字体要支持中文。</span><br/></p></p>
 
               
             </div>

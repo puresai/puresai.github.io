@@ -408,7 +408,7 @@
             
             <div class="markdown-body">
               
-               <p>最近公司主站要上个抽奖页面，后台也要增加查询功能，我就负责增加后台列表页，其实就一个页面而已。</p><p>自己之前从没接触过asp，貌似也out了，但还是试着用ASP来写这个页面。</p><p>之前主站的数据都是存在sqlserver里，而这次我们把数据表放在了mysql数据库里，不得不写个连接数据库的config，那么我们开始：</p><pre class="brush:html;toolbar:false">dim&nbsp;myHost,myDB,myUID,myPWD
+               <p>最近公司主站要上个抽奖页面，后台也要增加查询功能，我就负责增加后台列表页，其实就一个页面而已。</p><p>自己之前从没接触过asp，貌似也out了，但还是试着用ASP来写这个页面。</p><p>之前主站的数据都是存在sqlserver里，而这次我们把数据表放在了mysql数据库里，不得不写个连接数据库的config，那么我们开始：</p><div class="code-wrapper"><pre class="brush:html;toolbar:false">dim&nbsp;myHost,myDB,myUID,myPWD
 myHost&nbsp;=&nbsp;&quot;localhost&quot;
 myDB&nbsp;=&nbsp;&quot;db&quot;
 myUID&nbsp;=&nbsp;&quot;user&quot;
@@ -417,7 +417,7 @@ myCharSet&nbsp;=&nbsp;&quot;utf8&quot;
 strconnection=&quot;driver={MySQL&nbsp;ODBC&nbsp;3.51&nbsp;Driver};server=&quot;&nbsp;&amp;&nbsp;myHost&nbsp;&amp;&nbsp;&quot;;database=&quot;&nbsp;&amp;&nbsp;myDB&nbsp;&amp;&nbsp;&quot;;uid=&quot;&nbsp;&amp;&nbsp;myUID&nbsp;&amp;&nbsp;&quot;;password=&quot;&nbsp;&amp;&nbsp;myPWD
 set&nbsp;conn&nbsp;=&nbsp;Server.CreateObject(&quot;ADODB.Connection&quot;)
 conn.open&nbsp;strconnection
-conn.execute(&quot;set&nbsp;names&nbsp;&#39;&quot;&nbsp;&amp;&nbsp;myCharSet&nbsp;&amp;&nbsp;&quot;&#39;&quot;)</pre><p>然后报错：<br/></p><p><img src="/upload/ueditor/image/20161130/1480494304377085.png" srcset="/img/loading.gif" lazyload title="1480494304377085.png" alt="QQ截图20161130162303.png"/></p><p><br/></p><p>驱动没装，装好odbc驱动，注意版本（3.51或其他版本）要与程序对应。</p><p>重试，报错消失。</p><p><br/></p><p>查询</p><pre class="brush:html;toolbar:false">name&nbsp;=&nbsp;Request.Form(&quot;name&quot;)
+conn.execute(&quot;set&nbsp;names&nbsp;&#39;&quot;&nbsp;&amp;&nbsp;myCharSet&nbsp;&amp;&nbsp;&quot;&#39;&quot;)</pre></div><p>然后报错：<br/></p><p><img src="/upload/ueditor/image/20161130/1480494304377085.png" srcset="/img/loading.gif" lazyload title="1480494304377085.png" alt="QQ截图20161130162303.png"/></p><p><br/></p><p>驱动没装，装好odbc驱动，注意版本（3.51或其他版本）要与程序对应。</p><p>重试，报错消失。</p><p><br/></p><p>查询</p><div class="code-wrapper"><pre class="brush:html;toolbar:false">name&nbsp;=&nbsp;Request.Form(&quot;name&quot;)
 mobile&nbsp;=&nbsp;Request.Form(&quot;mobile&quot;)
 where&nbsp;=&nbsp;&quot;&nbsp;where&nbsp;1=1&quot;
 If&nbsp;name&lt;&gt;&quot;&quot;&nbsp;Then
@@ -466,7 +466,7 @@ End&nbsp;If
     set&amp;nbsp;rs=nothing
 end&amp;nbsp;sub
 set&amp;nbsp;conn=nothing&lt;/pre&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;注意下&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;rs.CursorLocation=3&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;/upload/ueditor/image/20161130/1480495561126675.png&quot; title=&quot;1480495561126675.png&quot; alt=&quot;blob.png&quot;/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;CursorLocation 属性可设置或返回一个 long 值，该值指示游标服务的位置。默认值是 AdUseServer。&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p style=&quot;white-space: normal;&quot;&gt;还有一个就是每次记得关闭数据库与数据集。&lt;/p&gt;&lt;p style=&quot;white-space: normal;&quot;&gt;也就是&lt;/p&gt;&lt;pre class=&quot;brush:html;toolbar:false&quot;&gt;set&amp;nbsp;rs=nothing
-</code></pre>
+</code></pre></div>
 <p>set&nbsp;conn=nothing</pre><p><br/></p><p>好了，这样就实现了数据库连接与查询搜索。</p><p><br/></p><p>所以说，遇到不熟悉的语言不要怕，有强大的搜索引擎与结果呢。</p><p>多读书，多看报，少吃零食，多睡觉，我行，你也行。</p><p>希望对你有所帮助！</p></p>
 
               

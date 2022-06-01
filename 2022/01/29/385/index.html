@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          928 字
+          897 字
         
       </span>
     
@@ -560,18 +560,38 @@
 </li>
 </ol>
 <p>因为自己用gin比较多，所以使用github.com/gin-contrib/pprof，其实内部也就是上面两个库。使用非常简单。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">var</span> debugHttp *http.Server<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">runPPROF</span><span class="hljs-params">()</span></span> &#123;<br>	g := gin.New()<br>	g.Use(gin.Recovery())<br>	g.Use(gin.Logger())<br><br>	pprof.Register(g)<br><br>    <span class="hljs-comment">// 使用9000端口开启http服务</span><br>	debugHttp = &amp;http.Server&#123;<br>		Addr:    <span class="hljs-string">&quot;:9000&quot;</span>,<br>		Handler: g,<br>	&#125;<br>	debugHttp.ListenAndServe()<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> debugHttp *http.Server
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">runPPROF</span><span class="hljs-params">()</span></span> &#123;
+	g := gin.New()
+	g.Use(gin.Recovery())
+	g.Use(gin.Logger())
+
+	pprof.Register(g)
+
+    <span class="hljs-comment">// 使用9000端口开启http服务</span>
+	debugHttp = &amp;http.Server&#123;
+		Addr:    <span class="hljs-string">&quot;:9000&quot;</span>,
+		Handler: g,
+	&#125;
+	debugHttp.ListenAndServe()
+&#125;</code></pre></div>
 
 
 <p>开启之后可以web访问 <a target="_blank" rel="noopener" href="http://127.0.0.1:9000/debug/pprof/%E5%8F%AF%E4%BB%A5%E6%9F%A5%E7%9C%8B%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%EF%BC%8C">http://127.0.0.1:9000/debug/pprof/可以查看实时数据，</a><br><img src="/images/pprof/pprof.png" srcset="/img/loading.gif" lazyload alt="pprof"></p>
 <p>当然也可以查看某个时间段的性能情况：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">// 监听60s性能情况，默认进入命令行<br>go tool pprof http://127.0.0.1:9000/debug/pprof/profile\?seconds\=60<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">// 监听60s性能情况，默认进入命令行
+go tool pprof http://127.0.0.1:9000/debug/pprof/profile\?seconds\=60
+</code></pre></div>
 <p><img src="/images/pprof/pprof2.png" srcset="/img/loading.gif" lazyload alt="pprof"></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">// 本地启动http服务查看，需要装graphviz插件<br>go tool pprof -http=:8080  ~/pprof/pprof.go.samples.cpu.032.pb.gz<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">// 本地启动http服务查看，需要装graphviz插件
+go tool pprof -http=:8080  ~/pprof/pprof.go.samples.cpu.032.pb.gz</code></pre></div>
 <p><img src="/images/pprof/pprof3.png" srcset="/img/loading.gif" lazyload alt="pprof"></p>
 <p>可以切换看占用最高的，还有火焰图等等，相当好用，一般性能瓶颈就在占用比较多的。</p>
 <p>PS: 有时候线上可能没有开启，也可以使用perf去debug查看占用资源比较多的。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">// 19323 端口号<br>perf record -p 19323<br>perf report<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">// 19323 端口号
+perf record -p 19323
+perf report</code></pre></div>
 
 <hr>
 <p>参考：</p>

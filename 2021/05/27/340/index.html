@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.8k 字
+          3.7k 字
         
       </span>
     
@@ -767,34 +767,94 @@
 <li>生成的接口代码作为客户端与服务端的约定，服务端必须实现定义的所有接口方法，客户端直接调用同名方法向服务端发起请求（即便业务上不需要参数也必须指定一个请求消息，一般会定义一个空message）</li>
 </ul>
 <p>比如，想要定义一个 RPC 服务并具有一个方法，该方法接收 SearchRequest 并返回一个 SearchResponse，此时可以在<code>.proto</code>文件中进行如下定义：</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">service</span> <span class="hljs-title">SearchService</span> </span>&#123;<br>	<span class="hljs-function"><span class="hljs-keyword">rpc</span> Search(SearchRequest) <span class="hljs-keyword">returns</span> (SearchResponse) </span>&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">service</span> <span class="hljs-title">SearchService</span> </span>&#123;
+	<span class="hljs-function"><span class="hljs-keyword">rpc</span> Search(SearchRequest) <span class="hljs-keyword">returns</span> (SearchResponse) </span>&#123;&#125;
+&#125;</code></pre></div>
 
 <h2 id="定义Message"><a href="#定义Message" class="headerlink" title="定义Message"></a>定义Message</h2><ul>
 <li>一个 message 类型定义描述了一个请求或响应的消息格式，可以包含多种类型字段</li>
 <li>字段名用小写，转为 go 文件后自动变为大写，message 就相当于结构体</li>
 </ul>
 <h3 id="添加更多-Message-类型"><a href="#添加更多-Message-类型" class="headerlink" title="添加更多 Message 类型"></a>添加更多 Message 类型</h3><p>一个 .proto 文件中可以定义多个消息类型，一般用于同时定义多个相关的消息，例如在同一个 .proto 文件中同时定义搜索请求和响应消息：</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-comment">// 声明使用的 protobuf 版本</span><br>syntax = <span class="hljs-string">&quot;proto3&quot;</span><br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchRequest</span> </span>&#123;<br>	<span class="hljs-built_in">string</span> query = <span class="hljs-number">1</span>;<br>	<span class="hljs-built_in">int32</span> page_number = <span class="hljs-number">2</span>;<br>	<span class="hljs-built_in">int32</span> result_per_page = ;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchResponse</span> </span>&#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs protobuf"><span class="hljs-comment">// 声明使用的 protobuf 版本</span>
+syntax = <span class="hljs-string">&quot;proto3&quot;</span>
+
+<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchRequest</span> </span>&#123;
+	<span class="hljs-built_in">string</span> query = <span class="hljs-number">1</span>;
+	<span class="hljs-built_in">int32</span> page_number = <span class="hljs-number">2</span>;
+	<span class="hljs-built_in">int32</span> result_per_page = ;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchResponse</span> </span>&#123;
+&#125;</code></pre></div>
 
 <h3 id="使用其他-Message"><a href="#使用其他-Message" class="headerlink" title="使用其他 Message"></a>使用其他 Message</h3><p>message 支持嵌套使用，作为另一个 message 中的字段类型</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchResponse</span> </span>&#123;<br>	<span class="hljs-keyword">repeated</span> Result results = <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Result</span> </span>&#123;<br>	<span class="hljs-built_in">string</span> url = <span class="hljs-number">1</span>;<br>	<span class="hljs-built_in">string</span> title = <span class="hljs-number">2</span>;<br>	<span class="hljs-keyword">repeated</span> <span class="hljs-built_in">string</span> snippets = ;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchResponse</span> </span>&#123;
+	<span class="hljs-keyword">repeated</span> Result results = <span class="hljs-number">1</span>;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Result</span> </span>&#123;
+	<span class="hljs-built_in">string</span> url = <span class="hljs-number">1</span>;
+	<span class="hljs-built_in">string</span> title = <span class="hljs-number">2</span>;
+	<span class="hljs-keyword">repeated</span> <span class="hljs-built_in">string</span> snippets = ;
+&#125;</code></pre></div>
 
 <h3 id="Message-嵌套的使用"><a href="#Message-嵌套的使用" class="headerlink" title="Message 嵌套的使用"></a>Message 嵌套的使用</h3><p>支持嵌套消息，消息可以包含另一个消息作为字段。也可以在消息内定义一个新的消息。</p>
 <p>内部声明的 message 类型名称只可在内部直接使用：</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchResponse</span> </span>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Result</span> </span>&#123;<br>		<span class="hljs-built_in">string</span> url = <span class="hljs-number">1</span>;<br>		<span class="hljs-built_in">string</span> title = <span class="hljs-number">2</span>;<br>		<span class="hljs-keyword">repeated</span> <span class="hljs-built_in">string</span> snippets = ;<br>	&#125;<br>	<span class="hljs-keyword">repeated</span> Result results = <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchResponse</span> </span>&#123;
+	<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Result</span> </span>&#123;
+		<span class="hljs-built_in">string</span> url = <span class="hljs-number">1</span>;
+		<span class="hljs-built_in">string</span> title = <span class="hljs-number">2</span>;
+		<span class="hljs-keyword">repeated</span> <span class="hljs-built_in">string</span> snippets = ;
+	&#125;
+	<span class="hljs-keyword">repeated</span> Result results = <span class="hljs-number">1</span>;
+&#125;</code></pre></div>
 
 <p>多层嵌套：</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Outer</span> </span>&#123;<br>	<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">A</span> </span>&#123;<br>		<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Inner</span> </span>&#123;<br>			<span class="hljs-built_in">int64</span> ival = <span class="hljs-number">1</span>;<br>			<span class="hljs-built_in">bool</span> booly = <span class="hljs-number">2</span>;<br>		&#125;<br>	&#125;<br>	<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">B</span> </span>&#123;<br>		<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Inner</span> </span>&#123;<br>			<span class="hljs-built_in">int64</span> ival = <span class="hljs-number">1</span>;<br>			<span class="hljs-built_in">bool</span> booly = <span class="hljs-number">2</span>;<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Outer</span> </span>&#123;
+	<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">A</span> </span>&#123;
+		<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Inner</span> </span>&#123;
+			<span class="hljs-built_in">int64</span> ival = <span class="hljs-number">1</span>;
+			<span class="hljs-built_in">bool</span> booly = <span class="hljs-number">2</span>;
+		&#125;
+	&#125;
+	<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">B</span> </span>&#123;
+		<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Inner</span> </span>&#123;
+			<span class="hljs-built_in">int64</span> ival = <span class="hljs-number">1</span>;
+			<span class="hljs-built_in">bool</span> booly = <span class="hljs-number">2</span>;
+		&#125;
+	&#125;
+&#125;</code></pre></div>
 
 
 <h3 id="映射字段"><a href="#映射字段" class="headerlink" title="映射字段"></a>映射字段</h3><p>每个映射字段会在Go的结构体中生成一个<code>map[TKey]TValue</code>类型的字段，其中<code>TKey</code>是字段的键类型<code>TValue</code>是字段的值类型。对于下面这个消息定义：</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Bar</span> </span>&#123;&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Baz</span> </span>&#123;<br>  map&lt;<span class="hljs-built_in">string</span>, Bar&gt; foo = <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Bar</span> </span>&#123;&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Baz</span> </span>&#123;
+  map&lt;<span class="hljs-built_in">string</span>, Bar&gt; foo = <span class="hljs-number">1</span>;
+&#125;</code></pre></div>
 
 <p>编译器生成Go结构体</p>
-<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs elm"><span class="hljs-keyword">type</span> <span class="hljs-type">Baz</span> struct &#123;<br>        <span class="hljs-type">Foo</span> map[string]*<span class="hljs-type">Bar</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs elm"><span class="hljs-keyword">type</span> <span class="hljs-type">Baz</span> struct &#123;
+        <span class="hljs-type">Foo</span> map[string]*<span class="hljs-type">Bar</span>
+&#125;
+</code></pre></div>
 
 <h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><p>给出如下枚举</p>
-<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchRequest</span> </span>&#123;<br>  <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Corpus</span> </span>&#123;<br>    UNIVERSAL = <span class="hljs-number">0</span>;<br>    WEB = <span class="hljs-number">1</span>;<br>    IMAGES = <span class="hljs-number">2</span>;<br>    LOCAL = <span class="hljs-number">3</span>;<br>    NEWS = <span class="hljs-number">4</span>;<br>    PRODUCTS = <span class="hljs-number">5</span>;<br>    VIDEO = <span class="hljs-number">6</span>;<br>  &#125;<br>  Corpus corpus = <span class="hljs-number">1</span>;<br>  ...<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SearchRequest</span> </span>&#123;
+  <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Corpus</span> </span>&#123;
+    UNIVERSAL = <span class="hljs-number">0</span>;
+    WEB = <span class="hljs-number">1</span>;
+    IMAGES = <span class="hljs-number">2</span>;
+    LOCAL = <span class="hljs-number">3</span>;
+    NEWS = <span class="hljs-number">4</span>;
+    PRODUCTS = <span class="hljs-number">5</span>;
+    VIDEO = <span class="hljs-number">6</span>;
+  &#125;
+  Corpus corpus = <span class="hljs-number">1</span>;
+  ...
+&#125;
+</code></pre></div>
 
 <p>编译器将会生成一个枚举类型和一系列该类型的常量。</p>
 <h2 id="proto-文件编译代码"><a href="#proto-文件编译代码" class="headerlink" title=".proto 文件编译代码"></a>.proto 文件编译代码</h2><ul>

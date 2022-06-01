@@ -479,7 +479,7 @@
 <p>从图中不难看出，不同的存储引擎共用一个Server层，也就是从连接器到执行器的部分。</p>
 <p>我们依次看下每个组件的作用。</p>
 <h3 id="连接器"><a href="#连接器" class="headerlink" title="连接器"></a>连接器</h3><p>连接器负责跟客户端建立连接、获取权限、维持和管理连接。连接命令一般是这么写的：</p>
-<figure class="highlight tp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs tp">mysql -h <span class="hljs-variable">$ip</span> -<span class="hljs-keyword">P</span> <span class="hljs-variable">$port</span> -u <span class="hljs-variable">$user</span> -p<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs tp">mysql -h <span class="hljs-variable">$ip</span> -<span class="hljs-keyword">P</span> <span class="hljs-variable">$port</span> -u <span class="hljs-variable">$user</span> -p</code></pre></div>
 
 <p>输完命令之后，你就需要在交互对话里面输入密码。</p>
 <p>连接完成后，如果你没有后续的动作，这个连接就处于空闲状态，你可以在<code>show processlist</code>命令中看到它。</p>
@@ -513,7 +513,9 @@
 <p>MySQL从你输入的”select”这个关键字识别出来，这是一个查询语句。它也要把字符串“T”识别成“表名T”，把字符串“ID”识别成“列ID”。</p>
 <p>做完了这些识别以后，就要做“语法分析”。根据词法分析的结果，语法分析器会根据语法规则，判断你输入的这个SQL语句是否满足MySQL语法。</p>
 <p>如果你的语句不对，就会收到“You have an error in your SQL syntax”的错误提醒，比如下面这个语句select少打了开头的字母“s”。</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">mysql&gt; elect * <span class="hljs-keyword">from</span> t where <span class="hljs-attribute">id</span>=1;<br><br><span class="hljs-builtin-name">ERROR</span> 1064 (42000): You have an <span class="hljs-builtin-name">error</span> <span class="hljs-keyword">in</span> your SQL syntax; check the<span class="hljs-built_in"> manual </span>that corresponds <span class="hljs-keyword">to</span> your MySQL<span class="hljs-built_in"> server </span>version <span class="hljs-keyword">for</span> the right syntax <span class="hljs-keyword">to</span> use near <span class="hljs-string">&#x27;elect * from t where ID=1&#x27;</span> at line 1<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs routeros">mysql&gt; elect * <span class="hljs-keyword">from</span> t where <span class="hljs-attribute">id</span>=1;
+
+<span class="hljs-builtin-name">ERROR</span> 1064 (42000): You have an <span class="hljs-builtin-name">error</span> <span class="hljs-keyword">in</span> your SQL syntax; check the<span class="hljs-built_in"> manual </span>that corresponds <span class="hljs-keyword">to</span> your MySQL<span class="hljs-built_in"> server </span>version <span class="hljs-keyword">for</span> the right syntax <span class="hljs-keyword">to</span> use near <span class="hljs-string">&#x27;elect * from t where ID=1&#x27;</span> at line 1</code></pre></div>
 
 <p>一般语法错误会提示第一个出现错误的位置，所以你要关注的是紧接“use near”的内容。</p>
 <h3 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h3><p>经过了分析器，MySQL就知道你要做什么了。在开始执行之前，还要先经过优化器的处理。</p>
@@ -521,7 +523,9 @@
 <p>优化器阶段完成后，这个语句的执行方案就确定下来了，然后进入执行器阶段。如果你还有一些疑问，比如优化器是怎么选择索引的，有没有可能选择错等等，没关系，我会在后面的文章中单独展开说明优化器的内容。</p>
 <h3 id="执行器"><a href="#执行器" class="headerlink" title="执行器"></a>执行器</h3><p>MySQL通过分析器知道了你要做什么，通过优化器知道了该怎么做，于是就进入了执行器阶段，开始执行语句。</p>
 <p>开始执行的时候，要先判断一下你对这个表T有没有执行查询的权限，如果没有，就会返回没有权限的错误，如下所示(在工程实现上，如果命中查询缓存，会在查询缓存返回结果的时候，做权限验证。查询也会在优化器之前调用precheck验证权限)。</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">mysql&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> T <span class="hljs-keyword">where</span> ID=<span class="hljs-number">10</span>;<br><br>ERROR <span class="hljs-number">1142</span> (<span class="hljs-number">42000</span>): <span class="hljs-keyword">SELECT</span> command denied <span class="hljs-keyword">to</span> <span class="hljs-keyword">user</span> <span class="hljs-string">&#x27;b&#x27;</span>@<span class="hljs-string">&#x27;localhost&#x27;</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">table</span> <span class="hljs-string">&#x27;T&#x27;</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">mysql&gt; <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> T <span class="hljs-keyword">where</span> ID=<span class="hljs-number">10</span>;
+
+ERROR <span class="hljs-number">1142</span> (<span class="hljs-number">42000</span>): <span class="hljs-keyword">SELECT</span> command denied <span class="hljs-keyword">to</span> <span class="hljs-keyword">user</span> <span class="hljs-string">&#x27;b&#x27;</span>@<span class="hljs-string">&#x27;localhost&#x27;</span> <span class="hljs-keyword">for</span> <span class="hljs-keyword">table</span> <span class="hljs-string">&#x27;T&#x27;</span></code></pre></div>
 
 <p>如果有权限，就打开表继续执行。打开表的时候，执行器就会根据表的引擎定义，去使用这个引擎提供的接口。</p>
 <p>比如我们这个例子中的表T中，ID字段没有索引，那么执行器的执行流程是这样的：</p>

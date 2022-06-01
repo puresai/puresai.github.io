@@ -553,12 +553,29 @@
 <li>Redis的setnx方法</li>
 <li>php的register</li>
 </ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processLock</span>(<span class="hljs-params"><span class="hljs-variable">$redis</span>, <span class="hljs-variable">$key</span>, <span class="hljs-variable">$ttl</span> = <span class="hljs-number">5</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-variable">$ret</span> = <span class="hljs-variable">$redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">1</span>);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$ret</span>) &#123;<br>        <span class="hljs-variable">$redis</span>-&gt;expire(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$ttl</span>);<br><br>        register_shutdown_function(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) <span class="hljs-keyword">use</span> (<span class="hljs-params"><span class="hljs-variable">$redis</span>, <span class="hljs-variable">$key</span></span>)</span>&#123;<br>            <span class="hljs-variable">$redis</span>-&gt;del(<span class="hljs-variable">$key</span>);<br>            &#125;);<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-variable">$ret</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processLock</span>(<span class="hljs-params"><span class="hljs-variable">$redis</span>, <span class="hljs-variable">$key</span>, <span class="hljs-variable">$ttl</span> = <span class="hljs-number">5</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$ret</span> = <span class="hljs-variable">$redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$ret</span>) &#123;
+        <span class="hljs-variable">$redis</span>-&gt;expire(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$ttl</span>);
+
+        register_shutdown_function(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) <span class="hljs-keyword">use</span> (<span class="hljs-params"><span class="hljs-variable">$redis</span>, <span class="hljs-variable">$key</span></span>)</span>&#123;
+            <span class="hljs-variable">$redis</span>-&gt;del(<span class="hljs-variable">$key</span>);
+            &#125;);
+    &#125;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$ret</span>;
+&#125;</code></pre></div>
 
 
 <p>demo里的$redis是一个redis实例，我们在前面已经实现过，不多说明。</p>
 <h4 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h4><p>我们使用的setnx命令，senx表示“SET if Not eXists”，如果key不存在，则set，如果存在，则不set</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">redis&gt; SETNX mykey &quot;Hello&quot;<br>(<span class="hljs-type">integer</span>) <span class="hljs-number">1</span><br>redis&gt; SETNX mykey &quot;World&quot;<br>(<span class="hljs-type">integer</span>) <span class="hljs-number">0</span><br>redis&gt; <span class="hljs-keyword">GET</span> mykey<br>&quot;Hello&quot;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs pgsql">redis&gt; SETNX mykey &quot;Hello&quot;
+(<span class="hljs-type">integer</span>) <span class="hljs-number">1</span>
+redis&gt; SETNX mykey &quot;World&quot;
+(<span class="hljs-type">integer</span>) <span class="hljs-number">0</span>
+redis&gt; <span class="hljs-keyword">GET</span> mykey
+&quot;Hello&quot;</code></pre></div>
 
 <h4 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h4><p>使用的是del，即删除这个key。这里结合了 register_shutdown_function — 注册一个会在php中止时执行的函数，设置了之后我们就可以不必手动去解锁</p>
 <h4 id="锁超时"><a href="#锁超时" class="headerlink" title="锁超时"></a>锁超时</h4><p>这里给锁加了一个expire过期时间5秒，目的是防止使用这个方法之后的执行了“神奇”代码抛出了语法错误，导致register_shutdown_function里的代码没有执行，虽然请求结束，但是加锁后，没有解锁，影响了后续请求。</p>

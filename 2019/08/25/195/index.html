@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          27 分钟
+          26 分钟
         
       </span>
     
@@ -550,13 +550,24 @@
             
             <div class="markdown-body">
               
-              <h4 id="go-get安装x-sys失败的解决"><a href="#go-get安装x-sys失败的解决" class="headerlink" title="go get安装x/sys失败的解决"></a>go get安装x/sys失败的解决</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// $GOPATH这段地址请自行修改，下载到goroot和gopath对应位置即可，不同系统略有不同</span><br>git clone https:<span class="hljs-comment">//github.com/golang/net.git $GOPATH/src/github.com/golang/net</span><br><br>git clone https:<span class="hljs-comment">//github.com/golang/sys.git $GOPATH/src/github.com/golang/sys</span><br><br>git clone https:<span class="hljs-comment">//github.com/golang/tools.git $GOPATH/src/github.com/golang/tools</span><br><br>ln -s $GOPATH/src/github.com/golang $GOPATH/src/golang.org/x<br></code></pre></td></tr></table></figure>
+              <h4 id="go-get安装x-sys失败的解决"><a href="#go-get安装x-sys失败的解决" class="headerlink" title="go get安装x/sys失败的解决"></a>go get安装x/sys失败的解决</h4><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// $GOPATH这段地址请自行修改，下载到goroot和gopath对应位置即可，不同系统略有不同</span>
+git clone https:<span class="hljs-comment">//github.com/golang/net.git $GOPATH/src/github.com/golang/net</span>
+
+git clone https:<span class="hljs-comment">//github.com/golang/sys.git $GOPATH/src/github.com/golang/sys</span>
+
+git clone https:<span class="hljs-comment">//github.com/golang/tools.git $GOPATH/src/github.com/golang/tools</span>
+
+ln -s $GOPATH/src/github.com/golang $GOPATH/src/golang.org/x</code></pre></div>
 
 <blockquote>
 <p>go get命令安装golang.org比较慢的话，一般都可以在github.com找到对应的package，下载后放到对应的目录即可</p>
 </blockquote>
 <h4 id="go的环境变量设置"><a href="#go的环境变量设置" class="headerlink" title="go的环境变量设置"></a>go的环境变量设置</h4><p>在/etc/profile最下面加入以下代码：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 可自行改成你的目录</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">GO_INSTALL_DIR</span>=<span class="hljs-variable">$HOME</span><br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">GOROOT</span>=<span class="hljs-variable">$GO_INSTALL_DIR</span>/go<br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">GOPATH</span>=<span class="hljs-variable">$HOME</span>/mygo<br><span class="hljs-builtin-name">export</span> <span class="hljs-attribute">PATH</span>=<span class="hljs-variable">$GOPATH</span>/bin:$PATH:$GO_INSTALL_DIR/go/bin<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs routeros"><span class="hljs-comment"># 可自行改成你的目录</span>
+<span class="hljs-builtin-name">export</span> <span class="hljs-attribute">GO_INSTALL_DIR</span>=<span class="hljs-variable">$HOME</span>
+<span class="hljs-builtin-name">export</span> <span class="hljs-attribute">GOROOT</span>=<span class="hljs-variable">$GO_INSTALL_DIR</span>/go
+<span class="hljs-builtin-name">export</span> <span class="hljs-attribute">GOPATH</span>=<span class="hljs-variable">$HOME</span>/mygo
+<span class="hljs-builtin-name">export</span> <span class="hljs-attribute">PATH</span>=<span class="hljs-variable">$GOPATH</span>/bin:$PATH:$GO_INSTALL_DIR/go/bin</code></pre></div>
 
 
 <h4 id="import"><a href="#import" class="headerlink" title="import"></a>import</h4><blockquote>
@@ -571,7 +582,10 @@
 <h3 id="切片容量"><a href="#切片容量" class="headerlink" title="切片容量"></a>切片容量</h3><blockquote>
 <p>容量当做成总长度减去左指针走过的元素值</p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs">一旦一个切片无法容纳更多的元素，Go语言就会想办法扩容。但它并不会改变原来的切片，而是会生成一个容量更大的切片，然后将把原有的元素和新元素一并拷贝到新切片中。在一般的情况下，你可以简单地认为新切片的容量（以下简称新容量）将会是原切片容量（以下简称原容量）的2倍。<br>但是，当原切片的长度（以下简称原长度）大于或等于1024时，Go语言将会以原容量的1.25倍作为新容量的基准（以下新容量基准）。新容量基准会被调整（不断地与1.25相乘），直到结果不小于原长度与要追加的元素数量之和（以下简称新长度）。最终，新容量往往会比新长度大一些，当然，相等也是可能的。<br><br>另外，如果我们一次追加的元素过多，以至于使新长度比原容量的2倍还要大，那么新容量就会以新长度为基准。<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs">一旦一个切片无法容纳更多的元素，Go语言就会想办法扩容。但它并不会改变原来的切片，而是会生成一个容量更大的切片，然后将把原有的元素和新元素一并拷贝到新切片中。在一般的情况下，你可以简单地认为新切片的容量（以下简称新容量）将会是原切片容量（以下简称原容量）的2倍。
+但是，当原切片的长度（以下简称原长度）大于或等于1024时，Go语言将会以原容量的1.25倍作为新容量的基准（以下新容量基准）。新容量基准会被调整（不断地与1.25相乘），直到结果不小于原长度与要追加的元素数量之和（以下简称新长度）。最终，新容量往往会比新长度大一些，当然，相等也是可能的。
+
+另外，如果我们一次追加的元素过多，以至于使新长度比原容量的2倍还要大，那么新容量就会以新长度为基准。</code></pre></div>
 
 
 <h3 id="大小写"><a href="#大小写" class="headerlink" title="大小写"></a>大小写</h3><blockquote>
@@ -612,25 +626,58 @@
 <blockquote>
 <p>并发的概念和并行不一样，并行指的是在不同的物理处理器上同时执行不同的代码片段，并行可以同时做很多事情，而并发是同时管理很多事情，因为操作系统和硬件的总资源比较少，所以并发的效果要比并行好的多，使用较少的资源做更多的事情，也是Go语言提倡的。</p>
 </blockquote>
-<h3 id="通道"><a href="#通道" class="headerlink" title="通道"></a>通道</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go">h:=<span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br>通道类型和Map这些类型一样，可以使用内置的<span class="hljs-built_in">make</span>函数声明初始化，这里我们初始化了一个<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>类型的通道，所以我们只能往这个通道里发送<span class="hljs-keyword">int</span>类型的数据，当然接收也只能是<span class="hljs-keyword">int</span>类型的数据。<br><br>我们知道，通道是用于在goroutine之间通信的，它具有发送和接收两个操作，而且这两个操作的运算符都是&lt;-。<br><br>ch &lt;- <span class="hljs-number">2</span> <span class="hljs-comment">//发送数值2给这个通道</span><br>x:=&lt;-ch <span class="hljs-comment">//从通道里读取值，并把读取的值赋值给x变量</span><br>&lt;-ch <span class="hljs-comment">//从通道里读取值，然后忽略</span><br>看例子，慢慢理解发送和接收的用法。发送操作&lt;-在通道的后面，看箭头方向，表示把数值<span class="hljs-number">2</span>发送到通道ch里；接收操作&lt;-在通道的前面，而且是一个一元操作符，看箭头方向，表示从通道ch里读取数据。读取的数据可以赋值给一个变量，也可以忽略。<br><br>通道我们还可以使用内置的<span class="hljs-built_in">close</span>函数关闭。<br><br><span class="hljs-built_in">close</span>(ch)<br></code></pre></td></tr></table></figure>
+<h3 id="通道"><a href="#通道" class="headerlink" title="通道"></a>通道</h3><div class="code-wrapper"><pre><code class="hljs go">h:=<span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
+通道类型和Map这些类型一样，可以使用内置的<span class="hljs-built_in">make</span>函数声明初始化，这里我们初始化了一个<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>类型的通道，所以我们只能往这个通道里发送<span class="hljs-keyword">int</span>类型的数据，当然接收也只能是<span class="hljs-keyword">int</span>类型的数据。
+
+我们知道，通道是用于在goroutine之间通信的，它具有发送和接收两个操作，而且这两个操作的运算符都是&lt;-。
+
+ch &lt;- <span class="hljs-number">2</span> <span class="hljs-comment">//发送数值2给这个通道</span>
+x:=&lt;-ch <span class="hljs-comment">//从通道里读取值，并把读取的值赋值给x变量</span>
+&lt;-ch <span class="hljs-comment">//从通道里读取值，然后忽略</span>
+看例子，慢慢理解发送和接收的用法。发送操作&lt;-在通道的后面，看箭头方向，表示把数值<span class="hljs-number">2</span>发送到通道ch里；接收操作&lt;-在通道的前面，而且是一个一元操作符，看箭头方向，表示从通道ch里读取数据。读取的数据可以赋值给一个变量，也可以忽略。
+
+通道我们还可以使用内置的<span class="hljs-built_in">close</span>函数关闭。
+
+<span class="hljs-built_in">close</span>(ch)</code></pre></div>
 
 <h3 id="无缓冲的通道"><a href="#无缓冲的通道" class="headerlink" title="无缓冲的通道"></a>无缓冲的通道</h3><p>无缓冲的通道指的是通道的大小为0，也就是说，这种类型的通道在接收前没有能力保存任何值，它要求发送goroutine和接收goroutine同时准备好，才可以完成发送和接收操作。</p>
 <p>从上面无缓冲的通道定义来看，发送goroutine和接收gouroutine必须是同步的，同时准备后，如果没有同时准备好的话，先执行的操作就会阻塞等待，直到另一个相对应的操作准备好为止。这种无缓冲的通道我们也称之为同步通道。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)<br>    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>            <span class="hljs-keyword">var</span> sum <span class="hljs-keyword">int</span> = <span class="hljs-number">0</span><br>            <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;<br>                sum += i<br>            &#125;<br>            ch &lt;- sum<br>    &#125;()<br><br>    fmt.Println(&lt;-ch)<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
+    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+            <span class="hljs-keyword">var</span> sum <span class="hljs-keyword">int</span> = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;
+                sum += i
+            &#125;
+            ch &lt;- sum
+    &#125;()
+
+    fmt.Println(&lt;-ch)
+
+&#125;</code></pre></div>
 
 
 <h3 id="有缓冲的通道"><a href="#有缓冲的通道" class="headerlink" title="有缓冲的通道"></a>有缓冲的通道</h3><p>有缓冲通道，其实是一个队列，这个队列的最大容量就是我们使用make函数创建通道时，通过第二个参数指定的。</p>
 <p>ch := make(chan int, 3)<br>这里创建容量为3的，有缓冲的通道。对于有缓冲的通道，向其发送操作就是向队列的尾部插入元素，接收操作则是从队列的头部删除元素，并返回这个刚刚删除的元素。</p>
 <p>当队列满的时候，发送操作会阻塞；当队列空的时候，接受操作会阻塞。有缓冲的通道，不要求发送和接收操作时同步的，相反可以解耦发送和接收操作。</p>
 <p>想知道通道的容量以及里面有几个元素数据怎么办？其实和map一样，使用cap和len函数就可以了。</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">cap</span><span class="hljs-params">(ch)</span></span><br><span class="hljs-function"><span class="hljs-title">len</span><span class="hljs-params">(ch)</span></span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">cap</span><span class="hljs-params">(ch)</span></span>
+<span class="hljs-function"><span class="hljs-title">len</span><span class="hljs-params">(ch)</span></span></code></pre></div>
 <p>cap函数返回通道的最大容量，len函数返回现在通道里有几个元素。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mirroredQuery</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;<br>    responses := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>, <span class="hljs-number">3</span>)<br>    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123; responses &lt;- request(<span class="hljs-string">&quot;asia.gopl.io&quot;</span>) &#125;()<br>    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123; responses &lt;- request(<span class="hljs-string">&quot;europe.gopl.io&quot;</span>) &#125;()    <br>    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123; responses &lt;- request(<span class="hljs-string">&quot;americas.gopl.io&quot;</span>) &#125;()    <br>    <span class="hljs-keyword">return</span> &lt;-responses <span class="hljs-comment">// return the quickest response</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">request</span><span class="hljs-params">(hostname <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(response <span class="hljs-keyword">string</span>)</span></span> &#123; <span class="hljs-comment">/* ... */</span> &#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mirroredQuery</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;
+    responses := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>, <span class="hljs-number">3</span>)
+    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123; responses &lt;- request(<span class="hljs-string">&quot;asia.gopl.io&quot;</span>) &#125;()
+    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123; responses &lt;- request(<span class="hljs-string">&quot;europe.gopl.io&quot;</span>) &#125;()    
+    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123; responses &lt;- request(<span class="hljs-string">&quot;americas.gopl.io&quot;</span>) &#125;()    
+    <span class="hljs-keyword">return</span> &lt;-responses <span class="hljs-comment">// return the quickest response</span>
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">request</span><span class="hljs-params">(hostname <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(response <span class="hljs-keyword">string</span>)</span></span> &#123; <span class="hljs-comment">/* ... */</span> &#125;</code></pre></div>
 
 
 <h3 id="单向通道"><a href="#单向通道" class="headerlink" title="单向通道"></a>单向通道</h3><p>有时候，我们有一些特殊场景，比如限制一个通道只可以接收，但是不能发送；有时候限制一个通道只能发送，但是不能接收，这种通道我们称为单向通道。这个在生产者消费者很实用。</p>
 <p>定义单向通道也很简单，只需要在定义的时候，带上&lt;-即可。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">var</span> send <span class="hljs-keyword">chan</span>&lt;- <span class="hljs-keyword">int</span> <span class="hljs-comment">//只能发送</span><br><span class="hljs-keyword">var</span> receive &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span> <span class="hljs-comment">//只能接收</span><br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> send <span class="hljs-keyword">chan</span>&lt;- <span class="hljs-keyword">int</span> <span class="hljs-comment">//只能发送</span>
+<span class="hljs-keyword">var</span> receive &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span> <span class="hljs-comment">//只能接收</span></code></pre></div>
 
 
 

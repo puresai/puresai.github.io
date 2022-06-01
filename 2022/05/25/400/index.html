@@ -295,7 +295,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.4k 字
+          4.1k 字
         
       </span>
     
@@ -307,7 +307,7 @@
         
         
           <!-- compatible with older versions-->
-          37 分钟
+          35 分钟
         
       </span>
     
@@ -556,12 +556,21 @@
               
               <p>最近修改历史项目的时候，有使用到 proto文件生成go代码，有踩一下坑，分享一下。</p>
 <h2 id="开始前"><a href="#开始前" class="headerlink" title="开始前"></a>开始前</h2><p>如果不熟悉Protobuf语法可以先看这篇-<a href="/images/post//2021/05/27/340/">Protobuf语法</a>，如果没有安装生产工具请先执行：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh">go get -u github.com/golang/protobuf/proto<br>go get -u github.com/golang/protobuf/protoc-gen-go<br>go get -u github.com/micro/micro/v2/cmd/protoc-gen-micro<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">go get -u github.com/golang/protobuf/proto
+go get -u github.com/golang/protobuf/protoc-gen-go
+go get -u github.com/micro/micro/v2/cmd/protoc-gen-micro</code></pre></div>
 
 <h2 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h2><h4 id="编写-proto-文件"><a href="#编写-proto-文件" class="headerlink" title="编写 proto 文件"></a>编写 proto 文件</h4><p>我们先新建common.proto：</p>
-<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">syntax</span> = <span class="hljs-string">&quot;proto3&quot;</span><span class="hljs-comment">;  //语法声明</span><br><br>enum TypeHello &#123;<br>    Unuse = <span class="hljs-number">0</span><span class="hljs-comment">;</span><br>    Morning = <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>    Afernoon = <span class="hljs-number">2</span><span class="hljs-comment">;</span><br>    Evening = <span class="hljs-number">3</span><span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs abnf"><span class="hljs-attribute">syntax</span> = <span class="hljs-string">&quot;proto3&quot;</span><span class="hljs-comment">;  //语法声明</span>
 
-<h3 id="protoc-生成-pb-go"><a href="#protoc-生成-pb-go" class="headerlink" title="protoc 生成 .pb.go"></a>protoc 生成 .pb.go</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">protoc --proto_path=./ --micro_out=. --go_out=. *.proto<br></code></pre></td></tr></table></figure>
+enum TypeHello &#123;
+    Unuse = <span class="hljs-number">0</span><span class="hljs-comment">;</span>
+    Morning = <span class="hljs-number">1</span><span class="hljs-comment">;</span>
+    Afernoon = <span class="hljs-number">2</span><span class="hljs-comment">;</span>
+    Evening = <span class="hljs-number">3</span><span class="hljs-comment">;</span>
+&#125;</code></pre></div>
+
+<h3 id="protoc-生成-pb-go"><a href="#protoc-生成-pb-go" class="headerlink" title="protoc 生成 .pb.go"></a>protoc 生成 .pb.go</h3><div class="code-wrapper"><pre><code class="hljs sh">protoc --proto_path=./ --micro_out=. --go_out=. *.proto</code></pre></div>
 <p><img src="/images/post/proto.png" srcset="/img/loading.gif" lazyload alt="proto"></p>
 <h4 id="错误分析"><a href="#错误分析" class="headerlink" title="错误分析"></a>错误分析</h4><p>能看到错误其实是protoc-gen-go报出的，解决方案有两种：</p>
 <ol>
@@ -569,19 +578,139 @@
 <li>命令行使用–go_opt=M</li>
 </ol>
 <p>我比较建议使用 go_package，当多个proto文件有依赖时，使用 go_package 比较清晰，使用 –go_opt=M 可能要麻烦得多，甚至出错。诸如以下：<br><img src="/images/post/protoerror.png" srcset="/img/loading.gif" lazyload></p>
-<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs abnf">// common.proto<br><span class="hljs-attribute">syntax</span> = <span class="hljs-string">&quot;proto3&quot;</span><span class="hljs-comment">;  //语法声明</span><br><br>package common<span class="hljs-comment">; //包名</span><br>// go_package 使用 go mod 需要的路径即可，也可以是私有 gitlab package<br>option go_package = <span class="hljs-string">&quot;github.com/13sai/go-learing/micro/hello/common&quot;</span><span class="hljs-comment">;</span><br><br>enum TypeHello &#123;<br>    Unuse = <span class="hljs-number">0</span><span class="hljs-comment">;</span><br>    Morning = <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>    Afernoon = <span class="hljs-number">2</span><span class="hljs-comment">;</span><br>    Evening = <span class="hljs-number">3</span><span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs abnf">// common.proto
+<span class="hljs-attribute">syntax</span> = <span class="hljs-string">&quot;proto3&quot;</span><span class="hljs-comment">;  //语法声明</span>
+
+package common<span class="hljs-comment">; //包名</span>
+// go_package 使用 go mod 需要的路径即可，也可以是私有 gitlab package
+option go_package = <span class="hljs-string">&quot;github.com/13sai/go-learing/micro/hello/common&quot;</span><span class="hljs-comment">;</span>
+
+enum TypeHello &#123;
+    Unuse = <span class="hljs-number">0</span><span class="hljs-comment">;</span>
+    Morning = <span class="hljs-number">1</span><span class="hljs-comment">;</span>
+    Afernoon = <span class="hljs-number">2</span><span class="hljs-comment">;</span>
+    Evening = <span class="hljs-number">3</span><span class="hljs-comment">;</span>
+&#125;</code></pre></div>
 
 <p>生成时务必加上 –go_out=paths=source_relative，具体说明可见文末说明。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">protoc --proto_path=. --go_out=paths=source_relative:. -I=../common *.proto<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">protoc --proto_path=. --go_out=paths=source_relative:. -I=../common *.proto</code></pre></div>
 
 <p>这里我们稍微弄复杂一点，hello.proto 依赖 common.proto:</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs awk">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;  <span class="hljs-regexp">//</span>语法声明<br><br>import <span class="hljs-string">&quot;common.proto&quot;</span>; <span class="hljs-regexp">//</span> 依赖<br><br>package hello; <br>option go_package=<span class="hljs-string">&quot;github.com/13sai/go-learing/micro/hello/hello&quot;</span>;<br><br><br><span class="hljs-regexp">//</span> 定义服务<br>service Demo &#123;<br>  rpc SayHello (HelloRequest) returns (HelloReply) &#123;&#125;<br>&#125;<br><br><span class="hljs-regexp">//</span> 请求数据格式<br>message HelloRequest &#123;<br>  string name = <span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-regexp">//</span> 响应数据格式<br>message HelloReply &#123;<br>  common.TypeHello hello = <span class="hljs-number">2</span>;<br>  string message = <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">syntax = <span class="hljs-string">&quot;proto3&quot;</span>;  <span class="hljs-regexp">//</span>语法声明
+
+import <span class="hljs-string">&quot;common.proto&quot;</span>; <span class="hljs-regexp">//</span> 依赖
+
+package hello; 
+option go_package=<span class="hljs-string">&quot;github.com/13sai/go-learing/micro/hello/hello&quot;</span>;
+
+
+<span class="hljs-regexp">//</span> 定义服务
+service Demo &#123;
+  rpc SayHello (HelloRequest) returns (HelloReply) &#123;&#125;
+&#125;
+
+<span class="hljs-regexp">//</span> 请求数据格式
+message HelloRequest &#123;
+  string name = <span class="hljs-number">1</span>;
+&#125;
+
+<span class="hljs-regexp">//</span> 响应数据格式
+message HelloReply &#123;
+  common.TypeHello hello = <span class="hljs-number">2</span>;
+  string message = <span class="hljs-number">1</span>;
+&#125;</code></pre></div>
 
 <p>注意这里多了个 micro_out，这时需要 protoc-gen-micro的，会多生成一个.pb.micro.go文件。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">protoc --proto_path=. --go_out=paths=source_relative:. --micro_out=paths=source_relative:. -I=../common *.proto<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">protoc --proto_path=. --go_out=paths=source_relative:. --micro_out=paths=source_relative:. -I=../common *.proto</code></pre></div>
 
 <p>文件生成了，使用go-micro（V2）写一个简单的demo。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;context&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;log&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>	<span class="hljs-string">&quot;os/signal&quot;</span><br>	<span class="hljs-string">&quot;syscall&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br><br>	<span class="hljs-string">&quot;github.com/13sai/go-learing/micro/hello/common&quot;</span><br>	<span class="hljs-string">&quot;github.com/13sai/go-learing/micro/hello/hello&quot;</span><br>	<span class="hljs-string">&quot;github.com/micro/go-micro/v2&quot;</span><br>	_ <span class="hljs-string">&quot;github.com/micro/go-plugins/registry/kubernetes/v2&quot;</span><br>	<span class="hljs-string">&quot;github.com/sirupsen/logrus&quot;</span><br>)<br><br><span class="hljs-keyword">const</span> (<br>	ServiceName = <span class="hljs-string">&quot;hello-server&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> HelloServer <span class="hljs-keyword">struct</span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *HelloServer)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx context.Context, req *hello.HelloRequest, res *hello.HelloReply)</span> <span class="hljs-title">error</span></span> &#123;<br>	res.Message = <span class="hljs-string">&quot;hello &quot;</span> + req.Name<br>	res.Hello = common.TypeHello_Afernoon<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	service := micro.NewService(<br>		<span class="hljs-comment">// Set service name</span><br>		micro.Name(ServiceName),<br>		micro.AfterStart(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;<br>			fmt.Println(<span class="hljs-string">&quot;starting...&quot;</span>)<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>		&#125;),<br>		micro.Address(<span class="hljs-string">&quot;:8089&quot;</span>),<br>	)<br><br>	service.Init()<br><br>	hello.RegisterDemoHandler(service.Server(), &amp;HelloServer&#123;&#125;)<br><br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">if</span> err := service.Run(); err != <span class="hljs-literal">nil</span> &#123;<br>			log.Fatal(err)<br>		&#125;<br>	&#125;()<br><br>	stop := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal)<br>	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT, os.Interrupt)<br><br>	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		tick := time.NewTicker(<span class="hljs-number">3</span> * time.Second)<br><br>		<span class="hljs-keyword">for</span> &#123;<br>			<span class="hljs-keyword">select</span> &#123;<br>			<span class="hljs-keyword">case</span> &lt;-stop:<br>				tick.Stop()<br>			<span class="hljs-keyword">default</span>:<br>				&lt;-tick.C<br>				client()<br>			&#125;<br>		&#125;<br>	&#125;()<br><br>	<span class="hljs-keyword">select</span> &#123;<br>	<span class="hljs-keyword">case</span> &lt;-stop:<br>		logrus.Infof(<span class="hljs-string">&quot;got exit signal, shutdown&quot;</span>)<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">client</span><span class="hljs-params">()</span></span> &#123;<br>	service := micro.NewService(micro.Name(ServiceName + <span class="hljs-string">&quot;client&quot;</span>))<br>	c := hello.NewDemoService(ServiceName, service.Client())<br><br>	<span class="hljs-comment">// 发起RPC调用</span><br>	rsp, err := c.SayHello(context.TODO(), &amp;hello.HelloRequest&#123;Name: <span class="hljs-string">&quot;13sai&quot;</span>&#125;)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(err)<br>	&#125;<br><br>	<span class="hljs-comment">// 打印返回值</span><br>	fmt.Println(rsp.Message)<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;context&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;log&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+	<span class="hljs-string">&quot;os/signal&quot;</span>
+	<span class="hljs-string">&quot;syscall&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+
+	<span class="hljs-string">&quot;github.com/13sai/go-learing/micro/hello/common&quot;</span>
+	<span class="hljs-string">&quot;github.com/13sai/go-learing/micro/hello/hello&quot;</span>
+	<span class="hljs-string">&quot;github.com/micro/go-micro/v2&quot;</span>
+	_ <span class="hljs-string">&quot;github.com/micro/go-plugins/registry/kubernetes/v2&quot;</span>
+	<span class="hljs-string">&quot;github.com/sirupsen/logrus&quot;</span>
+)
+
+<span class="hljs-keyword">const</span> (
+	ServiceName = <span class="hljs-string">&quot;hello-server&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> HelloServer <span class="hljs-keyword">struct</span>&#123;&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *HelloServer)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx context.Context, req *hello.HelloRequest, res *hello.HelloReply)</span> <span class="hljs-title">error</span></span> &#123;
+	res.Message = <span class="hljs-string">&quot;hello &quot;</span> + req.Name
+	res.Hello = common.TypeHello_Afernoon
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	service := micro.NewService(
+		<span class="hljs-comment">// Set service name</span>
+		micro.Name(ServiceName),
+		micro.AfterStart(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span> <span class="hljs-title">error</span></span> &#123;
+			fmt.Println(<span class="hljs-string">&quot;starting...&quot;</span>)
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+		&#125;),
+		micro.Address(<span class="hljs-string">&quot;:8089&quot;</span>),
+	)
+
+	service.Init()
+
+	hello.RegisterDemoHandler(service.Server(), &amp;HelloServer&#123;&#125;)
+
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		<span class="hljs-keyword">if</span> err := service.Run(); err != <span class="hljs-literal">nil</span> &#123;
+			log.Fatal(err)
+		&#125;
+	&#125;()
+
+	stop := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT, os.Interrupt)
+
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		tick := time.NewTicker(<span class="hljs-number">3</span> * time.Second)
+
+		<span class="hljs-keyword">for</span> &#123;
+			<span class="hljs-keyword">select</span> &#123;
+			<span class="hljs-keyword">case</span> &lt;-stop:
+				tick.Stop()
+			<span class="hljs-keyword">default</span>:
+				&lt;-tick.C
+				client()
+			&#125;
+		&#125;
+	&#125;()
+
+	<span class="hljs-keyword">select</span> &#123;
+	<span class="hljs-keyword">case</span> &lt;-stop:
+		logrus.Infof(<span class="hljs-string">&quot;got exit signal, shutdown&quot;</span>)
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">client</span><span class="hljs-params">()</span></span> &#123;
+	service := micro.NewService(micro.Name(ServiceName + <span class="hljs-string">&quot;client&quot;</span>))
+	c := hello.NewDemoService(ServiceName, service.Client())
+
+	<span class="hljs-comment">// 发起RPC调用</span>
+	rsp, err := c.SayHello(context.TODO(), &amp;hello.HelloRequest&#123;Name: <span class="hljs-string">&quot;13sai&quot;</span>&#125;)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+	&#125;
+
+	<span class="hljs-comment">// 打印返回值</span>
+	fmt.Println(rsp.Message)
+&#125;</code></pre></div>
 
 <p><img src="/images/post/protorpc.png" srcset="/img/loading.gif" lazyload><br>可以看到我们通过protoc生成的代码是没有问题的。</p>
 <h2 id="more"><a href="#more" class="headerlink" title="more"></a>more</h2><h4 id="paths"><a href="#paths" class="headerlink" title="paths"></a>paths</h4><p>生成的文件在输出目录中的<code>.pb.go</code>位置取决于–go_out 标识符。有以下模式：</p>
@@ -592,7 +721,8 @@
 </ul>
 <hr>
 <p>其实写文章的时候我也尝试了下使用M，执行命令如下：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">// 这里写法有点特殊哦，注意，因为我是在文件同一目录运行，所以 common.proto=../common，这样生成的package才会是common，若是 common.proto=./生成就是下划线了<br>protoc --proto_path=./ --micro_out=. --go_out=. --go_opt=Mcommon.proto=../common *.proto<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sh">// 这里写法有点特殊哦，注意，因为我是在文件同一目录运行，所以 common.proto=../common，这样生成的package才会是common，若是 common.proto=./生成就是下划线了
+protoc --proto_path=./ --micro_out=. --go_out=. --go_opt=Mcommon.proto=../common *.proto</code></pre></div>
 
 <p>虽然这样也能生成，但生成代码并不是我想要的（import部分只是个相对路径，或许换成类似<code>example.com/project/protos/fizz</code>也能生成）。如果感兴趣，我更建议可以阅读参考文章，自自己，我用错了也未尝不可能呢？</p>
 <p>参考:</p>

@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.7k 字
+          1.6k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          15 分钟
+          14 分钟
         
       </span>
     
@@ -492,11 +492,87 @@
               <p>前几日，把老项目做前后端分离的时候，因为后台还是保留，前台做成前后端分离，遇到的一个需求。</p>
 <p>老项目php版本5.6，新接口考虑使用php7.0，于是考虑根据url做nginx配置。</p>
 <p>思路一：根据url区分php版本，再根据版本指向对应的root目录。<br>主要配置如下：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs awk">server &#123;<br>    listen       <span class="hljs-number">80</span>;<br>    server_name  old.com;<br><br>    root <span class="hljs-regexp">/data/</span>www/old;<br><br>    location / &#123;<br>        index index.html index.htm index.php;<br>	    try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span><span class="hljs-regexp">/ /i</span>ndex.php?<span class="hljs-variable">$query_string</span>;<br>    &#125;<br><br>    location <span class="hljs-regexp">/api/</span> &#123;<br>        root <span class="hljs-regexp">/data/</span>www/new;<br>        index index.html index.htm index.php;<br>        try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span><span class="hljs-regexp">/ /i</span>ndex.php?<span class="hljs-variable">$query_string</span>&amp;php=<span class="hljs-number">7</span>;<br>    &#125;<br><br>    location ~ \.php$ &#123;<br>        <span class="hljs-comment"># 9000端口对应php-fpm5.6 , 9001端口对应php-fpm7.0</span><br>        fastcgi_pass   <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9000</span>;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$args</span> ~* <span class="hljs-string">&quot;php=7&quot;</span>)&#123;<br>                root <span class="hljs-regexp">/data/</span>www/new;<br>            fastcgi_pass   <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9001</span>;<br>        &#125;<br>        fastcgi_index  index.php;<br>        fastcgi_param  SCRIPT_FILENAME  <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;<br>        include        fastcgi_params;<br>    &#125;<br><br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">server &#123;
+    listen       <span class="hljs-number">80</span>;
+    server_name  old.com;
+
+    root <span class="hljs-regexp">/data/</span>www/old;
+
+    location / &#123;
+        index index.html index.htm index.php;
+	    try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span><span class="hljs-regexp">/ /i</span>ndex.php?<span class="hljs-variable">$query_string</span>;
+    &#125;
+
+    location <span class="hljs-regexp">/api/</span> &#123;
+        root <span class="hljs-regexp">/data/</span>www/new;
+        index index.html index.htm index.php;
+        try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span><span class="hljs-regexp">/ /i</span>ndex.php?<span class="hljs-variable">$query_string</span>&amp;php=<span class="hljs-number">7</span>;
+    &#125;
+
+    location ~ \.php$ &#123;
+        <span class="hljs-comment"># 9000端口对应php-fpm5.6 , 9001端口对应php-fpm7.0</span>
+        fastcgi_pass   <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9000</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$args</span> ~* <span class="hljs-string">&quot;php=7&quot;</span>)&#123;
+                root <span class="hljs-regexp">/data/</span>www/new;
+            fastcgi_pass   <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9001</span>;
+        &#125;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;
+        include        fastcgi_params;
+    &#125;
+
+    ...
+&#125;</code></pre></div>
 
 <p>试验成功，只是总感觉别扭，因为在query_string后面加入php=7不那么优雅，对吧？而且如果有人习惯获取所有的query_string而不做处理，很容易引起问题。</p>
 <p>思路二：根据url转发到另一个端口，另一个server监听此端口。<br>主要配置如下：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs awk">server &#123;<br>    listen <span class="hljs-number">80</span>;<br>    server_name  old.com;<br><br>    root <span class="hljs-regexp">/data/</span>www/old;<br><br>    location / &#123;<br>        index  index.html index.htm index.php;<br>        try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span><span class="hljs-regexp">/ /i</span>ndex.php?<span class="hljs-variable">$query_string</span>;<br>    &#125;<br><br>    location <span class="hljs-regexp">/api/</span> &#123;<br>        proxy_pass http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">8009</span>;<br>    &#125;<br><br><br>    location ~ \.php$ &#123;<br>        <span class="hljs-comment"># 9000端口对应php-fpm5.6 </span><br>        fastcgi_pass   <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9000</span>;<br>        fastcgi_index  index.php;<br>        fastcgi_param  SCRIPT_FILENAME  <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;<br>        include        fastcgi_params;<br>    &#125;<br>    <br>    ...<br>&#125;<br><br>server &#123;<br>    listen <span class="hljs-number">8080</span>;<br><br>    root <span class="hljs-regexp">/data/</span>www/new;<br><br>    location / &#123;<br>        index  index.html index.htm index.php;<br>        try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span><span class="hljs-regexp">/ /i</span>ndex.php?<span class="hljs-variable">$query_string</span>;<br>    &#125;<br><br>    location ~ \.php$ &#123;<br>        <span class="hljs-comment"># 9001端口对应php-fpm7.0</span><br>        fastcgi_pass   <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9001</span>;<br>        fastcgi_index  index.php;<br>        fastcgi_param  SCRIPT_FILENAME  <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;<br>        include        fastcgi_params;<br>    &#125;<br><br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs awk">server &#123;
+    listen <span class="hljs-number">80</span>;
+    server_name  old.com;
+
+    root <span class="hljs-regexp">/data/</span>www/old;
+
+    location / &#123;
+        index  index.html index.htm index.php;
+        try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span><span class="hljs-regexp">/ /i</span>ndex.php?<span class="hljs-variable">$query_string</span>;
+    &#125;
+
+    location <span class="hljs-regexp">/api/</span> &#123;
+        proxy_pass http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">8009</span>;
+    &#125;
+
+
+    location ~ \.php$ &#123;
+        <span class="hljs-comment"># 9000端口对应php-fpm5.6 </span>
+        fastcgi_pass   <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9000</span>;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;
+        include        fastcgi_params;
+    &#125;
+    
+    ...
+&#125;
+
+server &#123;
+    listen <span class="hljs-number">8080</span>;
+
+    root <span class="hljs-regexp">/data/</span>www/new;
+
+    location / &#123;
+        index  index.html index.htm index.php;
+        try_files <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span><span class="hljs-regexp">/ /i</span>ndex.php?<span class="hljs-variable">$query_string</span>;
+    &#125;
+
+    location ~ \.php$ &#123;
+        <span class="hljs-comment"># 9001端口对应php-fpm7.0</span>
+        fastcgi_pass   <span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">9001</span>;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;
+        include        fastcgi_params;
+    &#125;
+
+    ...
+&#125;</code></pre></div>
 
 <p>相比第一个这个只会多占用个端口，但优雅多了！</p>
 

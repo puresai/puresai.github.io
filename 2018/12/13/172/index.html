@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          886 字
+          797 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          8 分钟
+          7 分钟
         
       </span>
     
@@ -864,7 +864,55 @@
             
             <div class="markdown-body">
               
-              <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Created by PhpStorm.</span><br><span class="hljs-comment"> * User: 13sai</span><br><span class="hljs-comment"> * Date: 2018/12/7</span><br><span class="hljs-comment"> */</span><br><br><br>header(<span class="hljs-string">&quot;Content-type: image/png&quot;</span>);<br><span class="hljs-comment">//ob_clean();</span><br><span class="hljs-comment">//</span><br><span class="hljs-variable">$path_2</span> = D:workdata/<span class="hljs-number">2</span>.png;<br><span class="hljs-variable">$path_1</span> = D:workdata/<span class="hljs-number">1</span>.png;<br><span class="hljs-variable">$info2</span> = getimagesize(<span class="hljs-variable">$path_2</span>);<br><span class="hljs-variable">$info1</span> = getimagesize(<span class="hljs-variable">$path_1</span>);<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getImage</span>(<span class="hljs-params"><span class="hljs-variable">$ext</span>, <span class="hljs-variable">$img</span></span>)</span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">switch</span> (<span class="hljs-variable">$ext</span>) &#123;<br>        <span class="hljs-keyword">case</span> png :<br>            <span class="hljs-variable">$ret</span> = imagecreatefrompng(<span class="hljs-variable">$img</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> jpeg:<br>            <span class="hljs-variable">$ret</span> = imagecreatefromjpeg(<span class="hljs-variable">$img</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">case</span> gif:<br>            <span class="hljs-variable">$ret</span> = imagecreatefromgif(<span class="hljs-variable">$img</span>);<br>            <span class="hljs-keyword">break</span>;<br>        <span class="hljs-keyword">default</span>:<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> \<span class="hljs-built_in">Exception</span>(不能识别的图片格式);<br>            <span class="hljs-keyword">break</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable">$ret</span>??;<br>&#125;<br><br><span class="hljs-comment">//获取图片扩展名</span><br><span class="hljs-variable">$type1</span> = image_type_to_extension(<span class="hljs-variable">$info1</span>[<span class="hljs-number">2</span>],<span class="hljs-literal">false</span>);<br><span class="hljs-variable">$type2</span> = image_type_to_extension(<span class="hljs-variable">$info2</span>[<span class="hljs-number">2</span>],<span class="hljs-literal">false</span>);<br><br><br><span class="hljs-variable">$image_1</span> = getImage(<span class="hljs-variable">$type1</span>, <span class="hljs-variable">$path_1</span>);<br><span class="hljs-variable">$image_2</span> = getImage(<span class="hljs-variable">$type2</span>, <span class="hljs-variable">$path_2</span>);<br><br>imagecopy( <span class="hljs-variable">$image_1</span>, <span class="hljs-variable">$image_2</span>, <span class="hljs-number">50</span>, <span class="hljs-number">70</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$info2</span>[<span class="hljs-number">0</span>], <span class="hljs-variable">$info2</span>[<span class="hljs-number">1</span>] );<br><span class="hljs-comment">// 输出</span><br>imagepng(<span class="hljs-variable">$image_1</span>, D:picscompose.png);<br><br>imagedestroy(<span class="hljs-variable">$image_1</span>);<br>imagedestroy(<span class="hljs-variable">$image_2</span>);<br></code></pre></td></tr></table></figure>
+              <div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Created by PhpStorm.</span>
+<span class="hljs-comment"> * User: 13sai</span>
+<span class="hljs-comment"> * Date: 2018/12/7</span>
+<span class="hljs-comment"> */</span>
+
+
+header(<span class="hljs-string">&quot;Content-type: image/png&quot;</span>);
+<span class="hljs-comment">//ob_clean();</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-variable">$path_2</span> = D:workdata/<span class="hljs-number">2</span>.png;
+<span class="hljs-variable">$path_1</span> = D:workdata/<span class="hljs-number">1</span>.png;
+<span class="hljs-variable">$info2</span> = getimagesize(<span class="hljs-variable">$path_2</span>);
+<span class="hljs-variable">$info1</span> = getimagesize(<span class="hljs-variable">$path_1</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getImage</span>(<span class="hljs-params"><span class="hljs-variable">$ext</span>, <span class="hljs-variable">$img</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">switch</span> (<span class="hljs-variable">$ext</span>) &#123;
+        <span class="hljs-keyword">case</span> png :
+            <span class="hljs-variable">$ret</span> = imagecreatefrompng(<span class="hljs-variable">$img</span>);
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> jpeg:
+            <span class="hljs-variable">$ret</span> = imagecreatefromjpeg(<span class="hljs-variable">$img</span>);
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> gif:
+            <span class="hljs-variable">$ret</span> = imagecreatefromgif(<span class="hljs-variable">$img</span>);
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">default</span>:
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> \<span class="hljs-built_in">Exception</span>(不能识别的图片格式);
+            <span class="hljs-keyword">break</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$ret</span>??;
+&#125;
+
+<span class="hljs-comment">//获取图片扩展名</span>
+<span class="hljs-variable">$type1</span> = image_type_to_extension(<span class="hljs-variable">$info1</span>[<span class="hljs-number">2</span>],<span class="hljs-literal">false</span>);
+<span class="hljs-variable">$type2</span> = image_type_to_extension(<span class="hljs-variable">$info2</span>[<span class="hljs-number">2</span>],<span class="hljs-literal">false</span>);
+
+
+<span class="hljs-variable">$image_1</span> = getImage(<span class="hljs-variable">$type1</span>, <span class="hljs-variable">$path_1</span>);
+<span class="hljs-variable">$image_2</span> = getImage(<span class="hljs-variable">$type2</span>, <span class="hljs-variable">$path_2</span>);
+
+imagecopy( <span class="hljs-variable">$image_1</span>, <span class="hljs-variable">$image_2</span>, <span class="hljs-number">50</span>, <span class="hljs-number">70</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-variable">$info2</span>[<span class="hljs-number">0</span>], <span class="hljs-variable">$info2</span>[<span class="hljs-number">1</span>] );
+<span class="hljs-comment">// 输出</span>
+imagepng(<span class="hljs-variable">$image_1</span>, D:picscompose.png);
+
+imagedestroy(<span class="hljs-variable">$image_1</span>);
+imagedestroy(<span class="hljs-variable">$image_2</span>);</code></pre></div>
 
 
               

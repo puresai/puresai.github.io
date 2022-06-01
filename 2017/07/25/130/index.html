@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.4k 字
+          1.3k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          12 分钟
+          11 分钟
         
       </span>
     
@@ -863,10 +863,56 @@
             <div class="markdown-body">
               
               <p>直接上代码，使用的是阿里云的接口。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">/*</span><br><span class="hljs-comment"> * 身份证校验</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sfz_verify</span>(<span class="hljs-params"><span class="hljs-variable">$idcard</span>, <span class="hljs-variable">$name</span></span>)</span>&#123;<br>    <span class="hljs-variable">$host</span> = <span class="hljs-string">&quot;http://idcard.market.alicloudapi.com&quot;</span>;<br>    <span class="hljs-variable">$path</span> = <span class="hljs-string">&quot;/lianzhuo/idcard&quot;</span>;<br>    <span class="hljs-variable">$method</span> = <span class="hljs-string">&quot;GET&quot;</span>;<br>    <span class="hljs-variable">$appcode</span> = z_get_config(<span class="hljs-string">&#x27;sfz_appcode&#x27;</span>);<br>    <span class="hljs-variable">$headers</span> = <span class="hljs-keyword">array</span>();<br>    array_push(<span class="hljs-variable">$headers</span>, <span class="hljs-string">&quot;Authorization:APPCODE &quot;</span> . <span class="hljs-variable">$appcode</span>);<br>    <span class="hljs-variable">$querys</span> = <span class="hljs-string">&quot;cardno=<span class="hljs-subst">$idcard</span>&amp;name=<span class="hljs-subst">$name</span>&quot;</span>;<br>    <span class="hljs-variable">$bodys</span> = <span class="hljs-string">&quot;&quot;</span>;<br>    <span class="hljs-variable">$url</span> = <span class="hljs-variable">$host</span> . <span class="hljs-variable">$path</span> . <span class="hljs-string">&quot;?&quot;</span> . <span class="hljs-variable">$querys</span>;<br><br>    <span class="hljs-variable">$curl</span> = curl_init();<br>    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_CUSTOMREQUEST, <span class="hljs-variable">$method</span>);<br>    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);<br>    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_HTTPHEADER, <span class="hljs-variable">$headers</span>);<br>    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_FAILONERROR, <span class="hljs-literal">false</span>);<br>    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-literal">true</span>);<br>    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_HEADER, <span class="hljs-literal">true</span>);<br><br>    <span class="hljs-keyword">if</span> (<span class="hljs-number">1</span> == strpos(<span class="hljs-string">&quot;$&quot;</span>.<span class="hljs-variable">$host</span>, <span class="hljs-string">&quot;https://&quot;</span>))&#123;<br>        curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_SSL_VERIFYPEER, <span class="hljs-literal">false</span>);<br>        curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_SSL_VERIFYHOST, <span class="hljs-literal">false</span>);<br>    &#125;<br>    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$curl</span>);<br>    <br>    <span class="hljs-keyword">if</span> (curl_getinfo(<span class="hljs-variable">$curl</span>, CURLINFO_HTTP_CODE) == <span class="hljs-string">&#x27;200&#x27;</span>) &#123;<br>        <span class="hljs-keyword">list</span>(<span class="hljs-variable">$header</span>, <span class="hljs-variable">$body</span>) = explode(<span class="hljs-string">&quot;\r\n\r\n&quot;</span>, <span class="hljs-variable">$output</span>, <span class="hljs-number">2</span>);<br>    &#125;<br>    <span class="hljs-comment">//dump($output);</span><br>    <br>    curl_close(<span class="hljs-variable">$curl</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable">$body</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-comment">/*</span>
+<span class="hljs-comment"> * 身份证校验</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sfz_verify</span>(<span class="hljs-params"><span class="hljs-variable">$idcard</span>, <span class="hljs-variable">$name</span></span>)</span>&#123;
+    <span class="hljs-variable">$host</span> = <span class="hljs-string">&quot;http://idcard.market.alicloudapi.com&quot;</span>;
+    <span class="hljs-variable">$path</span> = <span class="hljs-string">&quot;/lianzhuo/idcard&quot;</span>;
+    <span class="hljs-variable">$method</span> = <span class="hljs-string">&quot;GET&quot;</span>;
+    <span class="hljs-variable">$appcode</span> = z_get_config(<span class="hljs-string">&#x27;sfz_appcode&#x27;</span>);
+    <span class="hljs-variable">$headers</span> = <span class="hljs-keyword">array</span>();
+    array_push(<span class="hljs-variable">$headers</span>, <span class="hljs-string">&quot;Authorization:APPCODE &quot;</span> . <span class="hljs-variable">$appcode</span>);
+    <span class="hljs-variable">$querys</span> = <span class="hljs-string">&quot;cardno=<span class="hljs-subst">$idcard</span>&amp;name=<span class="hljs-subst">$name</span>&quot;</span>;
+    <span class="hljs-variable">$bodys</span> = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-variable">$url</span> = <span class="hljs-variable">$host</span> . <span class="hljs-variable">$path</span> . <span class="hljs-string">&quot;?&quot;</span> . <span class="hljs-variable">$querys</span>;
+
+    <span class="hljs-variable">$curl</span> = curl_init();
+    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_CUSTOMREQUEST, <span class="hljs-variable">$method</span>);
+    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
+    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_HTTPHEADER, <span class="hljs-variable">$headers</span>);
+    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_FAILONERROR, <span class="hljs-literal">false</span>);
+    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-literal">true</span>);
+    curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_HEADER, <span class="hljs-literal">true</span>);
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-number">1</span> == strpos(<span class="hljs-string">&quot;$&quot;</span>.<span class="hljs-variable">$host</span>, <span class="hljs-string">&quot;https://&quot;</span>))&#123;
+        curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_SSL_VERIFYPEER, <span class="hljs-literal">false</span>);
+        curl_setopt(<span class="hljs-variable">$curl</span>, CURLOPT_SSL_VERIFYHOST, <span class="hljs-literal">false</span>);
+    &#125;
+    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$curl</span>);
+    
+    <span class="hljs-keyword">if</span> (curl_getinfo(<span class="hljs-variable">$curl</span>, CURLINFO_HTTP_CODE) == <span class="hljs-string">&#x27;200&#x27;</span>) &#123;
+        <span class="hljs-keyword">list</span>(<span class="hljs-variable">$header</span>, <span class="hljs-variable">$body</span>) = explode(<span class="hljs-string">&quot;\r\n\r\n&quot;</span>, <span class="hljs-variable">$output</span>, <span class="hljs-number">2</span>);
+    &#125;
+    <span class="hljs-comment">//dump($output);</span>
+    
+    curl_close(<span class="hljs-variable">$curl</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$body</span>;
+&#125;</code></pre></div>
 
 <p>正确返回值如下：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;resp&quot;</span>: &#123;<br>    <span class="hljs-attr">&quot;code&quot;</span>: <span class="hljs-number">0</span>,<br>    <span class="hljs-attr">&quot;desc&quot;</span>: <span class="hljs-string">&quot;匹配&quot;</span><br>  &#125;,<br>  <span class="hljs-attr">&quot;data&quot;</span>: &#123;<br>    <span class="hljs-attr">&quot;sex&quot;</span>: <span class="hljs-string">&quot;男&quot;</span>,<br>    <span class="hljs-attr">&quot;address&quot;</span>: <span class="hljs-string">&quot;广东省清远市清新县&quot;</span>,<br>    <span class="hljs-attr">&quot;birthday&quot;</span>: <span class="hljs-string">&quot;1989-05-25&quot;</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;resp&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;code&quot;</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">&quot;desc&quot;</span>: <span class="hljs-string">&quot;匹配&quot;</span>
+  &#125;,
+  <span class="hljs-attr">&quot;data&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;sex&quot;</span>: <span class="hljs-string">&quot;男&quot;</span>,
+    <span class="hljs-attr">&quot;address&quot;</span>: <span class="hljs-string">&quot;广东省清远市清新县&quot;</span>,
+    <span class="hljs-attr">&quot;birthday&quot;</span>: <span class="hljs-string">&quot;1989-05-25&quot;</span>
+  &#125;
+&#125;</code></pre></div>
               
             </div>
             <hr/>

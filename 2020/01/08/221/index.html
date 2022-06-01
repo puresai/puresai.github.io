@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.6k 字
+          2.5k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          22 分钟
+          21 分钟
         
       </span>
     
@@ -878,10 +878,73 @@
 <p>原理：从服务端获取签名，js直接上传阿里云OSS服务器。</p>
 </blockquote>
 <p>elementui主要代码</p>
-<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs sas">template:<br><br>&lt;el-form-item <span class="hljs-meta">label</span>=<span class="hljs-string">&quot;上传图片&quot;</span> prop=<span class="hljs-string">&quot;video&quot;</span>&gt;<br>    &lt;el-upload id=<span class="hljs-string">&quot;video&quot;</span>  action<br>        :data=<span class="hljs-string">&quot;aliyunOssToken&quot;</span><br>        :http-request=<span class="hljs-string">&quot;uploadVideo&quot;</span><br>        :headers=<span class="hljs-string">&quot;header&quot;</span>&gt;<br>        &lt;img v-<span class="hljs-meta">if</span>=<span class="hljs-string">&quot;form.cover&quot;</span> :src=<span class="hljs-string">&quot;form.cover&quot;</span>&gt;<br>        &lt;el-button class=<span class="hljs-string">&quot;avatar-uploader-icon&quot;</span> type=<span class="hljs-string">&quot;primary&quot;</span>&gt;上传&lt;/el-button&gt;<br>    &lt;/el-upload&gt;<br>&lt;/el-form-item&gt;<br><br><br>script：<br><br>upload(<span class="hljs-meta">file</span>)&#123;<br>    var _self = this;<br>    let imgType = <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.type.split(<span class="hljs-string">&quot;/&quot;</span>)[1].toLowerCase();<br>    <span class="hljs-meta">if</span> (imgType != <span class="hljs-string">&#x27;jpg&#x27;</span> <span class="hljs-variable">&amp;&amp;</span> imgType != <span class="hljs-string">&#x27;png&#x27;</span>) &#123;<br>        this.$<span class="hljs-meta">message</span>.<span class="hljs-meta">error</span>(<span class="hljs-string">&#x27;请上传图片类型&#x27;</span>);<br>        <span class="hljs-meta">return</span>;<br>    &#125;<br>    getOSSTok<span class="hljs-meta">en(</span>).th<span class="hljs-meta">en(</span>functi<span class="hljs-meta">on(</span>res)&#123;<br>        _self.aliyunOssToken = res.data;<br>        var ossData = &#123;&#125;;<br>        //<span class="hljs-meta">key</span>就代表文件层级和阿里云上的文件名<br>        let imgType = <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.type.split(<span class="hljs-string">&quot;/&quot;</span>)[1];<br>        let <span class="hljs-meta">filename</span> = <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.name + <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.size; //md5对图片名称进行加密<br>        let keyValue = <span class="hljs-string">&quot;images/&quot;</span> + md5(new<span class="hljs-meta"> Date(</span>) + <span class="hljs-meta">filename</span>) + <span class="hljs-string">&quot;.&quot;</span> + imgType;<br><br>        // 组装formdata<br>        let formdata = new FormData();<br>        formdata.append(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.name)<br>        formdata.append(<span class="hljs-string">&#x27;key&#x27;</span>, keyValue)<br>        formdata.append(<span class="hljs-string">&#x27;policy&#x27;</span>, _self.aliyunOssToken.policy)<br>        formdata.append(<span class="hljs-string">&#x27;OSSAccessKeyId&#x27;</span>, _self.aliyunOssToken.accessid)<br>        formdata.append(<span class="hljs-string">&#x27;success_action_status&#x27;</span>, 200)<br>        formdata.append(<span class="hljs-string">&#x27;signature&#x27;</span>, _self.aliyunOssToken.signature)<br>        formdata.append(<span class="hljs-string">&#x27;file&#x27;</span>, <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>)<br>        <br>        _self.uploadOSS(formdata, _self.aliyunOssToken.host).th<span class="hljs-meta">en(</span>functi<span class="hljs-meta">on(</span>res)&#123;<br>            _self.form.cover = _self.aliyunOssToken.host + <span class="hljs-string">&#x27;/&#x27;</span> + keyValue;<br>            _self.$<span class="hljs-meta">message</span>.success(<span class="hljs-string">&#x27;上传成功&#x27;</span>);<br>        &#125;).catch(functi<span class="hljs-meta">on(</span><span class="hljs-meta">error</span>)&#123;<br>            _self.$<span class="hljs-meta">message</span>.<span class="hljs-meta">error</span>(<span class="hljs-string">&#x27;上传失败&#x27;</span>);<br>            console<span class="hljs-meta">.log(</span><span class="hljs-meta">error</span>);<br>        &#125;)<br>    &#125;).catch(functi<span class="hljs-meta">on(</span><span class="hljs-meta">error</span>)&#123;<br>        console<span class="hljs-meta">.log(</span><span class="hljs-meta">error</span>);<br>    &#125;)<br>&#125;,<br>uploadOSS(formData, url) &#123;<br>  const config = &#123;<br>    headers: &#123; <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;multipart/form-data;boundary=&quot;</span>+new<span class="hljs-meta"> Date(</span>).ge<span class="hljs-meta">tTime(</span>) &#125;<br>    &#125;;<br>  <span class="hljs-meta">return</span> axios.post(url,formData,config);<br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs sas">template:
+
+&lt;el-form-item <span class="hljs-meta">label</span>=<span class="hljs-string">&quot;上传图片&quot;</span> prop=<span class="hljs-string">&quot;video&quot;</span>&gt;
+    &lt;el-upload id=<span class="hljs-string">&quot;video&quot;</span>  action
+        :data=<span class="hljs-string">&quot;aliyunOssToken&quot;</span>
+        :http-request=<span class="hljs-string">&quot;uploadVideo&quot;</span>
+        :headers=<span class="hljs-string">&quot;header&quot;</span>&gt;
+        &lt;img v-<span class="hljs-meta">if</span>=<span class="hljs-string">&quot;form.cover&quot;</span> :src=<span class="hljs-string">&quot;form.cover&quot;</span>&gt;
+        &lt;el-button class=<span class="hljs-string">&quot;avatar-uploader-icon&quot;</span> type=<span class="hljs-string">&quot;primary&quot;</span>&gt;上传&lt;/el-button&gt;
+    &lt;/el-upload&gt;
+&lt;/el-form-item&gt;
+
+
+script：
+
+upload(<span class="hljs-meta">file</span>)&#123;
+    var _self = this;
+    let imgType = <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.type.split(<span class="hljs-string">&quot;/&quot;</span>)[1].toLowerCase();
+    <span class="hljs-meta">if</span> (imgType != <span class="hljs-string">&#x27;jpg&#x27;</span> <span class="hljs-variable">&amp;&amp;</span> imgType != <span class="hljs-string">&#x27;png&#x27;</span>) &#123;
+        this.$<span class="hljs-meta">message</span>.<span class="hljs-meta">error</span>(<span class="hljs-string">&#x27;请上传图片类型&#x27;</span>);
+        <span class="hljs-meta">return</span>;
+    &#125;
+    getOSSTok<span class="hljs-meta">en(</span>).th<span class="hljs-meta">en(</span>functi<span class="hljs-meta">on(</span>res)&#123;
+        _self.aliyunOssToken = res.data;
+        var ossData = &#123;&#125;;
+        //<span class="hljs-meta">key</span>就代表文件层级和阿里云上的文件名
+        let imgType = <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.type.split(<span class="hljs-string">&quot;/&quot;</span>)[1];
+        let <span class="hljs-meta">filename</span> = <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.name + <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.size; //md5对图片名称进行加密
+        let keyValue = <span class="hljs-string">&quot;images/&quot;</span> + md5(new<span class="hljs-meta"> Date(</span>) + <span class="hljs-meta">filename</span>) + <span class="hljs-string">&quot;.&quot;</span> + imgType;
+
+        // 组装formdata
+        let formdata = new FormData();
+        formdata.append(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>.name)
+        formdata.append(<span class="hljs-string">&#x27;key&#x27;</span>, keyValue)
+        formdata.append(<span class="hljs-string">&#x27;policy&#x27;</span>, _self.aliyunOssToken.policy)
+        formdata.append(<span class="hljs-string">&#x27;OSSAccessKeyId&#x27;</span>, _self.aliyunOssToken.accessid)
+        formdata.append(<span class="hljs-string">&#x27;success_action_status&#x27;</span>, 200)
+        formdata.append(<span class="hljs-string">&#x27;signature&#x27;</span>, _self.aliyunOssToken.signature)
+        formdata.append(<span class="hljs-string">&#x27;file&#x27;</span>, <span class="hljs-meta">file</span>.<span class="hljs-meta">file</span>)
+        
+        _self.uploadOSS(formdata, _self.aliyunOssToken.host).th<span class="hljs-meta">en(</span>functi<span class="hljs-meta">on(</span>res)&#123;
+            _self.form.cover = _self.aliyunOssToken.host + <span class="hljs-string">&#x27;/&#x27;</span> + keyValue;
+            _self.$<span class="hljs-meta">message</span>.success(<span class="hljs-string">&#x27;上传成功&#x27;</span>);
+        &#125;).catch(functi<span class="hljs-meta">on(</span><span class="hljs-meta">error</span>)&#123;
+            _self.$<span class="hljs-meta">message</span>.<span class="hljs-meta">error</span>(<span class="hljs-string">&#x27;上传失败&#x27;</span>);
+            console<span class="hljs-meta">.log(</span><span class="hljs-meta">error</span>);
+        &#125;)
+    &#125;).catch(functi<span class="hljs-meta">on(</span><span class="hljs-meta">error</span>)&#123;
+        console<span class="hljs-meta">.log(</span><span class="hljs-meta">error</span>);
+    &#125;)
+&#125;,
+uploadOSS(formData, url) &#123;
+  const config = &#123;
+    headers: &#123; <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;multipart/form-data;boundary=&quot;</span>+new<span class="hljs-meta"> Date(</span>).ge<span class="hljs-meta">tTime(</span>) &#125;
+    &#125;;
+  <span class="hljs-meta">return</span> axios.post(url,formData,config);
+&#125;</code></pre></div>
 
 <p>其中：务必使用表单提交方式，aliyunOssToken格式如下</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br>	<span class="hljs-attr">&quot;accessid&quot;</span>: <span class="hljs-string">&quot;LToofXWKudxfoAlI&quot;</span>,<br>	<span class="hljs-attr">&quot;host&quot;</span>: <span class="hljs-string">&quot;https:\/\/xxx.oss-cn-hangzhou.aliyuncs.com&quot;</span>,<br>	<span class="hljs-attr">&quot;policy&quot;</span>: <span class="hljs-string">&quot;eyJleHBpcmF0eretaW9uIjoiQxODowNzowMFoiLCJjb25kaXRpb25zIjpbWyJjb250ZW50LWxlbmd0aC17ewreMDQ4NTc2MDAwXSxbInN0YXJ0cy13aXRoIiwiJGtleSIsInZpZGVvXC8iXV19&quot;</span>,<br>	<span class="hljs-attr">&quot;signature&quot;</span>: <span class="hljs-string">&quot;HRFJ4345VIvRhrsMa44546=&quot;</span>,<br>	<span class="hljs-attr">&quot;expire&quot;</span>: <span class="hljs-number">1578478020</span>,<br>	<span class="hljs-attr">&quot;dir&quot;</span>: <span class="hljs-string">&quot;images\/&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<div class="code-wrapper"><pre><code class="hljs json">&#123;
+	<span class="hljs-attr">&quot;accessid&quot;</span>: <span class="hljs-string">&quot;LToofXWKudxfoAlI&quot;</span>,
+	<span class="hljs-attr">&quot;host&quot;</span>: <span class="hljs-string">&quot;https:\/\/xxx.oss-cn-hangzhou.aliyuncs.com&quot;</span>,
+	<span class="hljs-attr">&quot;policy&quot;</span>: <span class="hljs-string">&quot;eyJleHBpcmF0eretaW9uIjoiQxODowNzowMFoiLCJjb25kaXRpb25zIjpbWyJjb250ZW50LWxlbmd0aC17ewreMDQ4NTc2MDAwXSxbInN0YXJ0cy13aXRoIiwiJGtleSIsInZpZGVvXC8iXV19&quot;</span>,
+	<span class="hljs-attr">&quot;signature&quot;</span>: <span class="hljs-string">&quot;HRFJ4345VIvRhrsMa44546=&quot;</span>,
+	<span class="hljs-attr">&quot;expire&quot;</span>: <span class="hljs-number">1578478020</span>,
+	<span class="hljs-attr">&quot;dir&quot;</span>: <span class="hljs-string">&quot;images\/&quot;</span>
+&#125;</code></pre></div>
 
 <p>记得设置阿里云OSS跨域规则：</p>
 <p><img src="https://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/8466738751/p12308.png" srcset="/img/loading.gif" lazyload alt="跨域规则"></p>

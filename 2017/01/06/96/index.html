@@ -862,7 +862,7 @@
             
             <div class="markdown-body">
               
-               <p>order方法属于模型的连贯操作方法之一，用于对数据库操作的结果进行排序，相当于是在select语句中一个order by的子句。</p><p>例：</p><pre>$Model-&gt;where(&#39;status=1&#39;)-&gt;order(&#39;id&nbsp;desc&#39;)-&gt;limit(5)-&gt;select();</pre><p><br style="text-align: left; text-indent: 2em;"/>支持对多个字段的排序，例如：</p><pre>$Model-&gt;where(&#39;status=1&#39;)-&gt;order(&#39;id&nbsp;desc,time&nbsp;asc&#39;)-&gt;limit(5)-&gt;select();</pre><p>如果没有指定排序规则，默认为asc。</p><p><br style="text-align: left; text-indent: 2em;"/></p><p>如果你的字段和mysql关键字有冲突，那么建议采用数组方式调用，例如：</p><pre>$Model-&gt;where(&#39;status=1&#39;)-&gt;order(array(&#39;order&#39;,&#39;id&#39;=&gt;&#39;desc&#39;))-&gt;limit(5)-&gt;select();</pre><p><br/></p><p><br/></p><p><br/></p>
+               <p>order方法属于模型的连贯操作方法之一，用于对数据库操作的结果进行排序，相当于是在select语句中一个order by的子句。</p><p>例：</p><div class="code-wrapper"><pre>$Model-&gt;where(&#39;status=1&#39;)-&gt;order(&#39;id&nbsp;desc&#39;)-&gt;limit(5)-&gt;select();</pre></div><p><br style="text-align: left; text-indent: 2em;"/>支持对多个字段的排序，例如：</p><div class="code-wrapper"><pre>$Model-&gt;where(&#39;status=1&#39;)-&gt;order(&#39;id&nbsp;desc,time&nbsp;asc&#39;)-&gt;limit(5)-&gt;select();</pre></div><p>如果没有指定排序规则，默认为asc。</p><p><br style="text-align: left; text-indent: 2em;"/></p><p>如果你的字段和mysql关键字有冲突，那么建议采用数组方式调用，例如：</p><div class="code-wrapper"><pre>$Model-&gt;where(&#39;status=1&#39;)-&gt;order(array(&#39;order&#39;,&#39;id&#39;=&gt;&#39;desc&#39;))-&gt;limit(5)-&gt;select();</pre></div><p><br/></p><p><br/></p><p><br/></p>
 
               
             </div>
