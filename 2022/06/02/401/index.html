@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://github.13sai.com/images/post/indexforce.png">
 <meta property="og:image" content="https://github.13sai.com/images/post/indexerr.png">
 <meta property="article:published_time" content="2022-06-02T02:51:03.000Z">
-<meta property="article:modified_time" content="2022-06-02T04:57:35.993Z">
+<meta property="article:modified_time" content="2022-06-05T03:30:06.698Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="sql">
 <meta name="twitter:card" content="summary_large_image">
@@ -559,7 +559,7 @@
 ) ENGINE<span class="hljs-operator">=</span>InnoDB <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8;</code></pre></div>
 
 <p>查询语句如下：</p>
-<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> `c_user_public_msg`  
+<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> `msg`  
 <span class="hljs-keyword">WHERE</span> room_id <span class="hljs-operator">=</span> <span class="hljs-number">225928</span>  
 <span class="hljs-keyword">AND</span> (add_time <span class="hljs-operator">&gt;=</span> <span class="hljs-number">1653926400</span> <span class="hljs-keyword">and</span> add_time <span class="hljs-operator">&lt;</span> <span class="hljs-number">1654012800</span>) 
 <span class="hljs-keyword">AND</span> uid <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> (<span class="hljs-number">1111111</span>,<span class="hljs-number">2222222</span>) 
@@ -577,7 +577,7 @@ LIMIT <span class="hljs-number">10</span>;</code></pre></div>
 <li><code>IGNORE</code> 不要使用某些索引查询</li>
 </ul>
 <p>上面遇到的情况我们可以使用 Force</p>
-<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> `c_user_public_msg`  
+<div class="code-wrapper"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> `msg`  
 FORCE INDEX(index_team_id_add_time)
 <span class="hljs-keyword">WHERE</span> room_id <span class="hljs-operator">=</span> <span class="hljs-number">225928</span>  <span class="hljs-keyword">AND</span> (add_time <span class="hljs-operator">&gt;=</span> <span class="hljs-number">1653926400</span> <span class="hljs-keyword">and</span> add_time <span class="hljs-operator">&lt;</span> <span class="hljs-number">1654012800</span>) 
 <span class="hljs-keyword">AND</span> uid <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> (<span class="hljs-number">1111111</span>,<span class="hljs-number">2222222</span>) 
@@ -674,6 +674,12 @@ FORCE INDEX(index_team_id_add_time)
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2022/06/05/402/" title="gorm读写分离">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">gorm读写分离</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
@@ -748,7 +754,7 @@ FORCE INDEX(index_team_id_add_time)
   <!-- Custom -->
   <div class="col-lg-7 mx-auto nopadding-x-md">
     <div class="container custom post-custom mx-auto">
-      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="width:300px; height:300px;">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="height:300px;">
     </div>
   </div>
 
