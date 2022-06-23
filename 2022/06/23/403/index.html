@@ -16,21 +16,23 @@
   <meta name="author" content="13sai">
   <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
   
-    <meta name="description" content="安装比较简单，主要是配置问题，另外注意下端口。">
+    <meta name="description" content="git删除敏感文件的提交历史">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux搭建svn服务器">
-<meta property="og:url" content="https://github.13sai.com/2017/10/09/137/index.html">
+<meta property="og:title" content="git删除敏感文件的提交历史">
+<meta property="og:url" content="https://github.13sai.com/2022/06/23/403/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="安装比较简单，主要是配置问题，另外注意下端口。">
+<meta property="og:description" content="git删除敏感文件的提交历史">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-10-09T08:33:02.000Z">
-<meta property="article:modified_time" content="2022-03-19T14:35:21.608Z">
+<meta property="og:image" content="https://github.13sai.com/images/post/git.jpeg">
+<meta property="article:published_time" content="2022-06-23T06:49:39.000Z">
+<meta property="article:modified_time" content="2022-06-23T06:56:11.290Z">
 <meta property="article:author" content="13sai">
-<meta property="article:tag" content="SVN">
+<meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/git.jpeg">
   
   
-  <title>linux搭建svn服务器 - 13sai blog</title>
+  <title>git删除敏感文件的提交历史 - 13sai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -255,7 +257,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">linux搭建svn服务器</span>
+            <span id="subtitle">git删除敏感文件的提交历史</span>
           
         </div>
 
@@ -266,8 +268,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2017-10-09 16:33" pubdate>
-          2017年10月9日
+        <time datetime="2022-06-23 14:49" pubdate>
+          2022年6月23日
         </time>
       </span>
     
@@ -279,7 +281,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          604 字
+          338 字
         
       </span>
     
@@ -291,7 +293,7 @@
         
         
           <!-- compatible with older versions-->
-          6 分钟
+          3 分钟
         
       </span>
     
@@ -366,7 +368,7 @@
       
         <a href="/2022/06/23/403/" title="git删除敏感文件的提交历史"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">git删除敏感文件的提交历史</span>
         </a>
       
@@ -438,7 +440,7 @@
       
         <a href="/2017/10/09/137/" title="linux搭建svn服务器"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">linux搭建svn服务器</span>
         </a>
       
@@ -462,49 +464,19 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">linux搭建svn服务器</h1>
+            <h1 style="display: none">git删除敏感文件的提交历史</h1>
             
             <div class="markdown-body">
               
-              <h2 id="环境：centos6-3"><a href="#环境：centos6-3" class="headerlink" title="环境：centos6.3"></a>环境：centos6.3</h2><h3 id="安装svn"><a href="#安装svn" class="headerlink" title="安装svn"></a>安装svn</h3><blockquote>
-<p>yum install subversion</p>
-</blockquote>
-<h3 id="创建版本库"><a href="#创建版本库" class="headerlink" title="创建版本库"></a>创建版本库</h3><blockquote>
-<p>svnadmin create /home/repo  //文件目录自己设置</p>
-</blockquote>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><blockquote>
-<p>cd /home/repo/conf    // 进入目录</p>
-</blockquote>
-<p>配置目录下有三个文件</p>
-<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">authz</span> 权限
+              <p>不知道你有没有出现过 git 误提交敏感信息的情况，如果是私有库还好，加入是公有库就非常危险了，我之前的应对措施是—–整个库删除，重新建个仓库提交。但实际没必要这样，比较 git history 也是非常重要的。</p>
+<div class="code-wrapper"><pre><code class="hljs sh"><span class="hljs-comment"># config.yaml 为敏感文件</span>
+git filter-branch --force --index-filter <span class="hljs-string">&#x27;git rm --cached --ignore-unmatch config.yaml&#x27;</span> --prune-empty --tag-name-filter cat -- --all
+<span class="hljs-comment"># 随便修改个文件，做点无关痛痒的修改啥的</span>
+git commit -am <span class="hljs-string">&quot;13sai&quot;</span> 
+<span class="hljs-comment"># 强制 push</span>
+git push origin --force --all</code></pre></div>
 
-passwd 账号密码
-
-svnserve.conf 版本库配置</code></pre></div>
-
-<p>编辑用户文件passwd，新增两个用户：admin和guest。</p>
-<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-section">[users]</span>
-<span class="hljs-attr">admin</span> = <span class="hljs-number">111111</span>
-<span class="hljs-attr">guest</span> = <span class="hljs-number">123456</span></code></pre></div>
-<p>编辑权限文件authz，用户admin设置可读写权限，guest设置只读权限。</p>
-<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-section">[/]</span>
-<span class="hljs-attr">admin</span> = rw
-<span class="hljs-attr">guest</span> = r</code></pre></div>
-
-<p>编辑svnserve.conf：</p>
-<div class="code-wrapper"><pre><code class="hljs ini"><span class="hljs-section">[general]</span>
-<span class="hljs-attr">anon-access</span> = none                     <span class="hljs-comment">#控制非鉴权用户访问版本库的权限</span>
-<span class="hljs-attr">auth-access</span> = write                    <span class="hljs-comment">#控制鉴权用户访问版本库的权限</span>
-<span class="hljs-attr">password-db</span> = passwd                   <span class="hljs-comment">#指定用户名口令文件名</span>
-<span class="hljs-attr">authz-db</span> = authz                       <span class="hljs-comment">#指定权限配置文件名</span>
-<span class="hljs-attr">realm</span> = repo                           <span class="hljs-comment">#指定版本库的认证域，即在登录时提示的认证域名称</span></code></pre></div>
-
-<h3 id="配置ip，打开3369端口并重启"><a href="#配置ip，打开3369端口并重启" class="headerlink" title="配置ip，打开3369端口并重启"></a>配置ip，打开3369端口并重启</h3><h3 id="启动svn"><a href="#启动svn" class="headerlink" title="启动svn"></a>启动svn</h3><blockquote>
-<p>svnserve -d -r /home/repo</p>
-</blockquote>
-<h3 id="本地测试"><a href="#本地测试" class="headerlink" title="本地测试"></a>本地测试</h3><p>cmd输入svn checkout svn://***/repo，加入提示输入用户名密码，并能用之前账号登录，就表示配置成功。</p>
-<hr>
-<p>如果本地装了类似TortoiseSVN软件，可以新建文件夹，然后checkout，输入用户名密码，测试成功！</p>
+<p>That’s all!</p>
 
               
             </div>
@@ -537,7 +509,7 @@ svnserve.conf 版本库配置</code></pre></div>
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/SVN/">#SVN</a>
+        <a href="/tags/git/">#git</a>
       
     </div>
   
@@ -549,8 +521,8 @@ svnserve.conf 版本库配置</code></pre></div>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>linux搭建svn服务器</div>
-      <div>https://github.13sai.com/2017/10/09/137/</div>
+      <div>git删除敏感文件的提交历史</div>
+      <div>https://github.13sai.com/2022/06/23/403/</div>
     </div>
     <div class="license-meta">
       
@@ -587,18 +559,12 @@ svnserve.conf 版本库配置</code></pre></div>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/10/09/138/" title="SVN服务器与web站点代码同步更新">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">SVN服务器与web站点代码同步更新</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/09/30/135/" title="linux常用命令">
-                        <span class="hidden-mobile">linux常用命令</span>
+                      <a href="/2022/06/05/402/" title="gorm读写分离">
+                        <span class="hidden-mobile">gorm读写分离</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -619,7 +585,7 @@ svnserve.conf 版本库配置</code></pre></div>
         var options = Object.assign(
           {"clientID":"56020318cc01a9d56fdd","clientSecret":"00a9c6a67b49ffc8c04055ae39d242bd68627803","repo":"13sai.github.io","owner":"13sai","admin":["13sai"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":true,"createIssueManually":true},
           {
-            id: '1da44d911063a525e6db7282d673b270'
+            id: 'a5d2e1b400daf03d1dc8ee0d1a0e69a7'
           }
         )
         var gitalk = new Gitalk(options);
