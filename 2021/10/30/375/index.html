@@ -281,7 +281,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          417 字
+          419 字
         
       </span>
     
@@ -558,7 +558,7 @@ go env -w GOPRIVATE=git.13sai.cn
 // 配置 git.13sai.cn 库使用 git@git.13sai.cn 拉取，主要后面的 : 不可以丢了
 git config --global url.<span class="hljs-string">&quot;git@git.13sai.cn:&quot;</span>.insteadOf https://git.13sai.cn</code></pre></div>
 
-<p>这样就可以使用了，如果没配置git 的 ssh key，就不能使用<a href="mailto:&#103;&#105;&#x74;&#64;&#103;&#x69;&#116;&#46;&#49;&#51;&#115;&#97;&#105;&#46;&#99;&#110;">&#103;&#105;&#x74;&#64;&#103;&#x69;&#116;&#46;&#49;&#51;&#115;&#97;&#105;&#46;&#99;&#110;</a>，可以把url 换成https + 用户名密码的格式：</p>
+<p>这样就可以使用了，如果没配置git 的 ssh key，就不能使用<a href="mailto:&#103;&#x69;&#116;&#64;&#103;&#x69;&#116;&#46;&#49;&#x33;&#x73;&#97;&#105;&#46;&#x63;&#110;">&#103;&#x69;&#116;&#64;&#103;&#x69;&#116;&#46;&#49;&#x33;&#x73;&#97;&#105;&#46;&#x63;&#110;</a>，可以把url 换成https + 用户名密码的格式：</p>
 <div class="code-wrapper"><pre><code class="hljs sh">https://13sai:123456@git.13sai.cn</code></pre></div>
 
               
@@ -666,21 +666,29 @@ git config --global url.<span class="hljs-string">&quot;git@git.13sai.cn:&quot;<
             
   <article id="comments" lazyload>
     
-  <div id="gitalk-container"></div>
   <script type="text/javascript">
-    Fluid.utils.loadComments('#gitalk-container', function() {
-      Fluid.utils.createCssLink('/css/gitalk.css')
-      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', function() {
-        var options = Object.assign(
-          {"clientID":"56020318cc01a9d56fdd","clientSecret":"00a9c6a67b49ffc8c04055ae39d242bd68627803","repo":"13sai.github.io","owner":"13sai","admin":["13sai"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":true,"createIssueManually":true},
-          {
-            id: 'ec5b75ec7cf8529562ed6e1c78f00061'
-          }
-        )
-        var gitalk = new Gitalk(options);
-        gitalk.render('gitalk-container');
-      });
-    });
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', '13sai/13sai.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
   </script>
   <noscript>Please enable JavaScript to view the comments</noscript>
 
