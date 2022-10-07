@@ -1,0 +1,1073 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
+  <link rel="icon" href="/images/qiniu/sai.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#1E90FF">
+  <meta name="author" content="13sai">
+  <meta name="keywords" content="kubernetes,镜像">
+  
+    <meta name="description" content="kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kubernete实战篇-PVC">
+<meta property="og:url" content="https://github.13sai.com/2022/09/20/435/index.html">
+<meta property="og:site_name" content="13sai blog">
+<meta property="og:description" content="kubernetes">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.13sai.com/images/k8s.gif">
+<meta property="article:published_time" content="2022-09-20T03:28:09.000Z">
+<meta property="article:modified_time" content="2022-10-07T07:53:38.892Z">
+<meta property="article:author" content="13sai">
+<meta property="article:tag" content="k8s-learing">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/k8s.gif">
+  
+  
+  <title>kubernete实战篇-PVC - 13sai blog</title>
+
+  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/github-markdown-css/5.1.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 75vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>13sai blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-books"></i>
+                专栏
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/goexample/">
+                    
+                    实例学go
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/gosourcecode/">
+                    
+                    go源码笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/phpframe/">
+                    
+                    手写PHP API框架
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/reading/">
+                    
+                    读书笔记
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Nginx/">
+                    
+                    Nginx系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/MySQL/">
+                    
+                    Mysql系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/Redis/">
+                    
+                    Redis系列
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/categories/k8s-learing/">
+                    
+                    Kuberetes系列
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://oscome.cn">
+                <i class="iconfont"></i>
+                开源到
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/k8s.gif') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">kubernete实战篇-PVC</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-20 11:28" pubdate>
+          2022年9月20日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="k8s-learing"
+        id="heading-7c1e61d6c35d2d8d9c760ffe9d49d3c4" role="tab" data-toggle="collapse" href="#collapse-7c1e61d6c35d2d8d9c760ffe9d49d3c4"
+        aria-expanded="true"
+      >
+        k8s-learing
+        <span class="list-group-count">(9)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-7c1e61d6c35d2d8d9c760ffe9d49d3c4"
+           role="tabpanel" aria-labelledby="heading-7c1e61d6c35d2d8d9c760ffe9d49d3c4">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2022/09/20/435/" title="kubernete实战篇-PVC"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">kubernete实战篇-PVC</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/08/23/434/" title="kubernete实战篇-CronJob"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">kubernete实战篇-CronJob</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/08/22/433/" title="kubernete实战篇-公布应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">kubernete实战篇-公布应用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/08/11/431/" title="kubernete实战篇-Deployment部署"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">kubernete实战篇-Deployment部署</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/08/10/432/" title="kubernete实战篇-公布应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">kubernete实战篇-公布应用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/08/01/423/" title="kubernetes基础篇-镜像"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">kubernetes基础篇-镜像</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/07/31/422/" title="kubernetes基础篇-kubectl"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">kubernetes基础篇-kubectl</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/07/29/422/" title="kubernetes基础篇-组件"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">kubernetes基础篇-组件</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/07/24/421/" title="kubernetes基础篇-概念"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">kubernetes基础篇-概念</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">kubernete实战篇-PVC</h1>
+            
+            <div class="markdown-body">
+              
+              <p>Kubernetes 对于有状态的日期应用或者对于数据需要持久化的应用，就需要更可靠的存储来保存应用产生的重要数据了。这里需要的就是持久卷（PersistentVolume）和 持久卷申领（PersistentVolumeClaim）。</p>
+<p>涉及的知识点：</p>
+<ul>
+<li>PV</li>
+<li>PVC</li>
+<li>StorageClass</li>
+<li>StatefulSet</li>
+<li>Service</li>
+</ul>
+<p>持久卷（PersistentVolume，PV）是集群中的一块存储，可以事先供应，或者使用<a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/storage/storage-classes/">存储类（Storage Class）</a>来动态供应。 持久卷是集群资源，就像节点也是集群资源一样。PV 持久卷和普通的 Volume 一样，也是使用 卷插件来实现的，只是它们拥有独立于任何使用 PV 的 Pod 的生命周期。 此 API 对象中记述了存储的实现细节，无论其背后是 NFS、iSCSI 还是特定于云平台的存储系统。</p>
+<p>持久卷申领（PersistentVolumeClaim，PVC）表达的是用户对存储的请求。概念上与 Pod 类似。 Pod 会耗用节点资源，而 PVC 申领会耗用 PV 资源。Pod 可以请求特定数量的资源（CPU 和内存）；同样 PVC 申领也可以请求特定的大小和访问模式 （例如，可以要求 PV 卷能够以 ReadWriteOnce、ReadOnlyMany 或 ReadWriteMany 模式之一来挂载，参见<a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/concepts/storage/persistent-volumes/#access-modes">访问模式</a>）。</p>
+<p>下面以 influxdb 为例子：</p>
+<div class="code-wrapper"><pre><code class="hljs yaml"><span class="hljs-comment"># 单独弄个Namespace influxdb</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Namespace</span>
+<span class="hljs-attr">metadata:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-comment"># 配置文件弄个ConfigMap，便于修改</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">influxdb.conf:</span> <span class="hljs-string">&gt;-</span>
+<span class="hljs-string">    [meta]</span>
+<span class="hljs-string">      dir = &quot;/var/lib/influxdb/meta&quot;</span>
+<span class="hljs-string"></span>
+    [<span class="hljs-string">coordinator</span>]
+      <span class="hljs-string">log-queries-after</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;60s&quot;</span>
+      <span class="hljs-string">max-select-series</span> <span class="hljs-string">=</span> <span class="hljs-number">10000</span>
+      <span class="hljs-string">write-timeout</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;30s&quot;</span>
+    [<span class="hljs-string">data</span>]
+      <span class="hljs-string">dir</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;/var/lib/influxdb/data&quot;</span>
+      <span class="hljs-string">engine</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;tsm1&quot;</span>
+      <span class="hljs-string">wal-dir</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;/var/lib/influxdb/wal&quot;</span>
+      <span class="hljs-string">cache-max-memory-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;0&quot;</span>
+      <span class="hljs-string">cache-snapshot-memory-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;256m&quot;</span>
+      <span class="hljs-string">index-version</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;tsi1&quot;</span>
+      <span class="hljs-string">max-index-log-file-size</span> <span class="hljs-string">=</span> <span class="hljs-string">&quot;64k&quot;</span>
+      <span class="hljs-string">max-series-per-database</span> <span class="hljs-string">=</span> <span class="hljs-number">3000000</span>
+      <span class="hljs-string">max-values-per-tag</span> <span class="hljs-string">=</span> <span class="hljs-number">100000</span>
+
+<span class="hljs-meta">---</span>
+<span class="hljs-comment">## PersistentVolumeClaim</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-data</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">csi-xxx</span> <span class="hljs-comment"># 需自定义</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">16Gi</span> <span class="hljs-comment"># 按需配置，存储数据较多可适当放大</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-comment"># influxdb 有状态应用</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span>
+<span class="hljs-attr">metadata:</span>
+    <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-attr">spec:</span>
+    <span class="hljs-attr">replicas:</span> <span class="hljs-number">1</span>
+    <span class="hljs-attr">selector:</span>
+        <span class="hljs-attr">matchLabels:</span>
+            <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">serviceName:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">template:</span>
+        <span class="hljs-attr">metadata:</span>
+            <span class="hljs-attr">labels:</span>
+                <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span>
+        <span class="hljs-attr">spec:</span>
+            <span class="hljs-attr">containers:</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">influxdb:1.8.10</span>
+                <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+                <span class="hljs-attr">ports:</span>
+                  <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">8086</span>
+                    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+                <span class="hljs-attr">volumeMounts:</span>
+                  <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/lib/influxdb</span>
+                    <span class="hljs-attr">name:</span> <span class="hljs-string">data</span>
+                  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span>
+                    <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/etc/influxdb/influxdb.conf</span>
+                    <span class="hljs-attr">readOnly:</span> <span class="hljs-literal">true</span>
+                    <span class="hljs-attr">subPath:</span> <span class="hljs-string">influxdb.conf</span>
+            <span class="hljs-attr">volumes:</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">data</span>
+                <span class="hljs-attr">persistentVolumeClaim:</span>
+                  <span class="hljs-attr">claimName:</span> <span class="hljs-string">influxdb-data</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">timezone-config</span> <span class="hljs-comment"># 时区</span>
+                <span class="hljs-attr">hostPath:</span>
+                  <span class="hljs-attr">path:</span> <span class="hljs-string">/usr/share/zoneinfo/Asia/Shanghai</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span>
+                <span class="hljs-attr">configMap:</span>
+                  <span class="hljs-attr">defaultMode:</span> <span class="hljs-number">0600</span>
+                  <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb-config</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-comment"># 提高端口，方便其他 pod 调用</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span>
+<span class="hljs-attr">metadata:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">influxdb</span>
+<span class="hljs-attr">spec:</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">influxdb</span>
+        <span class="hljs-attr">port:</span> <span class="hljs-number">8086</span>
+        <span class="hljs-attr">targetPort:</span> <span class="hljs-number">8086</span>
+    <span class="hljs-attr">selector:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">influxdb</span>
+    <span class="hljs-attr">type:</span> <span class="hljs-string">ClusterIP</span></code></pre></div>
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/k8s-learing/" class="category-chain-item">k8s-learing</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/k8s-learing/">#k8s-learing</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>kubernete实战篇-PVC</div>
+      <div>https://github.13sai.com/2022/09/20/435/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>13sai</div>
+        </div>
+      
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/08/23/434/" title="kubernete实战篇-CronJob">
+                        <span class="hidden-mobile">kubernete实战篇-CronJob</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', '13sai/13sai.github.io');
+      s.setAttribute('issue-term', 'url');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="height:300px;">
+    </div>
+  </div>
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>2022</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
