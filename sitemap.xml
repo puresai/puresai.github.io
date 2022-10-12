@@ -1894,13 +1894,6 @@
   </url>
   
   <url>
-    <loc>https://github.13sai.com/tags/js/</loc>
-    <lastmod>2022-10-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://github.13sai.com/tags/ElasticSearch/</loc>
     <lastmod>2022-10-12</lastmod>
     <changefreq>daily</changefreq>
@@ -1951,6 +1944,13 @@
   
   <url>
     <loc>https://github.13sai.com/tags/Laravel/</loc>
+    <lastmod>2022-10-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://github.13sai.com/tags/js/</loc>
     <lastmod>2022-10-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -2083,14 +2083,14 @@
   </url>
   
   <url>
-    <loc>https://github.13sai.com/tags/curl/</loc>
+    <loc>https://github.13sai.com/tags/CSV/</loc>
     <lastmod>2022-10-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://github.13sai.com/tags/CSV/</loc>
+    <loc>https://github.13sai.com/tags/curl/</loc>
     <lastmod>2022-10-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
