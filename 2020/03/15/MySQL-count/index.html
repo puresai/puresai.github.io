@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.13sai.com/images/post/mysql.jpeg">
 <meta property="article:published_time" content="2020-03-15T13:25:48.000Z">
-<meta property="article:modified_time" content="2022-10-07T08:04:22.065Z">
+<meta property="article:modified_time" content="2022-10-12T03:20:39.700Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
@@ -487,7 +487,7 @@
 <li>会话C先启动一个单独的语句，插入一行记录后，查询表的总行数。</li>
 <li>我们假设从上到下是按照时间顺序执行的，同一行语句是在同一时刻执行的。</li>
 </ul>
-<p><img src="https://static001.geekbang.org/resource/image/5e/97/5e716ba1d464c8224c1c1f36135d0e97.png" srcset="/img/loading.gif" lazyload alt="图1 会话A、B、C的执行流程"></p>
+<p><img src="/image/qiniu/5e716ba1d464c8224c1c1f36135d0e97.png" srcset="/img/loading.gif" lazyload alt="图1 会话A、B、C的执行流程"></p>
 <p>你会看到，在最后一个时刻，三个会话A、B、C会同时查询表t的总行数，但拿到的结果却不同。</p>
 <p>这和InnoDB的事务设计有关系，可重复读是它默认的隔离级别，在代码上就是通过多版本并发控制来实现的。每一行记录都要判断自己是否对这个会话可见，因此对于<code>count(*)</code>请求来说，InnoDB只好把数据一行一行地读出依次判断，可见的行才能够用于计算“基于这个查询”的表的总行数。</p>
 <p>当然，现在这个看上去笨笨的MySQL，在执行<code>count(*)</code>操作的时候还是做了优化的。</p>
@@ -505,7 +505,7 @@
 <p>当然，使用Redis存储计数是有一些问题的。</p>
 <p>首先，无法保证Redis完全可用，假如异常挂掉，我们无法保证MySQL和Redis数据的一致性。</p>
 <p>其次，即使Redis正常可用，计数也并不精确，因为MySQL和Redis存储必然有先后之分，在高并发场景下，多个会话从Redis和MySQL读到的数据很可能是不一致的，我们可以看看图片，就不展开说明了。</p>
-<p><img src="https://static001.geekbang.org/resource/image/39/33/39898af053695dad37227d71ae288e33.png" srcset="/img/loading.gif" lazyload alt="图2 会话A、B执行时序图"></p>
+<p><img src="/image/qiniu/39898af053695dad37227d71ae288e33.png" srcset="/img/loading.gif" lazyload alt="图2 会话A、B执行时序图"></p>
 <p>当然了，在某些场景下，我们可以这么做，因为业务并不要保证数据每时每刻都是精确的，那就无需考虑这些问题，Redis异常后我们可以从计算表行数去更新。</p>
 <h4 id="数据库计数"><a href="#数据库计数" class="headerlink" title="数据库计数"></a>数据库计数</h4><p>我们也可以用MySQl新建一张表去计数。那么针对缓存计数的两个问题，我们来分析下：</p>
 <p>首先，这解决了崩溃丢失的问题，InnoDB是支持崩溃恢复不丢数据的。</p>

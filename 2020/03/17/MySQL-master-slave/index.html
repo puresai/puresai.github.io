@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.13sai.com/images/post/mysql.jpeg">
 <meta property="article:published_time" content="2020-03-17T13:46:08.000Z">
-<meta property="article:modified_time" content="2022-10-07T08:05:12.453Z">
+<meta property="article:modified_time" content="2022-10-12T03:20:33.660Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
@@ -482,7 +482,7 @@
 <li>slave重做中继日志中的事件，将改变反映它自己的数据。</li>
 </ol>
 <p>当然，其中的细节是很复杂的，我们可以看下极客时间《MySQL实战45讲》专栏的图：</p>
-<p><img src="https://static001.geekbang.org/resource/image/a6/a3/a66c154c1bc51e071dd2cc8c1d6ca6a3.png" srcset="/img/loading.gif" lazyload alt="master-slave"></p>
+<p><img src="/image/qiniu/a66c154c1bc51e071dd2cc8c1d6ca6a3.png" srcset="/img/loading.gif" lazyload alt="master-slave"></p>
 <p>主库接收到客户端的更新请求后，执行内部事务的更新逻辑，同时写binlog。</p>
 <p>而备库B跟主库A之间维持了一个长连接。主库A内部有一个线程，专门用于服务备库B的这个长连接。一个事务日志同步的完整过程是这样的：</p>
 <p>在备库B上通过change master命令，设置主库A的IP、端口、用户名、密码，以及要从哪个位置开始请求binlog，这个位置包含文件名和日志偏移量。</p>
@@ -520,8 +520,8 @@
 <td>有可能发生主从不一致问题</td>
 </tr>
 </tbody></table>
-<p><img src="https://static001.geekbang.org/resource/image/b9/31/b9818f73cd7d38a96ddcb75350b52931.png" srcset="/img/loading.gif" lazyload alt="statement"></p>
-<p><img src="https://static001.geekbang.org/resource/image/d6/26/d67a38db154afff610ae3bb64e266826.png" srcset="/img/loading.gif" lazyload alt="row"></p>
+<p><img src="/image/qiniu/b9818f73cd7d38a96ddcb75350b52931.png" srcset="/img/loading.gif" lazyload alt="statement"></p>
+<p><img src="/image/qiniu/d67a38db154afff610ae3bb64e266826.png" srcset="/img/loading.gif" lazyload alt="row"></p>
 <p>推荐使用的是row模式，准确性高，虽然说文件大，但是现在有SSD和万兆光纤网络，这些磁盘IO和网络IO都是可以接受的。</p>
 <p>mixed格式的意思是，MySQL自己会判断这条SQL语句是否可能引起主备不一致，如果有可能，就用row格式，否则就用statement格式。<br>也就是说，mixed格式可以利用statment格式的优点，同时又避免了数据不一致的风险。那么，为什么不推荐使用mixed模式，我们可以举例说明（数据恢复）：</p>
 <p>我们就分别从delete、insert和update这三种SQL语句的角度，来看看数据恢复的问题。</p>

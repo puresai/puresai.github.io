@@ -24,7 +24,7 @@
 <meta property="og:description" content="go上下文context">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-06T12:31:36.000Z">
-<meta property="article:modified_time" content="2022-03-19T15:22:15.710Z">
+<meta property="article:modified_time" content="2022-10-10T09:21:11.191Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="gosourcecode">
 <meta name="twitter:card" content="summary_large_image">
@@ -556,18 +556,18 @@
 <td>接口类型返回字符串</td>
 </tr>
 </tbody></table>
-<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><div class="code-wrapper"><pre><code class="hljs reasonml"><span class="hljs-keyword">type</span> Context interface &#123;
+<h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Context <span class="hljs-keyword">interface</span> &#123;
 	<span class="hljs-comment">// 获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求；第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消</span>
-	<span class="hljs-constructor">Deadline()</span> (deadline time.Time, ok <span class="hljs-built_in">bool</span>)
+	Deadline() (deadline time.Time, ok <span class="hljs-keyword">bool</span>)
 
 	<span class="hljs-comment">// 返回一个只读的chan，类型为struct&#123;&#125;，我们在goroutine中，如果该方法返回的chan可以读取，则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。</span>
-	<span class="hljs-constructor">Done()</span> &lt;-chan <span class="hljs-keyword">struct</span>&#123;&#125;
+	Done() &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">struct</span>&#123;&#125;
 
 	<span class="hljs-comment">// 在 channel Done 关闭后，返回 context 取消原因</span>
-	<span class="hljs-constructor">Err()</span> error
+	Err() error
 
 	<span class="hljs-comment">// 获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是并发安全的</span>
-	<span class="hljs-constructor">Value(<span class="hljs-params">key</span> <span class="hljs-params">interface</span>&#123;&#125;)</span> interface&#123;&#125;
+	Value(key <span class="hljs-keyword">interface</span>&#123;&#125;) <span class="hljs-keyword">interface</span>&#123;&#125;
 &#125;</code></pre></div>
 
 <h2 id="canceler"><a href="#canceler" class="headerlink" title="canceler"></a>canceler</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> canceler <span class="hljs-keyword">interface</span> &#123;
@@ -607,7 +607,7 @@
 	&#125;
 	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;unknown empty Context&quot;</span>
 &#125;
-cancelCtx
+<span class="hljs-comment">// cancelCtx</span>
 <span class="hljs-keyword">type</span> cancelCtx <span class="hljs-keyword">struct</span> &#123;
 	Context
 
@@ -652,32 +652,32 @@ cancelCtx
 &#125;</code></pre></div>
 
 <p>cancel()方法的功能就是关闭 channel：c.done；递归地取消它的所有子节点；从父节点从删除自己。达到的效果是通过关闭 channel，将取消信号传递给了它的所有子节点。</p>
-<div class="code-wrapper"><pre><code class="hljs reasonml">func <span class="hljs-constructor">WithCancel(<span class="hljs-params">parent</span> Context)</span> (ctx Context, cancel CancelFunc)
-func <span class="hljs-constructor">WithDeadline(<span class="hljs-params">parent</span> Context, <span class="hljs-params">deadline</span> <span class="hljs-params">time</span>.Time)</span> (Context, CancelFunc)
-func <span class="hljs-constructor">WithTimeout(<span class="hljs-params">parent</span> Context, <span class="hljs-params">timeout</span> <span class="hljs-params">time</span>.Duration)</span> (Context, CancelFunc)
-func <span class="hljs-constructor">WithValue(<span class="hljs-params">parent</span> Context, <span class="hljs-params">key</span>, <span class="hljs-params">val</span> <span class="hljs-params">interface</span>&#123;&#125;)</span> Context</code></pre></div>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">WithCancel</span><span class="hljs-params">(parent Context)</span> <span class="hljs-params">(ctx Context, cancel CancelFunc)</span></span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">WithDeadline</span><span class="hljs-params">(parent Context, deadline time.Time)</span> <span class="hljs-params">(Context, CancelFunc)</span></span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">WithTimeout</span><span class="hljs-params">(parent Context, timeout time.Duration)</span> <span class="hljs-params">(Context, CancelFunc)</span></span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">WithValue</span><span class="hljs-params">(parent Context, key, val <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">Context</span></span></code></pre></div>
 
 <p>上面四个可以理解为Context的继承衍生。</p>
 <p>对于我们日常使用来说，学会Context的继承的4个方法和Background、TODO基本就够了。</p>
 <h1 id="Context使用场景"><a href="#Context使用场景" class="headerlink" title="Context使用场景"></a>Context使用场景</h1><ol>
 <li><p>超时请求</p>
-<div class="code-wrapper"><pre><code class="hljs css">package <span class="hljs-selector-tag">main</span>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
-import (
-    &quot;context&quot;
-    &quot;fmt&quot;
-    &quot;<span class="hljs-selector-tag">time</span>&quot;
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;context&quot;</span>
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;time&quot;</span>
 )
 
-func <span class="hljs-selector-tag">main</span>() &#123;
-    ctx, cancel := context.<span class="hljs-built_in">WithTimeout</span>(context.<span class="hljs-built_in">Background</span>(), <span class="hljs-number">50</span>*time.Millisecond)
-    defer <span class="hljs-built_in">cancel</span>()
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    ctx, cancel := context.WithTimeout(context.Background(), <span class="hljs-number">50</span>*time.Millisecond)
+    <span class="hljs-keyword">defer</span> cancel()
 
-    select &#123;
-    case &lt;-time.<span class="hljs-built_in">After</span>(<span class="hljs-number">1</span> * time.Second):
-        fmt.<span class="hljs-built_in">Println</span>(<span class="hljs-string">&quot;overslept&quot;</span>)
-    case &lt;-ctx.<span class="hljs-built_in">Done</span>():
-        fmt.<span class="hljs-built_in">Println</span>(ctx.<span class="hljs-built_in">Err</span>()) // prints <span class="hljs-string">&quot;context deadline exceeded&quot;</span>
+    <span class="hljs-keyword">select</span> &#123;
+    <span class="hljs-keyword">case</span> &lt;-time.After(<span class="hljs-number">1</span> * time.Second):
+        fmt.Println(<span class="hljs-string">&quot;overslept&quot;</span>)
+    <span class="hljs-keyword">case</span> &lt;-ctx.Done():
+        fmt.Println(ctx.Err()) <span class="hljs-comment">// prints &quot;context deadline exceeded&quot;</span>
     &#125;
 &#125;</code></pre></div></li>
 <li><p>共享数据</p>
