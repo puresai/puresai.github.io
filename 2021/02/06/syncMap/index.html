@@ -24,7 +24,7 @@
 <meta property="og:description" content="go 并发Map">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-06T12:31:36.000Z">
-<meta property="article:modified_time" content="2022-03-19T15:22:02.755Z">
+<meta property="article:modified_time" content="2022-10-14T06:07:49.845Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="gosourcecode">
 <meta name="twitter:card" content="summary_large_image">
@@ -291,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.4k 字
+          3.3k 字
         
       </span>
     
@@ -303,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          29 分钟
+          28 分钟
         
       </span>
     
@@ -443,14 +443,10 @@
             <div class="markdown-body">
               
               <p>sync.Map 是1.9版本才加入的，是线程并发安全的map，类型可以看做map[interface{}]interface{}。</p>
-<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p>Map</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Map <span class="hljs-keyword">struct</span> &#123;
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><h4 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h4><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Map <span class="hljs-keyword">struct</span> &#123;
     mu Mutex    <span class="hljs-comment">//互斥锁，用于锁定dirty map</span>
-
     read atomic.Value <span class="hljs-comment">//优先读map,支持原子操作，源码注释写了readOnly不是说read是只读，而是它的结构体是readOnly</span>
-
     dirty <span class="hljs-keyword">map</span>[<span class="hljs-keyword">interface</span>&#123;&#125;]*entry <span class="hljs-comment">// dirty是一个当前最新的map，允许读写</span>
-
     misses <span class="hljs-keyword">int</span> <span class="hljs-comment">// 主要记录read读取不到数据加锁读取read map以及dirty map的次数，当misses等于dirty的长度时，会将dirty复制到read</span>
 &#125;</code></pre></div>
 
@@ -460,15 +456,14 @@
     amended <span class="hljs-keyword">bool</span> <span class="hljs-comment">// 如果数据在dirty中但没有在read中，该值为true,作为修改标识</span>
 &#125;</code></pre></div>
 
-<p>entry</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> entry <span class="hljs-keyword">struct</span> &#123;
+<h4 id="entry"><a href="#entry" class="headerlink" title="entry"></a>entry</h4><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> entry <span class="hljs-keyword">struct</span> &#123;
     <span class="hljs-comment">// nil: 表示为被删除，调用Delete()可以将read map中的元素置为nil</span>
     <span class="hljs-comment">// expunged: 也是表示被删除，但是该键只在read而没有在dirty中，这种情况出现在将read复制到dirty中，即复制的过程会先将nil标记为expunged，然后不将其复制到dirty</span>
     <span class="hljs-comment">// 其他: 表示存着真正的数据</span>
     p unsafe.Pointer <span class="hljs-comment">// *interface&#123;&#125;</span>
 &#125;</code></pre></div>
 
-<h2 id="Load-查找"><a href="#Load-查找" class="headerlink" title="Load 查找"></a>Load 查找</h2><p>根据key来查找 value， 函数为 Load()，源码如下：</p>
+<h3 id="Load-查找"><a href="#Load-查找" class="headerlink" title="Load 查找"></a>Load 查找</h3><p>根据key来查找 value， 函数为 Load()，源码如下：</p>
 <div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Load</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(value <span class="hljs-keyword">interface</span>&#123;&#125;, ok <span class="hljs-keyword">bool</span>)</span></span> &#123;
     <span class="hljs-comment">// 首先从只读ready的map中查找，这时不需要加锁</span>
     read, _ := m.read.Load().(readOnly)
@@ -500,8 +495,7 @@
 
 <p>从函数可以看出，如果查询的键值正好在m.read中，不需要加锁，直接返回结果，优化了性能。</p>
 <p>即使不在read中，经过几次miss后， m.dirty中的数据也会迁移到m.read中，这时又可以从read中查找。所以对于更新／增加较少，加载存在的key很多的case，性能基本和无锁的map类似。</p>
-<p><strong>missLockerd 迁移数据</strong></p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">missLocked</span><span class="hljs-params">()</span></span> &#123;
+<h3 id="missLockerd-迁移数据"><a href="#missLockerd-迁移数据" class="headerlink" title="missLockerd 迁移数据"></a>missLockerd 迁移数据</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">missLocked</span><span class="hljs-params">()</span></span> &#123;
     m.misses++
     <span class="hljs-keyword">if</span> m.misses &lt; <span class="hljs-built_in">len</span>(m.dirty) &#123;<span class="hljs-comment">//misses次数小于 dirty的长度，就不迁移数据，直接返回</span>
         <span class="hljs-keyword">return</span>
@@ -511,7 +505,7 @@
     m.misses = <span class="hljs-number">0</span>  <span class="hljs-comment">//迁移完 misses归0</span>
 &#125;</code></pre></div>
 
-<h2 id="Store-存储"><a href="#Store-存储" class="headerlink" title="Store 存储"></a><strong>Store 存储</strong></h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Store</span><span class="hljs-params">(key, value <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+<h3 id="Store-存储"><a href="#Store-存储" class="headerlink" title="Store 存储"></a>Store 存储</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Store</span><span class="hljs-params">(key, value <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
    <span class="hljs-comment">// 直接在read中查找值，找到了，就尝试 tryStore() 更新值</span>
     read, _ := m.read.Load().(readOnly)
     <span class="hljs-keyword">if</span> e, ok := read.m[key]; ok &amp;&amp; e.tryStore(&amp;value) &#123;
@@ -531,8 +525,6 @@
         e.storeLocked(&amp;value)
     &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// 新的值</span>
         <span class="hljs-keyword">if</span> !read.amended &#123; <span class="hljs-comment">// m.dirty 中没有新数据，增加到 m.dirty 中</span>
-            <span class="hljs-comment">// We&#x27;re adding the first new key to the dirty map.</span>
-            <span class="hljs-comment">// Make sure it is allocated and mark the read-only map as incomplete.</span>
             m.dirtyLocked() <span class="hljs-comment">// 从 m.read中复制未删除的数据</span>
             m.read.Store(readOnly&#123;m: read.m, amended: <span class="hljs-literal">true</span>&#125;) 
         &#125;
@@ -542,7 +534,7 @@
 &#125;</code></pre></div>
 
 <p>操作都是先从m.read开始，不满足条件再加锁，然后操作m.dirty。</p>
-<h2 id="Delete-删除"><a href="#Delete-删除" class="headerlink" title="Delete 删除"></a><strong>Delete 删除</strong></h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Delete</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
+<h3 id="Delete-删除"><a href="#Delete-删除" class="headerlink" title="Delete 删除"></a>Delete 删除</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(m *Map)</span> <span class="hljs-title">Delete</span><span class="hljs-params">(key <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;
     <span class="hljs-comment">// 从 m.read 中开始查找</span>
     read, _ := m.read.Load().(readOnly)
     e, ok := read.m[key]
@@ -563,7 +555,7 @@
 
 
 
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
 <span class="hljs-keyword">import</span> (
 	<span class="hljs-string">&quot;fmt&quot;</span>
@@ -589,9 +581,7 @@
 
 
 
-<hr>
-<p>参考：</p>
-<ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/golang/go/blob/dev.boringcrypto.go1.15/src/sync/map.go">sync.Map源码</a></li>
 <li><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/741441">sync.Map源码分析</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiujuan/p/13365901.html">深入理解Go语言(05)：sync.map原理分析</a></li>
