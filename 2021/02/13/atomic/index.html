@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.13sai.com/images/post/v2-acedfd18eadcd42f1c1662b66e860580_1440w.png">
 <meta property="article:published_time" content="2021-02-13T04:48:20.000Z">
-<meta property="article:modified_time" content="2022-04-11T05:56:59.742Z">
+<meta property="article:modified_time" content="2022-10-16T04:35:17.068Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="gosourcecode">
 <meta name="twitter:card" content="summary_large_image">
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          24 分钟
+          25 分钟
         
       </span>
     
@@ -463,7 +463,7 @@
 <h3 id="SwapX"><a href="#SwapX" class="headerlink" title="SwapX"></a>SwapX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将新值保存到*addr并返回旧值。</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SwapInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, <span class="hljs-built_in">new</span> <span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(old <span class="hljs-keyword">int32</span>)</span></span>
 
-源码：
+<span class="hljs-comment">// 源码</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Xchg</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, <span class="hljs-built_in">new</span> <span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;
 	old := *ptr
 	*ptr = <span class="hljs-built_in">new</span>
@@ -473,7 +473,7 @@
 <h3 id="CompareAndSwapX"><a href="#CompareAndSwapX" class="headerlink" title="CompareAndSwapX"></a>CompareAndSwapX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的比较*addr和old，如果相同则将new赋值给*addr并返回真。</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CompareAndSwapInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, old, <span class="hljs-built_in">new</span> <span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(swapped <span class="hljs-keyword">bool</span>)</span></span>
 
-源码：
+<span class="hljs-comment">// 源码</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Cas</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, old, <span class="hljs-built_in">new</span> <span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">bool</span></span> &#123;
 	<span class="hljs-keyword">if</span> *ptr == old &#123;
 		*ptr = <span class="hljs-built_in">new</span>
@@ -485,7 +485,7 @@
 <h3 id="AddX"><a href="#AddX" class="headerlink" title="AddX"></a>AddX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将val的值添加到*addr并返回新值</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">AddInt64</span><span class="hljs-params">(addr *<span class="hljs-keyword">int64</span>, delta <span class="hljs-keyword">int64</span>)</span> <span class="hljs-params">(<span class="hljs-built_in">new</span> <span class="hljs-keyword">int64</span>)</span></span>
 
-源码：
+<span class="hljs-comment">// 源码</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Xadd</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, delta <span class="hljs-keyword">int32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;
 	<span class="hljs-built_in">new</span> := *ptr + <span class="hljs-keyword">uint32</span>(delta)
 	*ptr = <span class="hljs-built_in">new</span>
@@ -495,7 +495,7 @@
 <h3 id="LoadX"><a href="#LoadX" class="headerlink" title="LoadX"></a>LoadX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的获取*addr的值</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">LoadInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>)</span> <span class="hljs-params">(val <span class="hljs-keyword">int32</span>)</span></span>
 
-源码：
+<span class="hljs-comment">// 源码</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Load</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>)</span> <span class="hljs-title">uint32</span></span> &#123;
 	<span class="hljs-keyword">return</span> *ptr
 &#125;</code></pre></div>
@@ -503,7 +503,7 @@
 <h3 id="StoreX"><a href="#StoreX" class="headerlink" title="StoreX"></a>StoreX</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 原子性的将val的值保存到*addr</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">StoreInt32</span><span class="hljs-params">(addr *<span class="hljs-keyword">int32</span>, val <span class="hljs-keyword">int32</span>)</span></span>
 
-源码：
+<span class="hljs-comment">// 源码</span>
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Store</span><span class="hljs-params">(ptr *<span class="hljs-keyword">uint32</span>, val <span class="hljs-keyword">uint32</span>)</span></span> &#123;
 	*ptr = val
 &#125;</code></pre></div>
@@ -563,8 +563,6 @@
 		<span class="hljs-keyword">return</span>
 	&#125;
 &#125;</code></pre></div>
-
-
 
 
 
