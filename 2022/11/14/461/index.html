@@ -14,24 +14,25 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="13sai">
-  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  <meta name="keywords" content="python,list">
   
-    <meta name="description" content="爬虫程序movieCrawler">
+    <meta name="description" content="python如何遍历list并删除元素">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python爬虫">
-<meta property="og:url" content="https://github.13sai.com/2017/01/14/98/index.html">
+<meta property="og:title" content="python如何遍历list并删除元素">
+<meta property="og:url" content="https://github.13sai.com/2022/11/14/461/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="爬虫程序movieCrawler">
+<meta property="og:description" content="python如何遍历list并删除元素">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2017-01-14T01:59:32.000Z">
-<meta property="article:modified_time" content="2022-05-25T12:17:52.770Z">
+<meta property="og:image" content="https://github.13sai.com/images/post/python.png">
+<meta property="article:published_time" content="2022-11-14T11:33:56.000Z">
+<meta property="article:modified_time" content="2022-12-04T12:11:43.009Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="python">
-<meta property="article:tag" content="爬虫">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/python.png">
   
   
-  <title>python爬虫 - 13sai blog</title>
+  <title>python如何遍历list并删除元素 - 13sai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -268,7 +269,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">python爬虫</span>
+            <span id="subtitle">python如何遍历list并删除元素</span>
           
         </div>
 
@@ -279,8 +280,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2017-01-14 09:59" pubdate>
-          2017年1月14日
+        <time datetime="2022-11-14 19:33" pubdate>
+          2022年11月14日
         </time>
       </span>
     
@@ -292,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.4k 字
+          1.1k 字
         
       </span>
     
@@ -304,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          37 分钟
+          10 分钟
         
       </span>
     
@@ -379,7 +380,7 @@
       
         <a href="/2022/11/14/461/" title="python如何遍历list并删除元素"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">python如何遍历list并删除元素</span>
         </a>
       
@@ -388,7 +389,7 @@
       
         <a href="/2017/01/14/98/" title="python爬虫"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">python爬虫</span>
         </a>
       
@@ -412,95 +413,80 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">python爬虫</h1>
+            <h1 style="display: none">python如何遍历list并删除元素</h1>
             
             <div class="markdown-body">
               
-              <blockquote>
-<p>最近在玩Python，自己平时喜欢和同事看电影，就寻思写了个爬虫来定时爬取优惠电影。</p>
+              <p>在开发场景中，python 遍历list并删除其中部分元素是很常见的场景。我们简化一下：</p>
+<p>现在有一个list [1,2,4,-1,-4,1,9,-7,0], 如何删除list中为负数的元素。</p>
+<p>聪明如我，不难想到，遍历判断删除呗！soeasy！</p>
+<div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
+<span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> l:
+    <span class="hljs-keyword">if</span> item &lt; <span class="hljs-number">0</span>:
+        l.remove(item)
+<span class="hljs-built_in">print</span>(l)</code></pre></div>
+
+<p>我们运行一下，看一下输出：</p>
+<div class="code-wrapper"><pre><code class="hljs json">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">-4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]</code></pre></div>
+
+<p>Wow~</p>
+<blockquote>
+<p>remove 函数用于移除列表中某个值的第一个匹配项</p>
 </blockquote>
-<div class="code-wrapper"><pre><code class="hljs python"><span class="hljs-comment"># author: 13sai    </span>
-<span class="hljs-comment"># code: utf-8    </span>
-<span class="hljs-keyword">from</span> urllib.request <span class="hljs-keyword">import</span> urlopen    
-<span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup    
-<span class="hljs-keyword">import</span> re    
-<span class="hljs-keyword">import</span> datetime    
-now = datetime.datetime.now()    
-week = now.weekday()    
-<span class="hljs-keyword">if</span> week &lt; <span class="hljs-number">5</span>:    
-    week = <span class="hljs-number">4</span> - week    
-<span class="hljs-keyword">else</span>:    
-    week = <span class="hljs-number">12</span> - week    
-delta = datetime.timedelta(days=week)    
-n_days = now + delta    
-nowtime = n_days.strftime(<span class="hljs-string">&#x27;%Y-%m-%d&#x27;</span>)  <span class="hljs-comment"># 每周五    </span>
-jiage = <span class="hljs-built_in">int</span>(<span class="hljs-number">30</span>)  <span class="hljs-comment">#价格    </span>
-url_gwl = urlopen(<span class="hljs-string">&quot;http://www.gewara.com/cinema/ajax/getOpiItemPage.xhtml?cid=cinemaid&amp;mid=&amp;fyrq=&quot;</span>+nowtime).read().decode(<span class="hljs-string">&quot;utf-8&quot;</span>)    
-soupurl_gwl = BeautifulSoup(url_gwl,<span class="hljs-string">&quot;html.parser&quot;</span>)    
-ids_gwl = soupurl_gwl.findAll(<span class="hljs-string">&quot;a&quot;</span>,attrs =&#123;<span class="hljs-string">&quot;href&quot;</span>:<span class="hljs-string">&quot;javascript:void(0);&quot;</span>&#125;)    
-<span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;&#x27;</span>    
-str1 = <span class="hljs-string">&#x27;&#x27;</span>    
-str2 = <span class="hljs-string">&#x27;&#x27;</span>    
-<span class="hljs-keyword">for</span> idattr_gwl <span class="hljs-keyword">in</span> ids_gwl:    
-    res_gwl = urlopen(<span class="hljs-string">&quot;http://www.gewara.com/movie/ajax/getOpiItemNew.xhtml?movieid=&quot;</span>+idattr_gwl[<span class="hljs-string">&#x27;id&#x27;</span>]+<span class="hljs-string">&quot;&amp;fyrq=&quot;</span>+nowtime+<span class="hljs-string">&quot;&amp;cid=cinemaid&quot;</span>).read().decode(<span class="hljs-string">&quot;utf-8&quot;</span>)    
-    soup_gwl = BeautifulSoup(res_gwl,<span class="hljs-string">&quot;html.parser&quot;</span>)    
-    <span class="hljs-comment"># print(soup)    </span>
-    links_gwl = soup_gwl.findAll(<span class="hljs-string">&quot;span&quot;</span>,attrs =&#123;<span class="hljs-string">&quot;class&quot;</span>:<span class="hljs-string">&quot;opiPrice&quot;</span>&#125;)    
-    arrtime_gwl = soup_gwl.findAll(<span class="hljs-string">&quot;span&quot;</span>,attrs =&#123;<span class="hljs-string">&quot;class&quot;</span>:<span class="hljs-string">&quot;opitime&quot;</span>&#125;)    
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(links_gwl)):    
-    <span class="hljs-keyword">if</span> links_gwl[i].find(<span class="hljs-string">&quot;b&quot;</span>) != <span class="hljs-literal">None</span>:    
-           <span class="hljs-keyword">if</span> <span class="hljs-built_in">int</span>(links_gwl[i].find(<span class="hljs-string">&quot;b&quot;</span>).get_text()) &lt; jiage:    
-               str1 = str1+<span class="hljs-string">&quot;&lt;p&gt;&quot;</span>+arrtime_gwl[i].get_text()+<span class="hljs-string">&quot;票价：&quot;</span>+links_gwl[i].find(<span class="hljs-string">&quot;b&quot;</span>).get_text()+idattr_gwl.find(<span class="hljs-string">&#x27;img&#x27;</span>)[<span class="hljs-string">&#x27;alt&#x27;</span>]+<span class="hljs-string">&quot;&lt;a href=&#x27;http://www.gewara.com/movie/ajax/getOpiItemNew.xhtml?movieid=&quot;</span>+idattr_gwl[<span class="hljs-string">&#x27;id&#x27;</span>]+<span class="hljs-string">&quot;&amp;fyrq=&quot;</span>+nowtime+<span class="hljs-string">&quot;&amp;cid=cinemaid&#x27;&gt;点击查看&lt;/a&gt;&lt;/p&gt;&quot;</span>    
-url_tb = urlopen(<span class="hljs-string">&quot;http://dianying.taobao.com/showList.htm?spm=a1z21.3046609.w2.3.9ilG5t&amp;n_s=new&quot;</span>).read().decode(<span class="hljs-string">&quot;utf-8&quot;</span>)    
-soupurl_tb = BeautifulSoup(url_tb,<span class="hljs-string">&quot;html.parser&quot;</span>)    
-ids_tb = soupurl_tb.findAll(<span class="hljs-string">&quot;a&quot;</span>,attrs =&#123;<span class="hljs-string">&quot;class&quot;</span>:<span class="hljs-string">&quot;movie-card&quot;</span>&#125;)    
-<span class="hljs-keyword">for</span> idattr_tb <span class="hljs-keyword">in</span> ids_tb:    
-    pattern = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&quot;showId=(\d+)&quot;</span>)    
-    id_group_tb = pattern.search(idattr_tb[<span class="hljs-string">&#x27;href&#x27;</span>])    
-    <span class="hljs-keyword">if</span> <span class="hljs-built_in">id</span>:    
-        res_tb = urlopen(<span class="hljs-string">&quot;http://dianying.taobao.com/cinemaDetailSchedule.htm?cinemaId=cinemaid&amp;activityId=&amp;fCode=&amp;showId=&quot;</span>+id_group_tb.group(<span class="hljs-number">1</span>)+<span class="hljs-string">&quot;&amp;showDate=&quot;</span>+nowtime).read().decode(<span class="hljs-string">&quot;utf-8&quot;</span>)    
-        soup_tb = BeautifulSoup(res_tb,<span class="hljs-string">&quot;html.parser&quot;</span>)    
-        <span class="hljs-comment"># print(soup)    </span>
-        links_tb = soup_tb.findAll(<span class="hljs-string">&quot;td&quot;</span>,attrs =&#123;<span class="hljs-string">&quot;class&quot;</span>:<span class="hljs-string">&quot;hall-price&quot;</span>&#125;)    
-        arrtime_tb = soup_tb.findAll(<span class="hljs-string">&quot;td&quot;</span>,attrs =&#123;<span class="hljs-string">&quot;class&quot;</span>:<span class="hljs-string">&quot;hall-time&quot;</span>&#125;)    
-        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(links_tb)):    
-        <span class="hljs-keyword">if</span> links_tb[i].find(<span class="hljs-string">&quot;em&quot;</span>) != <span class="hljs-literal">None</span>:    
-               <span class="hljs-keyword">if</span> <span class="hljs-built_in">float</span>(links_tb[i].find(<span class="hljs-string">&quot;em&quot;</span>).get_text()) &lt; jiage:    
-                   name_tb = idattr_tb.find(<span class="hljs-string">&#x27;span&#x27;</span>,attrs=&#123;<span class="hljs-string">&quot;class&quot;</span>:<span class="hljs-string">&quot;bt-l&quot;</span>&#125;)    
-                   str2 = str2+<span class="hljs-string">&quot;&lt;p&gt;&quot;</span>+arrtime_tb[i].get_text()+<span class="hljs-string">&quot;票价：&quot;</span>+links_tb[i].find(<span class="hljs-string">&quot;em&quot;</span>).get_text()+name_tb.get_text()+<span class="hljs-string">&quot;&lt;a href=&#x27;http://dianying.taobao.com/cinemaDetailSchedule.htm?cinemaId=cinemaid&amp;activityId=&amp;fCode=&amp;showId=&quot;</span>+id_group_tb.group(<span class="hljs-number">1</span>)+<span class="hljs-string">&quot;&amp;showDate=&quot;</span>+nowtime+<span class="hljs-string">&quot;&#x27;&gt;点击查看&lt;/a&gt;&lt;/p&gt;&quot;</span>    
-str1 = str1.strip()    
-str2 = str2.strip()    
-<span class="hljs-keyword">if</span> str1 != <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">or</span> str2 != <span class="hljs-string">&#x27;&#x27;</span>:    
-    <span class="hljs-keyword">from</span> email <span class="hljs-keyword">import</span> encoders    
-    <span class="hljs-keyword">from</span> email.header <span class="hljs-keyword">import</span> Header    
-    <span class="hljs-keyword">from</span> email.mime.text <span class="hljs-keyword">import</span> MIMEText    
-    <span class="hljs-keyword">from</span> email.utils <span class="hljs-keyword">import</span> parseaddr, formataddr    
-    <span class="hljs-keyword">import</span> smtplib    
-    <span class="hljs-comment"># 第三方 SMTP 服务      </span>
-    mail_host=<span class="hljs-string">&quot;smtp.qq.com&quot;</span>  <span class="hljs-comment">#设置服务器      </span>
-    mail_user=<span class="hljs-string">&quot;@&quot;</span>    <span class="hljs-comment">#用户名      </span>
-    mail_pass=<span class="hljs-string">&quot;@&quot;</span>   <span class="hljs-comment">#口令,QQ邮箱是输入授权码    </span>
-    sender = <span class="hljs-string">&#x27;@&#x27;</span>      
-    receivers = [<span class="hljs-string">&#x27;@&#x27;</span>]  <span class="hljs-comment"># 接收邮件，可设置为你的QQ邮箱或者其他邮箱      </span>
-    <span class="hljs-keyword">if</span> str1 != <span class="hljs-string">&#x27;&#x27;</span>:    
-        <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;格瓦拉：&lt;br/&gt;&quot;</span>+str1+<span class="hljs-string">&quot;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&quot;</span>    
-    <span class="hljs-keyword">if</span> str2 != <span class="hljs-string">&#x27;&#x27;</span>:    
-        <span class="hljs-built_in">str</span> = <span class="hljs-built_in">str</span>+<span class="hljs-string">&quot;淘票票：&lt;br/&gt;&quot;</span>+str2+<span class="hljs-string">&quot;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&quot;</span>    
-    message = MIMEText(<span class="hljs-built_in">str</span>, <span class="hljs-string">&#x27;html&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)    
-    message[<span class="hljs-string">&#x27;From&#x27;</span>] = Header(<span class="hljs-string">&quot;@&quot;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)    
-    message[<span class="hljs-string">&#x27;To&#x27;</span>] =  Header(<span class="hljs-string">&quot;@&quot;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)    
-    subject = <span class="hljs-string">&#x27;优惠电影&#x27;</span>     
-    message[<span class="hljs-string">&#x27;Subject&#x27;</span>] = Header(subject, <span class="hljs-string">&#x27;utf-8&#x27;</span>)    
-    <span class="hljs-keyword">try</span>:    
-    smtpObj = smtplib.SMTP_SSL(mail_host, <span class="hljs-number">465</span>)    
-    smtpObj.login(mail_user,mail_pass)    
-    smtpObj.sendmail(sender, receivers, message.as_string())    
-    smtpObj.quit()    
-    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;邮件发送成功&quot;</span>)    
-    <span class="hljs-keyword">except</span> smtplib.SMTPException:    
-    <span class="hljs-built_in">print</span>(smtplib.SMTPException)    
-<span class="hljs-keyword">else</span>:    
-    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;暂无优惠电影&quot;</span>)</code></pre></div>
+<p>好办，我使用index删除。</p>
+<div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
+<span class="hljs-keyword">for</span> (i, item) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(l):
+    <span class="hljs-keyword">if</span> item &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">del</span> l[i]
+<span class="hljs-built_in">print</span>(l)</code></pre></div>
+
+<p>再来一波：</p>
+<div class="code-wrapper"><pre><code class="hljs json">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">-4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]</code></pre></div>
+
+<p>额额。貌似不对，我们不妨打印一下：</p>
+<div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
+<span class="hljs-keyword">for</span> (i, item) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(l):
+    <span class="hljs-built_in">print</span>(l)
+    <span class="hljs-keyword">if</span> item &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">del</span> l[i]
+<span class="hljs-built_in">print</span>(l)</code></pre></div>
+<div class="code-wrapper"><pre><code class="hljs subunit">python3 test_list.py
+[1, 2, 4, <span class="hljs-string">-1</span>, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
+[1, 2, 4, <span class="hljs-string">-1</span>, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
+[1, 2, 4, <span class="hljs-string">-1</span>, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
+[1, 2, 4, <span class="hljs-string">-1</span>, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
+[1, 2, 4, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
+[1, 2, 4, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
+[1, 2, 4, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
+[1, 2, 4, <span class="hljs-string">-4</span>, 1, 9, 0]</code></pre></div>
+
+<p>能看出来删除后其实 index 变化，导致部分元素漏删了。</p>
+<p>那么到底如何正确操作呢？</p>
+<h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">filter_small</span>(<span class="hljs-params">item</span>):</span>
+    <span class="hljs-keyword">if</span> item &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+tmplist = <span class="hljs-built_in">filter</span>(filter_small, l)
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">list</span>(tmplist))</code></pre></div>
+
+<p>需要注意python2和Python3的filter是有区别哈！</p>
+<div class="code-wrapper"><pre><code class="hljs json">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]</code></pre></div>
+
+<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
+l = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> l <span class="hljs-keyword">if</span> x &gt;= <span class="hljs-number">0</span>]
+<span class="hljs-built_in">print</span>(l)</code></pre></div>
+
+<p>注意这里条件，是&gt;=0，就是把非整数保留。</p>
+<h3 id="倒序遍历"><a href="#倒序遍历" class="headerlink" title="倒序遍历"></a>倒序遍历</h3><p>正向遍历删除元素index变化，那我倒序遍历没毛病吧</p>
+<div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
+<span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(l) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+    <span class="hljs-keyword">if</span> l[item] &lt; <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">del</span> l[item]
+<span class="hljs-built_in">print</span>(l)</code></pre></div>
+
+<p>当然了，其实还有其他方法，比如创建个新的 list，判断后插入，这也是很简单的。</p>
+<p>关于list遍历删除就介绍这么多了，写完代码务必老老实实各种情况测试好，不要想当然，就匆匆发布哟！</p>
 
               
             </div>
@@ -535,8 +521,6 @@ str2 = str2.strip()
       
         <a href="/tags/python/">#python</a>
       
-        <a href="/tags/%E7%88%AC%E8%99%AB/">#爬虫</a>
-      
     </div>
   
 </div>
@@ -547,8 +531,8 @@ str2 = str2.strip()
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>python爬虫</div>
-      <div>https://github.13sai.com/2017/01/14/98/</div>
+      <div>python如何遍历list并删除元素</div>
+      <div>https://github.13sai.com/2022/11/14/461/</div>
     </div>
     <div class="license-meta">
       
@@ -585,18 +569,12 @@ str2 = str2.strip()
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/02/16/99/" title="移动端定位">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">移动端定位</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2017/01/12/97/" title="javascript函数设置默认参数">
-                        <span class="hidden-mobile">javascript函数设置默认参数</span>
+                      <a href="/2022/10/31/460/" title="Problems encountered when using mysql8, and how to solve them">
+                        <span class="hidden-mobile">Problems encountered when using mysql8, and how to solve them</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
