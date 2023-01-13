@@ -16,23 +16,23 @@
   <meta name="author" content="13sai">
   <meta name="keywords" content="python,list">
   
-    <meta name="description" content="python如何遍历list并删除元素">
+    <meta name="description" content="python如何跳出多层循环">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python如何遍历list并删除元素">
-<meta property="og:url" content="https://github.13sai.com/2022/11/14/461/index.html">
+<meta property="og:title" content="python如何跳出多层循环">
+<meta property="og:url" content="https://github.13sai.com/2023/01/13/471/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="python如何遍历list并删除元素">
+<meta property="og:description" content="python如何跳出多层循环">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.13sai.com/images/post/python.png">
-<meta property="article:published_time" content="2022-11-14T11:33:56.000Z">
-<meta property="article:modified_time" content="2023-01-09T11:42:27.478Z">
+<meta property="article:published_time" content="2023-01-13T13:45:25.000Z">
+<meta property="article:modified_time" content="2023-01-13T14:08:50.251Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://github.13sai.com/images/post/python.png">
   
   
-  <title>python如何遍历list并删除元素 - 13sai blog</title>
+  <title>python如何跳出多层循环 - 13sai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -263,13 +263,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/banners/default.jpeg') no-repeat center center; background-size: cover;">
+     style="background: url('/images/post/python.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">python如何遍历list并删除元素</span>
+            <span id="subtitle">python如何跳出多层循环</span>
           
         </div>
 
@@ -280,8 +280,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-11-14 19:33" pubdate>
-          2022年11月14日
+        <time datetime="2023-01-13 21:45" pubdate>
+          2023年1月13日
         </time>
       </span>
     
@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.1k 字
+          598 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          10 分钟
+          5 分钟
         
       </span>
     
@@ -380,7 +380,7 @@
       
         <a href="/2023/01/13/471/" title="python如何跳出多层循环"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">python如何跳出多层循环</span>
         </a>
       
@@ -389,7 +389,7 @@
       
         <a href="/2022/11/14/461/" title="python如何遍历list并删除元素"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">python如何遍历list并删除元素</span>
         </a>
       
@@ -422,80 +422,64 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">python如何遍历list并删除元素</h1>
+            <h1 style="display: none">python如何跳出多层循环</h1>
             
             <div class="markdown-body">
               
-              <p>在开发场景中，python 遍历list并删除其中部分元素是很常见的场景。我们简化一下：</p>
-<p>现在有一个list [1,2,4,-1,-4,1,9,-7,0], 如何删除list中为负数的元素。</p>
-<p>聪明如我，不难想到，遍历判断删除呗！soeasy！</p>
-<div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
-<span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> l:
-    <span class="hljs-keyword">if</span> item &lt; <span class="hljs-number">0</span>:
-        l.remove(item)
-<span class="hljs-built_in">print</span>(l)</code></pre></div>
+              <p>php break 后面是可以带数量，表示跳出的层数，python如何跳出多层循环呢？</p>
+<p>以 python3 代码为例，有以下几种方法。</p>
+<h3 id="打包函数，使用-return"><a href="#打包函数，使用-return" class="headerlink" title="打包函数，使用 return"></a>打包函数，使用 return</h3><div class="code-wrapper"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sai</span>():</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+            <span class="hljs-keyword">if</span> i + j &gt; <span class="hljs-number">13</span>:
+                <span class="hljs-keyword">return</span> i, j
 
-<p>我们运行一下，看一下输出：</p>
-<div class="code-wrapper"><pre><code class="hljs json">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">-4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]</code></pre></div>
+<span class="hljs-built_in">print</span>(sai())</code></pre></div>
 
-<p>Wow~</p>
-<blockquote>
-<p>remove 函数用于移除列表中某个值的第一个匹配项</p>
-</blockquote>
-<p>好办，我使用index删除。</p>
-<div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
-<span class="hljs-keyword">for</span> (i, item) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(l):
-    <span class="hljs-keyword">if</span> item &lt; <span class="hljs-number">0</span>:
-        <span class="hljs-keyword">del</span> l[i]
-<span class="hljs-built_in">print</span>(l)</code></pre></div>
+<p>将循环逻辑打包成一个单独的函数，满足条件直接 return</p>
+<h3 id="变量标记"><a href="#变量标记" class="headerlink" title="变量标记"></a>变量标记</h3><div class="code-wrapper"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">flag</span>():</span>
+    btn = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+            <span class="hljs-keyword">if</span> i + j &gt; <span class="hljs-number">13</span>:
+                btn = <span class="hljs-literal">True</span>
+                <span class="hljs-keyword">break</span>
+        <span class="hljs-keyword">if</span> btn:
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-built_in">print</span>(i, j)
 
-<p>再来一波：</p>
-<div class="code-wrapper"><pre><code class="hljs json">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">-4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]</code></pre></div>
 
-<p>额额。貌似不对，我们不妨打印一下：</p>
-<div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
-<span class="hljs-keyword">for</span> (i, item) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(l):
-    <span class="hljs-built_in">print</span>(l)
-    <span class="hljs-keyword">if</span> item &lt; <span class="hljs-number">0</span>:
-        <span class="hljs-keyword">del</span> l[i]
-<span class="hljs-built_in">print</span>(l)</code></pre></div>
-<div class="code-wrapper"><pre><code class="hljs subunit">python3 test_list.py
-[1, 2, 4, <span class="hljs-string">-1</span>, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
-[1, 2, 4, <span class="hljs-string">-1</span>, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
-[1, 2, 4, <span class="hljs-string">-1</span>, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
-[1, 2, 4, <span class="hljs-string">-1</span>, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
-[1, 2, 4, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
-[1, 2, 4, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
-[1, 2, 4, <span class="hljs-string">-4</span>, 1, 9, <span class="hljs-string">-7</span>, 0]
-[1, 2, 4, <span class="hljs-string">-4</span>, 1, 9, 0]</code></pre></div>
+flag()</code></pre></div>
 
-<p>能看出来删除后其实 index 变化，导致部分元素漏删了。</p>
-<p>那么到底如何正确操作呢？</p>
-<h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">filter_small</span>(<span class="hljs-params">item</span>):</span>
-    <span class="hljs-keyword">if</span> item &lt; <span class="hljs-number">0</span>:
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-tmplist = <span class="hljs-built_in">filter</span>(filter_small, l)
-<span class="hljs-built_in">print</span>(<span class="hljs-built_in">list</span>(tmplist))</code></pre></div>
+<p>使用 btn 标记，btn == True 则继续跳出。</p>
+<h3 id="for-else"><a href="#for-else" class="headerlink" title="for/else"></a>for/else</h3><div class="code-wrapper"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">loop</span>():</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+            <span class="hljs-keyword">if</span> i + j &gt; <span class="hljs-number">13</span>:
+                <span class="hljs-keyword">break</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">break</span>
+    <span class="hljs-built_in">print</span>(i, j)
 
-<p>需要注意python2和Python3的filter是有区别哈！</p>
-<div class="code-wrapper"><pre><code class="hljs json">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>]</code></pre></div>
 
-<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
-l = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> l <span class="hljs-keyword">if</span> x &gt;= <span class="hljs-number">0</span>]
-<span class="hljs-built_in">print</span>(l)</code></pre></div>
+loop()</code></pre></div>
 
-<p>注意这里条件，是&gt;=0，就是把非整数保留。</p>
-<h3 id="倒序遍历"><a href="#倒序遍历" class="headerlink" title="倒序遍历"></a>倒序遍历</h3><p>正向遍历删除元素index变化，那我倒序遍历没毛病吧</p>
-<div class="code-wrapper"><pre><code class="hljs python">l = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,-<span class="hljs-number">1</span>,-<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,-<span class="hljs-number">7</span>,<span class="hljs-number">0</span>]
-<span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(l) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
-    <span class="hljs-keyword">if</span> l[item] &lt; <span class="hljs-number">0</span>:
-        <span class="hljs-keyword">del</span> l[item]
-<span class="hljs-built_in">print</span>(l)</code></pre></div>
+<h3 id="raise-Exception"><a href="#raise-Exception" class="headerlink" title="raise Exception"></a>raise Exception</h3><div class="code-wrapper"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Break</span>(<span class="hljs-params">Exception</span>):</span>
+    <span class="hljs-keyword">pass</span>
 
-<p>当然了，其实还有其他方法，比如创建个新的 list，判断后插入，这也是很简单的。</p>
-<p>关于list遍历删除就介绍这么多了，写完代码务必老老实实各种情况测试好，不要想当然，就匆匆发布哟！</p>
+
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):
+            <span class="hljs-keyword">if</span> i + j &gt; <span class="hljs-number">13</span>:
+                <span class="hljs-keyword">raise</span> Break
+<span class="hljs-keyword">except</span> Break:
+    <span class="hljs-built_in">print</span>(i, j)</code></pre></div>
+
+<p>总感觉这个方法不太优雅。</p>
+<p>以上几种方法就是针对多层循环的跳出，我个人倾向于抽象个函数，当然了，习惯哪种如你所想。</p>
+<p>如果有其他好的方式，欢迎分享。</p>
 
               
             </div>
@@ -540,8 +524,8 @@ l = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</sp
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>python如何遍历list并删除元素</div>
-      <div>https://github.13sai.com/2022/11/14/461/</div>
+      <div>python如何跳出多层循环</div>
+      <div>https://github.13sai.com/2023/01/13/471/</div>
     </div>
     <div class="license-meta">
       
@@ -578,18 +562,12 @@ l = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</sp
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/01/09/470/" title="git pull 一直失败">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">git pull 一直失败</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/10/31/460/" title="Problems encountered when using mysql8, and how to solve them">
-                        <span class="hidden-mobile">Problems encountered when using mysql8, and how to solve them</span>
+                      <a href="/2023/01/09/470/" title="git pull 一直失败">
+                        <span class="hidden-mobile">git pull 一直失败</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
