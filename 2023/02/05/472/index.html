@@ -16,23 +16,21 @@
   <meta name="author" content="13sai">
   <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
   
-    <meta name="description" content="gomodules">
+    <meta name="description" content="hyperloglog误判">
 <meta property="og:type" content="article">
-<meta property="og:title" content="gomodules">
-<meta property="og:url" content="https://github.13sai.com/2019/12/27/219/index.html">
+<meta property="og:title" content="hyperloglog误判">
+<meta property="og:url" content="https://github.13sai.com/2023/02/05/472/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="gomodules">
+<meta property="og:description" content="hyperloglog误判">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.13sai.com/images/post/go.jpeg">
-<meta property="article:published_time" content="2019-12-27T10:32:26.000Z">
-<meta property="article:modified_time" content="2023-02-03T12:58:00.055Z">
+<meta property="article:published_time" content="2023-02-05T11:45:58.000Z">
+<meta property="article:modified_time" content="2023-02-05T12:03:17.839Z">
 <meta property="article:author" content="13sai">
-<meta property="article:tag" content="go">
+<meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://github.13sai.com/images/post/go.jpeg">
   
   
-  <title>gomodules - 13sai blog</title>
+  <title>hyperloglog误判 - 13sai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -269,7 +267,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">gomodules</span>
+            <span id="subtitle">hyperloglog误判</span>
           
         </div>
 
@@ -280,8 +278,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2019-12-27 18:32" pubdate>
-          2019年12月27日
+        <time datetime="2023-02-05 19:45" pubdate>
+          2023年2月5日
         </time>
       </span>
     
@@ -293,7 +291,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.4k 字
+          727 字
         
       </span>
     
@@ -305,7 +303,7 @@
         
         
           <!-- compatible with older versions-->
-          12 分钟
+          7 分钟
         
       </span>
     
@@ -359,17 +357,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="go"
-        id="heading-34d1f91fb2e514b8576fab1a75a89a6b" role="tab" data-toggle="collapse" href="#collapse-34d1f91fb2e514b8576fab1a75a89a6b"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="redis"
+        id="heading-86a1b907d54bf7010394bf316e183e67" role="tab" data-toggle="collapse" href="#collapse-86a1b907d54bf7010394bf316e183e67"
         aria-expanded="true"
       >
-        go
-        <span class="list-group-count">(18)</span>
+        redis
+        <span class="list-group-count">(7)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-34d1f91fb2e514b8576fab1a75a89a6b"
-           role="tabpanel" aria-labelledby="heading-34d1f91fb2e514b8576fab1a75a89a6b">
+      <div class="category-collapse collapse show" id="collapse-86a1b907d54bf7010394bf316e183e67"
+           role="tabpanel" aria-labelledby="heading-86a1b907d54bf7010394bf316e183e67">
         
         
           
@@ -378,163 +376,64 @@
     
       
       
-        <a href="/2022/06/05/402/" title="gorm读写分离"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">gorm读写分离</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2022/05/25/400/" title="proto文件生成go代码"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">proto文件生成go代码</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2022/01/29/385/" title="go性能工具pprof"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go性能工具pprof</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2022/01/16/383/" title="go实现LRU"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go实现LRU</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2022/01/11/382/" title="go有缓冲channel和无缓冲channel"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go有缓冲channel和无缓冲channel</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/10/30/375/" title="go使用私有module"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go使用私有module</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/09/15/372/" title="go局部变量:=要注意作用域"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go局部变量:=要注意作用域</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/05/27/340/" title="Protobuf语法"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Protobuf语法</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/04/29/335/" title="golang的单引号双引号反引号"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">golang的单引号双引号反引号</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/03/19/323/" title="goroutine"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">goroutine</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/27/319/" title="go的GC机制"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go的GC机制</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/11/21/283/" title="go的并发模型"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go的并发模型</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/09/10/275/" title="golang的time使用"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">golang的time使用</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/07/20/261/" title="最近使用gin的总结"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">最近使用gin的总结</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/03/29/243/" title="go的类型转换"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go的类型转换</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2019/12/27/219/" title="gomodules"
+        <a href="/2023/02/05/472/" title="hyperloglog误判"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">gomodules</span>
+          <span class="category-post">hyperloglog误判</span>
         </a>
       
     
       
       
-        <a href="/2019/12/20/215/" title="gRPC初体验"
+        <a href="/2020/03/22/230/" title="Redis常用类型及应用场景"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">gRPC初体验</span>
+          <span class="category-post">Redis常用类型及应用场景</span>
         </a>
       
     
       
       
-        <a href="/2019/08/25/195/" title="学习go遇到的一些问题和概念汇总"
+        <a href="/2020/01/26/225/" title="Redis使用scan替换keys"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">学习go遇到的一些问题和概念汇总</span>
+          <span class="category-post">Redis使用scan替换keys</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/05/21/188/" title="缓存穿透与布隆过滤器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">缓存穿透与布隆过滤器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/03/29/182/" title="redis集群配置"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">redis集群配置</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2018/08/09/165/" title="基于redis的秒杀"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">基于redis的秒杀</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2018/01/16/145/" title="redis的windows尝试"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">redis的windows尝试</span>
         </a>
       
     
@@ -557,83 +456,56 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">gomodules</h1>
+            <h1 style="display: none">hyperloglog误判</h1>
             
             <div class="markdown-body">
               
-              <p>Modules 是 Go 管理依赖关系的工具，在 1.11 版本中加入，并在 1.13中对模块进行了重大改进和更改。相比前面的 dep，vendor，glide 等包管理方案，更易于上手。如果你现在开始一个 go 项目，最好了解一下。</p>
-<p>Modules 的使用非常简单，我们不妨尝试一下：</p>
-<h2 id="开启（1-13版本及以后无需这一步"><a href="#开启（1-13版本及以后无需这一步" class="headerlink" title="开启（1.13版本及以后无需这一步)"></a>开启（1.13版本及以后无需这一步)</h2><p>1.13版本前请需手动开启模块（1.13 版本开始已经是默认模式）</p>
-<blockquote>
-<p>export GO111MODULE=auto</p>
-</blockquote>
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>进入项目目录，执行以下命令：</p>
-<blockquote>
-<p>go mod init github.com/13sai/gomodules</p>
-</blockquote>
-<p>output:</p>
-<div class="code-wrapper"><pre><code class="hljs shell">go: creating new go.mod: module github.com/13sai/gomodules</code></pre></div>
+              <p>HyperLogLog 是 redis 的一种数据类型。在 Redis 里面，每个 HyperLogLog 键只需要花费 12 KB 内存，就可以计算接近 2^64 个不同元素的基 数。这和计算基数时，元素越多耗费内存就越多的集合形成鲜明对比。HyperLogLog 的典型应用场景就是计算 uv。</p>
+<p>但是 HyperLogLog 是存在误判的，官方介绍其标准误差为0.81%，所以如果你想精确的统计 uv，仅仅使用 HyperLogLog 是不够的。</p>
+<p>我们不妨测试下：</p>
+<div class="code-wrapper"><pre><code class="hljs python"><span class="hljs-keyword">import</span> redis
+<span class="hljs-keyword">import</span> hashlib
 
-<p>可以看到会生成go.mod，文件内容如下【go 1.19表示当前版本】</p>
-<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">module</span> github.com/<span class="hljs-number">13</span>sai/gomodules
 
-<span class="hljs-attribute">go</span> <span class="hljs-number">1</span>.<span class="hljs-number">19</span></code></pre></div>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">md5</span>(<span class="hljs-params">text: <span class="hljs-built_in">str</span></span>):</span>
+    <span class="hljs-keyword">return</span> hashlib.md5(text.encode()).hexdigest()
 
-<h2 id="使用-go-get"><a href="#使用-go-get" class="headerlink" title="使用 go get"></a>使用 go get</h2><p>每次 go get 后，modules也会将你的安装的package加入go.mod</p>
-<blockquote>
-<p>go get github.com/13sai/gohelper</p>
-</blockquote>
-<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">module</span> github.com/<span class="hljs-number">13</span>sai/gomodules
 
-<span class="hljs-attribute">go</span> <span class="hljs-number">1</span>.<span class="hljs-number">19</span>
+redis_conn = redis.Redis(host=<span class="hljs-string">&quot;localhost&quot;</span>, port=<span class="hljs-number">6379</span>, db=<span class="hljs-number">0</span>)
+redis_conn.auth(<span class="hljs-string">&quot;123456&quot;</span>)
 
-<span class="hljs-attribute">require</span> github.com/<span class="hljs-number">13</span>sai/gohelper v<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span> // indirect</code></pre></div>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1000</span>):
+    <span class="hljs-keyword">if</span> redis_conn.pfadd(<span class="hljs-string">&quot;hyperloglog-test&quot;</span>, md5(<span class="hljs-built_in">str</span>(i))) == <span class="hljs-number">0</span>:
+        <span class="hljs-built_in">print</span>(i)</code></pre></div>
 
-<p>当然，如果你没有翻墙，也没有使用国内镜像，很多包可能都下载失败。可以参考<a target="_blank" rel="noopener" href="https://goproxy.cn/">https://goproxy.cn/</a>设置。</p>
-<h2 id="本地文件夹相互调用"><a href="#本地文件夹相互调用" class="headerlink" title="本地文件夹相互调用"></a>本地文件夹相互调用</h2><p>新建 pkg 目录，新建 str.go</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> pkg
+<p>输出如下：</p>
+<div class="code-wrapper"><pre><code class="hljs shell">➜  user-sai git:(main) ✗ python3 codesnippets/python/hyperloglog.py
+193
+294
+406
+527
+579
+588
+616
+688
+706
+764
+770
+846
+872
+876
+880
+888
+941
+975
+984
+991</code></pre></div>
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;github.com/13sai/gohelper/str&quot;</span>
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MD</span><span class="hljs-params">(s <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">string</span></span> &#123;
-	<span class="hljs-keyword">return</span> str.Md5(s)
-&#125;</code></pre></div>
-
-<p>简单写一下 main.go</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
-
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;github.com/13sai/gomodules/pkg&quot;</span> <span class="hljs-comment">// 引入刚刚新建的 pkg</span>
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	<span class="hljs-built_in">print</span>(pkg.MD(<span class="hljs-string">&quot;13sai&quot;</span>))
-&#125;</code></pre></div>
-
-<p>然后执行：</p>
-<div class="code-wrapper"><pre><code class="hljs routeros">go <span class="hljs-builtin-name">run</span> main.go
-pkg/str.go:3:8: <span class="hljs-literal">no</span> required module provides package github.com/13sai/gohelper/str; <span class="hljs-keyword">to</span> <span class="hljs-builtin-name">add</span> it:
-        go <span class="hljs-builtin-name">get</span> github.com/13sai/gohelper/str</code></pre></div>
-
-<p>这里可以执行根据提示执行</p>
-<blockquote>
-<p>go get github.com/13sai/gohelper/str</p>
-</blockquote>
-<p>或者可以使用</p>
-<blockquote>
-<p>go mod tidy </p>
-</blockquote>
-<p>这个命令可以拉取缺少的 package，移除不用的 package。</p>
-<blockquote>
-<p>这个命令很有用，我习惯每次完成一个阶段代码都执行一次，可以去除很多冗余的 package。</p>
-</blockquote>
-<h2 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h2><div class="code-wrapper"><pre><code class="hljs awk">go mod download<span class="hljs-regexp">//</span>下载依赖包到本地缓存
-go mod graph <span class="hljs-regexp">//</span>打印现有依赖结构
-go mod verify <span class="hljs-regexp">//</span>校验依赖
-go mod why <span class="hljs-regexp">//</span>解释为什么需要此模块
-go mod vendor <span class="hljs-regexp">//</span>下载依赖的package到本地vendor目录，学习中可使用</code></pre></div>
-
-<p>相关代码可参考:<br><a target="_blank" rel="noopener" href="https://github.com/13sai/blog-code/tree/master/gomodules">https://github.com/13sai/blog-code/tree/master/gomodules</a></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/golang/go/wiki/Modules#quick-start">Modules的wiki</a></li>
+<p>可以看到是有一些误判的。</p>
+<p>因而，如果需要很精确地做类似去重计数任务， HyperLogLog 并不是一个好的方案，即便 HyperLogLog 又快又节省内存。</p>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://antirez.com/news/75">Redis new data structure: the HyperLogLog</a></li>
 </ul>
 
               
@@ -652,7 +524,7 @@ go mod vendor <span class="hljs-regexp">//</span>下载依赖的package到本地
     
       <span class="category-chain">
         
-  <a href="/categories/go/" class="category-chain-item">go</a>
+  <a href="/categories/redis/" class="category-chain-item">redis</a>
   
   
 
@@ -667,7 +539,7 @@ go mod vendor <span class="hljs-regexp">//</span>下载依赖的package到本地
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/go/">#go</a>
+        <a href="/tags/redis/">#redis</a>
       
     </div>
   
@@ -679,8 +551,8 @@ go mod vendor <span class="hljs-regexp">//</span>下载依赖的package到本地
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>gomodules</div>
-      <div>https://github.13sai.com/2019/12/27/219/</div>
+      <div>hyperloglog误判</div>
+      <div>https://github.13sai.com/2023/02/05/472/</div>
     </div>
     <div class="license-meta">
       
@@ -717,18 +589,12 @@ go mod vendor <span class="hljs-regexp">//</span>下载依赖的package到本地
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/12/30/220/" title="wrk压测使用">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">wrk压测使用</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/12/21/Nginx2/" title="Nginx负载均衡">
-                        <span class="hidden-mobile">Nginx负载均衡</span>
+                      <a href="/2023/01/13/471/" title="python如何跳出多层循环">
+                        <span class="hidden-mobile">python如何跳出多层循环</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
