@@ -14,27 +14,27 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="13sai">
-  <meta name="keywords" content="go,golang,go kit,go-kit,docker-compose,mysql,redis">
+  <meta name="keywords" content="go,golang,go kit,go-kit,docker-compose,mysql,Redis">
   
-    <meta name="description" content="通过例子学习go-docker-compose整合go-kit和mysql、redis">
+    <meta name="description" content="通过例子学习go-docker-compose整合go-kit和mysql、Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker-compose整合go-kit和mysql、redis">
+<meta property="og:title" content="docker-compose整合go-kit和mysql、Redis">
 <meta property="og:url" content="https://github.13sai.com/2021/02/12/goexample7/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="通过例子学习go-docker-compose整合go-kit和mysql、redis">
+<meta property="og:description" content="通过例子学习go-docker-compose整合go-kit和mysql、Redis">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.13sai.com/images/post/v2-94d150a73c8e24ba9519c5433edab2ee_1440w.png">
 <meta property="og:image" content="https://github.13sai.com/images/post/v2-0fe2c4793b45c041c13b10d690266649_1440w.png">
 <meta property="og:image" content="https://github.13sai.com/images/post/v2-3680541c44e6b0e0526a3d407487e7f3_1440w.png">
 <meta property="article:published_time" content="2021-02-12T13:48:20.000Z">
-<meta property="article:modified_time" content="2022-03-30T11:31:11.825Z">
+<meta property="article:modified_time" content="2023-02-14T03:44:38.782Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="goexample">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://github.13sai.com/images/post/v2-94d150a73c8e24ba9519c5433edab2ee_1440w.png">
   
   
-  <title>docker-compose整合go-kit和mysql、redis - 13sai blog</title>
+  <title>docker-compose整合go-kit和mysql、Redis - 13sai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -271,7 +271,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">docker-compose整合go-kit和mysql、redis</span>
+            <span id="subtitle">docker-compose整合go-kit和mysql、Redis</span>
           
         </div>
 
@@ -443,10 +443,10 @@
     
       
       
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、redis"
+        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">docker-compose整合go-kit和mysql、redis</span>
+          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
         </a>
       
     
@@ -487,11 +487,11 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">docker-compose整合go-kit和mysql、redis</h1>
+            <h1 style="display: none">docker-compose整合go-kit和mysql、Redis</h1>
             
             <div class="markdown-body">
               
-              <p>专栏之前有使用go-kit、gorm、go-redis，所以部分内容就忽略。</p>
+              <p>专栏之前有使用go-kit、gorm、go-Redis，所以部分内容就忽略。</p>
 <h2 id="定义model"><a href="#定义model" class="headerlink" title="定义model"></a>定义model</h2><p>主要实现SelectByEmail（查找）和Save（新建）两个方法：</p>
 <div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> model
 
@@ -624,7 +624,7 @@
 
 
 
-<p>此处注意分布式锁的实现，利用了redis的setnx方法，并可以设置过期时间，对应redis中的</p>
+<p>此处注意分布式锁的实现，利用了Redis的setnx方法，并可以设置过期时间，对应Redis中的</p>
 <blockquote>
 <p><strong>SET key value [EX seconds] [PX milliseconds] [NX|XX]</strong></p>
 </blockquote>
@@ -637,7 +637,7 @@ defer model.RedisClient.Del(user.Email)</code></pre></div>
 
 
 <p>对于endpoint和transport，就与之前的没有太大差别了，我们这里就暂时略去，有兴趣可点击文章最后的源码查看。</p>
-<h2 id="mysql和redis容器"><a href="#mysql和redis容器" class="headerlink" title="mysql和redis容器"></a>mysql和redis容器</h2><p>mysql的Dockerfile：</p>
+<h2 id="mysql和Redis容器"><a href="#mysql和Redis容器" class="headerlink" title="mysql和Redis容器"></a>mysql和Redis容器</h2><p>mysql的Dockerfile：</p>
 <div class="code-wrapper"><pre><code class="hljs docker"><span class="hljs-keyword">FROM</span> mysql:<span class="hljs-number">5.7</span> 
 <span class="hljs-keyword">WORKDIR</span><span class="bash"> /docker-entrypoint-initdb.d </span>
 <span class="hljs-keyword">ENV</span> LANG=C.UTF-<span class="hljs-number">8</span>
@@ -650,10 +650,10 @@ defer model.RedisClient.Del(user.Email)</code></pre></div>
 <blockquote>
 <p>/usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/user.sql</p>
 </blockquote>
-<p>redis容器的启动简单</p>
-<div class="code-wrapper"><pre><code class="hljs docker">docker pull redis:<span class="hljs-number">5.0</span>
+<p>Redis容器的启动简单</p>
+<div class="code-wrapper"><pre><code class="hljs docker">docker pull Redis:<span class="hljs-number">5.0</span>
 
-docker <span class="hljs-keyword">run</span><span class="bash"> -itd --name redis5 -p 6389:6379 redis:5.0</span></code></pre></div>
+docker <span class="hljs-keyword">run</span><span class="bash"> -itd --name Redis5 -p 6389:6379 Redis:5.0</span></code></pre></div>
 
 
 
@@ -682,12 +682,12 @@ services:
   user13:
     image: <span class="hljs-keyword">user</span>-alpine
     depends_on: 
-      - redis
+      - Redis
       - mysql
     ports:
       - <span class="hljs-string">&quot;8088:8088&quot;</span>
     links: 
-      - redis
+      - Redis
       - mysql
     networks:
       - <span class="hljs-keyword">user</span>
@@ -702,8 +702,8 @@ services:
     networks:
       - <span class="hljs-keyword">user</span>
     restart: always
-  redis:
-    image: redis:<span class="hljs-number">5.0</span>
+  Redis:
+    image: Redis:<span class="hljs-number">5.0</span>
     ports:
       - <span class="hljs-string">&quot;6379:6379&quot;</span>
     <span class="hljs-keyword">expose</span>:
@@ -718,8 +718,8 @@ networks:
 
 <p>说明：</p>
 <ul>
-<li>depends_on 依赖，此处表示user13依赖redis、mysql，被依赖者会优先构建，但是是可能脚本为运行成功的，所以user13是有可能刚开始连接不上mysql的，docker start即可</li>
-<li>links 连接，此处user13连接到redis、mysql，可以用它们替代连接数据库的host</li>
+<li>depends_on 依赖，此处表示user13依赖Redis、mysql，被依赖者会优先构建，但是是可能脚本为运行成功的，所以user13是有可能刚开始连接不上mysql的，docker start即可</li>
+<li>links 连接，此处user13连接到Redis、mysql，可以用它们替代连接数据库的host</li>
 <li>environment 环境变量</li>
 <li>expose 对links暴露的端口</li>
 </ul>
@@ -780,7 +780,7 @@ networks:
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>docker-compose整合go-kit和mysql、redis</div>
+      <div>docker-compose整合go-kit和mysql、Redis</div>
       <div>https://github.13sai.com/2021/02/12/goexample7/</div>
     </div>
     <div class="license-meta">

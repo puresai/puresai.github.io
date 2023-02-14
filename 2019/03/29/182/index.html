@@ -16,21 +16,23 @@
   <meta name="author" content="13sai">
   <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
   
-    <meta name="description" content="redis集群配置">
+    <meta name="description" content="Redis集群配置">
 <meta property="og:type" content="article">
-<meta property="og:title" content="redis集群配置">
+<meta property="og:title" content="Redis集群配置">
 <meta property="og:url" content="https://github.13sai.com/2019/03/29/182/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="redis集群配置">
+<meta property="og:description" content="Redis集群配置">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.13sai.com/images/post/redis.png">
 <meta property="article:published_time" content="2019-03-29T01:44:15.000Z">
-<meta property="article:modified_time" content="2022-03-19T14:35:21.803Z">
+<meta property="article:modified_time" content="2023-02-14T03:51:13.310Z">
 <meta property="article:author" content="13sai">
-<meta property="article:tag" content="redis">
+<meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/redis.png">
   
   
-  <title>redis集群配置 - 13sai blog</title>
+  <title>Redis集群配置 - 13sai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -261,13 +263,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/images/post/redis.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">redis集群配置</span>
+            <span id="subtitle">Redis集群配置</span>
           
         </div>
 
@@ -357,17 +359,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="redis"
-        id="heading-86a1b907d54bf7010394bf316e183e67" role="tab" data-toggle="collapse" href="#collapse-86a1b907d54bf7010394bf316e183e67"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Redis"
+        id="heading-e111446745a1825b862f8727ae63bce4" role="tab" data-toggle="collapse" href="#collapse-e111446745a1825b862f8727ae63bce4"
         aria-expanded="true"
       >
-        redis
-        <span class="list-group-count">(7)</span>
+        Redis
+        <span class="list-group-count">(11)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-86a1b907d54bf7010394bf316e183e67"
-           role="tabpanel" aria-labelledby="heading-86a1b907d54bf7010394bf316e183e67">
+      <div class="category-collapse collapse show" id="collapse-e111446745a1825b862f8727ae63bce4"
+           role="tabpanel" aria-labelledby="heading-e111446745a1825b862f8727ae63bce4">
         
         
           
@@ -376,10 +378,46 @@
     
       
       
-        <a href="/2023/02/05/472/" title="hyperloglog误判"
+        <a href="/2023/02/05/472/" title="Redis hyperloglog误判"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">hyperloglog误判</span>
+          <span class="category-post">Redis hyperloglog误判</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/03/23/source/" title="Redis对象底层数据结构"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis对象底层数据结构</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/03/14/volatile/" title="Redis的过期策略以及内存淘汰机制"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis的过期策略以及内存淘汰机制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/03/08/base/" title="Redis基础类型、常用知识"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis基础类型、常用知识</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/28/quick/" title="Redis使用单线程为什么这么快"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis使用单线程为什么这么快</span>
         </a>
       
     
@@ -389,6 +427,15 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Redis常用类型及应用场景</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/16/aof/" title="Redis持久化aof和rdb"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis持久化aof和rdb</span>
         </a>
       
     
@@ -412,28 +459,19 @@
     
       
       
-        <a href="/2019/03/29/182/" title="redis集群配置"
+        <a href="/2019/03/29/182/" title="Redis集群配置"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">redis集群配置</span>
+          <span class="category-post">Redis集群配置</span>
         </a>
       
     
       
       
-        <a href="/2018/08/09/165/" title="基于redis的秒杀"
+        <a href="/2018/08/09/165/" title="基于Redis的秒杀"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">基于redis的秒杀</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2018/01/16/145/" title="redis的windows尝试"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">redis的windows尝试</span>
+          <span class="category-post">基于Redis的秒杀</span>
         </a>
       
     
@@ -456,15 +494,15 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">redis集群配置</h1>
+            <h1 style="display: none">Redis集群配置</h1>
             
             <div class="markdown-body">
               
               <blockquote>
-<p>环境：centos7.5，redis5.0.0</p>
+<p>环境：centos7.5，Redis5.0.0</p>
 </blockquote>
-<p>下载安装在合适的目录，我是安装在/usr/local/redis-5.0.0下，过程比较简单，不赘述了。</p>
-<p>同级下新建cluster，拷贝redis.conf文件进来，生成4个文件redis_2001.conf、redis_2002.conf、redis_2003.conf、redis_2004.conf，修改对应配置。</p>
+<p>下载安装在合适的目录，我是安装在/usr/local/Redis-5.0.0下，过程比较简单，不赘述了。</p>
+<p>同级下新建cluster，拷贝Redis.conf文件进来，生成4个文件Redis_2001.conf、Redis_2002.conf、Redis_2003.conf、Redis_2004.conf，修改对应配置。</p>
 <p>主要配置如下</p>
 <div class="code-wrapper"><pre><code class="hljs vala"><span class="hljs-meta"># 端口号</span>
 port <span class="hljs-number">2001</span>
@@ -475,7 +513,7 @@ cluster-enabled yes
 <span class="hljs-meta"># 集群节点配置文件</span>
 cluster-config-file nodes<span class="hljs-number">-2001.</span>conf
 <span class="hljs-meta"># 进程pid的文件位置</span>
-pidfile /<span class="hljs-keyword">var</span>/run/redis<span class="hljs-number">-2001.</span>pid
+pidfile /<span class="hljs-keyword">var</span>/run/Redis<span class="hljs-number">-2001.</span>pid
 
 <span class="hljs-meta"># 持久化配置</span>
 <span class="hljs-meta"># 开启aof</span>
@@ -485,25 +523,25 @@ appendfilename <span class="hljs-string">&quot;appendonly-2001.aof&quot;</span>
 <span class="hljs-meta"># rdb文件路径</span>
 dbfilename dump<span class="hljs-number">-2001.</span>rdb</code></pre></div>
 
-<p>启动redis，</p>
-<div class="code-wrapper"><pre><code class="hljs pgsql">redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2001.</span>conf
-redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2002.</span>conf
-redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2003.</span>conf
-redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/redis<span class="hljs-number">-2004.</span>conf</code></pre></div>
+<p>启动Redis，</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql">Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2001.</span>conf
+Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2002.</span>conf
+Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2003.</span>conf
+Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2004.</span>conf</code></pre></div>
 
 
-<p>连接构建redis集群</p>
+<p>连接构建Redis集群</p>
 <blockquote>
-<p>./redis-trib.rb create –replicas 1 127.0.0.1:2001 127.0.0.1:2002  127.0.0.1:2003 127.0.0.1:2004</p>
+<p>./Redis-trib.rb create –replicas 1 127.0.0.1:2001 127.0.0.1:2002  127.0.0.1:2003 127.0.0.1:2004</p>
 </blockquote>
 <p>抛出警告：</p>
 <blockquote>
-<p>WARNING: redis-trib.rb is not longer available!</p>
+<p>WARNING: Redis-trib.rb is not longer available!</p>
 </blockquote>
-<p>5.0版本抛弃了redis-trib。</p>
+<p>5.0版本抛弃了Redis-trib。</p>
 <p>按照提示执行：</p>
 <blockquote>
-<p>redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004 –cluster-replicas 1</p>
+<p>Redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004 –cluster-replicas 1</p>
 </blockquote>
 <p>错误输出如下：</p>
 <div class="code-wrapper"><pre><code class="hljs xquery">*** ERROR: Invalid configuration <span class="hljs-keyword">for</span> cluster creation.
@@ -513,7 +551,7 @@ redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluste
 
 <p>因为是单机测试而已，去掉复制</p>
 <blockquote>
-<p>redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004</p>
+<p>Redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004</p>
 </blockquote>
 <p>然后有个保存配置的确认，yes之后成功！</p>
 <div class="code-wrapper"><pre><code class="hljs prolog">[<span class="hljs-symbol">OK</span>] <span class="hljs-symbol">All</span> nodes agree about slots configuration.
@@ -523,7 +561,7 @@ redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluste
 
 <p>进入客户端</p>
 <blockquote>
-<p>redis-cli -p 2001</p>
+<p>Redis-cli -p 2001</p>
 </blockquote>
 <p>查看节点</p>
 <blockquote>
@@ -535,7 +573,7 @@ redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluste
 <span class="hljs-attribute">9101d285b991c6dcb086cf3da4cd0eae7777ece0</span> <span class="hljs-number">127.0.0.1:2004</span>@<span class="hljs-number">12004</span> master - <span class="hljs-number">0</span> <span class="hljs-number">1541042929563</span> <span class="hljs-number">4</span> connected <span class="hljs-number">12288</span>-<span class="hljs-number">16383</span></code></pre></div>
 
 <p>可以看出集群已搭建成功！</p>
-<p>对应的php可以使用predis操作redis，当然\Redis也足够好用了,up to u。</p>
+<p>对应的php可以使用pRedis操作Redis，当然\Redis也足够好用了,up to u。</p>
 
               
             </div>
@@ -553,7 +591,7 @@ redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluste
     
       <span class="category-chain">
         
-  <a href="/categories/redis/" class="category-chain-item">redis</a>
+  <a href="/categories/Redis/" class="category-chain-item">Redis</a>
   
   
 
@@ -568,7 +606,7 @@ redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluste
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/redis/">#redis</a>
+        <a href="/tags/Redis/">#Redis</a>
       
     </div>
   
@@ -580,7 +618,7 @@ redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluste
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>redis集群配置</div>
+      <div>Redis集群配置</div>
       <div>https://github.13sai.com/2019/03/29/182/</div>
     </div>
     <div class="license-meta">

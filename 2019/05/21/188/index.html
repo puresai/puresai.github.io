@@ -14,7 +14,7 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="13sai">
-  <meta name="keywords" content="缓存穿透,布隆过滤器,redis">
+  <meta name="keywords" content="缓存穿透,布隆过滤器,Redis">
   
     <meta name="description" content="缓存穿透的解决方案之一-布隆过滤器">
 <meta property="og:type" content="article">
@@ -24,9 +24,9 @@
 <meta property="og:description" content="缓存穿透的解决方案之一-布隆过滤器">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-05-21T07:59:02.000Z">
-<meta property="article:modified_time" content="2023-01-29T05:08:55.414Z">
+<meta property="article:modified_time" content="2023-02-14T03:44:38.843Z">
 <meta property="article:author" content="13sai">
-<meta property="article:tag" content="redis">
+<meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -357,17 +357,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="redis"
-        id="heading-86a1b907d54bf7010394bf316e183e67" role="tab" data-toggle="collapse" href="#collapse-86a1b907d54bf7010394bf316e183e67"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Redis"
+        id="heading-e111446745a1825b862f8727ae63bce4" role="tab" data-toggle="collapse" href="#collapse-e111446745a1825b862f8727ae63bce4"
         aria-expanded="true"
       >
-        redis
-        <span class="list-group-count">(7)</span>
+        Redis
+        <span class="list-group-count">(11)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-86a1b907d54bf7010394bf316e183e67"
-           role="tabpanel" aria-labelledby="heading-86a1b907d54bf7010394bf316e183e67">
+      <div class="category-collapse collapse show" id="collapse-e111446745a1825b862f8727ae63bce4"
+           role="tabpanel" aria-labelledby="heading-e111446745a1825b862f8727ae63bce4">
         
         
           
@@ -376,10 +376,46 @@
     
       
       
-        <a href="/2023/02/05/472/" title="hyperloglog误判"
+        <a href="/2023/02/05/472/" title="Redis hyperloglog误判"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">hyperloglog误判</span>
+          <span class="category-post">Redis hyperloglog误判</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/03/23/source/" title="Redis对象底层数据结构"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis对象底层数据结构</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/03/14/volatile/" title="Redis的过期策略以及内存淘汰机制"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis的过期策略以及内存淘汰机制</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/03/08/base/" title="Redis基础类型、常用知识"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis基础类型、常用知识</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2021/02/28/quick/" title="Redis使用单线程为什么这么快"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis使用单线程为什么这么快</span>
         </a>
       
     
@@ -389,6 +425,15 @@
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Redis常用类型及应用场景</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/02/16/aof/" title="Redis持久化aof和rdb"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis持久化aof和rdb</span>
         </a>
       
     
@@ -412,28 +457,19 @@
     
       
       
-        <a href="/2019/03/29/182/" title="redis集群配置"
+        <a href="/2019/03/29/182/" title="Redis集群配置"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">redis集群配置</span>
+          <span class="category-post">Redis集群配置</span>
         </a>
       
     
       
       
-        <a href="/2018/08/09/165/" title="基于redis的秒杀"
+        <a href="/2018/08/09/165/" title="基于Redis的秒杀"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">基于redis的秒杀</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2018/01/16/145/" title="redis的windows尝试"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">redis的windows尝试</span>
+          <span class="category-post">基于Redis的秒杀</span>
         </a>
       
     
@@ -610,7 +646,7 @@
 
 
 <span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * 使用redis实现的布隆过滤器</span>
+<span class="hljs-comment"> * 使用Redis实现的布隆过滤器</span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BloomFilterRedis</span></span>
 <span class="hljs-class"></span>&#123;
@@ -632,12 +668,12 @@
 
     <span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRedis</span>(<span class="hljs-params"></span>)</span>
 <span class="hljs-function">    </span>&#123;
-        <span class="hljs-variable">$redis</span> = <span class="hljs-keyword">new</span> Redis();
-        <span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>, <span class="hljs-number">6379</span>);
-<span class="hljs-comment">//        $redis-&gt;auth(13sai666.);</span>
-<span class="hljs-comment">//        var_dump($redis-&gt;info(SERVER));die;</span>
-        <span class="hljs-variable">$redis</span>-&gt;select(<span class="hljs-number">7</span>);
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$redis</span>;
+        <span class="hljs-variable">$Redis</span> = <span class="hljs-keyword">new</span> Redis();
+        <span class="hljs-variable">$Redis</span>-&gt;connect(<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>, <span class="hljs-number">6379</span>);
+<span class="hljs-comment">//        $Redis-&gt;auth(13sai666.);</span>
+<span class="hljs-comment">//        var_dump($Redis-&gt;info(SERVER));die;</span>
+        <span class="hljs-variable">$Redis</span>-&gt;select(<span class="hljs-number">7</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$Redis</span>;
     &#125;
 
     <span class="hljs-comment">/**</span>
@@ -704,7 +740,7 @@ var_dump(<span class="hljs-function"><span class="hljs-params">(<span class="hlj
 <p>那么这个叫“布隆过滤器”的东东真有那么好用？</p>
 <p>我相信，你应该可以看出来，这是有误判率的，另外删除也是困难的。</p>
 <p>具体误判推导过程，可以参考：</p>
-<p><a target="_blank" rel="noopener" href="http://imhuchao.com/1271.html">布隆过滤器(bloom filter)介绍以及php和redis实现布隆过滤器实现方法</a></p>
+<p><a target="_blank" rel="noopener" href="http://imhuchao.com/1271.html">布隆过滤器(bloom filter)介绍以及php和Redis实现布隆过滤器实现方法</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Jack47/p/bloom_filter_intro.html">布隆过滤器简介</a></p>
 <p>应用场景：</p>
 <ul>
@@ -730,7 +766,7 @@ var_dump(<span class="hljs-function"><span class="hljs-params">(<span class="hlj
     
       <span class="category-chain">
         
-  <a href="/categories/redis/" class="category-chain-item">redis</a>
+  <a href="/categories/Redis/" class="category-chain-item">Redis</a>
   
   
 
@@ -745,7 +781,7 @@ var_dump(<span class="hljs-function"><span class="hljs-params">(<span class="hlj
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/redis/">#redis</a>
+        <a href="/tags/Redis/">#Redis</a>
       
     </div>
   

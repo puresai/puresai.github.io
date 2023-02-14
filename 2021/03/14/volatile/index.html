@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="13sai blog">
 <meta property="og:description" content="Redis的过期策略以及内存淘汰机制，定期删除+惰性删除策略">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/12062369-7fae1afe70569623.png">
+<meta property="og:image" content="https://github.13sai.com/images/post/redis.png">
 <meta property="article:published_time" content="2021-03-14T13:46:51.000Z">
-<meta property="article:modified_time" content="2022-03-30T11:27:37.038Z">
+<meta property="article:modified_time" content="2023-02-14T03:51:05.023Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/12062369-7fae1afe70569623.png">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/redis.png">
   
   
   <title>Redis的过期策略以及内存淘汰机制 - 13sai blog</title>
@@ -263,7 +263,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/images/post/redis.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -364,7 +364,7 @@
         aria-expanded="true"
       >
         Redis
-        <span class="list-group-count">(5)</span>
+        <span class="list-group-count">(11)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -375,6 +375,15 @@
           
   <div class="category-post-list">
     
+    
+      
+      
+        <a href="/2023/02/05/472/" title="Redis hyperloglog误判"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis hyperloglog误判</span>
+        </a>
+      
     
       
       
@@ -414,10 +423,55 @@
     
       
       
+        <a href="/2020/03/22/230/" title="Redis常用类型及应用场景"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis常用类型及应用场景</span>
+        </a>
+      
+    
+      
+      
         <a href="/2020/02/16/aof/" title="Redis持久化aof和rdb"
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Redis持久化aof和rdb</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/01/26/225/" title="Redis使用scan替换keys"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis使用scan替换keys</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/05/21/188/" title="缓存穿透与布隆过滤器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">缓存穿透与布隆过滤器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/03/29/182/" title="Redis集群配置"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis集群配置</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2018/08/09/165/" title="基于Redis的秒杀"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">基于Redis的秒杀</span>
         </a>
       
     
@@ -444,15 +498,15 @@
             
             <div class="markdown-body">
               
-              <p>redis采用的是定期删除+惰性删除策略。</p>
+              <p>Redis采用的是定期删除+惰性删除策略。</p>
 <p><strong>为什么不用定时删除策略?</strong></p>
 <p>定时删除,用一个定时器来负责监视key,过期则自动删除。虽然内存及时释放，但是十分消耗CPU资源。在大并发请求下，CPU要将时间应用在处理请求，而不是删除key，因此没有采用这一策略.</p>
 <p><strong>定期删除+惰性删除是如何工作的呢?</strong></p>
-<p>定期删除，redis默认每个100ms检查，是否有过期的key，有过期key则删除。需要说明的是，redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。</p>
-<p>于是，惰性删除派上用场。也就是说在你获取某个key的时候，redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。</p>
+<p>定期删除，Redis默认每个100ms检查，是否有过期的key，有过期key则删除。需要说明的是，Redis不是每个100ms将所有的key检查一次，而是随机抽取进行检查(如果每隔100ms,全部key进行检查，Redis岂不是卡死)。因此，如果只采用定期删除策略，会导致很多key到时间没有删除。</p>
+<p>于是，惰性删除派上用场。也就是说在你获取某个key的时候，Redis会检查一下，这个key如果设置了过期时间那么是否过期了？如果过期了此时就会删除。</p>
 <p><strong>采用定期删除+惰性删除就没其他问题了么?</strong></p>
-<p>不是的，如果定期删除没删除key。然后你也没即时去请求key，也就是说惰性删除也没生效。这样，redis的内存会越来越高。那么就应该采用内存淘汰机制。</p>
-<p>在redis.conf中有一行配置</p>
+<p>不是的，如果定期删除没删除key。然后你也没即时去请求key，也就是说惰性删除也没生效。这样，Redis的内存会越来越高。那么就应该采用内存淘汰机制。</p>
+<p>在Redis.conf中有一行配置</p>
 <div class="code-wrapper"><pre><code class="hljs pgsql">maxmemory-<span class="hljs-keyword">policy</span> <span class="hljs-keyword">volatile</span>-lru</code></pre></div>
 
 <p>该配置就是配内存淘汰策略的</p>
@@ -501,7 +555,7 @@
 </ul>
 <p>第一个问题很好解决，可以借鉴<code>LRU</code>实现的经验，维护一个待淘汰key的pool。第二个问题的解决办法是，记录key最后一个被访问的时间，然后随着时间推移，降低计数器。</p>
 <p><code>Redis</code>对象的结构如下：</p>
-<div class="code-wrapper"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> redisObject &#123;
+<div class="code-wrapper"><pre><code class="hljs verilog"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> RedisObject &#123;
     <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">type</span>:<span class="hljs-number">4</span>;
     <span class="hljs-keyword">unsigned</span> encoding:<span class="hljs-number">4</span>;
     <span class="hljs-keyword">unsigned</span> lru:LRU_BITS; <span class="hljs-comment">/* LRU time (relative to global lru_clock) or</span>

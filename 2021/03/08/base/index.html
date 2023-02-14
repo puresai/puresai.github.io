@@ -16,16 +16,16 @@
   <meta name="author" content="13sai">
   <meta name="keywords" content="Redis,Redis基础类型">
   
-    <meta name="description" content="redis基础知识">
+    <meta name="description" content="Redis基础知识">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis基础类型、常用知识">
 <meta property="og:url" content="https://github.13sai.com/2021/03/08/base/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="redis基础知识">
+<meta property="og:description" content="Redis基础知识">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.learnku.com/uploads/images/201910/30/41489/7MfaHZCwKT.png!large">
 <meta property="article:published_time" content="2021-03-08T13:46:51.000Z">
-<meta property="article:modified_time" content="2022-03-30T11:25:54.009Z">
+<meta property="article:modified_time" content="2023-02-14T03:44:38.840Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary_large_image">
@@ -364,7 +364,7 @@
         aria-expanded="true"
       >
         Redis
-        <span class="list-group-count">(5)</span>
+        <span class="list-group-count">(11)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -375,6 +375,15 @@
           
   <div class="category-post-list">
     
+    
+      
+      
+        <a href="/2023/02/05/472/" title="Redis hyperloglog误判"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis hyperloglog误判</span>
+        </a>
+      
     
       
       
@@ -414,10 +423,55 @@
     
       
       
+        <a href="/2020/03/22/230/" title="Redis常用类型及应用场景"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis常用类型及应用场景</span>
+        </a>
+      
+    
+      
+      
         <a href="/2020/02/16/aof/" title="Redis持久化aof和rdb"
            class="list-group-item list-group-item-action
            ">
           <span class="category-post">Redis持久化aof和rdb</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/01/26/225/" title="Redis使用scan替换keys"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis使用scan替换keys</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/05/21/188/" title="缓存穿透与布隆过滤器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">缓存穿透与布隆过滤器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/03/29/182/" title="Redis集群配置"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis集群配置</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2018/08/09/165/" title="基于Redis的秒杀"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">基于Redis的秒杀</span>
         </a>
       
     
@@ -457,8 +511,8 @@
 </ul>
 <p>关于命令我推荐看这两个：</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="http://doc.redisfans.com/">http://doc.redisfans.com/</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.redis.cn/commands.html">http://www.redis.cn/commands.html</a></li>
+<li><a target="_blank" rel="noopener" href="http://doc.redisfans.com/">http://doc.Redisfans.com/</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.redis.cn/commands.html">http://www.Redis.cn/commands.html</a></li>
 </ul>
 <h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><h3 id="strings"><a href="#strings" class="headerlink" title="strings"></a>strings</h3><ul>
 <li>缓存</li>
@@ -500,24 +554,24 @@
 <p>WATCH命令可以监控一个或多个键，一旦其中有一个键被修改（或删除），之后的事务就不会执行。监控一直持续到EXEC命令（事务中的命令是在EXEC之后才执行的，所以在MULTI命令后可以修改WATCH监控的键值）</p>
 </blockquote>
 <div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 库存为<span class="hljs-number">5</span>
-<span class="hljs-regexp">//</span>实例化redis
-<span class="hljs-variable">$redis</span> = new Redis();
+<span class="hljs-regexp">//</span>实例化Redis
+<span class="hljs-variable">$Redis</span> = new Redis();
 <span class="hljs-regexp">//</span>连接
-<span class="hljs-variable">$redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>);
+<span class="hljs-variable">$Redis</span>-&gt;connect(<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">6379</span>);
 <span class="hljs-variable">$key</span> = <span class="hljs-string">&#x27;sale&#x27;</span>;
-<span class="hljs-variable">$redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">0</span>); <span class="hljs-regexp">//</span> 此项不预定义亦可，保证key唯一就行
-<span class="hljs-variable">$redis</span>-&gt;watch(<span class="hljs-variable">$key</span>); <span class="hljs-regexp">//</span>监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。
+<span class="hljs-variable">$Redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">0</span>); <span class="hljs-regexp">//</span> 此项不预定义亦可，保证key唯一就行
+<span class="hljs-variable">$Redis</span>-&gt;watch(<span class="hljs-variable">$key</span>); <span class="hljs-regexp">//</span>监视一个(或多个) key ，如果在事务执行之前这个(或这些) key 被其他命令所改动，那么事务将被打断。
 
-<span class="hljs-variable">$sale_num</span> = <span class="hljs-variable">$redis</span>-&gt;get(<span class="hljs-variable">$key</span>);
+<span class="hljs-variable">$sale_num</span> = <span class="hljs-variable">$Redis</span>-&gt;get(<span class="hljs-variable">$key</span>);
 <span class="hljs-keyword">if</span> (<span class="hljs-variable">$sale_num</span> &gt; <span class="hljs-number">4</span>) &#123;
 	<span class="hljs-keyword">exit</span>();
 &#125;
 
-<span class="hljs-variable">$redis</span>-&gt;multi(); <span class="hljs-regexp">//</span>标记事务
+<span class="hljs-variable">$Redis</span>-&gt;multi(); <span class="hljs-regexp">//</span>标记事务
 
-<span class="hljs-variable">$redis</span>-&gt;incr(<span class="hljs-variable">$key</span>);  <span class="hljs-regexp">//</span>销量+<span class="hljs-number">1</span>
+<span class="hljs-variable">$Redis</span>-&gt;incr(<span class="hljs-variable">$key</span>);  <span class="hljs-regexp">//</span>销量+<span class="hljs-number">1</span>
 sleep(<span class="hljs-number">1</span>); <span class="hljs-regexp">//</span>模拟真实环境
-<span class="hljs-variable">$ret</span> = <span class="hljs-variable">$redis</span>-&gt;exec(); <span class="hljs-regexp">//</span> 事务块内所有命令的返回值，按命令执行的先后顺序排列。
+<span class="hljs-variable">$ret</span> = <span class="hljs-variable">$Redis</span>-&gt;exec(); <span class="hljs-regexp">//</span> 事务块内所有命令的返回值，按命令执行的先后顺序排列。
 <span class="hljs-keyword">if</span> (<span class="hljs-variable">$ret</span>) &#123;
     <span class="hljs-regexp">//</span> 自定义的一个基于medoo的dbclass
 	include <span class="hljs-string">&#x27;db.php&#x27;</span>;
@@ -545,11 +599,11 @@ sleep(<span class="hljs-number">1</span>); <span class="hljs-regexp">//</span>�
 <li><a target="_blank" rel="noopener" href="https://github.com/RedisBloom/RedisBloom">https://github.com/RedisBloom/RedisBloom</a></li>
 </ul>
 <div class="code-wrapper"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/RedisBloom/</span>RedisBloom.git
-cd redisbloom
+cd Redisbloom
 make
 
 
-<span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/redis-server --loadmodule ./</span>redisbloom.so</code></pre></div>
+<span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/Redis-server --loadmodule ./</span>Redisbloom.so</code></pre></div>
 
 <p>Bloom：向过滤器添加新项,如果尚不存在，则会为您创建一个新的过滤器</p>
 <div class="code-wrapper"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1:6379</span>&gt; BF.ADD newFilter foo
@@ -563,11 +617,11 @@ make
 (integer) <span class="hljs-number">0</span></code></pre></div>
 
 <h3 id="限流Redis-cell"><a href="#限流Redis-cell" class="headerlink" title="限流Redis-cell"></a>限流Redis-cell</h3><div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 提前安装rust哟
-git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/brandur/</span>redis-cell.git
-cd redis-cell
+git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/brandur/</span>Redis-cell.git
+cd Redis-cell
 cargo build --release
-cp target<span class="hljs-regexp">/release/</span>libredis_cell.dylib <span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/modules/</span>
-redis-server --loadmodule <span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/modules/</span>libredis_cell.so</code></pre></div>
+cp target<span class="hljs-regexp">/release/</span>libRedis_cell.dylib <span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/modules/</span>
+Redis-server --loadmodule <span class="hljs-regexp">/path/</span>to<span class="hljs-regexp">/modules/</span>libRedis_cell.so</code></pre></div>
 
 <p>该模块只有1条指令cl.throttle，它的参数和返回值都略显复杂，接下来让我们来看看这个指令具体该如何使用。</p>
 <div class="code-wrapper"><pre><code class="hljs gherkin">&gt; cl.throttle limitThrot  15  30  60  1

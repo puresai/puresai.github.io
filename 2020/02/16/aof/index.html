@@ -23,15 +23,13 @@
 <meta property="og:site_name" content="13sai blog">
 <meta property="og:description" content="Redis持久化aof和rdb的配置与操作">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://img1.sycdn.imooc.com/5c8518900001734506990490.png">
-<meta property="og:image" content="http://image.13sai.com/study/aof.png">
-<meta property="og:image" content="http://image.13sai.com/study/aof-rewrite.png">
+<meta property="og:image" content="https://github.13sai.com/images/post/redis.png">
 <meta property="article:published_time" content="2020-02-16T13:46:51.000Z">
-<meta property="article:modified_time" content="2022-03-30T11:20:47.109Z">
+<meta property="article:modified_time" content="2023-02-14T03:50:49.827Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://img1.sycdn.imooc.com/5c8518900001734506990490.png">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/redis.png">
   
   
   <title>Redis持久化aof和rdb - 13sai blog</title>
@@ -265,7 +263,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/images/post/redis.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -366,7 +364,7 @@
         aria-expanded="true"
       >
         Redis
-        <span class="list-group-count">(5)</span>
+        <span class="list-group-count">(11)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -377,6 +375,15 @@
           
   <div class="category-post-list">
     
+    
+      
+      
+        <a href="/2023/02/05/472/" title="Redis hyperloglog误判"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis hyperloglog误判</span>
+        </a>
+      
     
       
       
@@ -416,10 +423,55 @@
     
       
       
+        <a href="/2020/03/22/230/" title="Redis常用类型及应用场景"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis常用类型及应用场景</span>
+        </a>
+      
+    
+      
+      
         <a href="/2020/02/16/aof/" title="Redis持久化aof和rdb"
            class="list-group-item list-group-item-action
            active">
           <span class="category-post">Redis持久化aof和rdb</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2020/01/26/225/" title="Redis使用scan替换keys"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis使用scan替换keys</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/05/21/188/" title="缓存穿透与布隆过滤器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">缓存穿透与布隆过滤器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2019/03/29/182/" title="Redis集群配置"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Redis集群配置</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2018/08/09/165/" title="基于Redis的秒杀"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">基于Redis的秒杀</span>
         </a>
       
     
@@ -492,7 +544,7 @@
 <h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><blockquote>
 <p>AOF(append only file)持久化:与RDB存储某个时刻的快照不同，AOF持久化方式会记录客户端对服务器的每一次写操作命令到日志当中，并将这些写操作以Redis协议追加保存到以后缀为aof文件末尾</p>
 </blockquote>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>redis.conf</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>Redis.conf</p>
 <div class="code-wrapper"><pre><code class="hljs pgsql">appendonly yes 
 #启用aof持久化方式 
 
@@ -540,11 +592,11 @@ everysec为最多每秒调用一次fsync，这种模式性能并不是很糟糕�
 </ol>
 <h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><p>AOF文件损坏<br>在写入aof日志文件时，如果Redis服务器宕机，则aof日志文件文件会出格式错误，在重启Redis服务器时，Redis服务器会拒绝载入这个aof文件， 可以通过命令修复aof并恢复数据</p>
 <blockquote>
-<p>redis-check-aof -fix file.aof</p>
+<p>Redis-check-aof -fix file.aof</p>
 </blockquote>
 <h3 id="AOF的优点"><a href="#AOF的优点" class="headerlink" title="AOF的优点"></a>AOF的优点</h3><ol>
 <li>AOF可以设置 完全不同步、每秒同步、每次操作同，默认是每秒同步。因为AOF是操作指令的追加，所以可以频繁的大量的同步。</li>
-<li>AOF文件是一个值追加日志的文件，即使服务宕机为写入完整的命令，也可以通过redis-check-aof工具修复这些问题。</li>
+<li>AOF文件是一个值追加日志的文件，即使服务宕机为写入完整的命令，也可以通过Redis-check-aof工具修复这些问题。</li>
 <li>如果AOF文件过大，Redis会在后台自动地重写AOF文件。重写后会使AOF文件压缩到最小所需的指令集。</li>
 <li>AOF文件是有序保存数据库的所有写入操作，易读，易分析。即使如果不小心误操作数据库，也很容易找出错误指令，恢复到某个数据节点。例如不小心FLUSHALL，可以非常容易恢复到执行命令之前。</li>
 </ol>

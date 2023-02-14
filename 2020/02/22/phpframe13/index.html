@@ -16,20 +16,20 @@
   <meta name="author" content="13sai">
   <meta name="keywords" content="PHP,api,手写框架,PSR,composer">
   
-    <meta name="description" content="一起手写一个php-api框架,redis分布式锁">
+    <meta name="description" content="一起手写一个php-api框架,Redis分布式锁">
 <meta property="og:type" content="article">
 <meta property="og:title" content="应用篇：1.分布式锁">
 <meta property="og:url" content="https://github.13sai.com/2020/02/22/phpframe13/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="一起手写一个php-api框架,redis分布式锁">
+<meta property="og:description" content="一起手写一个php-api框架,Redis分布式锁">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.learnku.com/uploads/images/202002/25/41489/ov5tcJmAKT.png!large">
+<meta property="og:image" content="https://github.13sai.com/images/post/php.jpeg">
 <meta property="article:published_time" content="2020-02-22T02:35:57.000Z">
-<meta property="article:modified_time" content="2022-03-19T15:25:54.305Z">
+<meta property="article:modified_time" content="2023-02-14T03:56:19.440Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="phpframe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.learnku.com/uploads/images/202002/25/41489/ov5tcJmAKT.png!large">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/php.jpeg">
   
   
   <title>应用篇：1.分布式锁 - 13sai blog</title>
@@ -263,7 +263,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/images/post/php.jpeg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -414,10 +414,10 @@
     
       
       
-        <a href="/2020/02/15/phpframe10/" title="框架篇：7.使用redis加速session读写"
+        <a href="/2020/02/15/phpframe10/" title="框架篇：7.使用Redis加速session读写"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">框架篇：7.使用redis加速session读写</span>
+          <span class="category-post">框架篇：7.使用Redis加速session读写</span>
         </a>
       
     
@@ -553,14 +553,14 @@
 <li>Redis的setnx方法</li>
 <li>php的register</li>
 </ul>
-<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processLock</span>(<span class="hljs-params"><span class="hljs-variable">$redis</span>, <span class="hljs-variable">$key</span>, <span class="hljs-variable">$ttl</span> = <span class="hljs-number">5</span></span>)</span>
+<div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processLock</span>(<span class="hljs-params"><span class="hljs-variable">$Redis</span>, <span class="hljs-variable">$key</span>, <span class="hljs-variable">$ttl</span> = <span class="hljs-number">5</span></span>)</span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$ret</span> = <span class="hljs-variable">$redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">1</span>);
+    <span class="hljs-variable">$ret</span> = <span class="hljs-variable">$Redis</span>-&gt;setnx(<span class="hljs-variable">$key</span>, <span class="hljs-number">1</span>);
     <span class="hljs-keyword">if</span> (<span class="hljs-variable">$ret</span>) &#123;
-        <span class="hljs-variable">$redis</span>-&gt;expire(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$ttl</span>);
+        <span class="hljs-variable">$Redis</span>-&gt;expire(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$ttl</span>);
 
-        register_shutdown_function(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) <span class="hljs-keyword">use</span> (<span class="hljs-params"><span class="hljs-variable">$redis</span>, <span class="hljs-variable">$key</span></span>)</span>&#123;
-            <span class="hljs-variable">$redis</span>-&gt;del(<span class="hljs-variable">$key</span>);
+        register_shutdown_function(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) <span class="hljs-keyword">use</span> (<span class="hljs-params"><span class="hljs-variable">$Redis</span>, <span class="hljs-variable">$key</span></span>)</span>&#123;
+            <span class="hljs-variable">$Redis</span>-&gt;del(<span class="hljs-variable">$key</span>);
             &#125;);
     &#125;
     
@@ -568,13 +568,13 @@
 &#125;</code></pre></div>
 
 
-<p>demo里的$redis是一个redis实例，我们在前面已经实现过，不多说明。</p>
+<p>demo里的$Redis是一个Redis实例，我们在前面已经实现过，不多说明。</p>
 <h4 id="加锁"><a href="#加锁" class="headerlink" title="加锁"></a>加锁</h4><p>我们使用的setnx命令，senx表示“SET if Not eXists”，如果key不存在，则set，如果存在，则不set</p>
-<div class="code-wrapper"><pre><code class="hljs pgsql">redis&gt; SETNX mykey &quot;Hello&quot;
+<div class="code-wrapper"><pre><code class="hljs pgsql">Redis&gt; SETNX mykey &quot;Hello&quot;
 (<span class="hljs-type">integer</span>) <span class="hljs-number">1</span>
-redis&gt; SETNX mykey &quot;World&quot;
+Redis&gt; SETNX mykey &quot;World&quot;
 (<span class="hljs-type">integer</span>) <span class="hljs-number">0</span>
-redis&gt; <span class="hljs-keyword">GET</span> mykey
+Redis&gt; <span class="hljs-keyword">GET</span> mykey
 &quot;Hello&quot;</code></pre></div>
 
 <h4 id="解锁"><a href="#解锁" class="headerlink" title="解锁"></a>解锁</h4><p>使用的是del，即删除这个key。这里结合了 register_shutdown_function — 注册一个会在php中止时执行的函数，设置了之后我们就可以不必手动去解锁</p>

@@ -24,7 +24,7 @@
 <meta property="og:description" content="LNMP设置开机自启动">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-03-29T01:33:25.000Z">
-<meta property="article:modified_time" content="2022-03-19T14:35:21.593Z">
+<meta property="article:modified_time" content="2023-02-14T03:44:38.819Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -534,14 +534,14 @@ WantedBy=multi-user.target
 
 ----------
 
-<span class="hljs-comment">// redis.service</span>
+<span class="hljs-comment">// Redis.service</span>
 [Unit]
-<span class="hljs-keyword">Description</span>=redis
+<span class="hljs-keyword">Description</span>=Redis
 After=network.target
 [Service]
 Type=forking
-ExecStart=<span class="hljs-regexp">/usr/</span>bin<span class="hljs-regexp">/redis-server /u</span>sr<span class="hljs-regexp">/local/</span>redis-<span class="hljs-number">5.0</span>.<span class="hljs-number">0</span>/redis.conf
-ExecStop=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis-5.0.0/</span>redis-cli shutdown
+ExecStart=<span class="hljs-regexp">/usr/</span>bin<span class="hljs-regexp">/Redis-server /u</span>sr<span class="hljs-regexp">/local/</span>Redis-<span class="hljs-number">5.0</span>.<span class="hljs-number">0</span>/Redis.conf
+ExecStop=<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/Redis-5.0.0/</span>Redis-cli shutdown
 PrivateTmp=<span class="hljs-keyword">true</span>
 [Install]
 WantedBy=multi-user.target</code></pre></div>

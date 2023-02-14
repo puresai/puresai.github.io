@@ -14,7 +14,7 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="13sai">
-  <meta name="keywords" content="go,golang,gin,gorm,go-redis,框架">
+  <meta name="keywords" content="go,golang,gin,gorm,go-Redis,框架">
   
     <meta name="description" content="通过例子学习go-利用gin搭建一个api框架">
 <meta property="og:type" content="article">
@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.13sai.com/images/post/v2-9a3fa5680e78075596feedcc5f9669c6_1440w.png">
 <meta property="article:published_time" content="2021-02-12T13:48:20.000Z">
-<meta property="article:modified_time" content="2022-03-30T11:30:52.906Z">
+<meta property="article:modified_time" content="2023-02-14T03:44:38.805Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="goexample">
 <meta name="twitter:card" content="summary_large_image">
@@ -441,10 +441,10 @@
     
       
       
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、redis"
+        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">docker-compose整合go-kit和mysql、redis</span>
+          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
         </a>
       
     
@@ -493,7 +493,7 @@
 <p>对于gin的介绍，是github上star最多的go框架了，其他不多说，我们上手写起来吧！</p>
 <h2 id="目标："><a href="#目标：" class="headerlink" title="目标："></a>目标：</h2><ul>
 <li>自定义配置</li>
-<li>整合mysql和redis</li>
+<li>整合mysql和Redis</li>
 <li>独立路由管理</li>
 <li>日志</li>
 <li>平滑重启</li>
@@ -502,7 +502,7 @@
 <h2 id="使用到的库："><a href="#使用到的库：" class="headerlink" title="使用到的库："></a>使用到的库：</h2><ul>
 <li><a target="_blank" rel="noopener" href="http://github.com/fsnotify/fsnotify">github.com/fsnotify/fsnotify</a></li>
 <li><a target="_blank" rel="noopener" href="http://github.com/gin-gonic/gin">github.com/gin-gonic/gin</a></li>
-<li><a target="_blank" rel="noopener" href="http://github.com/go-redis/redis">github.com/go-redis/redis</a></li>
+<li><a target="_blank" rel="noopener" href="http://github.com/go-Redis/Redis">github.com/go-Redis/Redis</a></li>
 <li><a target="_blank" rel="noopener" href="http://github.com/jinzhu/gorm">github.com/jinzhu/gorm</a></li>
 <li><a target="_blank" rel="noopener" href="http://github.com/lestrrat-go/file-rotatelogs">http://github.com/lestrrat-go/file-rotatelogs</a></li>
 <li><a target="_blank" rel="noopener" href="http://go.uber.org/zap">http://go.uber.org/zap</a></li>
@@ -532,7 +532,7 @@ replace local.com/sai0556/demo2-gin-frame v1.0.0 =&gt; /Users/@/Work/golang/go-e
 <blockquote>
 <p>/Users/@/Work/golang/go-example/demo2-gin-frame 此目录就是项目目录，视具体情况不一</p>
 </blockquote>
-<h2 id="自定义配置与读取："><a href="#自定义配置与读取：" class="headerlink" title="自定义配置与读取："></a>自定义配置与读取：</h2><p>在我们使用redis和mysql之前，我们先来读取一下配置，配置呢我们使用常见的yaml，当然你也可以使用其他，比如env等。</p>
+<h2 id="自定义配置与读取："><a href="#自定义配置与读取：" class="headerlink" title="自定义配置与读取："></a>自定义配置与读取：</h2><p>在我们使用Redis和mysql之前，我们先来读取一下配置，配置呢我们使用常见的yaml，当然你也可以使用其他，比如env等。</p>
 <p>新建config目录，用来读取与监听配置文件(config.yaml)：</p>
 <div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> config
 
@@ -620,7 +620,7 @@ replace local.com/sai0556/demo2-gin-frame v1.0.0 =&gt; /Users/@/Work/golang/go-e
 <p>go run main.go -c ./config.yaml</p>
 </blockquote>
 <p>可以看到有打印出我们配置的name。</p>
-<h2 id="整合mysql与redis"><a href="#整合mysql与redis" class="headerlink" title="整合mysql与redis"></a>整合mysql与redis</h2><p>mysql包我们就选用gorm，redis的使用比较多的是redigo和go-redis，redigo曾在我使用中出现过问题，因而我们选择后者，后者也支持连接池。</p>
+<h2 id="整合mysql与Redis"><a href="#整合mysql与Redis" class="headerlink" title="整合mysql与Redis"></a>整合mysql与Redis</h2><p>mysql包我们就选用gorm，Redis的使用比较多的是redigo和go-Redis，redigo曾在我使用中出现过问题，因而我们选择后者，后者也支持连接池。</p>
 <p>mysql：</p>
 <div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> db
 
@@ -670,32 +670,32 @@ replace local.com/sai0556/demo2-gin-frame v1.0.0 =&gt; /Users/@/Work/golang/go-e
 <blockquote>
 <p>后面获取连接池就可以直接使用 db.GetInstance()</p>
 </blockquote>
-<p>redis：</p>
+<p>Redis：</p>
 <div class="code-wrapper"><pre><code class="hljs text">package db
 
 import (
     &quot;fmt&quot;
 
     &quot;github.com/spf13/viper&quot;
-    &quot;github.com/go-redis/redis&quot;
+    &quot;github.com/go-Redis/Redis&quot;
 )
 
-var RedisClient *redis.Client
+var RedisClient *Redis.Client
 
 func InitRedis() &#123;
-    RedisClient = redis.NewClient(&amp;redis.Options&#123;
-        Addr:     fmt.Sprintf(&quot;%s:%s&quot;, viper.GetString(&quot;redis.host&quot;), viper.GetString(&quot;redis.port&quot;)),
-        Password: viper.GetString(&quot;redis.auth&quot;),
+    RedisClient = Redis.NewClient(&amp;Redis.Options&#123;
+        Addr:     fmt.Sprintf(&quot;%s:%s&quot;, viper.GetString(&quot;Redis.host&quot;), viper.GetString(&quot;Redis.port&quot;)),
+        Password: viper.GetString(&quot;Redis.auth&quot;),
         DB:       0,
     &#125;)
 
     _, err := RedisClient.Ping().Result()
     if err != nil &#123;
-        panic(&quot;redis ping error&quot;)
+        panic(&quot;Redis ping error&quot;)
     &#125;
 &#125;</code></pre></div>
 
-<p>RedisClient就是我们后面可以用的redis连接池。</p>
+<p>RedisClient就是我们后面可以用的Redis连接池。</p>
 <p>在main中加入初始化连接池的代码即可：</p>
 <div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 连接mysql数据库</span>
 btn := db.GetInstance().InitPool()
@@ -704,7 +704,7 @@ btn := db.GetInstance().InitPool()
     <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;init database pool failure&quot;</span>))
 &#125;
 
-<span class="hljs-comment">// redis</span>
+<span class="hljs-comment">// Redis</span>
 db.InitRedis()</code></pre></div>
 
 <h2 id="路由与控制器"><a href="#路由与控制器" class="headerlink" title="路由与控制器"></a>路由与控制器</h2><p>为了方便路由，我们把路由管理单独到router。</p>
@@ -798,7 +798,7 @@ db.InitRedis()</code></pre></div>
         <span class="hljs-built_in">panic</span>(errors.New(<span class="hljs-string">&quot;init database pool failure&quot;</span>))
     &#125;
 
-    <span class="hljs-comment">// redis</span>
+    <span class="hljs-comment">// Redis</span>
     db.InitRedis()
 
     gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))
@@ -1026,7 +1026,7 @@ logger.Error(<span class="hljs-string">&quot;i&#x27;m log123-----Error&quot;</sp
 	DB := db.GetDB()
 	<span class="hljs-keyword">defer</span> db.CloseDB(DB)
 
-	<span class="hljs-comment">// redis</span>
+	<span class="hljs-comment">// Redis</span>
 	db.InitRedis()
 
 	gin.SetMode(viper.GetString(<span class="hljs-string">&quot;mode&quot;</span>))

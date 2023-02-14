@@ -14,7 +14,7 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="13sai">
-  <meta name="keywords" content="go,golang,gin,go-redis,cron">
+  <meta name="keywords" content="go,golang,gin,go-Redis,cron">
   
     <meta name="description" content="通过例子学习go-防止漏打卡，利用gin和cron来做一个智能提醒">
 <meta property="og:type" content="article">
@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.13sai.com/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png">
 <meta property="article:published_time" content="2021-02-12T13:48:20.000Z">
-<meta property="article:modified_time" content="2022-03-30T11:30:56.412Z">
+<meta property="article:modified_time" content="2023-02-14T03:44:38.782Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="goexample">
 <meta name="twitter:card" content="summary_large_image">
@@ -441,10 +441,10 @@
     
       
       
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、redis"
+        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">docker-compose整合go-kit和mysql、redis</span>
+          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
         </a>
       
     
@@ -498,9 +498,9 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/robfig/cron">github.com/robfig/cron</a></li>
 </ul>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>round2里面我们做了个框架，我们不妨以此为基础，来完成这个demo。我们通过解析不同时段的提醒任务，规律地存储到redis的有序集合，10s去查询一次有没有需要提醒的任务，如有发送到钉钉。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>round2里面我们做了个框架，我们不妨以此为基础，来完成这个demo。我们通过解析不同时段的提醒任务，规律地存储到Redis的有序集合，10s去查询一次有没有需要提醒的任务，如有发送到钉钉。</p>
 <blockquote>
-<p>(代码额外说明：redis我更新成了v8版本，命令前需要加上下文，注意一下)</p>
+<p>(代码额外说明：Redis我更新成了v8版本，命令前需要加上下文，注意一下)</p>
 </blockquote>
 <h2 id="接入钉钉机器人"><a href="#接入钉钉机器人" class="headerlink" title="接入钉钉机器人"></a>接入钉钉机器人</h2><p><a target="_blank" rel="noopener" href="https://ding-doc.dingtalk.com/doc%23/serverapi2/qf2nxq">钉钉机器人文档</a></p>
 <p>按照文档在群里新建机器人即可。我开启的是webhook自定义机器人，outgoing提送地址就是项目接收信息地址，比如：<a target="_blank" rel="noopener" href="https://cron.13sai.com/dingdingPost">http://cron.13sai.com/dingdingPost</a></p>
@@ -510,31 +510,31 @@
 <h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><div class="code-wrapper"><pre><code class="hljs text">// util/common.go
 // 就列了一些常见的，可自行扩展
 func UpdateKeywords() &#123;
-	redis := model.RedisClient.Pipeline()
+	Redis := model.RedisClient.Pipeline()
 	key := KeyWords
-	redis.HSet(model.Ctx, key, &quot;分钟后&quot;, &quot;1|60&quot;)
-	redis.HSet(model.Ctx, key, &quot;时后&quot;, &quot;1|3600&quot;)
-	redis.HSet(model.Ctx, key, &quot;天后&quot;, &quot;1|86400&quot;)
-	redis.HSet(model.Ctx, key, &quot;每天&quot;, &quot;-1|1&quot;)
-	redis.HSet(model.Ctx, key, &quot;每周一&quot;, &quot;2|0&quot;)
-	redis.HSet(model.Ctx, key, &quot;每周二&quot;, &quot;2|1&quot;)
-	redis.HSet(model.Ctx, key, &quot;每周三&quot;, &quot;2|2&quot;)
-	redis.HSet(model.Ctx, key, &quot;每周四&quot;, &quot;2|3&quot;)
-	redis.HSet(model.Ctx, key, &quot;每周五&quot;, &quot;2|4&quot;)
-	redis.HSet(model.Ctx, key, &quot;每周六&quot;, &quot;2|5&quot;)
-	redis.HSet(model.Ctx, key, &quot;每周日&quot;, &quot;2|6&quot;)
-	redis.HSet(model.Ctx, key, &quot;周一&quot;, &quot;3|0&quot;)
-	redis.HSet(model.Ctx, key, &quot;周二&quot;, &quot;3|1&quot;)
-	redis.HSet(model.Ctx, key, &quot;周三&quot;, &quot;3|2&quot;)
-	redis.HSet(model.Ctx, key, &quot;周四&quot;, &quot;3|3&quot;)
-	redis.HSet(model.Ctx, key, &quot;周五&quot;, &quot;3|4&quot;)
-	redis.HSet(model.Ctx, key, &quot;周六&quot;, &quot;3|5&quot;)
+	Redis.HSet(model.Ctx, key, &quot;分钟后&quot;, &quot;1|60&quot;)
+	Redis.HSet(model.Ctx, key, &quot;时后&quot;, &quot;1|3600&quot;)
+	Redis.HSet(model.Ctx, key, &quot;天后&quot;, &quot;1|86400&quot;)
+	Redis.HSet(model.Ctx, key, &quot;每天&quot;, &quot;-1|1&quot;)
+	Redis.HSet(model.Ctx, key, &quot;每周一&quot;, &quot;2|0&quot;)
+	Redis.HSet(model.Ctx, key, &quot;每周二&quot;, &quot;2|1&quot;)
+	Redis.HSet(model.Ctx, key, &quot;每周三&quot;, &quot;2|2&quot;)
+	Redis.HSet(model.Ctx, key, &quot;每周四&quot;, &quot;2|3&quot;)
+	Redis.HSet(model.Ctx, key, &quot;每周五&quot;, &quot;2|4&quot;)
+	Redis.HSet(model.Ctx, key, &quot;每周六&quot;, &quot;2|5&quot;)
+	Redis.HSet(model.Ctx, key, &quot;每周日&quot;, &quot;2|6&quot;)
+	Redis.HSet(model.Ctx, key, &quot;周一&quot;, &quot;3|0&quot;)
+	Redis.HSet(model.Ctx, key, &quot;周二&quot;, &quot;3|1&quot;)
+	Redis.HSet(model.Ctx, key, &quot;周三&quot;, &quot;3|2&quot;)
+	Redis.HSet(model.Ctx, key, &quot;周四&quot;, &quot;3|3&quot;)
+	Redis.HSet(model.Ctx, key, &quot;周五&quot;, &quot;3|4&quot;)
+	Redis.HSet(model.Ctx, key, &quot;周六&quot;, &quot;3|5&quot;)
 	...
-	redis.HSet(model.Ctx, key, &quot;今天&quot;, &quot;4|0&quot;)
-	redis.HSet(model.Ctx, key, &quot;明天&quot;, &quot;4|1&quot;)
-	redis.HSet(model.Ctx, key, &quot;后天&quot;, &quot;4|2&quot;)
-	redis.HSet(model.Ctx, key, &quot;取消&quot;, &quot;0|0&quot;)
-	redis.Exec(model.Ctx)
+	Redis.HSet(model.Ctx, key, &quot;今天&quot;, &quot;4|0&quot;)
+	Redis.HSet(model.Ctx, key, &quot;明天&quot;, &quot;4|1&quot;)
+	Redis.HSet(model.Ctx, key, &quot;后天&quot;, &quot;4|2&quot;)
+	Redis.HSet(model.Ctx, key, &quot;取消&quot;, &quot;0|0&quot;)
+	Redis.Exec(model.Ctx)
 &#125;</code></pre></div>
 
 <p>关键字，可以自行扩展，可能会有覆盖的情况，这里需要抉择，是匹配第一个还是匹配字数最多的，我此处选择后者的。</p>
@@ -592,7 +592,7 @@ func UpdateKeywords() &#123;
 <p>解析，注意定义了一些特殊情况，比如绑定手机，取消任务等，做对应的特殊处理，绑定手机是为了@ 某人，否则消息容易被忽略。</p>
 <div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">parseContent</span><span class="hljs-params">(form DingDingMsgContent)</span> <span class="hljs-params">(err error)</span></span> &#123;
 	str := form.Text.Content
-	redis := db.RedisClient
+	Redis := db.RedisClient
 	fmt.Println(str)
 
 	<span class="hljs-comment">// 要先绑定哟，不然无法@到对应的人</span>
@@ -604,12 +604,12 @@ func UpdateKeywords() &#123;
 			err = errors.New(<span class="hljs-string">&quot;手机格式不正确&quot;</span>)
 			<span class="hljs-keyword">return</span>
 		&#125;
-		redis.HSet(db.Ctx, util.KeyDingDingID, form.SenderId, res[<span class="hljs-number">0</span>])
+		Redis.HSet(db.Ctx, util.KeyDingDingID, form.SenderId, res[<span class="hljs-number">0</span>])
 		util.SendDD(<span class="hljs-string">&quot;绑定成功&quot;</span>)
 		<span class="hljs-keyword">return</span>
 	&#125;
 
-	hExist := redis.HExists(db.Ctx, util.KeyDingDingID, form.SenderId)
+	hExist := Redis.HExists(db.Ctx, util.KeyDingDingID, form.SenderId)
 	<span class="hljs-keyword">if</span> !hExist.Val() &#123;
 		err = errors.New(<span class="hljs-string">&quot;绑定手机号才能精确提醒哦，发送--绑定手机 13456567878--@我即可&quot;</span>)
 		<span class="hljs-keyword">return</span> 
@@ -849,7 +849,7 @@ func UpdateKeywords() &#123;
 	&#125;
 
 	member := util.StrCombine(strconv.Itoa(tipsType), msg)
-	rd.ZAdd(db.Ctx, util.KeyCrontab, &amp;redis.Z&#123;
+	rd.ZAdd(db.Ctx, util.KeyCrontab, &amp;Redis.Z&#123;
 		Score: <span class="hljs-keyword">float64</span>(score),
 		Member: member,
 	&#125;)
@@ -929,7 +929,7 @@ func UpdateKeywords() &#123;
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(q Queue)</span> <span class="hljs-title">Run</span><span class="hljs-params">()</span></span> &#123;
 	now := time.Now().Unix()
 	rd := model.RedisClient
-	op := &amp;redis.ZRangeBy&#123;
+	op := &amp;Redis.ZRangeBy&#123;
         Min: <span class="hljs-string">&quot;0&quot;</span>,
         Max: strconv.FormatInt(now, <span class="hljs-number">10</span>),
     &#125;
@@ -952,12 +952,12 @@ func UpdateKeywords() &#123;
 
 	<span class="hljs-keyword">switch</span> msgType &#123;
 		<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;2&quot;</span>:
-			rd.ZAdd(model.Ctx, KeyCrontab, &amp;redis.Z&#123;
+			rd.ZAdd(model.Ctx, KeyCrontab, &amp;Redis.Z&#123;
 				Score: score + <span class="hljs-number">7</span>*<span class="hljs-number">86400</span>,
 				Member: msg,
 			&#125;)
 		<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;3&quot;</span>:
-			rd.ZAdd(model.Ctx, KeyCrontab, &amp;redis.Z&#123;
+			rd.ZAdd(model.Ctx, KeyCrontab, &amp;Redis.Z&#123;
 				Score: score + <span class="hljs-number">86400</span>,
 				Member: msg,
 			&#125;)
