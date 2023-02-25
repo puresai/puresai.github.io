@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://github.13sai.com/images/post/redis.png">
 <meta property="article:published_time" content="2019-03-29T01:44:15.000Z">
-<meta property="article:modified_time" content="2023-02-14T03:51:13.310Z">
+<meta property="article:modified_time" content="2023-02-25T06:18:52.298Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary_large_image">
@@ -293,7 +293,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.8k 字
+          2.2k 字
         
       </span>
     
@@ -305,7 +305,7 @@
         
         
           <!-- compatible with older versions-->
-          15 分钟
+          19 分钟
         
       </span>
     
@@ -498,12 +498,18 @@
             
             <div class="markdown-body">
               
-              <blockquote>
-<p>环境：centos7.5，Redis5.0.0</p>
+              <h3 id="Redis-Cluster-是什么"><a href="#Redis-Cluster-是什么" class="headerlink" title="Redis Cluster 是什么"></a>Redis Cluster 是什么</h3><p>Redis Cluster 是 Redis 的分布式实现，官网说明中阐述了以下几点目标：</p>
+<ul>
+<li>高性能和线性可扩展性高达 1000 个节点。没有代理，使用异步复制，不对值执行合并操作。</li>
+<li>可接受的写入安全程度：系统尝试（以最大努力的方式）保留所有来自与大多数主节点连接的客户端的写入。通常有一些小窗口，其中确认的写入可能会丢失。当客户端位于少数分区中时，丢失已确认写入的窗口更大。</li>
+<li>可用性：Redis 集群能够在大多数主节点可访问的分区中存活下来，并且每个不再可访问的主节点至少有一个可访问</li>
+</ul>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><blockquote>
+<p>centos7.5，Redis5.0.0</p>
 </blockquote>
-<p>下载安装在合适的目录，我是安装在/usr/local/Redis-5.0.0下，过程比较简单，不赘述了。</p>
-<p>同级下新建cluster，拷贝Redis.conf文件进来，生成4个文件Redis_2001.conf、Redis_2002.conf、Redis_2003.conf、Redis_2004.conf，修改对应配置。</p>
-<p>主要配置如下</p>
+<p>Redis 下载后安装在合适的目录，我是安装在/usr/local/Redis-5.0.0下，过程比较简单，就不赘述了。【官网提及3.0之后的版本即可支持集群操作】</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>同级下新建cluster文件夹，拷贝 redis.conf 文件进来，copy 4个文件Redis_2001.conf、Redis_2002.conf、Redis_2003.conf、Redis_2004.conf，修改对应配置，主要是端口，节点配置 rdb aof 等。</p>
+<p>可参考配置如下：</p>
 <div class="code-wrapper"><pre><code class="hljs vala"><span class="hljs-meta"># 端口号</span>
 port <span class="hljs-number">2001</span>
 <span class="hljs-meta"># 后台启动</span>
@@ -523,37 +529,37 @@ appendfilename <span class="hljs-string">&quot;appendonly-2001.aof&quot;</span>
 <span class="hljs-meta"># rdb文件路径</span>
 dbfilename dump<span class="hljs-number">-2001.</span>rdb</code></pre></div>
 
-<p>启动Redis，</p>
-<div class="code-wrapper"><pre><code class="hljs pgsql">Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2001.</span>conf
-Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2002.</span>conf
-Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2003.</span>conf
-Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2004.</span>conf</code></pre></div>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>根据上述配置文件依次启动Redis进程</p>
+<div class="code-wrapper"><pre><code class="hljs pgsql">redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2001.</span>conf
+redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2002.</span>conf
+redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2003.</span>conf
+redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluster</span>/Redis<span class="hljs-number">-2004.</span>conf</code></pre></div>
 
-
-<p>连接构建Redis集群</p>
+<p>启动完成后，照着某个文章说明连接构建Redis集群:</p>
 <blockquote>
-<p>./Redis-trib.rb create –replicas 1 127.0.0.1:2001 127.0.0.1:2002  127.0.0.1:2003 127.0.0.1:2004</p>
+<p>./Redis-trib.rb create –replicas 1 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004</p>
 </blockquote>
 <p>抛出警告：</p>
 <blockquote>
 <p>WARNING: Redis-trib.rb is not longer available!</p>
 </blockquote>
-<p>5.0版本抛弃了Redis-trib。</p>
-<p>按照提示执行：</p>
+<p>查看文档发现：Redis 5.0彻底抛弃了ruby【优先看官方文档，优先看官方文档，优先看官方文档】</p>
+<p>You should use redis-cli instead.</p>
+<p>行，换redis-cli：</p>
 <blockquote>
-<p>Redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004 –cluster-replicas 1</p>
+<p>redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004 –cluster-replicas 1</p>
 </blockquote>
-<p>错误输出如下：</p>
+<p>又有错误，输出如下：</p>
 <div class="code-wrapper"><pre><code class="hljs xquery">*** ERROR: Invalid configuration <span class="hljs-keyword">for</span> cluster creation.
 *** Redis Cluster requires <span class="hljs-keyword">at</span> <span class="hljs-keyword">least</span> <span class="hljs-number">3</span> master nodes.
 *** This <span class="hljs-literal">is</span><span class="hljs-built_in"> not</span> possible with <span class="hljs-number">4</span> nodes <span class="hljs-keyword">and</span> <span class="hljs-number">1</span> replicas per <span class="hljs-type">node</span>.
 *** At <span class="hljs-keyword">least</span> <span class="hljs-number">6</span> nodes are required.</code></pre></div>
 
-<p>因为是单机测试而已，去掉复制</p>
+<p>因为是单机测试而已，去掉复制，至少6个节点 我们先忽略。</p>
 <blockquote>
 <p>Redis-cli –cluster create 127.0.0.1:2001 127.0.0.1:2002 127.0.0.1:2003 127.0.0.1:2004</p>
 </blockquote>
-<p>然后有个保存配置的确认，yes之后成功！</p>
+<p>然后有个保存配置的确认，yes之后启动成功！</p>
 <div class="code-wrapper"><pre><code class="hljs prolog">[<span class="hljs-symbol">OK</span>] <span class="hljs-symbol">All</span> nodes agree about slots configuration.
 &gt;&gt;&gt; <span class="hljs-symbol">Check</span> for open slots...
 &gt;&gt;&gt; <span class="hljs-symbol">Check</span> slots coverage...
@@ -561,9 +567,9 @@ Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluste
 
 <p>进入客户端</p>
 <blockquote>
-<p>Redis-cli -p 2001</p>
+<p>redis-cli -p 2001</p>
 </blockquote>
-<p>查看节点</p>
+<p>查看节点:</p>
 <blockquote>
 <p>cluster nodes</p>
 </blockquote>
@@ -572,8 +578,10 @@ Redis-<span class="hljs-keyword">server</span> <span class="hljs-keyword">cluste
 <span class="hljs-attribute">490035c372472798a224b6d00c249d8b41508b78</span> <span class="hljs-number">127.0.0.1:2001</span>@<span class="hljs-number">12001</span> myself,master - <span class="hljs-number">0</span> <span class="hljs-number">1541042928000</span> <span class="hljs-number">1</span> connected <span class="hljs-number">0</span>-<span class="hljs-number">4095</span>
 <span class="hljs-attribute">9101d285b991c6dcb086cf3da4cd0eae7777ece0</span> <span class="hljs-number">127.0.0.1:2004</span>@<span class="hljs-number">12004</span> master - <span class="hljs-number">0</span> <span class="hljs-number">1541042929563</span> <span class="hljs-number">4</span> connected <span class="hljs-number">12288</span>-<span class="hljs-number">16383</span></code></pre></div>
 
-<p>可以看出集群已搭建成功！</p>
-<p>对应的php可以使用pRedis操作Redis，当然\Redis也足够好用了,up to u。</p>
+<p>可以看出集群已搭建成功！你可以进行测试了。</p>
+<blockquote>
+<p>当然需要说明的是，这只是我们自己测试用，产线上还是需要开启复制，且按需配置节点，至少 6 个，不然叫啥高可用，还不如单机使用。</p>
+</blockquote>
 
               
             </div>
