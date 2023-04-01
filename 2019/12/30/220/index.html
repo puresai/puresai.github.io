@@ -24,7 +24,7 @@
 <meta property="og:description" content="wrk压测使用说明">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-12-30T10:12:46.000Z">
-<meta property="article:modified_time" content="2022-03-19T14:35:21.836Z">
+<meta property="article:modified_time" content="2023-04-01T08:32:11.666Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="wrk">
 <meta name="twitter:card" content="summary_large_image">
@@ -473,7 +473,7 @@ wrk.method  =  <span class="hljs-string">&quot;POST&quot;</span>
 	<span class="hljs-keyword">return</span> wrk.<span class="hljs-built_in">format</span>(<span class="hljs-string">&#x27;POST&#x27;</span>, <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, data)
 <span class="hljs-keyword">end</span></code></pre></div>
 <p>测试：</p>
-<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">wrk</span> -t<span class="hljs-number">500</span> -c<span class="hljs-number">1000</span> -d<span class="hljs-number">1</span>s  --script=data.lua --latency https://github.<span class="hljs-number">13</span>sai.com/</code></pre></div>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">wrk</span> -t<span class="hljs-number">500</span> -c<span class="hljs-number">1000</span> -d<span class="hljs-number">1</span>s  --script=data.lua --latency https://github.oscome.cn/</code></pre></div>
 
 <p>个人用了几次，感觉比ab好用，推荐一下。</p>
 <p>参考：<br><a target="_blank" rel="noopener" href="http://zhaox.github.io/benchmark/2016/12/28/wrk-guidelines">Http压测工具wrk使用指南</a><br><a target="_blank" rel="noopener" href="https://github.com/wg/wrk">wrk</a></p>
