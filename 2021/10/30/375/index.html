@@ -69,7 +69,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"397c9f133f065e43e311e410f2edd64b","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -222,21 +222,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://oscome.cn/about/">
                 <i class="iconfont icon-user-fill"></i>
                 关于
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" target="_blank" rel="noopener" href="https://oscome.cn">
-                <i class="iconfont"></i>
-                开源到
               </a>
             </li>
           
@@ -293,7 +281,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          422 字
+          420 字
         
       </span>
     
@@ -570,7 +558,7 @@ go env -w GOPRIVATE=git.13sai.cn
 // 配置 git.13sai.cn 库使用 git@git.13sai.cn 拉取，主要后面的 : 不可以丢了
 git config --global url.<span class="hljs-string">&quot;git@git.13sai.cn:&quot;</span>.insteadOf https://git.13sai.cn</code></pre></div>
 
-<p>这样就可以使用了，如果没配置git 的 ssh key，就不能使用<a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#105;&#x74;&#x2e;&#x31;&#x33;&#x73;&#97;&#105;&#x2e;&#99;&#110;">&#x67;&#x69;&#116;&#x40;&#103;&#105;&#x74;&#x2e;&#x31;&#x33;&#x73;&#97;&#105;&#x2e;&#99;&#110;</a>，可以把url 换成https + 用户名密码的格式：</p>
+<p>这样就可以使用了，如果没配置git 的 ssh key，就不能使用<a href="mailto:&#x67;&#x69;&#x74;&#64;&#103;&#x69;&#x74;&#46;&#x31;&#51;&#115;&#x61;&#x69;&#x2e;&#99;&#110;">&#x67;&#x69;&#x74;&#64;&#103;&#x69;&#x74;&#46;&#x31;&#51;&#115;&#x61;&#x69;&#x2e;&#99;&#110;</a>，可以把url 换成https + 用户名密码的格式：</p>
 <div class="code-wrapper"><pre><code class="hljs sh">https://13sai:123456@git.13sai.cn</code></pre></div>
 
               
@@ -873,7 +861,7 @@ git config --global url.<span class="hljs-string">&quot;git@git.13sai.cn:&quot;<
       var _hmt = _hmt || [];
       (function () {
         var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
+        hm.src = "https://hm.baidu.com/hm.js?397c9f133f065e43e311e410f2edd64b";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
       })();
