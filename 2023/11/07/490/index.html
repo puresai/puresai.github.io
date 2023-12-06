@@ -14,25 +14,27 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="13sai">
-  <meta name="keywords" content="go,golang,限流,ratelimit">
+  <meta name="keywords" content="mpdf,生成pdf">
   
-    <meta name="description" content="通过例子学习go-golang限流器">
+    <meta name="description" content="使用mpdf生成pdf">
 <meta property="og:type" content="article">
-<meta property="og:title" content="golang限流器">
-<meta property="og:url" content="https://github.13sai.com/2021/02/12/goexample9/index.html">
+<meta property="og:title" content="使用mpdf生成pdf">
+<meta property="og:url" content="https://github.13sai.com/2023/11/07/490/index.html">
 <meta property="og:site_name" content="13sai blog">
-<meta property="og:description" content="通过例子学习go-golang限流器">
+<meta property="og:description" content="使用mpdf生成pdf">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-02-12T13:48:20.000Z">
-<meta property="article:modified_time" content="2022-03-30T11:31:19.650Z">
+<meta property="og:image" content="https://github.13sai.com/images/post/php.jpeg">
+<meta property="article:published_time" content="2023-11-07T13:33:47.000Z">
+<meta property="article:modified_time" content="2023-12-06T13:51:07.938Z">
 <meta property="article:author" content="13sai">
-<meta property="article:tag" content="goexample">
+<meta property="article:tag" content="php">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.13sai.com/images/post/php.jpeg">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>golang限流器 - 13sai blog</title>
+  <title>使用mpdf生成pdf - 13sai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -84,7 +86,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 30vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -251,13 +253,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
+     style="background: url('/images/post/php.jpeg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">golang限流器</span>
+            <span id="subtitle">使用mpdf生成pdf</span>
           
         </div>
 
@@ -268,8 +270,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-02-12 21:48" pubdate>
-          2021年2月12日
+        <time datetime="2023-11-07 21:33" pubdate>
+          2023年11月7日
         </time>
       </span>
     
@@ -281,7 +283,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.8k 字
+          1.2k 字
         
       </span>
     
@@ -293,7 +295,7 @@
         
         
           <!-- compatible with older versions-->
-          15 分钟
+          10 分钟
         
       </span>
     
@@ -347,17 +349,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="goexample"
-        id="heading-bbf4bcbc3b6c234b840e985b0b467701" role="tab" data-toggle="collapse" href="#collapse-bbf4bcbc3b6c234b840e985b0b467701"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="php"
+        id="heading-e1bfd762321e409cee4ac0b6e841963c" role="tab" data-toggle="collapse" href="#collapse-e1bfd762321e409cee4ac0b6e841963c"
         aria-expanded="true"
       >
-        goexample
-        <span class="list-group-count">(10)</span>
+        php
+        <span class="list-group-count">(1)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-bbf4bcbc3b6c234b840e985b0b467701"
-           role="tabpanel" aria-labelledby="heading-bbf4bcbc3b6c234b840e985b0b467701">
+      <div class="category-collapse collapse show" id="collapse-e1bfd762321e409cee4ac0b6e841963c"
+           role="tabpanel" aria-labelledby="heading-e1bfd762321e409cee4ac0b6e841963c">
         
         
           
@@ -366,91 +368,10 @@
     
       
       
-        <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go+MongoDB实现附近的人</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample4/" title="gRPC"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">gRPC</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample5/" title="go面向对象"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go面向对象</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">防止漏打卡，利用gin和cron来做一个智能提醒</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample6/" title="go-kit"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go-kit</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">goruntine和channel</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2023/11/07/490/" title="使用mpdf生成pdf"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">golang限流器</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">利用gin搭建一个api框架</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample1/" title="搭建http server"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">搭建http server</span>
+          <span class="category-post">使用mpdf生成pdf</span>
         </a>
       
     
@@ -473,95 +394,42 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">golang限流器</h1>
+            <h1 style="display: none">使用mpdf生成pdf</h1>
             
             <div class="markdown-body">
               
-              <p>限流应该是我们开发中经常遇到的了，限流器能保证我们不至于在流量过大的时候服务超过负载，能有效地保证服务的可用和稳定。</p>
-<p>go自带有限流器rate，它的本质其实就是令牌桶。用起来也十分简单。我们修改下之前的http服务做一些修改：</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	<span class="hljs-comment">// ServeMux类型是HTTP请求的多路转接器。它会将每一个接收的请求的URL与一个注册模式的列表进行匹配，并调用和URL最匹配的模式的处理器。</span>
-	mux := http.NewServeMux()
-	mux.HandleFunc(<span class="hljs-string">&quot;/&quot;</span>, defaultHttp)
-	http.ListenAndServe(<span class="hljs-string">&quot;:8080&quot;</span>, middlewareLimit(mux))
-&#125;
+              <p>html 生成 pdf 是很常见的场景，有很多实现方式，这里我使用的是 <a target="_blank" rel="noopener" href="https://github.com/mpdf/mpdf">mpdf</a>。</p>
+<p>对于如何寻找需要的库，我一般是 github 上按语言去搜索，用star倒序排，一般会尝试用前面几个且比较活跃的项目，然后看效果与需求匹配度。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>必须开启 PHP mbstring 和 gd 扩展。某些高级功能可能需要额外的扩展，例如用于压缩输出和嵌入资源（例如字体）的 zlib 、用于生成条形码的 bcmath 或用于字符集的 xml 转换和 SVG 处理。</p>
+<p>使用 composer 安装即可。</p>
+<blockquote>
+<p>composer require mpdf/mpdf</p>
+</blockquote>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><div class="code-wrapper"><pre><code class="hljs php"><span class="hljs-variable">$mpdf</span> = <span class="hljs-keyword">new</span> \Mpdf\Mpdf([
+    <span class="hljs-string">&#x27;autoScriptToLang&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;autoLangToFont&#x27;</span>   =&gt; <span class="hljs-literal">true</span>
+]);
+<span class="hljs-variable">$html</span> = <span class="hljs-string">&#x27;&lt;div style=&quot;margin: 0 auto; width: 600px; padding: 40px 20px; font-size: 20px;&quot;&gt;</span>
+<span class="hljs-string">&lt;div style=&quot;font-size: 50px; padding: 16px 0; text-align: center; color: red; font-weight: 900; border-bottom: 4px solid red;&quot;&gt;</span>
+<span class="hljs-string">    这是一个测试pdf</span>
+<span class="hljs-string">&lt;/div&gt;</span>
+<span class="hljs-string">&lt;div style=&quot;line-height: 40px; margin-top: 30px;  height: 500px; margin-top: 30px; letter-spacing: 2px;&quot;&gt;</span>
+<span class="hljs-string">    &lt;p style=&quot;text-indent: 2em; &quot;&gt;</span>
+<span class="hljs-string">        感谢13sai的大力支持！</span>
+<span class="hljs-string">    &lt;/p&gt;</span>
+<span class="hljs-string">&lt;/div&gt;</span>
+<span class="hljs-string">&lt;div style=&quot;height: 40px; text-align: right; letter-spacing: 2px;&quot;&gt;</span>
+<span class="hljs-string">&lt;/div&gt;</span>
+<span class="hljs-string">&lt;div style=&quot;line-height: 32px; text-align: right; letter-spacing: 1px;&quot;&gt;&#x27;</span>.
+    date(<span class="hljs-string">&#x27;Y年m月d日&#x27;</span>).
+<span class="hljs-string">&#x27;&lt;/div&gt;</span>
+<span class="hljs-string">&lt;/div&gt;&#x27;</span>;
+<span class="hljs-variable">$mpdf</span>-&gt;WriteHTML(<span class="hljs-variable">$html</span>);
+<span class="hljs-variable">$path</span> = dirname(<span class="hljs-keyword">__DIR__</span>).<span class="hljs-string">&#x27;/public/pdf/13sai.pdf&#x27;</span>;
+<span class="hljs-variable">$mpdf</span>-&gt;OutputFile(<span class="hljs-variable">$path</span>);</code></pre></div>
 
-<span class="hljs-comment">// 限流桶</span>
-<span class="hljs-keyword">var</span> limiter = rate.NewLimiter(rate.Every(time.Second), <span class="hljs-number">1</span>)
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">middlewareLimit</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> &#123;
-	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
-
-		<span class="hljs-keyword">if</span> limiter.Allow() == <span class="hljs-literal">false</span> &#123;
-			fmt.Println(<span class="hljs-string">&quot;limit&quot;</span>)
-			<span class="hljs-keyword">return</span>
-		&#125;
-
-		next.ServeHTTP(w, r)
-	&#125;)
-&#125;
-
-<span class="hljs-comment">// 默认http处理</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultHttp</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
-	path := r.URL.Path
-
-	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/&quot;</span> &#123;
-		w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;index&quot;</span>))
-		fmt.Println(<span class="hljs-string">&quot;index&quot;</span>)
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	<span class="hljs-comment">// 自定义404</span>
-	http.Error(w, <span class="hljs-string">&quot;you lost???&quot;</span>, http.StatusNotFound)
-&#125;</code></pre></div>
-
-<p>这里的</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> limiter = rate.NewLimiter(rate.Every(<span class="hljs-number">2</span>*time.Second), <span class="hljs-number">1</span>)</code></pre></div>
-
-<p>就是定义了一个限流器，生成速率是1 个/s，令牌桶的容量是1。也就是每秒最多能通过2个请求。</p>
-<p>我们可以用ab或者快速刷新浏览器来看一下效果</p>
-<p>是不是有点类似nginx的限流模块：</p>
-<div class="code-wrapper"><pre><code class="hljs text">limit_req_zone  $binary_remote_addr  zone=one:10m  rate=1r/s;
-
-server &#123;
-    ...
-
-    location / &#123;
-        #缓存区队列burst=5个,nodelay表示不延期(超过的请求失败)，即每秒最多可处理rate+burst个,同时处理rate个。
-        limit_req zone=one burst=1 nodelay; 
-    &#125;
-&#125;</code></pre></div>
-
-
-
-<hr>
-<p>上面的代码有两处注意点：</p>
-<ul>
-<li>middlewareLimit 可看作一个http server的前置中间件，你可以类比去自己处理复杂的http中间件业务。</li>
-<li>限流器的初始化务必在中间件前生成，可以尝试修改代码再测试:</li>
-</ul>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">middlewareLimit</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> &#123;
-	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
-		limiter := rate.NewLimiter(rate.Every(<span class="hljs-number">2</span>*time.Second), <span class="hljs-number">10</span>)
-		<span class="hljs-keyword">if</span> limiter.Allow() == <span class="hljs-literal">false</span> &#123;
-			fmt.Println(<span class="hljs-string">&quot;limit&quot;</span>)
-			<span class="hljs-keyword">return</span>
-		&#125;
-
-		next.ServeHTTP(w, r)
-	&#125;)
-&#125;</code></pre></div>
-
-
-
-<p>此外，Limiter 也有其他的方法：</p>
-<ul>
-<li>SetLimit(Limit) 动态修改放入令牌的速率</li>
-<li>SetBurst(int) 动态修改桶大小</li>
-<li>Wait/WaitN 当没有可用事件时，将阻塞等待</li>
-<li>Reserve/ReserveN 当没有可用事件时，返回 Reservation，和要等待多久才能获得足够的事件</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/13sai/go-example/tree/main/demo9-rate">代码点击见githubgithub.com/13sai/go-example/tree/main/demo9-rate</a></p>
+<p>使用非常简单，来看一下效果。<br><img src="/images/post/mpdf.png" srcset="/img/loading.gif" lazyload alt="mpdf"></p>
+<p>感谢 <a target="_blank" rel="noopener" href="https://github.com/mpdf/mpdf">https://github.com/mpdf/mpdf</a></p>
 
               
             </div>
@@ -579,7 +447,7 @@ server &#123;
     
       <span class="category-chain">
         
-  <a href="/categories/goexample/" class="category-chain-item">goexample</a>
+  <a href="/categories/php/" class="category-chain-item">php</a>
   
   
 
@@ -594,7 +462,7 @@ server &#123;
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/goexample/">#goexample</a>
+        <a href="/tags/php/">#php</a>
       
     </div>
   
@@ -606,8 +474,8 @@ server &#123;
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>golang限流器</div>
-      <div>https://github.13sai.com/2021/02/12/goexample9/</div>
+      <div>使用mpdf生成pdf</div>
+      <div>https://github.13sai.com/2023/11/07/490/</div>
     </div>
     <div class="license-meta">
       
@@ -644,18 +512,12 @@ server &#123;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/12/goexample8/" title="goruntine和channel">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">goruntine和channel</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架">
-                        <span class="hidden-mobile">利用gin搭建一个api框架</span>
+                      <a href="/2023/07/25/491/" title="Vant多图压缩后上传的解决过程">
+                        <span class="hidden-mobile">Vant多图压缩后上传的解决过程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
