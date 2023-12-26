@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="13sai blog">
 <meta property="og:description" content="企业微信审批接口踩坑">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.13sai.com/images/writing.jpeg">
+<meta property="og:image" content="https://wwcdn.weixin.qq.com/node/ww/wwmng/html/illus.png">
 <meta property="article:published_time" content="2023-09-11T09:52:04.000Z">
-<meta property="article:modified_time" content="2023-12-10T09:55:05.417Z">
+<meta property="article:modified_time" content="2023-12-26T08:52:28.259Z">
 <meta property="article:author" content="13sai">
 <meta property="article:tag" content="php">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://github.13sai.com/images/writing.jpeg">
+<meta name="twitter:image" content="https://wwcdn.weixin.qq.com/node/ww/wwmng/html/illus.png">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
@@ -253,7 +253,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/writing.jpeg') no-repeat center center; background-size: cover;">
+     style="background: url('https://wwcdn.weixin.qq.com/node/ww/wwmng/html/illus.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -283,7 +283,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          0 字
+          188 字
         
       </span>
     
@@ -295,7 +295,7 @@
         
         
           <!-- compatible with older versions-->
-          1 分钟
+          2 分钟
         
       </span>
     
@@ -407,7 +407,17 @@
             
             <div class="markdown-body">
               
-              
+              <p>我对接的是企业内部应用的api。</p>
+<p>对接有几点要注意：</p>
+<ol>
+<li>不使用应用的模板，貌似是个阉割版</li>
+<li>审批模板要预先设置，对于服务端api对接来说，不能修改，如果是jssdk调用审批流程引擎，可以自定义流程</li>
+<li>审批回调设置时，需要先验证一下，验证走的是GET请求，不是POST请求</li>
+<li>有问题社区提问，社区的官方回答还是非常快的</li>
+<li>审批应用可以单独设置分级管理员</li>
+<li>审批可见范围要注意，不能设置的比模板可见范围还小</li>
+</ol>
+
               
             </div>
             <hr/>
@@ -489,9 +499,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/11/07/490/" title="使用mpdf生成pdf">
+                      <a href="/2023/10/04/497/" title="python3发送slack通知">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">使用mpdf生成pdf</span>
+                        <span class="hidden-mobile">python3发送slack通知</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -499,8 +509,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/08/02/492/" title="解决移动端点击放大出现x轴滚动条问题">
-                        <span class="hidden-mobile">解决移动端点击放大出现x轴滚动条问题</span>
+                      <a href="/2023/08/11/492/" title="python3实现bitmap">
+                        <span class="hidden-mobile">python3实现bitmap</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
