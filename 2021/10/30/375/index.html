@@ -32,8 +32,7 @@
 <meta name="twitter:image" content="https://github.13sai.com/images/post/go.jpeg">
   
   
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script> <!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBCEG2QCJD"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag("js", new Date());
-gtag("config", "G-YBCEG2QCJD"); </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
   <title>go使用私有module - 13sai blog</title>
 
@@ -72,7 +71,7 @@ gtag("config", "G-YBCEG2QCJD"); </script>
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -284,7 +283,7 @@ gtag("config", "G-YBCEG2QCJD"); </script>
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          421 字
+          420 字
         
       </span>
     
@@ -561,7 +560,7 @@ go env -w GOPRIVATE=git.13sai.cn
 // 配置 git.13sai.cn 库使用 git@git.13sai.cn 拉取，主要后面的 : 不可以丢了
 git config --global url.<span class="hljs-string">&quot;git@git.13sai.cn:&quot;</span>.insteadOf https://git.13sai.cn</code></pre></div>
 
-<p>这样就可以使用了，如果没配置git 的 ssh key，就不能使用<a href="mailto:&#103;&#x69;&#116;&#64;&#x67;&#105;&#x74;&#x2e;&#49;&#51;&#115;&#x61;&#x69;&#x2e;&#x63;&#110;">&#103;&#x69;&#116;&#64;&#x67;&#105;&#x74;&#x2e;&#49;&#51;&#115;&#x61;&#x69;&#x2e;&#x63;&#110;</a>，可以把url 换成https + 用户名密码的格式：</p>
+<p>这样就可以使用了，如果没配置git 的 ssh key，就不能使用<a href="mailto:&#x67;&#105;&#x74;&#x40;&#103;&#105;&#116;&#x2e;&#49;&#51;&#x73;&#x61;&#x69;&#46;&#99;&#110;">&#x67;&#105;&#x74;&#x40;&#103;&#105;&#116;&#x2e;&#49;&#51;&#x73;&#x61;&#x69;&#46;&#99;&#110;</a>，可以把url 换成https + 用户名密码的格式：</p>
 <div class="code-wrapper"><pre><code class="hljs sh">https://13sai:123456@git.13sai.cn</code></pre></div>
 
               
@@ -873,6 +872,15 @@ git config --global url.<span class="hljs-string">&quot;git@git.13sai.cn:&quot;<
 
   
 
+  
+    <!-- Google gtag.js -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBCEG2QCJD"></script>
+    <script defer>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YBCEG2QCJD');
+    </script>
   
 
   
