@@ -13,60 +13,60 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="13sai">
-  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  <meta name="author" content="puresai">
+  <meta name="keywords" content="puresai,golang,Redis,Redis,Linux,MQ">
   
     <meta name="description" content="本文是拉勾专栏《成为会带团队的技术人》的笔记，图基本也来源于专栏，自己以前也有带团队经验，但自我感觉做得不够好，这个专栏给我很多启发。 技术人三要素  技术人三要素：稳定性、债务、架构  稳定性怎么衡量系统稳定性？一般来讲，通过统计系统不可用的时长或次数就可以对稳定性进行量化，比如业内常说 4 个 9 的可用性（即 1 年内 99.99% 的时间系统是可用的，不可用时长仅为 52.6 分钟）。 针">
 <meta property="og:type" content="article">
 <meta property="og:title" content="成为会带团队的技术人">
-<meta property="og:url" content="https://github.13sai.com/2021/02/14/318/index.html">
-<meta property="og:site_name" content="13sai blog">
+<meta property="og:url" content="https://blog.puresai.com/2021/02/14/318/index.html">
+<meta property="og:site_name" content="puresai blog">
 <meta property="og:description" content="本文是拉勾专栏《成为会带团队的技术人》的笔记，图基本也来源于专栏，自己以前也有带团队经验，但自我感觉做得不够好，这个专栏给我很多启发。 技术人三要素  技术人三要素：稳定性、债务、架构  稳定性怎么衡量系统稳定性？一般来讲，通过统计系统不可用的时长或次数就可以对稳定性进行量化，比如业内常说 4 个 9 的可用性（即 1 年内 99.99% 的时间系统是可用的，不可用时长仅为 52.6 分钟）。 针">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMdeAc_F6AAJTrBjwTWE310-20210527163509208.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGAJMf2AFDdiAAJOfl-EHu8036.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMo-Ae8JIAAI6Da3tjL0715.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGAOnceAK51TAAEbIVsowNo778.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASYyyAAp99AAHQPeoXQkg893.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY0OAILA7AAE89CbKGfA505.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY1aARH-TAAHJrR1s-W0317.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGASY2aAan_KAAHwX7CkMbQ394.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY3WAF33QAAE50Zm97VM138.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAXyHeAZE15AAF3VXvSekM464.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Ciqc1GAXyKCAQhAeAAIzRmP_aiA027.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAXyKmAL5F9AAGrGtOqSM0087.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2AXyMeAKHX_AAGCjDqqNX4257.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAcw7WAEx7QAAE0B9ewvBc719.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAcxamAVdqbAACyNLxS9YE927.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cgp9HWAeZGqARfAHAAohBfqxiaQ465.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cgp9HWAfsGSAa_gIAAKhlQeDXYs745.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAlYm-AU3RIAAIkbegMocs361.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAqh56AQalmAAE6asGZIRs826.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAqh9iAfN3jAAE8QXqq33w549.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWAqh-mAAqQvAAHkRyUTqL0533.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAuOIWATM3RAAKl9h_7RCo041.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAzaOuAOmbSAADrwmhxbqc219.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWA2GNuATPfwAAG2oUoqhik144.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWA9Dj-AbXWgAAQfSFZSZ1Y787.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWA9DlSAQbjfAAGeT66ULls027.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWA9DlyAYnBoAADCktnlzHk931.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWBF1_6AMv9fAAFMMGSqBd0745.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWBLFaeAA8v9AAA6D5TpRtM361.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWBLFeGAX6HuAADUCQlA8L8413.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/CioPOWBS8c-AJOCiAAO-OZ0qSJg929.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/Cgp9HWBcUYKAHXrjAAHoV4ZOizs520.png">
-<meta property="og:image" content="https://github.13sai.com/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/Cgp9HWBhhzyAIeYyAAGwGD_IRZw948.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMdeAc_F6AAJTrBjwTWE310-20210527163509208.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGAJMf2AFDdiAAJOfl-EHu8036.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMo-Ae8JIAAI6Da3tjL0715.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGAOnceAK51TAAEbIVsowNo778.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASYyyAAp99AAHQPeoXQkg893.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY0OAILA7AAE89CbKGfA505.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY1aARH-TAAHJrR1s-W0317.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGASY2aAan_KAAHwX7CkMbQ394.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY3WAF33QAAE50Zm97VM138.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAXyHeAZE15AAF3VXvSekM464.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Ciqc1GAXyKCAQhAeAAIzRmP_aiA027.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAXyKmAL5F9AAGrGtOqSM0087.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2AXyMeAKHX_AAGCjDqqNX4257.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAcw7WAEx7QAAE0B9ewvBc719.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAcxamAVdqbAACyNLxS9YE927.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cgp9HWAeZGqARfAHAAohBfqxiaQ465.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cgp9HWAfsGSAa_gIAAKhlQeDXYs745.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAlYm-AU3RIAAIkbegMocs361.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAqh56AQalmAAE6asGZIRs826.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAqh9iAfN3jAAE8QXqq33w549.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWAqh-mAAqQvAAHkRyUTqL0533.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAuOIWATM3RAAKl9h_7RCo041.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAzaOuAOmbSAADrwmhxbqc219.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWA2GNuATPfwAAG2oUoqhik144.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWA9Dj-AbXWgAAQfSFZSZ1Y787.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWA9DlSAQbjfAAGeT66ULls027.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWA9DlyAYnBoAADCktnlzHk931.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWBF1_6AMv9fAAFMMGSqBd0745.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWBLFaeAA8v9AAA6D5TpRtM361.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWBLFeGAX6HuAADUCQlA8L8413.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/CioPOWBS8c-AJOCiAAO-OZ0qSJg929.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/Cgp9HWBcUYKAHXrjAAHoV4ZOizs520.png">
+<meta property="og:image" content="https://blog.puresai.com/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/Cgp9HWBhhzyAIeYyAAGwGD_IRZw948.png">
 <meta property="article:published_time" content="2021-02-14T06:05:16.000Z">
 <meta property="article:modified_time" content="2022-05-31T09:34:13.073Z">
-<meta property="article:author" content="13sai">
+<meta property="article:author" content="puresai">
 <meta property="article:tag" content="reading">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://github.13sai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMdeAc_F6AAJTrBjwTWE310-20210527163509208.png">
+<meta name="twitter:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMdeAc_F6AAJTrBjwTWE310-20210527163509208.png">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>成为会带团队的技术人 - 13sai blog</title>
+  <title>成为会带团队的技术人 - puresai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -103,7 +103,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -122,7 +122,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>13sai blog</strong>
+      <strong>puresai blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -1119,13 +1119,13 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>成为会带团队的技术人</div>
-      <div>https://github.13sai.com/2021/02/14/318/</div>
+      <div>https://blog.puresai.com/2021/02/14/318/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>13sai</div>
+          <div>puresai</div>
         </div>
       
       
@@ -1194,7 +1194,7 @@
       window.UtterancesThemeDark = dark;
       var s = document.createElement('script');
       s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', '13sai/13sai.github.io');
+      s.setAttribute('repo', 'puresai/puresai.github.io');
       s.setAttribute('issue-term', 'url');
       
       s.setAttribute('label', 'utterances');
@@ -1369,17 +1369,6 @@
 
 
 
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
   
 
   

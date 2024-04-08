@@ -13,28 +13,28 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="13sai">
+  <meta name="author" content="puresai">
   <meta name="keywords" content="go,golang,gin,go-Redis,cron">
   
     <meta name="description" content="通过例子学习go-防止漏打卡，利用gin和cron来做一个智能提醒">
 <meta property="og:type" content="article">
 <meta property="og:title" content="防止漏打卡，利用gin和cron来做一个智能提醒">
-<meta property="og:url" content="https://github.13sai.com/2021/02/12/goexample3/index.html">
-<meta property="og:site_name" content="13sai blog">
+<meta property="og:url" content="https://blog.puresai.com/2021/02/12/goexample3/index.html">
+<meta property="og:site_name" content="puresai blog">
 <meta property="og:description" content="通过例子学习go-防止漏打卡，利用gin和cron来做一个智能提醒">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.13sai.com/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png">
+<meta property="og:image" content="https://blog.puresai.com/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png">
 <meta property="article:published_time" content="2021-02-12T13:48:20.000Z">
-<meta property="article:modified_time" content="2023-02-14T03:44:38.782Z">
-<meta property="article:author" content="13sai">
+<meta property="article:modified_time" content="2024-04-08T08:13:25.832Z">
+<meta property="article:author" content="puresai">
 <meta property="article:tag" content="goexample">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://github.13sai.com/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png">
+<meta name="twitter:image" content="https://blog.puresai.com/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>防止漏打卡，利用gin和cron来做一个智能提醒 - 13sai blog</title>
+  <title>防止漏打卡，利用gin和cron来做一个智能提醒 - puresai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -71,7 +71,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -90,7 +90,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>13sai blog</strong>
+      <strong>puresai blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -377,6 +377,15 @@
     
       
       
+        <a href="/2021/02/12/goexample1/" title="搭建http server"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">搭建http server</span>
+        </a>
+      
+    
+      
+      
         <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架"
            class="list-group-item list-group-item-action
            ">
@@ -386,19 +395,10 @@
     
       
       
-        <a href="/2021/02/12/goexample4/" title="gRPC"
+        <a href="/2021/02/12/goexample5/" title="go面向对象"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">gRPC</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample1/" title="搭建http server"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">搭建http server</span>
+          <span class="category-post">go面向对象</span>
         </a>
       
     
@@ -413,10 +413,10 @@
     
       
       
-        <a href="/2021/02/12/goexample5/" title="go面向对象"
+        <a href="/2021/02/12/goexample4/" title="gRPC"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">go面向对象</span>
+          <span class="category-post">gRPC</span>
         </a>
       
     
@@ -493,7 +493,7 @@
 <p>(代码额外说明：Redis我更新成了v8版本，命令前需要加上下文，注意一下)</p>
 </blockquote>
 <h2 id="接入钉钉机器人"><a href="#接入钉钉机器人" class="headerlink" title="接入钉钉机器人"></a>接入钉钉机器人</h2><p><a target="_blank" rel="noopener" href="https://ding-doc.dingtalk.com/doc%23/serverapi2/qf2nxq">钉钉机器人文档</a></p>
-<p>按照文档在群里新建机器人即可。我开启的是webhook自定义机器人，outgoing提送地址就是项目接收信息地址，比如：<a target="_blank" rel="noopener" href="https://cron.13sai.com/dingdingPost">http://cron.13sai.com/dingdingPost</a></p>
+<p>按照文档在群里新建机器人即可。我开启的是webhook自定义机器人，outgoing提送地址就是项目接收信息地址，比如：<a target="_blank" rel="noopener" href="https://cron.puresai.com/dingdingPost">http://cron.puresai.com/dingdingPost</a></p>
 <blockquote>
 <p>建议设置成加签或ip限制，以防被恶意攻击</p>
 </blockquote>
@@ -997,7 +997,7 @@ func UpdateKeywords() &#123;
 <p>来看看效果</p>
 <p><img src="/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个demo其实主要点就是解析钉钉推送内容做对应的处理，因关键字过多，代码其实有点啰嗦，你可以自行优化，对接智能接口和钉钉接口，还是定时任务其实都是相对简单的，当然，这只是很基础的功能，你可以自行扩展。另外，这次之列出了主要代码，没有做十分详尽的说明，有兴趣可以查看源码。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/13sai/go-example/tree/main/demo3-dingding">查看github源码</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/puresai/go-example/tree/main/demo3-dingding">查看github源码</a></p>
 <h2 id="啰嗦"><a href="#啰嗦" class="headerlink" title="啰嗦"></a>啰嗦</h2><p>这个demo的起初也是我们几个同事老忘记打卡，有了这个demo，起初只能提醒打卡，后面陆续加入了取消、查看、查询天气等功能，大家学习技术的时候也可以考虑应用到生活场景当中，这样学习起来也比较有有趣，实践中也会发现很多想不到的问题，最后，祝大家工作愉快，不忘打卡。</p>
 
               
@@ -1044,13 +1044,13 @@ func UpdateKeywords() &#123;
   <div class="license-box my-3">
     <div class="license-title">
       <div>防止漏打卡，利用gin和cron来做一个智能提醒</div>
-      <div>https://github.13sai.com/2021/02/12/goexample3/</div>
+      <div>https://blog.puresai.com/2021/02/12/goexample3/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>13sai</div>
+          <div>puresai</div>
         </div>
       
       
@@ -1081,9 +1081,9 @@ func UpdateKeywords() &#123;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/12/goexample1/" title="搭建http server">
+                      <a href="/2021/02/12/goexample5/" title="go面向对象">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">搭建http server</span>
+                        <span class="hidden-mobile">go面向对象</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -1091,8 +1091,8 @@ func UpdateKeywords() &#123;
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/12/goexample5/" title="go面向对象">
-                        <span class="hidden-mobile">go面向对象</span>
+                      <a href="/2021/02/12/goexample4/" title="gRPC">
+                        <span class="hidden-mobile">gRPC</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -1119,7 +1119,7 @@ func UpdateKeywords() &#123;
       window.UtterancesThemeDark = dark;
       var s = document.createElement('script');
       s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', '13sai/13sai.github.io');
+      s.setAttribute('repo', 'puresai/puresai.github.io');
       s.setAttribute('issue-term', 'url');
       
       s.setAttribute('label', 'utterances');
@@ -1294,17 +1294,6 @@ func UpdateKeywords() &#123;
 
 
 
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
   
 
   

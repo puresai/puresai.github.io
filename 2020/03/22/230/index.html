@@ -13,28 +13,28 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="13sai">
-  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  <meta name="author" content="puresai">
+  <meta name="keywords" content="puresai,golang,Redis,Redis,Linux,MQ">
   
     <meta name="description" content="Redis常用类型及应用场景">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis常用类型及应用场景">
-<meta property="og:url" content="https://github.13sai.com/2020/03/22/230/index.html">
-<meta property="og:site_name" content="13sai blog">
+<meta property="og:url" content="https://blog.puresai.com/2020/03/22/230/index.html">
+<meta property="og:site_name" content="puresai blog">
 <meta property="og:description" content="Redis常用类型及应用场景">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://github.13sai.com/images/post/redis.png">
+<meta property="og:image" content="https://blog.puresai.com/images/post/redis.png">
 <meta property="article:published_time" content="2020-03-22T13:36:48.000Z">
-<meta property="article:modified_time" content="2023-04-01T08:32:11.667Z">
-<meta property="article:author" content="13sai">
+<meta property="article:modified_time" content="2024-04-08T08:13:25.841Z">
+<meta property="article:author" content="puresai">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://github.13sai.com/images/post/redis.png">
+<meta name="twitter:image" content="https://blog.puresai.com/images/post/redis.png">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>Redis常用类型及应用场景 - 13sai blog</title>
+  <title>Redis常用类型及应用场景 - puresai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -71,7 +71,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -90,7 +90,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>13sai blog</strong>
+      <strong>puresai blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -559,8 +559,8 @@ sleep(<span class="hljs-number">1</span>); <span class="hljs-regexp">//</span>�
 	<span class="hljs-variable">$db</span> = new db([
 	    <span class="hljs-string">&#x27;database_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;mysql&#x27;</span>,
 	    <span class="hljs-string">&#x27;database_name&#x27;</span> =&gt; <span class="hljs-string">&#x27;test&#x27;</span>,
-	    <span class="hljs-string">&#x27;server&#x27;</span> =&gt; <span class="hljs-string">&#x27;13sai&#x27;</span>,
-	    <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;13sai&#x27;</span>,
+	    <span class="hljs-string">&#x27;server&#x27;</span> =&gt; <span class="hljs-string">&#x27;puresai&#x27;</span>,
+	    <span class="hljs-string">&#x27;username&#x27;</span> =&gt; <span class="hljs-string">&#x27;puresai&#x27;</span>,
 	    <span class="hljs-string">&#x27;password&#x27;</span> =&gt; <span class="hljs-string">&#x27;*&#x27;</span>,
 	    <span class="hljs-string">&#x27;charset&#x27;</span> =&gt; <span class="hljs-string">&#x27;utf8&#x27;</span>
 	]);
@@ -670,13 +670,13 @@ Redis-server --loadmodule <span class="hljs-regexp">/path/</span>to<span class="
   <div class="license-box my-3">
     <div class="license-title">
       <div>Redis常用类型及应用场景</div>
-      <div>https://github.13sai.com/2020/03/22/230/</div>
+      <div>https://blog.puresai.com/2020/03/22/230/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>13sai</div>
+          <div>puresai</div>
         </div>
       
       
@@ -745,7 +745,7 @@ Redis-server --loadmodule <span class="hljs-regexp">/path/</span>to<span class="
       window.UtterancesThemeDark = dark;
       var s = document.createElement('script');
       s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', '13sai/13sai.github.io');
+      s.setAttribute('repo', 'puresai/puresai.github.io');
       s.setAttribute('issue-term', 'url');
       
       s.setAttribute('label', 'utterances');
@@ -920,17 +920,6 @@ Redis-server --loadmodule <span class="hljs-regexp">/path/</span>to<span class="
 
 
 
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
   
 
   

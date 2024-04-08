@@ -13,26 +13,26 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="13sai">
-  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  <meta name="author" content="puresai">
+  <meta name="keywords" content="puresai,golang,Redis,Redis,Linux,MQ">
   
     <meta name="description" content="网站不能访问的问题集合">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网站不能访问的问题集合">
-<meta property="og:url" content="https://github.13sai.com/2021/01/13/302/index.html">
-<meta property="og:site_name" content="13sai blog">
+<meta property="og:url" content="https://blog.puresai.com/2021/01/13/302/index.html">
+<meta property="og:site_name" content="puresai blog">
 <meta property="og:description" content="网站不能访问的问题集合">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-13T03:43:22.000Z">
-<meta property="article:modified_time" content="2022-03-19T14:35:21.939Z">
-<meta property="article:author" content="13sai">
+<meta property="article:modified_time" content="2024-04-08T08:13:25.933Z">
+<meta property="article:author" content="puresai">
 <meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>网站不能访问的问题集合 - 13sai blog</title>
+  <title>网站不能访问的问题集合 - puresai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -69,7 +69,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -88,7 +88,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>13sai blog</strong>
+      <strong>puresai blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -281,7 +281,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          517 字
+          521 字
         
       </span>
     
@@ -455,7 +455,7 @@
 <h4 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h4><p>开启443端口</p>
 <hr>
 <h2 id="加了CDN的部分页面突然打不开"><a href="#加了CDN的部分页面突然打不开" class="headerlink" title="加了CDN的部分页面突然打不开"></a>加了CDN的部分页面突然打不开</h2><h4 id="现象-1"><a href="#现象-1" class="headerlink" title="现象"></a>现象</h4><p>加了cdn的部分页面打不开，http页面访问正常，绑定host访问也正常</p>
-<p>打不开的情况nginx有报错如： pwritev() “/usr/local/webserver/nginx_new/fastcgi_temp/1/96/0001214961” failed (28: No space left on device) while reading upstream, client: 61.241.120.188, server:<a target="_blank" rel="noopener" href="http://www.13sai.com/">www.13sai.com</a>, request: “GET / HTTP/1.1”, upstream: “fastcgi://127.0.0.1:9000”, host: “<a target="_blank" rel="noopener" href="http://www.13sai.com&quot;,后又反馈后台文件上传失败/">www.13sai.com&quot;，后又反馈后台文件上传失败</a></p>
+<p>打不开的情况nginx有报错如： pwritev() “/usr/local/webserver/nginx_new/fastcgi_temp/1/96/0001214961” failed (28: No space left on device) while reading upstream, client: 61.241.120.188, server:<a target="_blank" rel="noopener" href="http://www.puresai.com/">www.puresai.com</a>, request: “GET / HTTP/1.1”, upstream: “fastcgi://127.0.0.1:9000”, host: “<a target="_blank" rel="noopener" href="http://www.puresai.com&quot;,后又反馈后台文件上传失败/">www.puresai.com&quot;，后又反馈后台文件上传失败</a></p>
 <h4 id="排查-1"><a href="#排查-1" class="headerlink" title="排查"></a>排查</h4><p>去掉cdn能正常访问，挂载磁盘未满，系统盘满，乍一看是cdn和waf问题</p>
 <h4 id="处理-1"><a href="#处理-1" class="headerlink" title="处理"></a>处理</h4><p>系统盘100%，注意No space left on device，挪动大文件到挂载的磁盘，cdn页面也恢复正常</p>
 <h4 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h4><p>上传大文件，下载大文件尽量别放在系统盘</p>
@@ -504,13 +504,13 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>网站不能访问的问题集合</div>
-      <div>https://github.13sai.com/2021/01/13/302/</div>
+      <div>https://blog.puresai.com/2021/01/13/302/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>13sai</div>
+          <div>puresai</div>
         </div>
       
       
@@ -579,7 +579,7 @@
       window.UtterancesThemeDark = dark;
       var s = document.createElement('script');
       s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', '13sai/13sai.github.io');
+      s.setAttribute('repo', 'puresai/puresai.github.io');
       s.setAttribute('issue-term', 'url');
       
       s.setAttribute('label', 'utterances');
@@ -754,17 +754,6 @@
 
 
 
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
   
 
   

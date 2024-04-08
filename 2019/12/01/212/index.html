@@ -13,19 +13,19 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="13sai">
-  <meta name="keywords" content="13sai,golang,Redis,Redis,Linux,MQ">
+  <meta name="author" content="puresai">
+  <meta name="keywords" content="puresai,golang,Redis,Redis,Linux,MQ">
   
     <meta name="description" content="利用consul+nginx-upsync实现动态负载">
 <meta property="og:type" content="article">
 <meta property="og:title" content="利用consul+nginx-upsync实现动态负载">
-<meta property="og:url" content="https://github.13sai.com/2019/12/01/212/index.html">
-<meta property="og:site_name" content="13sai blog">
+<meta property="og:url" content="https://blog.puresai.com/2019/12/01/212/index.html">
+<meta property="og:site_name" content="puresai blog">
 <meta property="og:description" content="利用consul+nginx-upsync实现动态负载">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-12-01T01:53:29.000Z">
-<meta property="article:modified_time" content="2023-04-01T08:32:11.667Z">
-<meta property="article:author" content="13sai">
+<meta property="article:modified_time" content="2024-04-08T08:13:25.925Z">
+<meta property="article:author" content="puresai">
 <meta property="article:tag" content="consul">
 <meta property="article:tag" content="SLB">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,7 +33,7 @@
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>利用consul+nginx-upsync实现动态负载 - 13sai blog</title>
+  <title>利用consul+nginx-upsync实现动态负载 - puresai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -70,7 +70,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"github.13sai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"21791f27481aa4e0d1d544dde68bdb36","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -89,7 +89,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>13sai blog</strong>
+      <strong>puresai blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -471,9 +471,9 @@
               
               <p>当 Nginx 遇到大流量和高负载，修改配置文件重启略显繁琐，因为恢复Nginx并重载配置会进一步增加系统负载，并很可能短暂降低性能，而一个个修改配置文件也是很容易出错和费时间的操作，这时候不妨试试consul+nginx-upsync-module实现Nginx的动态负载。</p>
 <h3 id="nginx-upsync-module"><a href="#nginx-upsync-module" class="headerlink" title="nginx-upsync-module"></a>nginx-upsync-module</h3><p>nginx-upsync-module 提供了动态的负载均衡，它可以从consul或etcd同步upstreams，动态修改后端服务器属性，而不需要重新加载nginx。这样我们通过它实现平滑伸缩，而不严重地影响性能。</p>
-<h3 id="利用docker安装"><a href="#利用docker安装" class="headerlink" title="利用docker安装"></a>利用docker安装</h3><p>我已经基于centos7构建了一个镜像 13sai/nginx-lua-upsync ，你可以使用下面的命令启动一个容器</p>
+<h3 id="利用docker安装"><a href="#利用docker安装" class="headerlink" title="利用docker安装"></a>利用docker安装</h3><p>我已经基于centos7构建了一个镜像 puresai/nginx-lua-upsync ，你可以使用下面的命令启动一个容器</p>
 <blockquote>
-<p>docker run -itd –name=nginx-upsync -p 8008:80 -p 9501:9501 -p 9502:9502 -p 9503:9503 -p 8500:8500 13sai/nginx-lua-upsync</p>
+<p>docker run -itd –name=nginx-upsync -p 8008:80 -p 9501:9501 -p 9502:9502 -p 9503:9503 -p 8500:8500 puresai/nginx-lua-upsync</p>
 </blockquote>
 <p>当然，你也可以不使用docker自行搭建，添加nginx-upsync-module模块可以参考<a target="_blank" rel="noopener" href="https://github.oscome.cn/2019/11/20/Nginx9/">nginx模块lua模块</a>。</p>
 <ul>
@@ -494,7 +494,7 @@
 <div class="code-wrapper"><pre><code class="hljs awk"><span class="hljs-comment">#nginx.conf 主要配置</span>
 ...
 
-upstream <span class="hljs-number">13</span>sai&#123;
+upstream puresai&#123;
     upsync <span class="hljs-number">192.168</span>.<span class="hljs-number">65.2</span>:<span class="hljs-number">8500</span><span class="hljs-regexp">/v1/</span>kv<span class="hljs-regexp">/upstreams/</span>test-server upsync_timeout=<span class="hljs-number">6</span>m upsync_interval=<span class="hljs-number">500</span>ms upsync_type=consul strong_dependency=off;
     upsync_dump_path <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/servers.conf;
     include <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/nginx/</span>conf/servers.conf;
@@ -505,7 +505,7 @@ server &#123;
     listen       <span class="hljs-number">80</span>;
 
     location / &#123;
-		proxy_pass http:<span class="hljs-regexp">//</span><span class="hljs-number">13</span>sai;
+		proxy_pass http:<span class="hljs-regexp">//</span>puresai;
     &#125;
 
     ...
@@ -619,13 +619,13 @@ server &#123;
   <div class="license-box my-3">
     <div class="license-title">
       <div>利用consul+nginx-upsync实现动态负载</div>
-      <div>https://github.13sai.com/2019/12/01/212/</div>
+      <div>https://blog.puresai.com/2019/12/01/212/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>13sai</div>
+          <div>puresai</div>
         </div>
       
       
@@ -694,7 +694,7 @@ server &#123;
       window.UtterancesThemeDark = dark;
       var s = document.createElement('script');
       s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', '13sai/13sai.github.io');
+      s.setAttribute('repo', 'puresai/puresai.github.io');
       s.setAttribute('issue-term', 'url');
       
       s.setAttribute('label', 'utterances');
@@ -869,17 +869,6 @@ server &#123;
 
 
 
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?21791f27481aa4e0d1d544dde68bdb36";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
   
 
   
