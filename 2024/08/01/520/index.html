@@ -14,25 +14,27 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="puresai">
-  <meta name="keywords" content="puresai,golang,Redis,Redis,Linux,MQ">
+  <meta name="keywords" content="python,bitmap">
   
-    <meta name="description" content="Docker基础与常用命令">
+    <meta name="description" content="scroll 查询是很常见的，当使用时，提示错误， socket.timeout: The read operation timed out  During handling of the above exception, another exception occurred:  而 python 的 scroll 查询是没有查询时间设置的。这是我们可以通过修改 es 连接的超时参数来处理。 es">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker基础与常用命令">
-<meta property="og:url" content="https://blog.puresai.com/2021/02/10/312/index.html">
+<meta property="og:title" content="python3查询es超时">
+<meta property="og:url" content="https://blog.puresai.com/2024/08/01/520/index.html">
 <meta property="og:site_name" content="puresai blog">
-<meta property="og:description" content="Docker基础与常用命令">
+<meta property="og:description" content="scroll 查询是很常见的，当使用时，提示错误， socket.timeout: The read operation timed out  During handling of the above exception, another exception occurred:  而 python 的 scroll 查询是没有查询时间设置的。这是我们可以通过修改 es 连接的超时参数来处理。 es">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-02-10T07:13:35.000Z">
-<meta property="article:modified_time" content="2023-02-14T03:44:38.819Z">
+<meta property="og:image" content="https://blog.puresai.com/images/post/python.png">
+<meta property="article:published_time" content="2024-08-01T04:04:57.000Z">
+<meta property="article:modified_time" content="2024-08-08T08:59:19.762Z">
 <meta property="article:author" content="puresai">
-<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.puresai.com/images/post/python.png">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>Docker基础与常用命令 - puresai blog</title>
+  <title>python3查询es超时 - puresai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -251,13 +253,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/images/post/python.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">Docker基础与常用命令</span>
+            <span id="subtitle">python3查询es超时</span>
           
         </div>
 
@@ -268,8 +270,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-02-10 15:13" pubdate>
-          2021年2月10日
+        <time datetime="2024-08-01 12:04" pubdate>
+          2024年8月1日
         </time>
       </span>
     
@@ -281,7 +283,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.5k 字
+          242 字
         
       </span>
     
@@ -293,7 +295,7 @@
         
         
           <!-- compatible with older versions-->
-          30 分钟
+          3 分钟
         
       </span>
     
@@ -347,17 +349,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Docker"
-        id="heading-c5fd214cdd0d2b3b4272e73b022ba5c2" role="tab" data-toggle="collapse" href="#collapse-c5fd214cdd0d2b3b4272e73b022ba5c2"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="python"
+        id="heading-23eeeb4347bdd26bfc6b7ee9a3b755dd" role="tab" data-toggle="collapse" href="#collapse-23eeeb4347bdd26bfc6b7ee9a3b755dd"
         aria-expanded="true"
       >
-        Docker
-        <span class="list-group-count">(1)</span>
+        python
+        <span class="list-group-count">(11)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-c5fd214cdd0d2b3b4272e73b022ba5c2"
-           role="tabpanel" aria-labelledby="heading-c5fd214cdd0d2b3b4272e73b022ba5c2">
+      <div class="category-collapse collapse show" id="collapse-23eeeb4347bdd26bfc6b7ee9a3b755dd"
+           role="tabpanel" aria-labelledby="heading-23eeeb4347bdd26bfc6b7ee9a3b755dd">
         
         
           
@@ -366,10 +368,100 @@
     
       
       
-        <a href="/2021/02/10/312/" title="Docker基础与常用命令"
+        <a href="/2024/08/01/520/" title="python3查询es超时"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">Docker基础与常用命令</span>
+          <span class="category-post">python3查询es超时</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/04/14/511/" title="做一个简单的服务器监控企业微信通知"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">做一个简单的服务器监控企业微信通知</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2024/03/21/510/" title="如何发布一个pip包"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">如何发布一个pip包</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/12/01/501/" title="issues python3"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">issues python3</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/11/24/500/" title="python3合并list并去重"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">python3合并list并去重</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/10/04/497/" title="python3发送slack通知"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">python3发送slack通知</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/08/11/492/" title="python3实现bitmap"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">python3实现bitmap</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/07/22/490/" title="Python中strip多字符慎重使用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Python中strip多字符慎重使用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2023/01/13/471/" title="python如何跳出多层循环"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">python如何跳出多层循环</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2022/11/14/461/" title="python如何遍历list并删除元素"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">python如何遍历list并删除元素</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2017/01/14/98/" title="python爬虫"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">python爬虫</span>
         </a>
       
     
@@ -392,171 +484,19 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Docker基础与常用命令</h1>
+            <h1 style="display: none">python3查询es超时</h1>
             
             <div class="markdown-body">
               
-              <h2 id="Docker-是什么？"><a href="#Docker-是什么？" class="headerlink" title="Docker 是什么？"></a>Docker 是什么？</h2><p><strong>Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。</strong>它是目前最流行的 Linux 容器解决方案。</p>
-<p>Docker 将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。有了 Docker，就不用担心环境问题。</p>
-<p>总体来说，Docker 的接口相当简单，用户可以方便地创建和使用容器，把自己的应用放入容器。容器还可以进行版本管理、复制、分享、修改，就像管理普通的代码一样。</p>
-<h2 id="Docker的三个概念"><a href="#Docker的三个概念" class="headerlink" title="Docker的三个概念"></a>Docker的三个概念</h2><ol>
-<li>镜像（Image）：类似于虚拟机中的镜像，是一个包含有文件系统的面向Docker引擎的只读模板。任何应用程序运行都需要环境，而镜像就是用来提供这种运行环境的。例如一个Ubuntu镜像就是一个包含Ubuntu操作系统环境的模板，同理在该镜像上装上Apache软件，就可以称为Apache镜像。</li>
-<li>容器（Container）：类似于一个轻量级的沙盒，可以将其看作一个极简的Linux系统环境（包括root权限、进程空间、用户空间和网络空间等），以及运行在其中的应用程序。Docker引擎利用容器来运行、隔离各个应用。容器是镜像创建的应用实例，可以创建、启动、停止、删除容器，各个容器之间是是相互隔离的，互不影响。注意：镜像本身是只读的，容器从镜像启动时，Docker在镜像的上层创建一个可写层，镜像本身不变。</li>
-<li>仓库（Repository）：类似于代码仓库，这里是镜像仓库，是Docker用来集中存放镜像文件的地方。注意与注册服务器（Registry）的区别：注册服务器是存放仓库的地方，一般会有多个仓库；而仓库是存放镜像的地方，一般每个仓库存放一类镜像，每个镜像利用tag进行区分，比如Ubuntu仓库存放有多个版本（12.04、14.04等）的Ubuntu镜像。</li>
-</ol>
-<h2 id="Docker-的用途"><a href="#Docker-的用途" class="headerlink" title="Docker 的用途"></a>Docker 的用途</h2><p>Docker 的主要用途，目前有三大类。</p>
-<p><strong>（1）提供一次性的环境。</strong>比如，本地测试他人的软件、持续集成的时候提供单元测试和构建的环境。</p>
-<p><strong>（2）提供弹性的云服务。</strong>因为 Docker 容器可以随开随关，很适合动态扩容和缩容。</p>
-<p><strong>（3）组建微服务架构。</strong>通过多个容器，一台机器可以跑多个服务，因此在本机就可以模拟出微服务架构。</p>
-<h2 id="Docker的优缺点"><a href="#Docker的优缺点" class="headerlink" title="Docker的优缺点"></a>Docker的优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p><strong>1. 更高效的利用系统资源</strong></p>
-<p>docker对系统资源的利用率更高，无论是应用执行速度，内存损耗或者文件存储速度，都要比传统虚拟机技术更高效。因此，相比虚拟机技术，一个相同配置的主机往往可以运行更多数量的应用。</p>
-<p><strong>2. 更快速的启动时间</strong></p>
-<p>传统的虚拟机技术启动应用服务往往需要数分钟，而docker容器应用，由于直接运行于宿主内核，无需启动完整的操作系统，因此可以做到秒级，甚至毫秒级的启动时间，大大的节约了开发测试，部署的时间。</p>
-<p><strong>3. 一致的运行环境</strong></p>
-<p>开发过程中常见的一个问题是环境一致问题，由于开发环境，测试环境，生产环境不一致，导致有些bug并未在开发过程中发现。而docker的镜像提供了除内核外完整的运行时环境，确保环境一致性，从而不会在出现“这段代码在我机器上没问题”这类问题。</p>
-<p><strong>4. 持续支付和部署</strong></p>
-<p>对开发和运维人员来说，最希望就是一次创建和部署，可以在任意的地方运行。（定制应用镜像来实现集成、持续支付、部署。开发人员可以通过<strong>dockerfile</strong>来进行镜像构建，并结合持续集成系统进行集成测试，而运维人员则可以直接在生产环境中快速部署该镜像，甚至结合持续部署系统进行自动部署）。而且使用<strong>dockerfile</strong>使镜像构建透明化，不仅仅开发团队可以理解应用运行环境，也方便运维团队理解应用运行所需条件，帮助更好的生产环境中部署该镜像。</p>
-<p><strong>5. 更轻松的迁移</strong></p>
-<p>由于docker确保了执行环境的一致性，使得应用的迁移更加的容易。docker可以在很多平台上运行，无论是物理机、虚拟机、公有云、私有云、甚至是笔记本、其运行结果是一致的。因此用户可以很轻易的将在一个平台上运行的应用，迁移到另一个平台上，而不用担心运行环境的变化导致应用无法正常运行的情况。</p>
-<p><strong>6. 更轻松的维护和拓展</strong></p>
-<p>docker使用的分层存储以及镜像的技术，使得应用重复部分的复用更为容易，也使得应用的维护更新更加简单，基于基础镜像进一步扩展镜像也变得十分简单。此外，docker团队同各个开源项目团队一起维护了一大批高质量的官网镜像，既可以直接在生产环境使用，又可以作为基础进一步定制，大大的降低了应用服务的镜像制作成本。</p>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p><strong>1.隔离性</strong></p>
-<p>基于hypervisor的虚拟技术，在隔离性上比容器技术要好，它们的系统硬件资源完全上虚拟化的，当一台虚拟机出现系统级别的问题，往往不会蔓延到同一宿主机上的其它虚拟机上，但是容器就不一样了，容器之间共享同一个操作系统内核及其它组件，所以在受到诸如黑客攻击这种情况的时候，很容易通过底层操作系统影响的其它容器，甚至逐个击破，产生连锁反应，当然，这个问题可以通过部署容器来解决，但随之又会产生新的问题，比如成本增加以及性能问题。</p>
-<p><strong>2.性能</strong></p>
-<p>不管是虚拟机还是容器，都是运用不同的技术对应用本身进行了一定程度的封装与隔离，在降低应用和应用之间以及应用和环境之间的耦合性上做了很多努力，但是随之而来的，就会产生更过的网络连接转发和数据交互，这在低并发系统上虽然不会很明显，但是当同一虚拟机或者服务器下面的容器需要更高并发量支撑的时候，也就是并发问题成为系统瓶颈的时候，容器会将这个问题放大，所以，并不是所有的场景都适合容器技术。</p>
-<p><strong>3.存储方案</strong></p>
-<p>容器的诞生并不是为OS抽象服务的，这是它和虚拟机最大的区别，这样的基因意味着容器天生是为应用环境做更多的努力，容器的伸缩也是基于容器的这一特性，而与之相对的，需要持久化存储方案恰恰相反，在数据存储这一点上Docker容器提供的解决方案是利用volume接口(存储卷)形成数据的映射和转移，以实现数据持久化的目的。但是这样同样也会造成一部分资源的浪费和更多的交互，不管是映射到宿主机上还是网络磁盘，都是退而求其次的解决方案。</p>
-<h2 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h2><ul>
-<li>启动</li>
-</ul>
-<blockquote>
-<p>docker start 容器名</p>
-</blockquote>
-<ul>
-<li>删除</li>
-</ul>
-<blockquote>
-<p>docker rm 容器名</p>
-</blockquote>
-<ul>
-<li>停止所有容器</li>
-</ul>
-<blockquote>
-<p>docker stop $(docker ps -a -q)</p>
-</blockquote>
-<ul>
-<li>删除所有容器</li>
-</ul>
-<blockquote>
-<p>docker rm $(docker ps -a -q)</p>
-</blockquote>
-<ul>
-<li>容器构建镜像</li>
-</ul>
-<div class="code-wrapper"><pre><code class="hljs n1ql">Usage:docker <span class="hljs-keyword">build</span> [OPTIONS] <span class="hljs-keyword">PATH</span> | URL | -
-OPTIONS:
--t ，--tag list  #构建后的镜像名称
--f， --file <span class="hljs-keyword">string</span> #指定Dockerfiile文件位置
-示例:
-- <span class="hljs-number">1</span>，docker <span class="hljs-keyword">build</span> .
-- <span class="hljs-number">2</span>，docker <span class="hljs-keyword">build</span> -t Redis:v1 .
-- <span class="hljs-number">3</span>，docker <span class="hljs-keyword">build</span> -t Redis:v2 -f /<span class="hljs-keyword">path</span>/Dockerfile /<span class="hljs-keyword">path</span>
-一般常用第<span class="hljs-number">2</span>种方式构建，我们在构建时都会切换到Dockerfile文件的目录下进行构建，所以不需要指定-f参数</code></pre></div>
+              <p>scroll 查询是很常见的，当使用时，提示错误，</p>
+<div class="code-wrapper"><pre><code class="hljs ada">socket.timeout: The read operation timed <span class="hljs-keyword">out</span>
 
-<ul>
-<li>进入容器（未必一定是bash命令）</li>
-</ul>
-<blockquote>
-<p>docker exec -it 容器名 bash</p>
-</blockquote>
-<ul>
-<li>查看容器详细信息</li>
-</ul>
-<blockquote>
-<p>docker inspect 容器名</p>
-</blockquote>
-<ul>
-<li>查看容器的日志 </li>
-</ul>
-<blockquote>
-<p>docker logs 容器名</p>
-</blockquote>
-<ul>
-<li>查看本地镜像</li>
-</ul>
-<blockquote>
-<p>docker images</p>
-</blockquote>
-<ul>
-<li>docker 网络</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>docker network connect</td>
-<td>将容器连接到网络。</td>
-</tr>
-<tr>
-<td>docker network create</td>
-<td>创建新的 Docker 网络。默认情况下，在 Windows 上会采用 NAT 驱动，在 Linux 上会采用 Bridge 驱动。可以使用 -d 参数指定驱动（网络类型）。</td>
-</tr>
-<tr>
-<td>docker network disconnect</td>
-<td>断开容器的网络。</td>
-</tr>
-<tr>
-<td>docker network inspect</td>
-<td>提供 Docker 网络的详细配置信息。</td>
-</tr>
-<tr>
-<td>docker network ls</td>
-<td>用于列出运行在本地 Docker 主机上的全部网络。</td>
-</tr>
-<tr>
-<td>docker network prune</td>
-<td>删除 Docker 主机上全部未使用的网络。</td>
-</tr>
-<tr>
-<td>docker network rm</td>
-<td>删除 Docker 主机上指定网络。</td>
-</tr>
-</tbody></table>
-<ul>
-<li>镜像的保存</li>
-</ul>
-<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> save ae<span class="hljs-number">513</span>a<span class="hljs-number">47849</span>c &gt; nginx-save.tar
-<span class="hljs-attribute">or</span>
-<span class="hljs-attribute">docker</span> save -o nginx-save.tar ae<span class="hljs-number">513</span>a<span class="hljs-number">47849</span>c</code></pre></div>
+During handling <span class="hljs-keyword">of</span> the above <span class="hljs-keyword">exception</span>, another <span class="hljs-keyword">exception</span> occurred:</code></pre></div>
 
-<ul>
-<li>镜像的导入</li>
-</ul>
-<div class="code-wrapper"><pre><code class="hljs maxima">docker <span class="hljs-built_in">load</span> &lt; nginx-<span class="hljs-built_in">save</span>.tar
-<span class="hljs-keyword">or</span>
-docker <span class="hljs-built_in">load</span> -i nginx-<span class="hljs-built_in">save</span>.tar</code></pre></div>
+<p>而 python 的 scroll 查询是没有查询时间设置的。这是我们可以通过修改 es 连接的超时参数来处理。</p>
+<div class="code-wrapper"><pre><code class="hljs routeros">es = Elasticsearch(<span class="hljs-attribute">hosts</span>=url, <span class="hljs-attribute">timeout</span>=60, <span class="hljs-attribute">retry_on_timeout</span>=<span class="hljs-literal">True</span>)</code></pre></div>
 
-<ul>
-<li>容器的导出</li>
-</ul>
-<div class="code-wrapper"><pre><code class="hljs autohotkey">docker export -o mysql-`date +<span class="hljs-variable">%Y%</span>m%d`.tar <span class="hljs-number">220</span>aee82cfea</code></pre></div>
-
-<ul>
-<li>容器的导入</li>
-</ul>
-<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> import  my_ubuntu_v<span class="hljs-number">3</span>.tar runoob/ubuntu:v<span class="hljs-number">4</span></code></pre></div>
-
-<p>镜像和容器导出和导入的区别:</p>
-<p>1.镜像导入是复制的过程<br>2.容器导入是将当前容器变成一个新的镜像</p>
-<p>save 和 export区别：</p>
-<ol>
-<li>save 保存镜像所有的信息-包含历史</li>
-<li>export 只导出当前的信息</li>
-</ol>
+<p>改动之后， 就 ok 了。</p>
 
               
             </div>
@@ -574,7 +514,7 @@ docker <span class="hljs-built_in">load</span> -i nginx-<span class="hljs-built_
     
       <span class="category-chain">
         
-  <a href="/categories/Docker/" class="category-chain-item">Docker</a>
+  <a href="/categories/python/" class="category-chain-item">python</a>
   
   
 
@@ -589,7 +529,7 @@ docker <span class="hljs-built_in">load</span> -i nginx-<span class="hljs-built_
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Docker/">#Docker</a>
+        <a href="/tags/python/">#python</a>
       
     </div>
   
@@ -601,8 +541,8 @@ docker <span class="hljs-built_in">load</span> -i nginx-<span class="hljs-built_
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Docker基础与常用命令</div>
-      <div>https://blog.puresai.com/2021/02/10/312/</div>
+      <div>python3查询es超时</div>
+      <div>https://blog.puresai.com/2024/08/01/520/</div>
     </div>
     <div class="license-meta">
       
@@ -639,18 +579,12 @@ docker <span class="hljs-built_in">load</span> -i nginx-<span class="hljs-built_
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/12/goexample9/" title="golang限流器">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">golang限流器</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/06/syncMap/" title="sync.Map">
-                        <span class="hidden-mobile">sync.Map</span>
+                      <a href="/2024/04/21/512/" title="检查是否在企业微信中">
+                        <span class="hidden-mobile">检查是否在企业微信中</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
