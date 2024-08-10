@@ -14,27 +14,27 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="puresai">
-  <meta name="keywords" content="go,golang,go kit,go-kit">
+  <meta name="keywords" content="PHP,webman">
   
-    <meta name="description" content="通过例子学习go-go-kit">
+    <meta name="description" content="webman事务不生效的问题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go-kit">
-<meta property="og:url" content="https://blog.puresai.com/2021/02/12/goexample6/index.html">
+<meta property="og:title" content="解决webman事务不生效的问题">
+<meta property="og:url" content="https://blog.puresai.com/2024/08/07/521/index.html">
 <meta property="og:site_name" content="puresai blog">
-<meta property="og:description" content="通过例子学习go-go-kit">
+<meta property="og:description" content="webman事务不生效的问题">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.puresai.com/images/post/v2-10d97a842067a8ca6ef5f4878161bfd7_1440w.png">
-<meta property="article:published_time" content="2021-02-12T13:48:20.000Z">
-<meta property="article:modified_time" content="2024-04-08T08:13:25.838Z">
+<meta property="og:image" content="https://blog.puresai.com/images/post/php.jpeg">
+<meta property="article:published_time" content="2024-08-07T03:34:35.000Z">
+<meta property="article:modified_time" content="2024-08-10T03:49:06.349Z">
 <meta property="article:author" content="puresai">
-<meta property="article:tag" content="goexample">
+<meta property="article:tag" content="webman">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://blog.puresai.com/images/post/v2-10d97a842067a8ca6ef5f4878161bfd7_1440w.png">
+<meta name="twitter:image" content="https://blog.puresai.com/images/post/php.jpeg">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>go-kit - puresai blog</title>
+  <title>解决webman事务不生效的问题 - puresai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -86,7 +86,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 30vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -253,13 +253,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
+     style="background: url('/images/post/php.jpeg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">go-kit</span>
+            <span id="subtitle">解决webman事务不生效的问题</span>
           
         </div>
 
@@ -270,8 +270,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-02-12 21:48" pubdate>
-          2021年2月12日
+        <time datetime="2024-08-07 11:34" pubdate>
+          2024年8月7日
         </time>
       </span>
     
@@ -283,7 +283,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.6k 字
+          826 字
         
       </span>
     
@@ -295,7 +295,7 @@
         
         
           <!-- compatible with older versions-->
-          31 分钟
+          7 分钟
         
       </span>
     
@@ -349,17 +349,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="goexample"
-        id="heading-bbf4bcbc3b6c234b840e985b0b467701" role="tab" data-toggle="collapse" href="#collapse-bbf4bcbc3b6c234b840e985b0b467701"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="webman"
+        id="heading-9ec45f1fb0e5d1a0e136ef772fe845f8" role="tab" data-toggle="collapse" href="#collapse-9ec45f1fb0e5d1a0e136ef772fe845f8"
         aria-expanded="true"
       >
-        goexample
-        <span class="list-group-count">(10)</span>
+        webman
+        <span class="list-group-count">(1)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-bbf4bcbc3b6c234b840e985b0b467701"
-           role="tabpanel" aria-labelledby="heading-bbf4bcbc3b6c234b840e985b0b467701">
+      <div class="category-collapse collapse show" id="collapse-9ec45f1fb0e5d1a0e136ef772fe845f8"
+           role="tabpanel" aria-labelledby="heading-9ec45f1fb0e5d1a0e136ef772fe845f8">
         
         
           
@@ -368,91 +368,10 @@
     
       
       
-        <a href="/2021/02/12/goexample1/" title="搭建http server"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">搭建http server</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go+MongoDB实现附近的人</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">利用gin搭建一个api框架</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">防止漏打卡，利用gin和cron来做一个智能提醒</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample6/" title="go-kit"
+        <a href="/2024/08/07/521/" title="解决webman事务不生效的问题"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">go-kit</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample4/" title="gRPC"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">gRPC</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample5/" title="go面向对象"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go面向对象</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">goruntine和channel</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">golang限流器</span>
+          <span class="category-post">解决webman事务不生效的问题</span>
         </a>
       
     
@@ -475,170 +394,41 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">go-kit</h1>
+            <h1 style="display: none">解决webman事务不生效的问题</h1>
             
             <div class="markdown-body">
               
-              <h2 id="何为go-kit"><a href="#何为go-kit" class="headerlink" title="何为go-kit"></a>何为go-kit</h2><blockquote>
-<p><strong>Go kit</strong> is a <strong>programming toolkit</strong> for building microservices (or elegant monoliths) in Go. We solve common problems in distributed systems and application architecture so you can focus on delivering business value.</p>
-</blockquote>
-<p>go kit是一个用于在Go中构建微服务（或优雅的整体）的编程工具包，解决了分布式系统和应用程序体系结构中的常见问题，以便开发者能够专注于业务交付。</p>
-<hr>
-<p>go-kit主要分为三层结构：Transport层，Endpoint层，Service层。</p>
-<ul>
-<li>Transport 负责与传输协议HTTP、GRPC等相关的逻辑</li>
-<li>Endpoint 负责request/response格式的转换，以及公用拦截器相关的逻辑</li>
-<li>Service 业务逻辑。</li>
-</ul>
-<p>另外，go-kit提供log日志，metric计数器，tracing请求跟踪，circuitbreaker服务熔断，rate-limiter限流器等模块。简单说，go-kit提供了微服务架构常见的基础模块，可以让开发者省去很多时间。</p>
-<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>了解还不够，show code。</p>
-<p>我们先定义下service，不如就做个简单的计算器，仅仅做演示，有加减功能即可，不整太复杂了。</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> service
-
-<span class="hljs-comment">// 接口定义</span>
-<span class="hljs-keyword">type</span> CalculateService <span class="hljs-keyword">interface</span> &#123;
-	Add(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span>
-	Reduce(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span>
-	Multi(a, b <span class="hljs-keyword">int</span>) <span class="hljs-keyword">int</span>
-&#125;
-
-<span class="hljs-keyword">type</span> calculateService <span class="hljs-keyword">struct</span>&#123;&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewService</span><span class="hljs-params">()</span> *<span class="hljs-title">calculateService</span></span> &#123;
-	<span class="hljs-keyword">return</span> &amp;calculateService&#123;&#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Add</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;
-	<span class="hljs-keyword">return</span> a + b
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Reduce</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;
-	<span class="hljs-keyword">return</span> a - b
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *calculateService)</span> <span class="hljs-title">Multi</span><span class="hljs-params">(a, b <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">int</span></span> &#123;
-	<span class="hljs-keyword">return</span> a * b
+              <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>上周 QA 反馈给我说，任务添加失败了，但任务记录多了一条，我想我用了事务按理不应该啊。</p>
+<h3 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h3><h4 id="检查代码逻辑"><a href="#检查代码逻辑" class="headerlink" title="检查代码逻辑"></a>检查代码逻辑</h4><p>检查项目代码，（使用的 webman ）</p>
+<div class="code-wrapper"><pre><code class="hljs php">Db::beginTransaction();
+<span class="hljs-keyword">try</span> &#123;
+    <span class="hljs-comment">// 省略业务代码</span>
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> \<span class="hljs-built_in">Exception</span>(<span class="hljs-string">&#x27;mode 错误&#x27;</span>);
+&#125; <span class="hljs-keyword">catch</span> (\<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$e</span> ) &#123;
+    Db::rollback();
 &#125;</code></pre></div>
-
+<p>逻辑看似无误，失败后确实提示了，但也确实多了条数据。</p>
+<h4 id="查手册"><a href="#查手册" class="headerlink" title="查手册"></a>查手册</h4><p>查手册 <a target="_blank" rel="noopener" href="https://www.workerman.net/doc/webman/others/transaction.html">https://www.workerman.net/doc/webman/others/transaction.html</a> 看到</p>
 <blockquote>
-<p>注意：Go 接口是一组方法的集合，可以理解为抽象的类型。它提供了一种非侵入式的接口。任何类型，只要实现了该接口中方法集，那么就属于这个类型。（这是go中非常常用的特性，切记)</p>
+<p>这里特别需要注意的是必须使用\Throwable而不能使用\Exception，因为业务处理过程中可能触发Error，它并不属于Exception</p>
 </blockquote>
-<p>endpoint格式化请求，调用service服务，并格式化输出</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> endpoint
-
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;context&quot;</span>
-	<span class="hljs-string">&quot;demo6/service&quot;</span>
-	<span class="hljs-string">&quot;fmt&quot;</span>
-
-	<span class="hljs-string">&quot;github.com/go-kit/kit/endpoint&quot;</span>
-)
-
-<span class="hljs-keyword">type</span> Request <span class="hljs-keyword">struct</span> &#123;
-	A <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;a&quot; form:&quot;a&quot;`</span>
-	B <span class="hljs-keyword">int</span> <span class="hljs-string">`json:&quot;b&quot; form:&quot;b&quot;`</span>
-&#125;
-
-<span class="hljs-keyword">type</span> Res <span class="hljs-keyword">struct</span> &#123;
-	Res <span class="hljs-keyword">int</span>   <span class="hljs-string">`json:&quot;res&quot;`</span>
-	Err error <span class="hljs-string">`json:&quot;err&quot;`</span>
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeAddEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;
-	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
-		req := request.(Request)
-		<span class="hljs-keyword">return</span> Res&#123;Res: s.Add(req.A, req.B)&#125;, <span class="hljs-literal">nil</span>
-	&#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeReduceEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;
-	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
-		req := request.(Request)
-		<span class="hljs-keyword">return</span> Res&#123;Res: s.Reduce(req.A, req.B)&#125;, <span class="hljs-literal">nil</span>
-	&#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeMultiEndpoint</span><span class="hljs-params">(s service.CalculateService)</span> <span class="hljs-title">endpoint</span>.<span class="hljs-title">Endpoint</span></span> &#123;
-	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(_ context.Context, request <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
-		req := request.(Request)
-		<span class="hljs-keyword">return</span> Res&#123;Res: s.Multi(req.A, req.B)&#125;, <span class="hljs-literal">nil</span>
-	&#125;
+<p>修改Exception 为 Throwable，本地测试，还是一样的情况。</p>
+<h4 id="社区搜索"><a href="#社区搜索" class="headerlink" title="社区搜索"></a>社区搜索</h4><p>然后排查是不是connection 指定问题（搜索社区问题），发现我使用的 Model 没有指定，按逻辑是集成了父类</p>
+<blockquote>
+<p>protected $connection = ‘plugin.admin.mysql’;</p>
+</blockquote>
+<p>尝试直接指定下，protected $connection = ‘mysql’;</p>
+<p>然后，</p>
+<div class="code-wrapper"><pre><code class="hljs php">Db::connection(<span class="hljs-string">&#x27;mysql&#x27;</span>)-&gt;beginTransaction();
+<span class="hljs-keyword">try</span>&#123;
+    <span class="hljs-comment">// 省略业务代码</span>
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> \<span class="hljs-built_in">Exception</span>(<span class="hljs-string">&#x27;mode 错误&#x27;</span>);
+&#125; <span class="hljs-keyword">catch</span> (\<span class="hljs-built_in">Throwable</span> <span class="hljs-variable">$e</span>) &#123;
+    Db::connection(<span class="hljs-string">&#x27;mysql&#x27;</span>)-&gt;rollback();
 &#125;</code></pre></div>
 
-
-
-<p>接下来，定义transport定义请求方式（这里我们使用json）：</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> transport
-
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;context&quot;</span>
-	<span class="hljs-string">&quot;demo6/endpoint&quot;</span>
-	<span class="hljs-string">&quot;encoding/json&quot;</span>
-	<span class="hljs-string">&quot;errors&quot;</span>
-	<span class="hljs-string">&quot;net/http&quot;</span>
-)
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">DecodeRequest</span><span class="hljs-params">(_ context.Context, r *http.Request)</span> <span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;, error)</span></span> &#123;
-	<span class="hljs-keyword">var</span> req endpoint.Request
-	<span class="hljs-keyword">if</span> err := json.NewDecoder(r.Body).Decode(&amp;req); err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;params error&quot;</span>)
-	&#125;
-	<span class="hljs-keyword">return</span> req, <span class="hljs-literal">nil</span>
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">EncodeResponse</span><span class="hljs-params">(_ context.Context, w http.ResponseWriter, res <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-title">error</span></span> &#123;
-	<span class="hljs-keyword">return</span> json.NewEncoder(w).Encode(res)
-&#125;</code></pre></div>
-
-
-
-<p>最后我们将它们endpoint和transport粘合起来，跑起来go～</p>
-<div class="code-wrapper"><pre><code class="hljs text">package main
-
-import (
-	&quot;demo6/endpoint&quot;
-	&quot;demo6/service&quot;
-	&quot;demo6/transport&quot;
-	&quot;net/http&quot;
-
-	httpTransport &quot;github.com/go-kit/kit/transport/http&quot;
-)
-
-func main() &#123;
-	s := service.NewService()
-
-	add := httpTransport.NewServer(
-		endpoint.MakeAddEndpoint(s),
-		transport.DecodeRequest,
-		transport.EncodeResponse,
-	)
-
-	reduce := httpTransport.NewServer(
-		endpoint.MakeReduceEndpoint(s),
-		transport.DecodeRequest,
-		transport.EncodeResponse,
-	)
-
-	multi := httpTransport.NewServer(
-		endpoint.MakeMultiEndpoint(s),
-		transport.DecodeRequest,
-		transport.EncodeResponse,
-	)
-	http.Handle(&quot;/add&quot;, add)
-	http.Handle(&quot;/reduce&quot;, reduce)
-	http.Handle(&quot;/multi&quot;, multi)
-	http.ListenAndServe(&quot;:9009&quot;, nil)
-&#125;</code></pre></div>
-
-
-
-<p>运行起来：</p>
-<p><img src="/images/post/v2-10d97a842067a8ca6ef5f4878161bfd7_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>成功运行！</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/puresai/go-example/tree/main/demo6-go-kit">详细代码进githubgithub.com/puresai/go-example/tree/main/demo6-go-kit</a></p>
-<hr>
-<p>留一个问题，对于json格式错误的请求，返回的不是json，如何改造，让接口返回json呢？</p>
-<p>最近自己在研究go微服务这块的知识，后续几篇文字应该都会以go-kit为基础展开，有兴趣可继续关注。</p>
+<p>再次测试，添加任务失败后，没有新增一条记录，自增值夜添加了一个，说明事务回滚成功了。</p>
+<p>好了，这次 debug 说明也恰好写出来具体的排查步骤。你有什么想法，欢迎评论区留言！</p>
 
               
             </div>
@@ -656,7 +446,7 @@ func main() &#123;
     
       <span class="category-chain">
         
-  <a href="/categories/goexample/" class="category-chain-item">goexample</a>
+  <a href="/categories/webman/" class="category-chain-item">webman</a>
   
   
 
@@ -671,7 +461,7 @@ func main() &#123;
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/goexample/">#goexample</a>
+        <a href="/tags/webman/">#webman</a>
       
     </div>
   
@@ -683,8 +473,8 @@ func main() &#123;
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>go-kit</div>
-      <div>https://blog.puresai.com/2021/02/12/goexample6/</div>
+      <div>解决webman事务不生效的问题</div>
+      <div>https://blog.puresai.com/2024/08/07/521/</div>
     </div>
     <div class="license-meta">
       
@@ -721,18 +511,12 @@ func main() &#123;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">防止漏打卡，利用gin和cron来做一个智能提醒</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/12/goexample4/" title="gRPC">
-                        <span class="hidden-mobile">gRPC</span>
+                      <a href="/2024/08/01/520/" title="python3查询es超时">
+                        <span class="hidden-mobile">python3查询es超时</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
