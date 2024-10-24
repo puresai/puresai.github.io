@@ -14,25 +14,25 @@
   
   <meta name="theme-color" content="#1E90FF">
   <meta name="author" content="puresai">
-  <meta name="keywords" content="go,golang,限流,ratelimit">
+  <meta name="keywords" content="puresai,golang,Redis,Redis,Linux,MQ">
   
-    <meta name="description" content="通过例子学习go-golang限流器">
+    <meta name="description" content="排查Linux磁盘空间不足的问题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="golang限流器">
-<meta property="og:url" content="https://blog.puresai.com/2021/02/12/goexample9/index.html">
+<meta property="og:title" content="排查Linux磁盘空间不足的问题">
+<meta property="og:url" content="https://blog.puresai.com/2024/10/24/530/index.html">
 <meta property="og:site_name" content="puresai blog">
-<meta property="og:description" content="通过例子学习go-golang限流器">
+<meta property="og:description" content="排查Linux磁盘空间不足的问题">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-02-12T13:48:20.000Z">
-<meta property="article:modified_time" content="2024-04-08T08:13:25.841Z">
+<meta property="article:published_time" content="2024-10-24T14:05:52.000Z">
+<meta property="article:modified_time" content="2024-10-24T14:11:37.753Z">
 <meta property="article:author" content="puresai">
-<meta property="article:tag" content="goexample">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>golang限流器 - puresai blog</title>
+  <title>排查Linux磁盘空间不足的问题 - puresai blog</title>
 
   <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
 
@@ -84,7 +84,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 30vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -251,13 +251,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
+     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">golang限流器</span>
+            <span id="subtitle">排查Linux磁盘空间不足的问题</span>
           
         </div>
 
@@ -268,8 +268,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-02-12 21:48" pubdate>
-          2021年2月12日
+        <time datetime="2024-10-24 22:05" pubdate>
+          2024年10月24日
         </time>
       </span>
     
@@ -281,7 +281,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.8k 字
+          1.5k 字
         
       </span>
     
@@ -293,7 +293,7 @@
         
         
           <!-- compatible with older versions-->
-          16 分钟
+          13 分钟
         
       </span>
     
@@ -347,17 +347,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="goexample"
-        id="heading-bbf4bcbc3b6c234b840e985b0b467701" role="tab" data-toggle="collapse" href="#collapse-bbf4bcbc3b6c234b840e985b0b467701"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Linux"
+        id="heading-edc9f0a5a5d57797bf68e37364743831" role="tab" data-toggle="collapse" href="#collapse-edc9f0a5a5d57797bf68e37364743831"
         aria-expanded="true"
       >
-        goexample
-        <span class="list-group-count">(10)</span>
+        Linux
+        <span class="list-group-count">(1)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-bbf4bcbc3b6c234b840e985b0b467701"
-           role="tabpanel" aria-labelledby="heading-bbf4bcbc3b6c234b840e985b0b467701">
+      <div class="category-collapse collapse show" id="collapse-edc9f0a5a5d57797bf68e37364743831"
+           role="tabpanel" aria-labelledby="heading-edc9f0a5a5d57797bf68e37364743831">
         
         
           
@@ -366,91 +366,10 @@
     
       
       
-        <a href="/2021/02/12/goexample1/" title="搭建http server"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">搭建http server</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go+MongoDB实现附近的人</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">利用gin搭建一个api框架</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">防止漏打卡，利用gin和cron来做一个智能提醒</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample4/" title="gRPC"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">gRPC</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample6/" title="go-kit"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go-kit</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample5/" title="go面向对象"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go面向对象</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
+        <a href="/2024/10/24/530/" title="排查Linux磁盘空间不足的问题"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">golang限流器</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">goruntine和channel</span>
+          <span class="category-post">排查Linux磁盘空间不足的问题</span>
         </a>
       
     
@@ -473,95 +392,32 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">golang限流器</h1>
+            <h1 style="display: none">排查Linux磁盘空间不足的问题</h1>
             
             <div class="markdown-body">
               
-              <p>限流应该是我们开发中经常遇到的了，限流器能保证我们不至于在流量过大的时候服务超过负载，能有效地保证服务的可用和稳定。</p>
-<p>go自带有限流器rate，它的本质其实就是令牌桶。用起来也十分简单。我们修改下之前的http服务做一些修改：</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	<span class="hljs-comment">// ServeMux类型是HTTP请求的多路转接器。它会将每一个接收的请求的URL与一个注册模式的列表进行匹配，并调用和URL最匹配的模式的处理器。</span>
-	mux := http.NewServeMux()
-	mux.HandleFunc(<span class="hljs-string">&quot;/&quot;</span>, defaultHttp)
-	http.ListenAndServe(<span class="hljs-string">&quot;:8080&quot;</span>, middlewareLimit(mux))
-&#125;
+              <p>最近几天收到监控通知服务器 A 磁盘剩余小于10% 的情况。</p>
+<p>排查大文件：</p>
+<div class="code-wrapper"><pre><code class="hljs gradle">[root@syskf175 ~]# <span class="hljs-keyword">find</span> / -type f -<span class="hljs-keyword">size</span> +<span class="hljs-number">100</span>M -exec ls -lh &#123;&#125; \;
+-r--------. <span class="hljs-number">1</span> root root <span class="hljs-number">128</span>T Oct <span class="hljs-number">24</span> <span class="hljs-number">17</span>:<span class="hljs-number">32</span> <span class="hljs-regexp">/proc/</span>kcore
 
-<span class="hljs-comment">// 限流桶</span>
-<span class="hljs-keyword">var</span> limiter = rate.NewLimiter(rate.Every(time.Second), <span class="hljs-number">1</span>)
+<span class="hljs-keyword">find</span>: ‘<span class="hljs-regexp">/proc/</span><span class="hljs-number">30420</span><span class="hljs-regexp">/task/</span><span class="hljs-number">30420</span><span class="hljs-regexp">/fdinfo/</span><span class="hljs-number">5</span>’: No such <span class="hljs-keyword">file</span> or directory
+<span class="hljs-keyword">find</span>: ‘<span class="hljs-regexp">/proc/</span><span class="hljs-number">30420</span><span class="hljs-regexp">/fdinfo/</span><span class="hljs-number">6</span>’: No such <span class="hljs-keyword">file</span> or directory
+-rw-------. <span class="hljs-number">1</span> root root <span class="hljs-number">128</span>M Oct <span class="hljs-number">24</span> <span class="hljs-number">13</span>:<span class="hljs-number">26</span> <span class="hljs-regexp">/sys/</span>devices<span class="hljs-regexp">/pci0000:00/</span><span class="hljs-number">0000</span>:<span class="hljs-number">00</span>:<span class="hljs-number">0</span>f.<span class="hljs-number">0</span>/resource1_wc
+-rw-------. <span class="hljs-number">1</span> root root <span class="hljs-number">128</span>M Oct <span class="hljs-number">24</span> <span class="hljs-number">13</span>:<span class="hljs-number">26</span> <span class="hljs-regexp">/sys/</span>devices<span class="hljs-regexp">/pci0000:00/</span><span class="hljs-number">0000</span>:<span class="hljs-number">00</span>:<span class="hljs-number">0</span>f.<span class="hljs-number">0</span>/resource1
+-rw-r--r--. <span class="hljs-number">1</span> root root <span class="hljs-number">169</span>M Apr <span class="hljs-number">13</span>  <span class="hljs-number">2024</span> <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/rpm/</span>Packages
+-rw-r-----. <span class="hljs-number">1</span> root root <span class="hljs-number">1.1</span>G Oct <span class="hljs-number">24</span> <span class="hljs-number">17</span>:<span class="hljs-number">32</span> <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/docker/</span>containers<span class="hljs-regexp">/3138d971f20379b6c956f1766ec643232e677d622adf37c83520860f54c57415/</span><span class="hljs-number">3138</span>d971f20379b6c956f1766ec643232e677d622adf37c83520860f54c57415-json.log
+-rw-r-----. <span class="hljs-number">1</span> root root <span class="hljs-number">1.6</span>G Oct <span class="hljs-number">22</span> <span class="hljs-number">10</span>:<span class="hljs-number">30</span> <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/docker/</span>containers<span class="hljs-regexp">/dcc20350d4e75259ac2999565c23717d809f457c198b6e7c338e1ca1460a1404/</span>dcc20350d4e75259ac2999565c23717d809f457c198b6e7c338e1ca1460a1404-json.log
+-rw-r-----. <span class="hljs-number">1</span> root root <span class="hljs-number">29</span>G Oct <span class="hljs-number">24</span> <span class="hljs-number">17</span>:<span class="hljs-number">32</span> <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/docker/</span>containers<span class="hljs-regexp">/ff9662f09d5348efd572445db6b0716b6397e3341e6e538703aac722cepuresai/</span>ff9662f09d5348efd572445db6b0716b6397e3341e6e538703aac722cepuresai-json.log
+-rw-r--r--. <span class="hljs-number">1</span> root root <span class="hljs-number">147</span>M Apr  <span class="hljs-number">3</span>  <span class="hljs-number">2024</span> <span class="hljs-regexp">/var/</span>cache<span class="hljs-regexp">/yum/</span>x86_64<span class="hljs-regexp">/7/u</span>pdates<span class="hljs-regexp">/gen/</span>primary_db.sqlite
+-rw-r--r--. <span class="hljs-number">1</span> root root <span class="hljs-number">102</span>M Apr <span class="hljs-number">13</span>  <span class="hljs-number">2024</span> <span class="hljs-regexp">/usr/</span>lib<span class="hljs-regexp">/locale/</span>locale-archive
+-rwxr-xr-x. <span class="hljs-number">1</span> root root <span class="hljs-number">138</span>M Feb <span class="hljs-number">14</span>  <span class="hljs-number">2022</span> <span class="hljs-regexp">/usr/</span>lib64<span class="hljs-regexp">/firefox/</span>libxul.so</code></pre></div>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">middlewareLimit</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> &#123;
-	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
+<p>能看到有个 29G 的大文件，考虑是 docker 容器日志，保留意义不大。</p>
+<p>清空即可：</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">truncate</span> -s <span class="hljs-number">0</span> /var/lib/docker/containers/ff<span class="hljs-number">9662</span>f<span class="hljs-number">09</span>d<span class="hljs-number">5348</span>efd<span class="hljs-number">572445</span>db<span class="hljs-number">6</span>b<span class="hljs-number">0716</span>b<span class="hljs-number">6397</span>e<span class="hljs-number">3341</span>e<span class="hljs-number">6</span>e<span class="hljs-number">538703</span>aac<span class="hljs-number">722</span>cepuresai/ff<span class="hljs-number">9662</span>f<span class="hljs-number">09</span>d<span class="hljs-number">5348</span>efd<span class="hljs-number">572445</span>db<span class="hljs-number">6</span>b<span class="hljs-number">0716</span>b<span class="hljs-number">6397</span>e<span class="hljs-number">3341</span>e<span class="hljs-number">6</span>e<span class="hljs-number">538703</span>aac<span class="hljs-number">722</span>cepuresai-json.log</code></pre></div>
 
-		<span class="hljs-keyword">if</span> limiter.Allow() == <span class="hljs-literal">false</span> &#123;
-			fmt.Println(<span class="hljs-string">&quot;limit&quot;</span>)
-			<span class="hljs-keyword">return</span>
-		&#125;
-
-		next.ServeHTTP(w, r)
-	&#125;)
-&#125;
-
-<span class="hljs-comment">// 默认http处理</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">defaultHttp</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
-	path := r.URL.Path
-
-	<span class="hljs-keyword">if</span> path == <span class="hljs-string">&quot;/&quot;</span> &#123;
-		w.Write([]<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;index&quot;</span>))
-		fmt.Println(<span class="hljs-string">&quot;index&quot;</span>)
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	<span class="hljs-comment">// 自定义404</span>
-	http.Error(w, <span class="hljs-string">&quot;you lost???&quot;</span>, http.StatusNotFound)
-&#125;</code></pre></div>
-
-<p>这里的</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> limiter = rate.NewLimiter(rate.Every(<span class="hljs-number">2</span>*time.Second), <span class="hljs-number">1</span>)</code></pre></div>
-
-<p>就是定义了一个限流器，生成速率是1 个/s，令牌桶的容量是1。也就是每秒最多能通过2个请求。</p>
-<p>我们可以用ab或者快速刷新浏览器来看一下效果</p>
-<p>是不是有点类似nginx的限流模块：</p>
-<div class="code-wrapper"><pre><code class="hljs text">limit_req_zone  $binary_remote_addr  zone=one:10m  rate=1r/s;
-
-server &#123;
-    ...
-
-    location / &#123;
-        #缓存区队列burst=5个,nodelay表示不延期(超过的请求失败)，即每秒最多可处理rate+burst个,同时处理rate个。
-        limit_req zone=one burst=1 nodelay; 
-    &#125;
-&#125;</code></pre></div>
-
-
-
-<hr>
-<p>上面的代码有两处注意点：</p>
-<ul>
-<li>middlewareLimit 可看作一个http server的前置中间件，你可以类比去自己处理复杂的http中间件业务。</li>
-<li>限流器的初始化务必在中间件前生成，可以尝试修改代码再测试:</li>
-</ul>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">middlewareLimit</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> &#123;
-	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;
-		limiter := rate.NewLimiter(rate.Every(<span class="hljs-number">2</span>*time.Second), <span class="hljs-number">10</span>)
-		<span class="hljs-keyword">if</span> limiter.Allow() == <span class="hljs-literal">false</span> &#123;
-			fmt.Println(<span class="hljs-string">&quot;limit&quot;</span>)
-			<span class="hljs-keyword">return</span>
-		&#125;
-
-		next.ServeHTTP(w, r)
-	&#125;)
-&#125;</code></pre></div>
-
-
-
-<p>此外，Limiter 也有其他的方法：</p>
-<ul>
-<li>SetLimit(Limit) 动态修改放入令牌的速率</li>
-<li>SetBurst(int) 动态修改桶大小</li>
-<li>Wait/WaitN 当没有可用事件时，将阻塞等待</li>
-<li>Reserve/ReserveN 当没有可用事件时，返回 Reservation，和要等待多久才能获得足够的事件</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/puresai/go-example/tree/main/demo9-rate">代码点击见githubgithub.com/puresai/go-example/tree/main/demo9-rate</a></p>
+<p>看到剩余空间足够了，不用挂载新磁盘了。</p>
 
               
             </div>
@@ -579,7 +435,7 @@ server &#123;
     
       <span class="category-chain">
         
-  <a href="/categories/goexample/" class="category-chain-item">goexample</a>
+  <a href="/categories/Linux/" class="category-chain-item">Linux</a>
   
   
 
@@ -594,7 +450,7 @@ server &#123;
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/goexample/">#goexample</a>
+        <a href="/tags/Linux/">#Linux</a>
       
     </div>
   
@@ -606,8 +462,8 @@ server &#123;
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>golang限流器</div>
-      <div>https://blog.puresai.com/2021/02/12/goexample9/</div>
+      <div>排查Linux磁盘空间不足的问题</div>
+      <div>https://blog.puresai.com/2024/10/24/530/</div>
     </div>
     <div class="license-meta">
       
@@ -644,18 +500,12 @@ server &#123;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">docker-compose整合go-kit和mysql、Redis</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/12/goexample8/" title="goruntine和channel">
-                        <span class="hidden-mobile">goruntine和channel</span>
+                      <a href="/2024/09/22/525/" title="python3读取csv _csv.Error: line contains NUL">
+                        <span class="hidden-mobile">python3读取csv _csv.Error: line contains NUL</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
