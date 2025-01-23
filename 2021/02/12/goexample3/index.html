@@ -1,20 +1,24 @@
 
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
+<!DOCTYPE html><html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
-  <link rel="icon" href="/images/qiniu/sai.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
   
-  <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="puresai">
-  <meta name="keywords" content="go,golang,gin,go-Redis,cron">
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>防止漏打卡，利用gin和cron来做一个智能提醒 - puresai blog</title>
+
   
     <meta name="description" content="通过例子学习go-防止漏打卡，利用gin和cron来做一个智能提醒">
 <meta property="og:type" content="article">
@@ -28,458 +32,67 @@
 <meta property="article:modified_time" content="2024-04-08T08:13:25.832Z">
 <meta property="article:author" content="puresai">
 <meta property="article:tag" content="goexample">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.puresai.com/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png">
   
   
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>防止漏打卡，利用gin和cron来做一个智能提醒 - puresai blog</title>
+  <meta name="keywords" content="go,golang,gin,go-Redis,cron">
 
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/github-markdown-css/5.1.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  <!-- feed -->
   
 
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
 
   
-<meta name="generator" content="Hexo 5.4.0"></head>
+    <link rel="shortcut icon" href="/favicon.ico">
+  
 
+  
 
+  
+</head>
 <body>
-  
 
-  <header>
-    
-
-<div class="header-inner" style="height: 60vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>puresai blog</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="iconfont icon-books"></i>
-                专栏
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/goexample/">
-                    
-                    实例学go
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/gosourcecode/">
-                    
-                    go源码笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/phpframe/">
-                    
-                    手写PHP API框架
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/reading/">
-                    
-                    读书笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Nginx/">
-                    
-                    Nginx系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/MySQL/">
-                    
-                    Mysql系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Redis/">
-                    
-                    Redis系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/k8s-learing/">
-                    
-                    Kuberetes系列
-                  </a>
-                
-              </div>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" target="_blank" rel="noopener" href="https://puresai.com/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle">防止漏打卡，利用gin和cron来做一个智能提醒</span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-02-12 21:48" pubdate>
-          2021年2月12日
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          13k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          110 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span> 次
-        </span>
-        
-      
-    
-  </div>
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
-        
-      </div>
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="undefined" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">puresai blog</div><div class="sub cap">puresai blog</div></a></div></header>
 
-      
-    </div>
-  </div>
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/11/24/520/"><span class="title">Python3虚拟环境venv</span></a><a class="item title" href="/2024/10/24/530/"><span class="title">排查Linux磁盘空间不足的问题</span></a><a class="item title" href="/2024/09/22/525/"><span class="title">python3读取csv _csv.Error: line contains NUL</span></a><a class="item title" href="/2024/08/16/471/"><span class="title">mysql如何使用不定数量的查询</span></a><a class="item title" href="/2024/08/01/520/"><span class="title">python3查询es超时</span></a><a class="item title" href="/2024/08/07/521/"><span class="title">解决webman事务不生效的问题</span></a><a class="item title" href="/2024/04/21/512/"><span class="title">检查是否在企业微信中</span></a><a class="item title" href="/2022/08/10/432/"><span class="title">kubernete实战篇-外部服务</span></a><a class="item title" href="/2017/01/05/95/"><span class="title">windows7创建任务计划</span></a><a class="item title" href="/2024/04/14/511/"><span class="title">做一个简单的服务器监控企业微信通知</span></a></div></widget>
 </div>
 
-</div>
-
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar category-bar" style="margin-right: -1rem">
-    
+</div></aside><div class="l_main" id="main">
 
 
 
 
 
-<div class="category-list">
-  
-  
-  
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/goexample/">goexample</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2021-02-12T13:48:20.000Z">2021-02-12</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-04-08T08:13:25.832Z">2024-04-08</time></span></div></div></div>
     
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="goexample"
-        id="heading-bbf4bcbc3b6c234b840e985b0b467701" role="tab" data-toggle="collapse" href="#collapse-bbf4bcbc3b6c234b840e985b0b467701"
-        aria-expanded="true"
-      >
-        goexample
-        <span class="list-group-count">(10)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
+    <div class="bottom only-title">
       
-      <div class="category-collapse collapse show" id="collapse-bbf4bcbc3b6c234b840e985b0b467701"
-           role="tabpanel" aria-labelledby="heading-bbf4bcbc3b6c234b840e985b0b467701">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2021/02/12/goexample1/" title="搭建http server"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">搭建http server</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">利用gin搭建一个api框架</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample5/" title="go面向对象"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go面向对象</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go+MongoDB实现附近的人</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒"
-           class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">防止漏打卡，利用gin和cron来做一个智能提醒</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample4/" title="gRPC"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">gRPC</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample6/" title="go-kit"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go-kit</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">golang限流器</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">goruntine和channel</span>
-        </a>
-      
-    
-  </div>
-
+      <div class="text-area">
+        <h1 class="text title"><span>防止漏打卡，利用gin和cron来做一个智能提醒</span></h1>
         
       </div>
     </div>
-  
-</div>
-
-
-  </aside>
-
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">防止漏打卡，利用gin和cron来做一个智能提醒</h1>
-            
-            <div class="markdown-body">
-              
-              <p>目标：</p>
+    
+  </div>
+  </div><article class="md-text content"><p>目标：</p>
 <ul>
 <li>每天10点提醒我打卡</li>
 <li>查询杭州天气</li>
@@ -497,960 +110,524 @@
 <blockquote>
 <p>建议设置成加签或ip限制，以防被恶意攻击</p>
 </blockquote>
-<h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><div class="code-wrapper"><pre><code class="hljs text">// util/common.go
-// 就列了一些常见的，可自行扩展
-func UpdateKeywords() &#123;
-	Redis := model.RedisClient.Pipeline()
-	key := KeyWords
-	Redis.HSet(model.Ctx, key, &quot;分钟后&quot;, &quot;1|60&quot;)
-	Redis.HSet(model.Ctx, key, &quot;时后&quot;, &quot;1|3600&quot;)
-	Redis.HSet(model.Ctx, key, &quot;天后&quot;, &quot;1|86400&quot;)
-	Redis.HSet(model.Ctx, key, &quot;每天&quot;, &quot;-1|1&quot;)
-	Redis.HSet(model.Ctx, key, &quot;每周一&quot;, &quot;2|0&quot;)
-	Redis.HSet(model.Ctx, key, &quot;每周二&quot;, &quot;2|1&quot;)
-	Redis.HSet(model.Ctx, key, &quot;每周三&quot;, &quot;2|2&quot;)
-	Redis.HSet(model.Ctx, key, &quot;每周四&quot;, &quot;2|3&quot;)
-	Redis.HSet(model.Ctx, key, &quot;每周五&quot;, &quot;2|4&quot;)
-	Redis.HSet(model.Ctx, key, &quot;每周六&quot;, &quot;2|5&quot;)
-	Redis.HSet(model.Ctx, key, &quot;每周日&quot;, &quot;2|6&quot;)
-	Redis.HSet(model.Ctx, key, &quot;周一&quot;, &quot;3|0&quot;)
-	Redis.HSet(model.Ctx, key, &quot;周二&quot;, &quot;3|1&quot;)
-	Redis.HSet(model.Ctx, key, &quot;周三&quot;, &quot;3|2&quot;)
-	Redis.HSet(model.Ctx, key, &quot;周四&quot;, &quot;3|3&quot;)
-	Redis.HSet(model.Ctx, key, &quot;周五&quot;, &quot;3|4&quot;)
-	Redis.HSet(model.Ctx, key, &quot;周六&quot;, &quot;3|5&quot;)
-	...
-	Redis.HSet(model.Ctx, key, &quot;今天&quot;, &quot;4|0&quot;)
-	Redis.HSet(model.Ctx, key, &quot;明天&quot;, &quot;4|1&quot;)
-	Redis.HSet(model.Ctx, key, &quot;后天&quot;, &quot;4|2&quot;)
-	Redis.HSet(model.Ctx, key, &quot;取消&quot;, &quot;0|0&quot;)
-	Redis.Exec(model.Ctx)
-&#125;</code></pre></div>
+<h2 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h2><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">// util/common.go</span><br><span class="line">// 就列了一些常见的，可自行扩展</span><br><span class="line">func UpdateKeywords() &#123;</span><br><span class="line">	Redis := model.RedisClient.Pipeline()</span><br><span class="line">	key := KeyWords</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;分钟后&quot;, &quot;1|60&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;时后&quot;, &quot;1|3600&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;天后&quot;, &quot;1|86400&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;每天&quot;, &quot;-1|1&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;每周一&quot;, &quot;2|0&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;每周二&quot;, &quot;2|1&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;每周三&quot;, &quot;2|2&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;每周四&quot;, &quot;2|3&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;每周五&quot;, &quot;2|4&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;每周六&quot;, &quot;2|5&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;每周日&quot;, &quot;2|6&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;周一&quot;, &quot;3|0&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;周二&quot;, &quot;3|1&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;周三&quot;, &quot;3|2&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;周四&quot;, &quot;3|3&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;周五&quot;, &quot;3|4&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;周六&quot;, &quot;3|5&quot;)</span><br><span class="line">	...</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;今天&quot;, &quot;4|0&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;明天&quot;, &quot;4|1&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;后天&quot;, &quot;4|2&quot;)</span><br><span class="line">	Redis.HSet(model.Ctx, key, &quot;取消&quot;, &quot;0|0&quot;)</span><br><span class="line">	Redis.Exec(model.Ctx)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>关键字，可以自行扩展，可能会有覆盖的情况，这里需要抉择，是匹配第一个还是匹配字数最多的，我此处选择后者的。</p>
 <h3 id="解析内容"><a href="#解析内容" class="headerlink" title="解析内容"></a><strong>解析内容</strong></h3><p>钉钉文档的outgoing说明不全，或者是藏在哪里我没找到，可以使用@机器人接收信息打印看一下。</p>
-<div class="code-wrapper"><pre><code class="hljs text">//关注senderId发送人id，text发送内容，senderNick发送人昵称即可
-
-&#123;
-    &quot;conversationId&quot;:&quot;xxx&quot;,
-    &quot;atUsers&quot;:[
-        &#123;
-            &quot;dingtalkId&quot;:&quot;xxx&quot;
-        &#125;],
-    &quot;chatbotUserId&quot;:&quot;xxx&quot;,
-    &quot;msgId&quot;:&quot;xxx&quot;,
-    &quot;senderNick&quot;:&quot;sai0556&quot;,
-    &quot;isAdmin&quot;:false,
-    &quot;sessionWebhookExpiredTime&quot;:1594978626787,
-    &quot;createAt&quot;:1594973226742,
-    &quot;conversationType&quot;:&quot;2&quot;,
-    &quot;senderId&quot;:&quot;xxx&quot;,
-    &quot;conversationTitle&quot;:&quot;智能备忘录&quot;,
-    &quot;isInAtList&quot;:true,
-    &quot;sessionWebhook&quot;:&quot;xxx&quot;,
-    &quot;text&quot;:&#123;
-        &quot;content&quot;:&quot; hello gin-frame&quot;
-    &#125;,
-    &quot;msgtype&quot;:&quot;text&quot;
-&#125;</code></pre></div>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">//关注senderId发送人id，text发送内容，senderNick发送人昵称即可</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    &quot;conversationId&quot;:&quot;xxx&quot;,</span><br><span class="line">    &quot;atUsers&quot;:[</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;dingtalkId&quot;:&quot;xxx&quot;</span><br><span class="line">        &#125;],</span><br><span class="line">    &quot;chatbotUserId&quot;:&quot;xxx&quot;,</span><br><span class="line">    &quot;msgId&quot;:&quot;xxx&quot;,</span><br><span class="line">    &quot;senderNick&quot;:&quot;sai0556&quot;,</span><br><span class="line">    &quot;isAdmin&quot;:false,</span><br><span class="line">    &quot;sessionWebhookExpiredTime&quot;:1594978626787,</span><br><span class="line">    &quot;createAt&quot;:1594973226742,</span><br><span class="line">    &quot;conversationType&quot;:&quot;2&quot;,</span><br><span class="line">    &quot;senderId&quot;:&quot;xxx&quot;,</span><br><span class="line">    &quot;conversationTitle&quot;:&quot;智能备忘录&quot;,</span><br><span class="line">    &quot;isInAtList&quot;:true,</span><br><span class="line">    &quot;sessionWebhook&quot;:&quot;xxx&quot;,</span><br><span class="line">    &quot;text&quot;:&#123;</span><br><span class="line">        &quot;content&quot;:&quot; hello gin-frame&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;msgtype&quot;:&quot;text&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
 <p>定义一个struct，接收消息</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> DingDingMsgContent <span class="hljs-keyword">struct</span> &#123;
-	SenderNick <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;senderNick&quot;`</span>
-	SenderId <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;senderId&quot;`</span>
-	Text <span class="hljs-keyword">struct</span> &#123;
-		Content <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;content&quot;`</span>
-	&#125; <span class="hljs-string">`json:&quot;text&quot;`</span>
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">DingDing</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
-	data, _ := ioutil.ReadAll(c.Request.Body)
-	form := DingDingMsgContent&#123;&#125;
-	err := json.Unmarshal([]<span class="hljs-keyword">byte</span>(data), &amp;form)
-	<span class="hljs-comment">// err := c.ShouldBindJSON(&amp;form)</span>
-	<span class="hljs-keyword">if</span>  err != <span class="hljs-literal">nil</span> &#123;
-		fmt.Println(err)
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	....
-&#125;</code></pre></div>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> DingDingMsgContent <span class="keyword">struct</span> &#123;</span><br><span class="line">	SenderNick <span class="type">string</span> <span class="string">`json:&quot;senderNick&quot;`</span></span><br><span class="line">	SenderId <span class="type">string</span> <span class="string">`json:&quot;senderId&quot;`</span></span><br><span class="line">	Text <span class="keyword">struct</span> &#123;</span><br><span class="line">		Content <span class="type">string</span> <span class="string">`json:&quot;content&quot;`</span></span><br><span class="line">	&#125; <span class="string">`json:&quot;text&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DingDing</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">	data, _ := ioutil.ReadAll(c.Request.Body)</span><br><span class="line">	form := DingDingMsgContent&#123;&#125;</span><br><span class="line">	err := json.Unmarshal([]<span class="type">byte</span>(data), &amp;form)</span><br><span class="line">	<span class="comment">// err := c.ShouldBindJSON(&amp;form)</span></span><br><span class="line">	<span class="keyword">if</span>  err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>解析，注意定义了一些特殊情况，比如绑定手机，取消任务等，做对应的特殊处理，绑定手机是为了@ 某人，否则消息容易被忽略。</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">parseContent</span><span class="hljs-params">(form DingDingMsgContent)</span> <span class="hljs-params">(err error)</span></span> &#123;
-	str := form.Text.Content
-	Redis := db.RedisClient
-	fmt.Println(str)
-
-	<span class="hljs-comment">// 要先绑定哟，不然无法@到对应的人</span>
-	index := strings.Index(str, <span class="hljs-string">&quot;绑定手机&quot;</span>)
-	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;
-		reg := regexp.MustCompile(<span class="hljs-string">&quot;1[0-9]&#123;10&#125;&quot;</span>)
-		res := reg.FindAllString(str, <span class="hljs-number">1</span>)
-		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &lt; <span class="hljs-number">1</span> || res[<span class="hljs-number">0</span>] == <span class="hljs-string">&quot;&quot;</span> &#123;
-			err = errors.New(<span class="hljs-string">&quot;手机格式不正确&quot;</span>)
-			<span class="hljs-keyword">return</span>
-		&#125;
-		Redis.HSet(db.Ctx, util.KeyDingDingID, form.SenderId, res[<span class="hljs-number">0</span>])
-		util.SendDD(<span class="hljs-string">&quot;绑定成功&quot;</span>)
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	hExist := Redis.HExists(db.Ctx, util.KeyDingDingID, form.SenderId)
-	<span class="hljs-keyword">if</span> !hExist.Val() &#123;
-		err = errors.New(<span class="hljs-string">&quot;绑定手机号才能精确提醒哦，发送--绑定手机 13456567878--@我即可&quot;</span>)
-		<span class="hljs-keyword">return</span> 
-	&#125;
-
-	index = strings.Index(util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;我的提醒&quot;</span>)
-	fmt.Println(index, <span class="hljs-string">&quot;---&quot;</span>, util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>))
-	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;
-		www := util.QueryAllQueue(form.SenderId);
-		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(www) &lt; <span class="hljs-number">1</span> &#123;
-			err = errors.New(<span class="hljs-string">&quot;暂无任务&quot;</span>)
-			<span class="hljs-keyword">return</span>
-		&#125; 
-		msg := <span class="hljs-string">&quot;&quot;</span>
-		<span class="hljs-keyword">for</span> key,value := <span class="hljs-keyword">range</span> www &#123;
-			fmt.Println(strings.Index(value, <span class="hljs-string">&quot;@&quot;</span>))
-			value := value[<span class="hljs-number">0</span>:strings.Index(value, <span class="hljs-string">&quot;@&quot;</span>)]
-			fmt.Println(value)
-			msg = util.StrCombine(msg, <span class="hljs-string">&quot;任务id：&quot;</span>, key, <span class="hljs-string">&quot;，任务内容：&quot;</span>, value, <span class="hljs-string">&quot;&#123;br&#125;&quot;</span>)
-		&#125;
-		err = errors.New(msg)
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	index = strings.Index(util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;查看任务&quot;</span>)
-	fmt.Println(index, <span class="hljs-string">&quot;---&quot;</span>, util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>))
-	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;
-		www := util.QueryAllQueue(form.SenderId);
-		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(www) &lt; <span class="hljs-number">1</span> &#123;
-			err = errors.New(<span class="hljs-string">&quot;暂无任务&quot;</span>)
-			<span class="hljs-keyword">return</span>
-		&#125; 
-		msg := <span class="hljs-string">&quot;&quot;</span>
-		<span class="hljs-keyword">for</span> key,value := <span class="hljs-keyword">range</span> www &#123;
-			fmt.Println(strings.Index(value, <span class="hljs-string">&quot;@&quot;</span>))
-			value := value[<span class="hljs-number">0</span>:strings.Index(value, <span class="hljs-string">&quot;@&quot;</span>)]
-			fmt.Println(value)
-			msg = util.StrCombine(msg, <span class="hljs-string">&quot;任务id：&quot;</span>, key, <span class="hljs-string">&quot;，任务内容：&quot;</span>, value, <span class="hljs-string">&quot;&#123;br&#125;&quot;</span>)
-		&#125;
-		err = errors.New(msg)
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	index = strings.Index(util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;取消所有任务&quot;</span>)
-	fmt.Println(index, <span class="hljs-string">&quot;---&quot;</span>, util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>))
-	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;
-		<span class="hljs-keyword">if</span> er := util.CancelAllQueue(form.SenderId); er != <span class="hljs-literal">nil</span> &#123;
-			err = er
-			<span class="hljs-keyword">return</span>
-		&#125;
-		err = errors.New(<span class="hljs-string">&quot;取消成功&quot;</span>)
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	index = strings.Index(util.StrSub(str, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;取消&quot;</span>)
-	<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &#123;
-		reg := regexp.MustCompile(<span class="hljs-string">&quot;[a-z0-9]&#123;32&#125;&quot;</span>)
-		res := reg.FindAllString(str, <span class="hljs-number">1</span>)
-		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &lt; <span class="hljs-number">1</span> &#123;
-			err = errors.New(<span class="hljs-string">&quot;任务id不正确&quot;</span>)
-			<span class="hljs-keyword">return</span>
-		&#125;
-		<span class="hljs-keyword">if</span> er := util.CancelQueue(res[<span class="hljs-number">0</span>], form.SenderId); er != <span class="hljs-literal">nil</span> &#123;
-			err = er
-			<span class="hljs-keyword">return</span>
-		&#125;
-		err = errors.New(<span class="hljs-string">&quot;取消成功&quot;</span>)
-		<span class="hljs-keyword">return</span>
-
-	&#125;
-
-	<span class="hljs-keyword">return</span>
-&#125;
-
-<span class="hljs-comment">// 提醒内容</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tips</span><span class="hljs-params">(form DingDingMsgContent)</span> <span class="hljs-params">(err error)</span></span>  &#123;
-	rd := db.RedisClient
-	str := form.Text.Content
-
-	mobile := rd.HGet(db.Ctx, util.KeyDingDingID, form.SenderId).Val()
-	key := util.KeyWords
-	list, _ := rd.HGetAll(db.Ctx, key).Result()
-	now := time.Now().Unix()
-	tipsType := <span class="hljs-number">1</span>
-	k := <span class="hljs-string">&quot;&quot;</span>
-	v := <span class="hljs-string">&quot;&quot;</span>
-	fmt.Println(<span class="hljs-string">&quot;str&quot;</span>, str)
-
-	index := <span class="hljs-number">0</span>
-
-	<span class="hljs-keyword">for</span> key, value := <span class="hljs-keyword">range</span> list &#123;
-		index = util.UnicodeIndex(str, key)
-		<span class="hljs-keyword">if</span> index &gt; <span class="hljs-number">-1</span> &amp;&amp; util.StrLen(key) &gt; util.StrLen(k) &#123;
-			fmt.Println(<span class="hljs-string">&quot;index&quot;</span>, index, str, key, value)
-			k = key
-			v = value
-		&#125;
-	&#125;
-
-	msg := <span class="hljs-string">&quot;&quot;</span>
-	<span class="hljs-keyword">var</span> score <span class="hljs-keyword">int64</span>
-	<span class="hljs-keyword">if</span> k != <span class="hljs-string">&quot;&quot;</span> &#123;
-		kLen := util.StrLen(k)
-		msg = util.StrSub(str, index+kLen)
-
-		val := strings.Split(v, <span class="hljs-string">&quot;|&quot;</span>)
-		unit := val[<span class="hljs-number">1</span>]
-		units,_ := strconv.Atoi(unit)
-
-		<span class="hljs-keyword">switch</span> val[<span class="hljs-number">0</span>] &#123;
-			<span class="hljs-comment">// 多少时间后</span>
-			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;1&quot;</span>:
-				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)
-				res := reg.FindAllString(str, <span class="hljs-number">1</span>)
-				minute, _ := strconv.Atoi(res[<span class="hljs-number">0</span>])
-				score = now + <span class="hljs-keyword">int64</span>(units*minute)
-			<span class="hljs-comment">// 每周</span>
-			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;2&quot;</span>:
-				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)
-				res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)
-				hour := <span class="hljs-number">9</span>
-				minute := <span class="hljs-number">0</span>
-				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span> &#123;
-					hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])
-				&#125;
-				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;
-					minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])
-				&#125;
-				now = util.GetWeekTS(<span class="hljs-keyword">int64</span>(units))
-				score = now + <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour)
-				tipsType = <span class="hljs-number">2</span>
-				
-			<span class="hljs-comment">// 下周</span>
-			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;3&quot;</span>:
-				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)
-				res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)
-				hour := <span class="hljs-number">9</span>
-				minute := <span class="hljs-number">0</span>
-				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span> &#123;
-					hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])
-				&#125;
-				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;
-					minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])
-				&#125;
-				now = util.TodayTS()
-				score = now + <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour + units*<span class="hljs-number">86400</span>)
-			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;4&quot;</span>:
-				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)
-				res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)
-				hour := <span class="hljs-number">9</span>
-				minute := <span class="hljs-number">0</span>
-				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span> &#123;
-					hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])
-				&#125;
-				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;
-					minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])
-				&#125;
-				now = util.TodayTS() + <span class="hljs-number">86400</span>*<span class="hljs-keyword">int64</span>(units)
-				score = now + <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour)
-			<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;-1&quot;</span>: 
-				reg := regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,10&#125;&quot;</span>)
-				res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)
-				fmt.Println(<span class="hljs-string">&quot;res&quot;</span>, res)
-				hour := <span class="hljs-number">9</span>
-				minute := <span class="hljs-number">0</span>
-				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span> &#123;
-					hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])
-				&#125;
-				<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;
-					minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])
-				&#125;
-				now = util.TodayTS() + <span class="hljs-number">86400</span>
-				score = now + <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour)
-				fmt.Println(now, score, minute, hour)
-				tipsType = <span class="hljs-number">3</span>
-			<span class="hljs-keyword">default</span>:
-		&#125;
-	&#125; <span class="hljs-keyword">else</span> &#123;
-		reg := regexp.MustCompile(<span class="hljs-string">&quot;(([0-9]&#123;4&#125;)[-|/|年])?([0-9]&#123;1,2&#125;)[-|/|月]([0-9]&#123;1,2&#125;)日?&quot;</span>)
-		pi := reg.FindAllStringSubmatch(str, <span class="hljs-number">-1</span>)
-		<span class="hljs-keyword">if</span> (<span class="hljs-built_in">len</span>(pi) &gt; <span class="hljs-number">0</span> ) &#123;
-			date := pi[<span class="hljs-number">0</span>]
-			<span class="hljs-keyword">if</span> date[<span class="hljs-number">2</span>] == <span class="hljs-string">&quot;&quot;</span> &#123;
-				date[<span class="hljs-number">2</span>] = <span class="hljs-string">&quot;2020&quot;</span>
-			&#125;
-			location, _ := time.LoadLocation(<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>)
-			tm2, _ := time.ParseInLocation(<span class="hljs-string">&quot;2006/01/02&quot;</span>, fmt.Sprintf(<span class="hljs-string">&quot;%s/%s/%s&quot;</span>, date[<span class="hljs-number">2</span>], date[<span class="hljs-number">3</span>], date[<span class="hljs-number">4</span>]), location)
-			score = util.GetZeroTime(tm2).Unix()
-
-			msg = reg.ReplaceAllString(str, <span class="hljs-string">&quot;&quot;</span>)
-			fmt.Println(msg)
-			
-		&#125; <span class="hljs-keyword">else</span> &#123;
-			msg = str
-			score = util.TodayTS()
-		&#125;
-		
-		reg = regexp.MustCompile(<span class="hljs-string">&quot;[0-9]&#123;1,10&#125;&quot;</span>)
-		res := reg.FindAllString(util.StrSub(msg, <span class="hljs-number">0</span>, <span class="hljs-number">7</span>), <span class="hljs-number">-1</span>)
-		fmt.Println(<span class="hljs-string">&quot;res&quot;</span>, res)
-		hour := <span class="hljs-number">9</span>
-		minute := <span class="hljs-number">0</span>
-		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt;= <span class="hljs-number">1</span> &#123;
-			hour, _ = strconv.Atoi(res[<span class="hljs-number">0</span>])
-			fmt.Println(<span class="hljs-string">&quot;hour&quot;</span>, hour, minute)
-		&#125;
-		<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span> &#123;
-			minute, _ = strconv.Atoi(res[<span class="hljs-number">1</span>])
-		&#125;
-		score += <span class="hljs-keyword">int64</span>(<span class="hljs-number">60</span>*minute + <span class="hljs-number">3600</span>*hour)
-	&#125;
-
-	<span class="hljs-keyword">if</span> msg == <span class="hljs-string">&quot;&quot;</span> &#123;
-		err = errors.New(<span class="hljs-string">&quot;你说啥&quot;</span>)
-		<span class="hljs-keyword">return</span>
-	&#125;
-	index = util.UnicodeIndex(msg, <span class="hljs-string">&quot;提醒我&quot;</span>)
-	index2 := util.UnicodeIndex(msg, <span class="hljs-string">&quot;提醒&quot;</span>)
-	<span class="hljs-keyword">if</span> index2 &lt; <span class="hljs-number">0</span> &#123;
-		err = errors.New(<span class="hljs-string">&quot;大哥，要我提醒你干啥呢？请发送--下周一13点提醒我写作业&quot;</span>)
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	<span class="hljs-keyword">if</span> index &lt; <span class="hljs-number">0</span> &amp;&amp; index2 &gt; <span class="hljs-number">-1</span> &#123;
-		msg = util.StrSub(msg, index2+<span class="hljs-number">2</span>)
-	&#125; <span class="hljs-keyword">else</span> &#123;
-		msg = util.StrSub(msg, index+<span class="hljs-number">3</span>)
-	&#125;
- 
-	fmt.Println(msg, mobile)
-	msg = util.StrCombine(msg, <span class="hljs-string">&quot;@&quot;</span>, mobile)
-
-	fmt.Println(score, msg, tipsType, err)
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		util.SendDD(err.Error())
-		<span class="hljs-keyword">return</span>
-	&#125;
-
-	member := util.StrCombine(strconv.Itoa(tipsType), msg)
-	rd.ZAdd(db.Ctx, util.KeyCrontab, &amp;Redis.Z&#123;
-		Score: <span class="hljs-keyword">float64</span>(score),
-		Member: member,
-	&#125;)
-
-	uniqueKey := util.Md5(member)
-	rd.HSet(db.Ctx, util.StrCombine(util.KeyUserCron, form.SenderId), uniqueKey, member)
-	util.SendDD(fmt.Sprintf(<span class="hljs-string">&quot;设置成功(取消请回复：取消任务%s)--%s提醒您%s&quot;</span>, uniqueKey, time.Unix(score, <span class="hljs-number">0</span>).Format(<span class="hljs-string">&quot;2006/01/02 15:04:05&quot;</span>), msg))
-	<span class="hljs-keyword">return</span> 
-&#125;</code></pre></div>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">parseContent</span><span class="params">(form DingDingMsgContent)</span></span> (err <span class="type">error</span>) &#123;</span><br><span class="line">	str := form.Text.Content</span><br><span class="line">	Redis := db.RedisClient</span><br><span class="line">	fmt.Println(str)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 要先绑定哟，不然无法@到对应的人</span></span><br><span class="line">	index := strings.Index(str, <span class="string">&quot;绑定手机&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> index &gt; <span class="number">-1</span> &#123;</span><br><span class="line">		reg := regexp.MustCompile(<span class="string">&quot;1[0-9]&#123;10&#125;&quot;</span>)</span><br><span class="line">		res := reg.FindAllString(str, <span class="number">1</span>)</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(res) &lt; <span class="number">1</span> || res[<span class="number">0</span>] == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">			err = errors.New(<span class="string">&quot;手机格式不正确&quot;</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		Redis.HSet(db.Ctx, util.KeyDingDingID, form.SenderId, res[<span class="number">0</span>])</span><br><span class="line">		util.SendDD(<span class="string">&quot;绑定成功&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	hExist := Redis.HExists(db.Ctx, util.KeyDingDingID, form.SenderId)</span><br><span class="line">	<span class="keyword">if</span> !hExist.Val() &#123;</span><br><span class="line">		err = errors.New(<span class="string">&quot;绑定手机号才能精确提醒哦，发送--绑定手机 13456567878--@我即可&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span> </span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	index = strings.Index(util.StrSub(str, <span class="number">0</span>, <span class="number">10</span>), <span class="string">&quot;我的提醒&quot;</span>)</span><br><span class="line">	fmt.Println(index, <span class="string">&quot;---&quot;</span>, util.StrSub(str, <span class="number">0</span>, <span class="number">6</span>))</span><br><span class="line">	<span class="keyword">if</span> index &gt; <span class="number">-1</span> &#123;</span><br><span class="line">		www := util.QueryAllQueue(form.SenderId);</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(www) &lt; <span class="number">1</span> &#123;</span><br><span class="line">			err = errors.New(<span class="string">&quot;暂无任务&quot;</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; </span><br><span class="line">		msg := <span class="string">&quot;&quot;</span></span><br><span class="line">		<span class="keyword">for</span> key,value := <span class="keyword">range</span> www &#123;</span><br><span class="line">			fmt.Println(strings.Index(value, <span class="string">&quot;@&quot;</span>))</span><br><span class="line">			value := value[<span class="number">0</span>:strings.Index(value, <span class="string">&quot;@&quot;</span>)]</span><br><span class="line">			fmt.Println(value)</span><br><span class="line">			msg = util.StrCombine(msg, <span class="string">&quot;任务id：&quot;</span>, key, <span class="string">&quot;，任务内容：&quot;</span>, value, <span class="string">&quot;&#123;br&#125;&quot;</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		err = errors.New(msg)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	index = strings.Index(util.StrSub(str, <span class="number">0</span>, <span class="number">10</span>), <span class="string">&quot;查看任务&quot;</span>)</span><br><span class="line">	fmt.Println(index, <span class="string">&quot;---&quot;</span>, util.StrSub(str, <span class="number">0</span>, <span class="number">6</span>))</span><br><span class="line">	<span class="keyword">if</span> index &gt; <span class="number">-1</span> &#123;</span><br><span class="line">		www := util.QueryAllQueue(form.SenderId);</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(www) &lt; <span class="number">1</span> &#123;</span><br><span class="line">			err = errors.New(<span class="string">&quot;暂无任务&quot;</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; </span><br><span class="line">		msg := <span class="string">&quot;&quot;</span></span><br><span class="line">		<span class="keyword">for</span> key,value := <span class="keyword">range</span> www &#123;</span><br><span class="line">			fmt.Println(strings.Index(value, <span class="string">&quot;@&quot;</span>))</span><br><span class="line">			value := value[<span class="number">0</span>:strings.Index(value, <span class="string">&quot;@&quot;</span>)]</span><br><span class="line">			fmt.Println(value)</span><br><span class="line">			msg = util.StrCombine(msg, <span class="string">&quot;任务id：&quot;</span>, key, <span class="string">&quot;，任务内容：&quot;</span>, value, <span class="string">&quot;&#123;br&#125;&quot;</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		err = errors.New(msg)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	index = strings.Index(util.StrSub(str, <span class="number">0</span>, <span class="number">10</span>), <span class="string">&quot;取消所有任务&quot;</span>)</span><br><span class="line">	fmt.Println(index, <span class="string">&quot;---&quot;</span>, util.StrSub(str, <span class="number">0</span>, <span class="number">6</span>))</span><br><span class="line">	<span class="keyword">if</span> index &gt; <span class="number">-1</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> er := util.CancelAllQueue(form.SenderId); er != <span class="literal">nil</span> &#123;</span><br><span class="line">			err = er</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		err = errors.New(<span class="string">&quot;取消成功&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	index = strings.Index(util.StrSub(str, <span class="number">0</span>, <span class="number">10</span>), <span class="string">&quot;取消&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> index &gt; <span class="number">-1</span> &#123;</span><br><span class="line">		reg := regexp.MustCompile(<span class="string">&quot;[a-z0-9]&#123;32&#125;&quot;</span>)</span><br><span class="line">		res := reg.FindAllString(str, <span class="number">1</span>)</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(res) &lt; <span class="number">1</span> &#123;</span><br><span class="line">			err = errors.New(<span class="string">&quot;任务id不正确&quot;</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> er := util.CancelQueue(res[<span class="number">0</span>], form.SenderId); er != <span class="literal">nil</span> &#123;</span><br><span class="line">			err = er</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		err = errors.New(<span class="string">&quot;取消成功&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 提醒内容</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tips</span><span class="params">(form DingDingMsgContent)</span></span> (err <span class="type">error</span>)  &#123;</span><br><span class="line">	rd := db.RedisClient</span><br><span class="line">	str := form.Text.Content</span><br><span class="line"></span><br><span class="line">	mobile := rd.HGet(db.Ctx, util.KeyDingDingID, form.SenderId).Val()</span><br><span class="line">	key := util.KeyWords</span><br><span class="line">	list, _ := rd.HGetAll(db.Ctx, key).Result()</span><br><span class="line">	now := time.Now().Unix()</span><br><span class="line">	tipsType := <span class="number">1</span></span><br><span class="line">	k := <span class="string">&quot;&quot;</span></span><br><span class="line">	v := <span class="string">&quot;&quot;</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;str&quot;</span>, str)</span><br><span class="line"></span><br><span class="line">	index := <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> key, value := <span class="keyword">range</span> list &#123;</span><br><span class="line">		index = util.UnicodeIndex(str, key)</span><br><span class="line">		<span class="keyword">if</span> index &gt; <span class="number">-1</span> &amp;&amp; util.StrLen(key) &gt; util.StrLen(k) &#123;</span><br><span class="line">			fmt.Println(<span class="string">&quot;index&quot;</span>, index, str, key, value)</span><br><span class="line">			k = key</span><br><span class="line">			v = value</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	msg := <span class="string">&quot;&quot;</span></span><br><span class="line">	<span class="keyword">var</span> score <span class="type">int64</span></span><br><span class="line">	<span class="keyword">if</span> k != <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		kLen := util.StrLen(k)</span><br><span class="line">		msg = util.StrSub(str, index+kLen)</span><br><span class="line"></span><br><span class="line">		val := strings.Split(v, <span class="string">&quot;|&quot;</span>)</span><br><span class="line">		unit := val[<span class="number">1</span>]</span><br><span class="line">		units,_ := strconv.Atoi(unit)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">switch</span> val[<span class="number">0</span>] &#123;</span><br><span class="line">			<span class="comment">// 多少时间后</span></span><br><span class="line">			<span class="keyword">case</span> <span class="string">&quot;1&quot;</span>:</span><br><span class="line">				reg := regexp.MustCompile(<span class="string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)</span><br><span class="line">				res := reg.FindAllString(str, <span class="number">1</span>)</span><br><span class="line">				minute, _ := strconv.Atoi(res[<span class="number">0</span>])</span><br><span class="line">				score = now + <span class="type">int64</span>(units*minute)</span><br><span class="line">			<span class="comment">// 每周</span></span><br><span class="line">			<span class="keyword">case</span> <span class="string">&quot;2&quot;</span>:</span><br><span class="line">				reg := regexp.MustCompile(<span class="string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)</span><br><span class="line">				res := reg.FindAllString(util.StrSub(msg, <span class="number">0</span>, <span class="number">7</span>), <span class="number">-1</span>)</span><br><span class="line">				hour := <span class="number">9</span></span><br><span class="line">				minute := <span class="number">0</span></span><br><span class="line">				<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">0</span> &#123;</span><br><span class="line">					hour, _ = strconv.Atoi(res[<span class="number">0</span>])</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">1</span> &#123;</span><br><span class="line">					minute, _ = strconv.Atoi(res[<span class="number">1</span>])</span><br><span class="line">				&#125;</span><br><span class="line">				now = util.GetWeekTS(<span class="type">int64</span>(units))</span><br><span class="line">				score = now + <span class="type">int64</span>(<span class="number">60</span>*minute + <span class="number">3600</span>*hour)</span><br><span class="line">				tipsType = <span class="number">2</span></span><br><span class="line">				</span><br><span class="line">			<span class="comment">// 下周</span></span><br><span class="line">			<span class="keyword">case</span> <span class="string">&quot;3&quot;</span>:</span><br><span class="line">				reg := regexp.MustCompile(<span class="string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)</span><br><span class="line">				res := reg.FindAllString(util.StrSub(msg, <span class="number">0</span>, <span class="number">7</span>), <span class="number">-1</span>)</span><br><span class="line">				hour := <span class="number">9</span></span><br><span class="line">				minute := <span class="number">0</span></span><br><span class="line">				<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">0</span> &#123;</span><br><span class="line">					hour, _ = strconv.Atoi(res[<span class="number">0</span>])</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">1</span> &#123;</span><br><span class="line">					minute, _ = strconv.Atoi(res[<span class="number">1</span>])</span><br><span class="line">				&#125;</span><br><span class="line">				now = util.TodayTS()</span><br><span class="line">				score = now + <span class="type">int64</span>(<span class="number">60</span>*minute + <span class="number">3600</span>*hour + units*<span class="number">86400</span>)</span><br><span class="line">			<span class="keyword">case</span> <span class="string">&quot;4&quot;</span>:</span><br><span class="line">				reg := regexp.MustCompile(<span class="string">&quot;[0-9]&#123;1,2&#125;&quot;</span>)</span><br><span class="line">				res := reg.FindAllString(util.StrSub(msg, <span class="number">0</span>, <span class="number">7</span>), <span class="number">-1</span>)</span><br><span class="line">				hour := <span class="number">9</span></span><br><span class="line">				minute := <span class="number">0</span></span><br><span class="line">				<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">0</span> &#123;</span><br><span class="line">					hour, _ = strconv.Atoi(res[<span class="number">0</span>])</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">1</span> &#123;</span><br><span class="line">					minute, _ = strconv.Atoi(res[<span class="number">1</span>])</span><br><span class="line">				&#125;</span><br><span class="line">				now = util.TodayTS() + <span class="number">86400</span>*<span class="type">int64</span>(units)</span><br><span class="line">				score = now + <span class="type">int64</span>(<span class="number">60</span>*minute + <span class="number">3600</span>*hour)</span><br><span class="line">			<span class="keyword">case</span> <span class="string">&quot;-1&quot;</span>: </span><br><span class="line">				reg := regexp.MustCompile(<span class="string">&quot;[0-9]&#123;1,10&#125;&quot;</span>)</span><br><span class="line">				res := reg.FindAllString(util.StrSub(msg, <span class="number">0</span>, <span class="number">7</span>), <span class="number">-1</span>)</span><br><span class="line">				fmt.Println(<span class="string">&quot;res&quot;</span>, res)</span><br><span class="line">				hour := <span class="number">9</span></span><br><span class="line">				minute := <span class="number">0</span></span><br><span class="line">				<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">0</span> &#123;</span><br><span class="line">					hour, _ = strconv.Atoi(res[<span class="number">0</span>])</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">1</span> &#123;</span><br><span class="line">					minute, _ = strconv.Atoi(res[<span class="number">1</span>])</span><br><span class="line">				&#125;</span><br><span class="line">				now = util.TodayTS() + <span class="number">86400</span></span><br><span class="line">				score = now + <span class="type">int64</span>(<span class="number">60</span>*minute + <span class="number">3600</span>*hour)</span><br><span class="line">				fmt.Println(now, score, minute, hour)</span><br><span class="line">				tipsType = <span class="number">3</span></span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		reg := regexp.MustCompile(<span class="string">&quot;(([0-9]&#123;4&#125;)[-|/|年])?([0-9]&#123;1,2&#125;)[-|/|月]([0-9]&#123;1,2&#125;)日?&quot;</span>)</span><br><span class="line">		pi := reg.FindAllStringSubmatch(str, <span class="number">-1</span>)</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">len</span>(pi) &gt; <span class="number">0</span> ) &#123;</span><br><span class="line">			date := pi[<span class="number">0</span>]</span><br><span class="line">			<span class="keyword">if</span> date[<span class="number">2</span>] == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">				date[<span class="number">2</span>] = <span class="string">&quot;2020&quot;</span></span><br><span class="line">			&#125;</span><br><span class="line">			location, _ := time.LoadLocation(<span class="string">&quot;Asia/Shanghai&quot;</span>)</span><br><span class="line">			tm2, _ := time.ParseInLocation(<span class="string">&quot;2006/01/02&quot;</span>, fmt.Sprintf(<span class="string">&quot;%s/%s/%s&quot;</span>, date[<span class="number">2</span>], date[<span class="number">3</span>], date[<span class="number">4</span>]), location)</span><br><span class="line">			score = util.GetZeroTime(tm2).Unix()</span><br><span class="line"></span><br><span class="line">			msg = reg.ReplaceAllString(str, <span class="string">&quot;&quot;</span>)</span><br><span class="line">			fmt.Println(msg)</span><br><span class="line">			</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			msg = str</span><br><span class="line">			score = util.TodayTS()</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		reg = regexp.MustCompile(<span class="string">&quot;[0-9]&#123;1,10&#125;&quot;</span>)</span><br><span class="line">		res := reg.FindAllString(util.StrSub(msg, <span class="number">0</span>, <span class="number">7</span>), <span class="number">-1</span>)</span><br><span class="line">		fmt.Println(<span class="string">&quot;res&quot;</span>, res)</span><br><span class="line">		hour := <span class="number">9</span></span><br><span class="line">		minute := <span class="number">0</span></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt;= <span class="number">1</span> &#123;</span><br><span class="line">			hour, _ = strconv.Atoi(res[<span class="number">0</span>])</span><br><span class="line">			fmt.Println(<span class="string">&quot;hour&quot;</span>, hour, minute)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(res) &gt; <span class="number">1</span> &#123;</span><br><span class="line">			minute, _ = strconv.Atoi(res[<span class="number">1</span>])</span><br><span class="line">		&#125;</span><br><span class="line">		score += <span class="type">int64</span>(<span class="number">60</span>*minute + <span class="number">3600</span>*hour)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> msg == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		err = errors.New(<span class="string">&quot;你说啥&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	index = util.UnicodeIndex(msg, <span class="string">&quot;提醒我&quot;</span>)</span><br><span class="line">	index2 := util.UnicodeIndex(msg, <span class="string">&quot;提醒&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> index2 &lt; <span class="number">0</span> &#123;</span><br><span class="line">		err = errors.New(<span class="string">&quot;大哥，要我提醒你干啥呢？请发送--下周一13点提醒我写作业&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> index &lt; <span class="number">0</span> &amp;&amp; index2 &gt; <span class="number">-1</span> &#123;</span><br><span class="line">		msg = util.StrSub(msg, index2+<span class="number">2</span>)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		msg = util.StrSub(msg, index+<span class="number">3</span>)</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	fmt.Println(msg, mobile)</span><br><span class="line">	msg = util.StrCombine(msg, <span class="string">&quot;@&quot;</span>, mobile)</span><br><span class="line"></span><br><span class="line">	fmt.Println(score, msg, tipsType, err)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		util.SendDD(err.Error())</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	member := util.StrCombine(strconv.Itoa(tipsType), msg)</span><br><span class="line">	rd.ZAdd(db.Ctx, util.KeyCrontab, &amp;Redis.Z&#123;</span><br><span class="line">		Score: <span class="type">float64</span>(score),</span><br><span class="line">		Member: member,</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	uniqueKey := util.Md5(member)</span><br><span class="line">	rd.HSet(db.Ctx, util.StrCombine(util.KeyUserCron, form.SenderId), uniqueKey, member)</span><br><span class="line">	util.SendDD(fmt.Sprintf(<span class="string">&quot;设置成功(取消请回复：取消任务%s)--%s提醒您%s&quot;</span>, uniqueKey, time.Unix(score, <span class="number">0</span>).Format(<span class="string">&quot;2006/01/02 15:04:05&quot;</span>), msg))</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="发送钉钉消息"><a href="#发送钉钉消息" class="headerlink" title="发送钉钉消息"></a><strong>发送钉钉消息</strong></h3><p>这里就是对接钉钉接口，解析给需要提醒的人就行，就不做过多说明了。</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SendDD</span><span class="hljs-params">(msg <span class="hljs-keyword">string</span>)</span></span> &#123;
-        <span class="hljs-comment">// 打印出来看看是个啥</span>
-	fmt.Println(<span class="hljs-string">&quot;dingding-----------&quot;</span>)
-	fmt.Println(msg)
-	tips := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;)
-	content := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;)
-	tips[<span class="hljs-string">&quot;msgtype&quot;</span>] = <span class="hljs-string">&quot;markdown&quot;</span>
-    <span class="hljs-comment">// @ 是用来提醒群里对应的人</span>
-	arr := strings.Split(msg, <span class="hljs-string">&quot;@&quot;</span>)
-    <span class="hljs-comment">// [提醒]是机器人关键字，个人建议设置机器人限制ip或使用token，比较靠谱</span>
-	content[<span class="hljs-string">&quot;text&quot;</span>] = fmt.Sprintf(<span class="hljs-string">&quot;%s&quot;</span>, strings.Replace(arr[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;&#123;br&#125;&quot;</span>, <span class="hljs-string">&quot; \n\n&quot;</span>, <span class="hljs-number">-1</span>))
-	content[<span class="hljs-string">&quot;title&quot;</span>] = <span class="hljs-string">&quot;鹅鹅鹅&quot;</span>
-
-	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &gt; <span class="hljs-number">1</span> &#123;
-		mobile := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">string</span>, <span class="hljs-number">0</span>)
-		at := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">interface</span>&#123;&#125;)
-		mobile = <span class="hljs-built_in">append</span>(mobile, arr[<span class="hljs-number">1</span>])
-		at[<span class="hljs-string">&quot;atMobiles&quot;</span>] = mobile
-		tips[<span class="hljs-string">&quot;at&quot;</span>] = at
-		content[<span class="hljs-string">&quot;text&quot;</span>] = fmt.Sprintf(<span class="hljs-string">&quot;%s @%s&quot;</span>, content[<span class="hljs-string">&quot;text&quot;</span>], arr[<span class="hljs-number">1</span>])
-	&#125;
-
-    tips[<span class="hljs-string">&quot;markdown&quot;</span>] = content
-
-    bytesData, err := json.Marshal(tips)
-    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-        fmt.Println(err.Error() )
-        <span class="hljs-keyword">return</span>
-    &#125;
-    reader := bytes.NewReader(bytesData)
-    url := viper.GetString(<span class="hljs-string">&quot;dingding_url&quot;</span>)
-    request, err := http.NewRequest(<span class="hljs-string">&quot;POST&quot;</span>, url, reader)
-    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-        <span class="hljs-keyword">return</span>
-    &#125;
-    request.Header.Set(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;application/json;charset=UTF-8&quot;</span>)
-    client := http.Client&#123;&#125;
-    _, err = client.Do(request)
-    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-        fmt.Println(err.Error())
-        <span class="hljs-keyword">return</span>
-	&#125;
-	<span class="hljs-comment">// 偷懒不重试了</span>
-    <span class="hljs-comment">// respBytes, err := ioutil.ReadAll(resp.Body)</span>
-    <span class="hljs-comment">// if err != nil &#123;</span>
-    <span class="hljs-comment">//     fmt.Println(err.Error())</span>
-    <span class="hljs-comment">//     return</span>
-    <span class="hljs-comment">// &#125;</span>
-    <span class="hljs-comment">// //byte数组直接转成string，优化内存</span>
-    <span class="hljs-comment">// str := (*string)(unsafe.Pointer(&amp;respBytes))</span>
-    <span class="hljs-comment">// fmt.Println(*str)</span>
-&#125;</code></pre></div>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SendDD</span><span class="params">(msg <span class="type">string</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// 打印出来看看是个啥</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;dingding-----------&quot;</span>)</span><br><span class="line">	fmt.Println(msg)</span><br><span class="line">	tips := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">	content := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">	tips[<span class="string">&quot;msgtype&quot;</span>] = <span class="string">&quot;markdown&quot;</span></span><br><span class="line">    <span class="comment">// @ 是用来提醒群里对应的人</span></span><br><span class="line">	arr := strings.Split(msg, <span class="string">&quot;@&quot;</span>)</span><br><span class="line">    <span class="comment">// [提醒]是机器人关键字，个人建议设置机器人限制ip或使用token，比较靠谱</span></span><br><span class="line">	content[<span class="string">&quot;text&quot;</span>] = fmt.Sprintf(<span class="string">&quot;%s&quot;</span>, strings.Replace(arr[<span class="number">0</span>], <span class="string">&quot;&#123;br&#125;&quot;</span>, <span class="string">&quot; \n\n&quot;</span>, <span class="number">-1</span>))</span><br><span class="line">	content[<span class="string">&quot;title&quot;</span>] = <span class="string">&quot;鹅鹅鹅&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(arr) &gt; <span class="number">1</span> &#123;</span><br><span class="line">		mobile := <span class="built_in">make</span>([]<span class="type">string</span>, <span class="number">0</span>)</span><br><span class="line">		at := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">		mobile = <span class="built_in">append</span>(mobile, arr[<span class="number">1</span>])</span><br><span class="line">		at[<span class="string">&quot;atMobiles&quot;</span>] = mobile</span><br><span class="line">		tips[<span class="string">&quot;at&quot;</span>] = at</span><br><span class="line">		content[<span class="string">&quot;text&quot;</span>] = fmt.Sprintf(<span class="string">&quot;%s @%s&quot;</span>, content[<span class="string">&quot;text&quot;</span>], arr[<span class="number">1</span>])</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    tips[<span class="string">&quot;markdown&quot;</span>] = content</span><br><span class="line"></span><br><span class="line">    bytesData, err := json.Marshal(tips)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(err.Error() )</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    reader := bytes.NewReader(bytesData)</span><br><span class="line">    url := viper.GetString(<span class="string">&quot;dingding_url&quot;</span>)</span><br><span class="line">    request, err := http.NewRequest(<span class="string">&quot;POST&quot;</span>, url, reader)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    request.Header.Set(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json;charset=UTF-8&quot;</span>)</span><br><span class="line">    client := http.Client&#123;&#125;</span><br><span class="line">    _, err = client.Do(request)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(err.Error())</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 偷懒不重试了</span></span><br><span class="line">    <span class="comment">// respBytes, err := ioutil.ReadAll(resp.Body)</span></span><br><span class="line">    <span class="comment">// if err != nil &#123;</span></span><br><span class="line">    <span class="comment">//     fmt.Println(err.Error())</span></span><br><span class="line">    <span class="comment">//     return</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="comment">// //byte数组直接转成string，优化内存</span></span><br><span class="line">    <span class="comment">// str := (*string)(unsafe.Pointer(&amp;respBytes))</span></span><br><span class="line">    <span class="comment">// fmt.Println(*str)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="定时发送与任务取消"><a href="#定时发送与任务取消" class="headerlink" title="定时发送与任务取消"></a><strong>定时发送与任务取消</strong></h2><p>这就是发送提醒的核心代码了，详细使用说明可以看下：</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuzhongchao/p/9521897.html">Golang cron 定时任务使用</a></p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Cron</span><span class="hljs-params">()</span></span> &#123;
-    c := cron.New()
-    spec := <span class="hljs-string">&quot;*/10 * * * * ?&quot;</span>
-    c.AddJob(spec, Queue&#123;&#125;)
-    c.Start()
-&#125;
-
-<span class="hljs-keyword">type</span> Queue <span class="hljs-keyword">struct</span> &#123;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(q Queue)</span> <span class="hljs-title">Run</span><span class="hljs-params">()</span></span> &#123;
-	now := time.Now().Unix()
-	rd := model.RedisClient
-	op := &amp;Redis.ZRangeBy&#123;
-        Min: <span class="hljs-string">&quot;0&quot;</span>,
-        Max: strconv.FormatInt(now, <span class="hljs-number">10</span>),
-    &#125;
-    ret, err := rd.ZRangeByScoreWithScores(model.Ctx, KeyCrontab, op).Result()
-    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-        fmt.Printf(<span class="hljs-string">&quot;zrangebyscore failed, err:%v\n&quot;</span>, err)
-        <span class="hljs-keyword">return</span>
-	&#125;
-    <span class="hljs-keyword">for</span> _, z := <span class="hljs-keyword">range</span> ret &#123;
-		fmt.Println(z.Member.(<span class="hljs-keyword">string</span>), z.Score)
-		QueueDo(z.Member.(<span class="hljs-keyword">string</span>), z.Score)
-    &#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">QueueDo</span><span class="hljs-params">(msg <span class="hljs-keyword">string</span>, score <span class="hljs-keyword">float64</span>)</span></span> &#123;
-	msgType := msg[<span class="hljs-number">0</span>:<span class="hljs-number">1</span>]
-	SendDD(msg[<span class="hljs-number">1</span>:])
-	rd := model.RedisClient
-	rd.ZRem(model.Ctx, KeyCrontab, msg)
-
-	<span class="hljs-keyword">switch</span> msgType &#123;
-		<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;2&quot;</span>:
-			rd.ZAdd(model.Ctx, KeyCrontab, &amp;Redis.Z&#123;
-				Score: score + <span class="hljs-number">7</span>*<span class="hljs-number">86400</span>,
-				Member: msg,
-			&#125;)
-		<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;3&quot;</span>:
-			rd.ZAdd(model.Ctx, KeyCrontab, &amp;Redis.Z&#123;
-				Score: score + <span class="hljs-number">86400</span>,
-				Member: msg,
-			&#125;)
-		<span class="hljs-keyword">default</span>:
-			rd.ZRem(model.Ctx, KeyCrontab, msg)
-	&#125;
-&#125;
-
-<span class="hljs-comment">// 取消提醒</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CancelQueue</span><span class="hljs-params">(uniqueKey <span class="hljs-keyword">string</span>, SenderId <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(err error)</span></span> &#123;
-	rd := model.RedisClient
-	member := rd.HGet(model.Ctx, StrCombine(KeyUserCron, SenderId), uniqueKey).Val()
-	<span class="hljs-keyword">if</span> member == <span class="hljs-string">&quot;&quot;</span> &#123;
-		fmt.Println(StrCombine(KeyUserCron, SenderId), uniqueKey)
-		err = errors.New(<span class="hljs-string">&quot;没有此任务&quot;</span>)
-		<span class="hljs-keyword">return</span>
-	&#125;
-	fmt.Println(member, <span class="hljs-string">&quot;member&quot;</span>)
-	rd.ZRem(model.Ctx, KeyCrontab, member)
-	rd.HDel(model.Ctx, StrCombine(KeyUserCron, SenderId), uniqueKey)
-	err = errors.New(<span class="hljs-string">&quot;取消成功&quot;</span>)
-	<span class="hljs-keyword">return</span> 
-&#125;
-
-<span class="hljs-comment">// 取消所有</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">CancelAllQueue</span><span class="hljs-params">(SenderId <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(err error)</span></span> &#123;
-	rd := model.RedisClient
-	list, _ := rd.HGetAll(model.Ctx, StrCombine(KeyUserCron, SenderId)).Result()
-	<span class="hljs-keyword">for</span> _, value := <span class="hljs-keyword">range</span> list &#123;
-		rd.ZRem(model.Ctx, KeyCrontab, value)
-	&#125;
-	
-	rd.Del(model.Ctx, StrCombine(KeyUserCron, SenderId))
-	err = errors.New(<span class="hljs-string">&quot;已经取消所有提醒任务&quot;</span>)
-	<span class="hljs-keyword">return</span> 
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">QueryAllQueue</span><span class="hljs-params">(SenderId <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>)</span></span> &#123;
-	rd := model.RedisClient
-	list, _ := rd.HGetAll(model.Ctx, StrCombine(KeyUserCron, SenderId)).Result()
-	<span class="hljs-comment">// fmt.Println(list)</span>
-	<span class="hljs-keyword">return</span> list
-&#125;</code></pre></div>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Cron</span><span class="params">()</span></span> &#123;</span><br><span class="line">    c := cron.New()</span><br><span class="line">    spec := <span class="string">&quot;*/10 * * * * ?&quot;</span></span><br><span class="line">    c.AddJob(spec, Queue&#123;&#125;)</span><br><span class="line">    c.Start()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Queue <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(q Queue)</span></span> Run() &#123;</span><br><span class="line">	now := time.Now().Unix()</span><br><span class="line">	rd := model.RedisClient</span><br><span class="line">	op := &amp;Redis.ZRangeBy&#123;</span><br><span class="line">        Min: <span class="string">&quot;0&quot;</span>,</span><br><span class="line">        Max: strconv.FormatInt(now, <span class="number">10</span>),</span><br><span class="line">    &#125;</span><br><span class="line">    ret, err := rd.ZRangeByScoreWithScores(model.Ctx, KeyCrontab, op).Result()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Printf(<span class="string">&quot;zrangebyscore failed, err:%v\n&quot;</span>, err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">for</span> _, z := <span class="keyword">range</span> ret &#123;</span><br><span class="line">		fmt.Println(z.Member.(<span class="type">string</span>), z.Score)</span><br><span class="line">		QueueDo(z.Member.(<span class="type">string</span>), z.Score)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">QueueDo</span><span class="params">(msg <span class="type">string</span>, score <span class="type">float64</span>)</span></span> &#123;</span><br><span class="line">	msgType := msg[<span class="number">0</span>:<span class="number">1</span>]</span><br><span class="line">	SendDD(msg[<span class="number">1</span>:])</span><br><span class="line">	rd := model.RedisClient</span><br><span class="line">	rd.ZRem(model.Ctx, KeyCrontab, msg)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">switch</span> msgType &#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;2&quot;</span>:</span><br><span class="line">			rd.ZAdd(model.Ctx, KeyCrontab, &amp;Redis.Z&#123;</span><br><span class="line">				Score: score + <span class="number">7</span>*<span class="number">86400</span>,</span><br><span class="line">				Member: msg,</span><br><span class="line">			&#125;)</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;3&quot;</span>:</span><br><span class="line">			rd.ZAdd(model.Ctx, KeyCrontab, &amp;Redis.Z&#123;</span><br><span class="line">				Score: score + <span class="number">86400</span>,</span><br><span class="line">				Member: msg,</span><br><span class="line">			&#125;)</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			rd.ZRem(model.Ctx, KeyCrontab, msg)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取消提醒</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CancelQueue</span><span class="params">(uniqueKey <span class="type">string</span>, SenderId <span class="type">string</span>)</span></span> (err <span class="type">error</span>) &#123;</span><br><span class="line">	rd := model.RedisClient</span><br><span class="line">	member := rd.HGet(model.Ctx, StrCombine(KeyUserCron, SenderId), uniqueKey).Val()</span><br><span class="line">	<span class="keyword">if</span> member == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		fmt.Println(StrCombine(KeyUserCron, SenderId), uniqueKey)</span><br><span class="line">		err = errors.New(<span class="string">&quot;没有此任务&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(member, <span class="string">&quot;member&quot;</span>)</span><br><span class="line">	rd.ZRem(model.Ctx, KeyCrontab, member)</span><br><span class="line">	rd.HDel(model.Ctx, StrCombine(KeyUserCron, SenderId), uniqueKey)</span><br><span class="line">	err = errors.New(<span class="string">&quot;取消成功&quot;</span>)</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取消所有</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">CancelAllQueue</span><span class="params">(SenderId <span class="type">string</span>)</span></span> (err <span class="type">error</span>) &#123;</span><br><span class="line">	rd := model.RedisClient</span><br><span class="line">	list, _ := rd.HGetAll(model.Ctx, StrCombine(KeyUserCron, SenderId)).Result()</span><br><span class="line">	<span class="keyword">for</span> _, value := <span class="keyword">range</span> list &#123;</span><br><span class="line">		rd.ZRem(model.Ctx, KeyCrontab, value)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	rd.Del(model.Ctx, StrCombine(KeyUserCron, SenderId))</span><br><span class="line">	err = errors.New(<span class="string">&quot;已经取消所有提醒任务&quot;</span>)</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">QueryAllQueue</span><span class="params">(SenderId <span class="type">string</span>)</span></span> (<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>) &#123;</span><br><span class="line">	rd := model.RedisClient</span><br><span class="line">	list, _ := rd.HGetAll(model.Ctx, StrCombine(KeyUserCron, SenderId)).Result()</span><br><span class="line">	<span class="comment">// fmt.Println(list)</span></span><br><span class="line">	<span class="keyword">return</span> list</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <p>天气与聊天给你是接了一个免费智能接口，有兴趣可查看github配置文件。</p>
 <p>来看看效果</p>
-<p><img src="/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/post/v2-3106536c4925af8f77af71698f568a84_1440w.png" alt="img"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个demo其实主要点就是解析钉钉推送内容做对应的处理，因关键字过多，代码其实有点啰嗦，你可以自行优化，对接智能接口和钉钉接口，还是定时任务其实都是相对简单的，当然，这只是很基础的功能，你可以自行扩展。另外，这次之列出了主要代码，没有做十分详尽的说明，有兴趣可以查看源码。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/puresai/go-example/tree/main/demo3-dingding">查看github源码</a></p>
 <h2 id="啰嗦"><a href="#啰嗦" class="headerlink" title="啰嗦"></a>啰嗦</h2><p>这个demo的起初也是我们几个同事老忘记打卡，有了这个demo，起初只能提醒打卡，后面陆续加入了取消、查看、查询天气等功能，大家学习技术的时候也可以考虑应用到生活场景当中，这样学习起来也比较有有趣，实践中也会发现很多想不到的问题，最后，祝大家工作愉快，不忘打卡。</p>
 
-              
-            </div>
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/goexample/" class="category-chain-item">goexample</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/goexample/">#goexample</a>
-      
-    </div>
-  
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2021/02/12/goexample2/">利用gin搭建一个api框架</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2021/02/12/goexample4/">gRPC</a></div></section></div>
 
 
-              
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">puresai</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%85%A5%E9%92%89%E9%92%89%E6%9C%BA%E5%99%A8%E4%BA%BA"><span class="toc-text">接入钉钉机器人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E5%86%85%E5%AE%B9"><span class="toc-text">解析内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E9%92%89%E9%92%89%E6%B6%88%E6%81%AF"><span class="toc-text">发送钉钉消息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E4%B8%8E%E4%BB%BB%E5%8A%A1%E5%8F%96%E6%B6%88"><span class="toc-text">定时发送与任务取消</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%95%B0%E5%97%A6"><span class="toc-text">啰嗦</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
   
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>防止漏打卡，利用gin和cron来做一个智能提醒</div>
-      <div>https://blog.puresai.com/2021/02/12/goexample3/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>puresai</div>
-        </div>
-      
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+</script>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">go+MongoDB实现附近的人</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2021/02/12/goexample4/" title="gRPC">
-                        <span class="hidden-mobile">gRPC</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-  <article id="comments" lazyload>
-    
-  <script type="text/javascript">
-    Fluid.utils.loadComments('#comments', function() {
-      var light = 'github-light';
-      var dark = 'github-dark';
-      var schema = document.documentElement.getAttribute('data-user-color-scheme');
-      if (schema === 'dark') {
-        schema = dark;
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
       } else {
-        schema = light;
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
       }
-      window.UtterancesThemeLight = light;
-      window.UtterancesThemeDark = dark;
-      var s = document.createElement('script');
-      s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', 'puresai/puresai.github.io');
-      s.setAttribute('issue-term', 'url');
-      
-      s.setAttribute('label', 'utterances');
-      
-      s.setAttribute('theme', schema);
-      s.setAttribute('crossorigin', 'anonymous');
-      document.getElementById('comments').appendChild(s);
-    })
-  </script>
-  <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-  </article>
-
-
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/mermaid/8.14.0/mermaid.min.js', function() {
-    mermaid.initialize({"theme":"default"});
-  });
-</script>
-
-
-
-
-  <!-- Custom -->
-  <div class="col-lg-7 mx-auto nopadding-x-md">
-    <div class="container custom post-custom mx-auto">
-      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="height:300px;">
-    </div>
-  </div>
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <span>2015 ~ 2024</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
-    </div>
-  
-  
-  
-  
-</div>
-
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-
-
-
-  
-
-  
-
-  
-    <!-- Google gtag.js -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBCEG2QCJD"></script>
-    <script defer>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-YBCEG2QCJD');
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
-    });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
-</script>
-
-
-  <script>
-  (function() {
-    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
-    var enableCopy = CONFIG.copy_btn;
-    if (!enableLang && !enableCopy) {
-      return;
-    }
-
-    function getBgClass(ele) {
-      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
-    }
-
-    var copyTmpl = '';
-    copyTmpl += '<div class="code-widget">';
-    copyTmpl += 'LANG';
-    copyTmpl += '</div>';
-    jQuery('.markdown-body pre').each(function() {
-      var $pre = jQuery(this);
-      if ($pre.find('code.mermaid').length > 0) {
-        return;
-      }
-      if ($pre.find('span.line').length > 0) {
-        return;
-      }
-
-      var lang = '';
-
-      if (enableLang) {
-        lang = CONFIG.code_language.default;
-        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
-          lang = $pre[0].children[0].classList[1];
-        } else if ($pre[0].getAttribute('data-language')) {
-          lang = $pre[0].getAttribute('data-language');
-        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
-          lang = $pre[0].children[0].classList[1];
-          $pre.parent().addClass('code-wrapper');
-        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
-          $pre.wrap('<div class="code-wrapper"></div>');
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
         }
-        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
       }
-      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
-        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
 
-      if (enableCopy) {
-        Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/clipboard.js/2.0.10/clipboard.min.js', function() {
-          var clipboard = new window.ClipboardJS('.copy-btn', {
-            target: function(trigger) {
-              var nodes = trigger.parentNode.childNodes;
-              for (var i = 0; i < nodes.length; i++) {
-                if (nodes[i].tagName === 'CODE') {
-                  return nodes[i];
-                }
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
               }
             }
-          });
-          clipboard.on('success', function(e) {
-            e.clearSelection();
-            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
-            setTimeout(function() {
-              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
-            }, 2000);
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
           });
         });
       }
-    });
-  })();
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
 </script>
 
 
-  
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
 <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
     }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
     }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
     }
-    window.anchors.add(res.join(', '));
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
   });
 </script>
 
 
-  
-<script>
-  Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
+<!-- inject -->
 
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
-</body>
-</html>
+</div></body></html>

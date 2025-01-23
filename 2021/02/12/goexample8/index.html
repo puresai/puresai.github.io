@@ -1,20 +1,24 @@
 
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
+<!DOCTYPE html><html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
-  <link rel="icon" href="/images/qiniu/sai.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
   
-  <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="puresai">
-  <meta name="keywords" content="go,golang,goruntine,channel,go select">
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>goruntine和channel - puresai blog</title>
+
   
     <meta name="description" content="通过例子学习go-goruntine和channel">
 <meta property="og:type" content="article">
@@ -28,458 +32,67 @@
 <meta property="article:modified_time" content="2024-04-08T08:13:25.925Z">
 <meta property="article:author" content="puresai">
 <meta property="article:tag" content="goexample">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://pic1.zhimg.com/80/v2-dc5d88a2c439580386b95362f7c0bad8_1440w.jpg">
   
   
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>goruntine和channel - puresai blog</title>
+  <meta name="keywords" content="go,golang,goruntine,channel,go select">
 
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/github-markdown-css/5.1.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  <!-- feed -->
   
 
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
 
   
-<meta name="generator" content="Hexo 5.4.0"></head>
+    <link rel="shortcut icon" href="/favicon.ico">
+  
 
+  
 
+  
+</head>
 <body>
-  
 
-  <header>
-    
-
-<div class="header-inner" style="height: 60vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>puresai blog</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="iconfont icon-books"></i>
-                专栏
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/goexample/">
-                    
-                    实例学go
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/gosourcecode/">
-                    
-                    go源码笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/phpframe/">
-                    
-                    手写PHP API框架
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/reading/">
-                    
-                    读书笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Nginx/">
-                    
-                    Nginx系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/MySQL/">
-                    
-                    Mysql系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Redis/">
-                    
-                    Redis系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/k8s-learing/">
-                    
-                    Kuberetes系列
-                  </a>
-                
-              </div>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" target="_blank" rel="noopener" href="https://puresai.com/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle">goruntine和channel</span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-02-12 21:48" pubdate>
-          2021年2月12日
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          3.7k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          31 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span> 次
-        </span>
-        
-      
-    
-  </div>
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
-        
-      </div>
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="undefined" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">puresai blog</div><div class="sub cap">puresai blog</div></a></div></header>
 
-      
-    </div>
-  </div>
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/11/24/520/"><span class="title">Python3虚拟环境venv</span></a><a class="item title" href="/2024/10/24/530/"><span class="title">排查Linux磁盘空间不足的问题</span></a><a class="item title" href="/2024/09/22/525/"><span class="title">python3读取csv _csv.Error: line contains NUL</span></a><a class="item title" href="/2024/08/16/471/"><span class="title">mysql如何使用不定数量的查询</span></a><a class="item title" href="/2024/08/01/520/"><span class="title">python3查询es超时</span></a><a class="item title" href="/2024/08/07/521/"><span class="title">解决webman事务不生效的问题</span></a><a class="item title" href="/2024/04/21/512/"><span class="title">检查是否在企业微信中</span></a><a class="item title" href="/2022/08/10/432/"><span class="title">kubernete实战篇-外部服务</span></a><a class="item title" href="/2017/01/05/95/"><span class="title">windows7创建任务计划</span></a><a class="item title" href="/2024/04/14/511/"><span class="title">做一个简单的服务器监控企业微信通知</span></a></div></widget>
 </div>
 
-</div>
-
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar category-bar" style="margin-right: -1rem">
-    
+</div></aside><div class="l_main" id="main">
 
 
 
 
 
-<div class="category-list">
-  
-  
-  
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/goexample/">goexample</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2021-02-12T13:48:20.000Z">2021-02-12</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-04-08T08:13:25.925Z">2024-04-08</time></span></div></div></div>
     
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="goexample"
-        id="heading-bbf4bcbc3b6c234b840e985b0b467701" role="tab" data-toggle="collapse" href="#collapse-bbf4bcbc3b6c234b840e985b0b467701"
-        aria-expanded="true"
-      >
-        goexample
-        <span class="list-group-count">(10)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
+    <div class="bottom only-title">
       
-      <div class="category-collapse collapse show" id="collapse-bbf4bcbc3b6c234b840e985b0b467701"
-           role="tabpanel" aria-labelledby="heading-bbf4bcbc3b6c234b840e985b0b467701">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2021/02/12/goexample1/" title="搭建http server"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">搭建http server</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">利用gin搭建一个api框架</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample5/" title="go面向对象"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go面向对象</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go+MongoDB实现附近的人</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">防止漏打卡，利用gin和cron来做一个智能提醒</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample4/" title="gRPC"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">gRPC</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample6/" title="go-kit"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go-kit</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">golang限流器</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
-           class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">goruntine和channel</span>
-        </a>
-      
-    
-  </div>
-
+      <div class="text-area">
+        <h1 class="text title"><span>goruntine和channel</span></h1>
         
       </div>
     </div>
-  
-</div>
-
-
-  </aside>
-
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">goruntine和channel</h1>
-            
-            <div class="markdown-body">
-              
-              <p>前面几个回合，我们都是实例，但在go中有个很常用的东东，我们代码使用的不多，这一次我们单独拿来讲讲。</p>
+    
+  </div>
+  </div><article class="md-text content"><p>前面几个回合，我们都是实例，但在go中有个很常用的东东，我们代码使用的不多，这一次我们单独拿来讲讲。</p>
 <h3 id="goroutine"><a href="#goroutine" class="headerlink" title="goroutine"></a>goroutine</h3><blockquote>
 <p>goroutine是go语言特有的并发体，是一种轻量级的线程，由go关键字启动。</p>
 </blockquote>
@@ -490,43 +103,13 @@
 <p>Do not communicate by sharing memory; instead, share memory by communicating.</p>
 </blockquote>
 <p><strong>goroutine的通信用通道</strong></p>
-<p><img src="https://pic1.zhimg.com/80/v2-dc5d88a2c439580386b95362f7c0bad8_1440w.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://pic1.zhimg.com/80/v2-dc5d88a2c439580386b95362f7c0bad8_1440w.jpg" alt="img"></p>
 <p>通道是个啥？</p>
 <blockquote>
 <p>一个通道相当于一个先进先出（FIFO）的队列，通道中的各个元素是严格地按照发送的顺序排列的，先被发送通道的一定会先被接收。元素的发送和接收都需要用到操作符<code>&lt;-</code>。</p>
 </blockquote>
 <p>这里有一个FIFO简单的例子</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
-
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>, <span class="hljs-number">5</span>)
-	ch &lt;- <span class="hljs-number">1</span>
-	ch &lt;- <span class="hljs-number">2</span>
-	ch &lt;- <span class="hljs-number">3</span>
-	ch &lt;- <span class="hljs-number">4</span>
-	ch &lt;- <span class="hljs-number">5</span>
-
-	fmt.Println(<span class="hljs-string">&quot;1-&quot;</span>, &lt;-ch)
-	fmt.Println(<span class="hljs-string">&quot;2-&quot;</span>, &lt;-ch)
-	ch &lt;- <span class="hljs-number">6</span>
-	fmt.Println(<span class="hljs-string">&quot;3-&quot;</span>, &lt;-ch)
-	fmt.Println(<span class="hljs-string">&quot;4-&quot;</span>, &lt;-ch)
-	fmt.Println(<span class="hljs-string">&quot;5-&quot;</span>, &lt;-ch)
-	fmt.Println(<span class="hljs-string">&quot;6-&quot;</span>, &lt;-ch)
-	<span class="hljs-built_in">close</span>(ch)
-&#125;
-
-<span class="hljs-comment">/*</span>
-<span class="hljs-comment">打印的内容如下：</span>
-<span class="hljs-comment">1- 1</span>
-<span class="hljs-comment">2- 2</span>
-<span class="hljs-comment">3- 3</span>
-<span class="hljs-comment">4- 4</span>
-<span class="hljs-comment">5- 5</span>
-<span class="hljs-comment">6- 6</span>
-<span class="hljs-comment">*/</span></code></pre></div>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>, <span class="number">5</span>)</span><br><span class="line">	ch &lt;- <span class="number">1</span></span><br><span class="line">	ch &lt;- <span class="number">2</span></span><br><span class="line">	ch &lt;- <span class="number">3</span></span><br><span class="line">	ch &lt;- <span class="number">4</span></span><br><span class="line">	ch &lt;- <span class="number">5</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">&quot;1-&quot;</span>, &lt;-ch)</span><br><span class="line">	fmt.Println(<span class="string">&quot;2-&quot;</span>, &lt;-ch)</span><br><span class="line">	ch &lt;- <span class="number">6</span></span><br><span class="line">	fmt.Println(<span class="string">&quot;3-&quot;</span>, &lt;-ch)</span><br><span class="line">	fmt.Println(<span class="string">&quot;4-&quot;</span>, &lt;-ch)</span><br><span class="line">	fmt.Println(<span class="string">&quot;5-&quot;</span>, &lt;-ch)</span><br><span class="line">	fmt.Println(<span class="string">&quot;6-&quot;</span>, &lt;-ch)</span><br><span class="line">	<span class="built_in">close</span>(ch)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">打印的内容如下：</span></span><br><span class="line"><span class="comment">1- 1</span></span><br><span class="line"><span class="comment">2- 2</span></span><br><span class="line"><span class="comment">3- 3</span></span><br><span class="line"><span class="comment">4- 4</span></span><br><span class="line"><span class="comment">5- 5</span></span><br><span class="line"><span class="comment">6- 6</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 
 
@@ -536,90 +119,31 @@
 <li>缓冲通道</li>
 <li>非缓冲通道</li>
 </ul>
-<div class="code-wrapper"><pre><code class="hljs text">// 缓冲通道
-ch1 := make(chan int, 10)
-ch2 := make(chan bool, 2)
-
-
-// 非缓冲通道
-ch3 := make(chan int)
-ch4 := make(chan bool, 0)</code></pre></div>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">// 缓冲通道</span><br><span class="line">ch1 := make(chan int, 10)</span><br><span class="line">ch2 := make(chan bool, 2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 非缓冲通道</span><br><span class="line">ch3 := make(chan int)</span><br><span class="line">ch4 := make(chan bool, 0)</span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="发送通道数据"><a href="#发送通道数据" class="headerlink" title="发送通道数据"></a>发送通道数据</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 创建一个空接口通道，注意定义的通道类型有</span>
-ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">interface</span>&#123;&#125;)
-<span class="hljs-comment">// 将0放入通道中</span>
-ch &lt;- <span class="hljs-number">0</span>
-<span class="hljs-comment">// 将hello字符串放入通道中</span>
-ch &lt;- <span class="hljs-string">&quot;hello&quot;</span></code></pre></div>
+<h3 id="发送通道数据"><a href="#发送通道数据" class="headerlink" title="发送通道数据"></a>发送通道数据</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建一个空接口通道，注意定义的通道类型有</span></span><br><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line"><span class="comment">// 将0放入通道中</span></span><br><span class="line">ch &lt;- <span class="number">0</span></span><br><span class="line"><span class="comment">// 将hello字符串放入通道中</span></span><br><span class="line">ch &lt;- <span class="string">&quot;hello&quot;</span></span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="接收通道数据"><a href="#接收通道数据" class="headerlink" title="接收通道数据"></a>接收通道数据</h3><h3 id="1-阻塞接收数据"><a href="#1-阻塞接收数据" class="headerlink" title="1. 阻塞接收数据"></a>1. 阻塞接收数据</h3><p>阻塞模式接收数据时，将接收变量作为<code>&lt;-</code>操作符的左值，格式如下：</p>
-<div class="code-wrapper"><pre><code class="hljs text">data := &lt;-ch</code></pre></div>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">data := &lt;-ch</span><br></pre></td></tr></table></figure>
 
 <p>执行该语句时将会阻塞，直到接收到数据并赋值给 data 变量。</p>
 <h3 id="2-非阻塞接收数据"><a href="#2-非阻塞接收数据" class="headerlink" title="2. 非阻塞接收数据"></a>2. 非阻塞接收数据</h3><p>使用非阻塞方式从通道接收数据时，语句不会发生阻塞，格式如下：</p>
-<div class="code-wrapper"><pre><code class="hljs text">data, ok := &lt;-ch
-
-// data：表示接收到的数据。未接收到数据时，data 为通道类型的零值
-// ok：表示是否接收到数据。</code></pre></div>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">data, ok := &lt;-ch</span><br><span class="line"></span><br><span class="line">// data：表示接收到的数据。未接收到数据时，data 为通道类型的零值</span><br><span class="line">// ok：表示是否接收到数据。</span><br></pre></td></tr></table></figure>
 
 <p>非阻塞的通道接收方法可能造成高的 CPU 占用，因此使用非常少。如果需要实现接收超时检测，可以配合 select 和计时器 channel 进行，可以参见后面的内容。</p>
 <h3 id="3-接收任意数据，忽略接收的数据"><a href="#3-接收任意数据，忽略接收的数据" class="headerlink" title="3. 接收任意数据，忽略接收的数据"></a>3. 接收任意数据，忽略接收的数据</h3><p>阻塞接收数据后，忽略从通道返回的数据，格式如下：</p>
-<div class="code-wrapper"><pre><code class="hljs text">&lt;-ch</code></pre></div>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">&lt;-ch</span><br></pre></td></tr></table></figure>
 
 <h3 id="4-循环接收"><a href="#4-循环接收" class="headerlink" title="4. 循环接收"></a>4. 循环接收</h3><p>通道的数据接收可以借用 for range 语句进行多个元素的接收操作，格式如下：</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
-
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-
-    <span class="hljs-string">&quot;time&quot;</span>
-)
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-
-    <span class="hljs-comment">// 构建一个通道</span>
-    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
-
-    <span class="hljs-comment">// 开启一个并发匿名函数</span>
-    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
-
-        <span class="hljs-comment">// 从3循环到0</span>
-        <span class="hljs-keyword">for</span> i := <span class="hljs-number">3</span>; i &gt;= <span class="hljs-number">0</span>; i-- &#123;
-
-            <span class="hljs-comment">// 发送3到0之间的数值</span>
-            ch &lt;- i
-
-            <span class="hljs-comment">// 每次发送完时等待</span>
-            time.Sleep(time.Second)
-        &#125;
-
-    &#125;()
-
-    <span class="hljs-comment">// 遍历接收通道数据</span>
-    <span class="hljs-keyword">for</span> data := <span class="hljs-keyword">range</span> ch &#123;
-
-        <span class="hljs-comment">// 打印通道数据</span>
-        fmt.Println(data)
-
-        <span class="hljs-comment">// 当遇到数据0时, 退出接收循环</span>
-        <span class="hljs-keyword">if</span> data == <span class="hljs-number">0</span> &#123;
-                <span class="hljs-keyword">break</span>
-        &#125;
-    &#125;
-
-&#125;</code></pre></div>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构建一个通道</span></span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 开启一个并发匿名函数</span></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从3循环到0</span></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">3</span>; i &gt;= <span class="number">0</span>; i-- &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 发送3到0之间的数值</span></span><br><span class="line">            ch &lt;- i</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 每次发送完时等待</span></span><br><span class="line">            time.Sleep(time.Second)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历接收通道数据</span></span><br><span class="line">    <span class="keyword">for</span> data := <span class="keyword">range</span> ch &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 打印通道数据</span></span><br><span class="line">        fmt.Println(data)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 当遇到数据0时, 退出接收循环</span></span><br><span class="line">        <span class="keyword">if</span> data == <span class="number">0</span> &#123;</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="关闭通道"><a href="#关闭通道" class="headerlink" title="关闭通道"></a>关闭通道</h3><div class="code-wrapper"><pre><code class="hljs go">ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>)
-
-...
-
-<span class="hljs-built_in">close</span>(ch)</code></pre></div>
+<h3 id="关闭通道"><a href="#关闭通道" class="headerlink" title="关闭通道"></a>关闭通道</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line">ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">string</span>)</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="built_in">close</span>(ch)</span><br></pre></td></tr></table></figure>
 
 <hr>
 <h2 id="通道特性"><a href="#通道特性" class="headerlink" title="通道特性"></a>通道特性</h2><ul>
@@ -635,8 +159,7 @@ ch &lt;- <span class="hljs-string">&quot;hello&quot;</span></code></pre></div>
 <li>单向通道最主要的用途就是约束其他代码的行为</li>
 <li>通过函数的参数类型或者返回值类型来限制（Go的语法糖）。</li>
 </ul>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ch <span class="hljs-keyword">chan</span>&lt;- <span class="hljs-keyword">int</span>)</span>；传入双向通道，在函数里面调用<span class="hljs-title">ch</span>只能发送</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span> <span class="hljs-params">(ch &lt;-<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)</span>；返回双向通道，在函数外面里面调用<span class="hljs-title">ch</span>只能接收</span></code></pre></div>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(ch <span class="keyword">chan</span>&lt;- <span class="type">int</span>)</span></span>；传入双向通道，在函数里面调用ch只能发送</span><br><span class="line"><span class="function"><span class="keyword">func</span><span class="params">()</span></span> (ch &lt;-<span class="keyword">chan</span> <span class="type">int</span>)；返回双向通道，在函数外面里面调用ch只能接收</span><br></pre></td></tr></table></figure>
 
 
 
@@ -647,55 +170,11 @@ ch &lt;- <span class="hljs-string">&quot;hello&quot;</span></code></pre></div>
 </blockquote>
 <p>说完这些概念性的玩意儿，我们还是来几个实例，感受一下goroutine配合channel使用的快感。</p>
 <hr>
-<h3 id="chan配合select实现超时处理"><a href="#chan配合select实现超时处理" class="headerlink" title="chan配合select实现超时处理"></a>chan配合select实现超时处理</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	timeout := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">bool</span>)
-	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
-		time.Sleep(<span class="hljs-number">3e9</span>)
-		timeout &lt;- <span class="hljs-literal">true</span>
-	&#125;()
-	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
-	<span class="hljs-keyword">select</span> &#123;
-	<span class="hljs-keyword">case</span> &lt;-ch:
-	<span class="hljs-keyword">case</span> &lt;-timeout:
-		fmt.Println(<span class="hljs-string">&quot;timeout!&quot;</span>)
-	&#125;
-&#125;</code></pre></div>
+<h3 id="chan配合select实现超时处理"><a href="#chan配合select实现超时处理" class="headerlink" title="chan配合select实现超时处理"></a>chan配合select实现超时处理</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	timeout := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">bool</span>)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		time.Sleep(<span class="number">3e9</span>)</span><br><span class="line">		timeout &lt;- <span class="literal">true</span></span><br><span class="line">	&#125;()</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">int</span>)</span><br><span class="line">	<span class="keyword">select</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> &lt;-ch:</span><br><span class="line">	<span class="keyword">case</span> &lt;-timeout:</span><br><span class="line">		fmt.Println(<span class="string">&quot;timeout!&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="非缓冲通道，监听信号量"><a href="#非缓冲通道，监听信号量" class="headerlink" title="非缓冲通道，监听信号量"></a>非缓冲通道，监听信号量</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-comment">// 来自gin文档的例子</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	router := gin.Default()
-	router.GET(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
-		time.Sleep(<span class="hljs-number">5</span> * time.Second)
-		c.String(http.StatusOK, <span class="hljs-string">&quot;Welcome Gin Server&quot;</span>)
-	&#125;)
-
-	srv := &amp;http.Server&#123;
-		Addr:    <span class="hljs-string">&quot;:8080&quot;</span>,
-		Handler: router,
-	&#125;
-
-	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
-		<span class="hljs-comment">// 服务连接</span>
-		<span class="hljs-keyword">if</span> err := srv.ListenAndServe(); err != <span class="hljs-literal">nil</span> &amp;&amp; err != http.ErrServerClosed &#123;
-			log.Fatalf(<span class="hljs-string">&quot;listen: %s\n&quot;</span>, err)
-		&#125;
-	&#125;()
-
-	<span class="hljs-comment">// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）</span>
-	quit := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal)
-	signal.Notify(quit, os.Interrupt)
-	&lt;-quit
-	log.Println(<span class="hljs-string">&quot;Shutdown Server ...&quot;</span>)
-
-	ctx, cancel := context.WithTimeout(context.Background(), <span class="hljs-number">5</span>*time.Second)
-	<span class="hljs-keyword">defer</span> cancel()
-	<span class="hljs-keyword">if</span> err := srv.Shutdown(ctx); err != <span class="hljs-literal">nil</span> &#123;
-		log.Fatal(<span class="hljs-string">&quot;Server Shutdown:&quot;</span>, err)
-	&#125;
-	log.Println(<span class="hljs-string">&quot;Server exiting&quot;</span>)
-&#125;</code></pre></div>
+<h3 id="非缓冲通道，监听信号量"><a href="#非缓冲通道，监听信号量" class="headerlink" title="非缓冲通道，监听信号量"></a>非缓冲通道，监听信号量</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 来自gin文档的例子</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	router := gin.Default()</span><br><span class="line">	router.GET(<span class="string">&quot;/&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(c *gin.Context)</span></span> &#123;</span><br><span class="line">		time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">		c.String(http.StatusOK, <span class="string">&quot;Welcome Gin Server&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	srv := &amp;http.Server&#123;</span><br><span class="line">		Addr:    <span class="string">&quot;:8080&quot;</span>,</span><br><span class="line">		Handler: router,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="comment">// 服务连接</span></span><br><span class="line">		<span class="keyword">if</span> err := srv.ListenAndServe(); err != <span class="literal">nil</span> &amp;&amp; err != http.ErrServerClosed &#123;</span><br><span class="line">			log.Fatalf(<span class="string">&quot;listen: %s\n&quot;</span>, err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）</span></span><br><span class="line">	quit := <span class="built_in">make</span>(<span class="keyword">chan</span> os.Signal)</span><br><span class="line">	signal.Notify(quit, os.Interrupt)</span><br><span class="line">	&lt;-quit</span><br><span class="line">	log.Println(<span class="string">&quot;Shutdown Server ...&quot;</span>)</span><br><span class="line"></span><br><span class="line">	ctx, cancel := context.WithTimeout(context.Background(), <span class="number">5</span>*time.Second)</span><br><span class="line">	<span class="keyword">defer</span> cancel()</span><br><span class="line">	<span class="keyword">if</span> err := srv.Shutdown(ctx); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">&quot;Server Shutdown:&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	log.Println(<span class="string">&quot;Server exiting&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -709,457 +188,494 @@ ch &lt;- <span class="hljs-string">&quot;hello&quot;</span></code></pre></div>
 <li><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/112">Go语言核心36讲_Golang_Go语言-极客时间</a></li>
 </ul>
 
-              
-            </div>
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/goexample/" class="category-chain-item">goexample</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/goexample/">#goexample</a>
-      
-    </div>
-  
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2021/02/12/goexample7/">docker-compose整合go-kit和mysql、Redis</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2021/02/12/goexample9/">golang限流器</a></div></section></div>
 
 
-              
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">puresai</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#goroutine"><span class="toc-text">goroutine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%80%9A%E9%81%93"><span class="toc-text">创建通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E9%80%9A%E9%81%93%E6%95%B0%E6%8D%AE"><span class="toc-text">发送通道数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E9%80%9A%E9%81%93%E6%95%B0%E6%8D%AE"><span class="toc-text">接收通道数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%98%BB%E5%A1%9E%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="toc-text">1. 阻塞接收数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%9E%E9%98%BB%E5%A1%9E%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="toc-text">2. 非阻塞接收数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8E%A5%E6%94%B6%E4%BB%BB%E6%84%8F%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%BF%BD%E7%95%A5%E6%8E%A5%E6%94%B6%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-text">3. 接收任意数据，忽略接收的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%BE%AA%E7%8E%AF%E6%8E%A5%E6%94%B6"><span class="toc-text">4. 循环接收</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%97%AD%E9%80%9A%E9%81%93"><span class="toc-text">关闭通道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E9%81%93%E7%89%B9%E6%80%A7"><span class="toc-text">通道特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#chan%E9%85%8D%E5%90%88select%E5%AE%9E%E7%8E%B0%E8%B6%85%E6%97%B6%E5%A4%84%E7%90%86"><span class="toc-text">chan配合select实现超时处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%EF%BC%8C%E7%9B%91%E5%90%AC%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="toc-text">非缓冲通道，监听信号量</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
   
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>goruntine和channel</div>
-      <div>https://blog.puresai.com/2021/02/12/goexample8/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>puresai</div>
-        </div>
-      
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+</script>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2021/02/12/goexample9/" title="golang限流器">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">golang限流器</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2021/02/10/312/" title="Docker基础与常用命令">
-                        <span class="hidden-mobile">Docker基础与常用命令</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-  <article id="comments" lazyload>
-    
-  <script type="text/javascript">
-    Fluid.utils.loadComments('#comments', function() {
-      var light = 'github-light';
-      var dark = 'github-dark';
-      var schema = document.documentElement.getAttribute('data-user-color-scheme');
-      if (schema === 'dark') {
-        schema = dark;
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
       } else {
-        schema = light;
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
       }
-      window.UtterancesThemeLight = light;
-      window.UtterancesThemeDark = dark;
-      var s = document.createElement('script');
-      s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', 'puresai/puresai.github.io');
-      s.setAttribute('issue-term', 'url');
-      
-      s.setAttribute('label', 'utterances');
-      
-      s.setAttribute('theme', schema);
-      s.setAttribute('crossorigin', 'anonymous');
-      document.getElementById('comments').appendChild(s);
-    })
-  </script>
-  <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-  </article>
-
-
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/mermaid/8.14.0/mermaid.min.js', function() {
-    mermaid.initialize({"theme":"default"});
-  });
-</script>
-
-
-
-
-  <!-- Custom -->
-  <div class="col-lg-7 mx-auto nopadding-x-md">
-    <div class="container custom post-custom mx-auto">
-      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="height:300px;">
-    </div>
-  </div>
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <span>2015 ~ 2024</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
-    </div>
-  
-  
-  
-  
-</div>
-
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-
-
-
-  
-
-  
-
-  
-    <!-- Google gtag.js -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBCEG2QCJD"></script>
-    <script defer>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-YBCEG2QCJD');
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
-    });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
-</script>
-
-
-  <script>
-  (function() {
-    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
-    var enableCopy = CONFIG.copy_btn;
-    if (!enableLang && !enableCopy) {
-      return;
-    }
-
-    function getBgClass(ele) {
-      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
-    }
-
-    var copyTmpl = '';
-    copyTmpl += '<div class="code-widget">';
-    copyTmpl += 'LANG';
-    copyTmpl += '</div>';
-    jQuery('.markdown-body pre').each(function() {
-      var $pre = jQuery(this);
-      if ($pre.find('code.mermaid').length > 0) {
-        return;
-      }
-      if ($pre.find('span.line').length > 0) {
-        return;
-      }
-
-      var lang = '';
-
-      if (enableLang) {
-        lang = CONFIG.code_language.default;
-        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
-          lang = $pre[0].children[0].classList[1];
-        } else if ($pre[0].getAttribute('data-language')) {
-          lang = $pre[0].getAttribute('data-language');
-        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
-          lang = $pre[0].children[0].classList[1];
-          $pre.parent().addClass('code-wrapper');
-        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
-          $pre.wrap('<div class="code-wrapper"></div>');
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
         }
-        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
       }
-      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
-        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
 
-      if (enableCopy) {
-        Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/clipboard.js/2.0.10/clipboard.min.js', function() {
-          var clipboard = new window.ClipboardJS('.copy-btn', {
-            target: function(trigger) {
-              var nodes = trigger.parentNode.childNodes;
-              for (var i = 0; i < nodes.length; i++) {
-                if (nodes[i].tagName === 'CODE') {
-                  return nodes[i];
-                }
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
               }
             }
-          });
-          clipboard.on('success', function(e) {
-            e.clearSelection();
-            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
-            setTimeout(function() {
-              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
-            }, 2000);
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
           });
         });
       }
-    });
-  })();
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
 </script>
 
 
-  
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
 <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
     }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
     }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
     }
-    window.anchors.add(res.join(', '));
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
   });
 </script>
 
 
-  
-<script>
-  Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
+<!-- inject -->
 
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
-</body>
-</html>
+</div></body></html>

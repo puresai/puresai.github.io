@@ -1,20 +1,24 @@
 
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
+<!DOCTYPE html><html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
-  <link rel="icon" href="/images/qiniu/sai.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
   
-  <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="puresai">
-  <meta name="keywords" content="go,golang,go kit,go-kit,docker-compose,mysql,Redis">
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>docker-compose整合go-kit和mysql、Redis - puresai blog</title>
+
   
     <meta name="description" content="通过例子学习go-docker-compose整合go-kit和mysql、Redis">
 <meta property="og:type" content="article">
@@ -30,587 +34,73 @@
 <meta property="article:modified_time" content="2024-04-08T08:13:25.838Z">
 <meta property="article:author" content="puresai">
 <meta property="article:tag" content="goexample">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.puresai.com/images/post/v2-94d150a73c8e24ba9519c5433edab2ee_1440w.png">
   
   
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>docker-compose整合go-kit和mysql、Redis - puresai blog</title>
+  <meta name="keywords" content="go,golang,go kit,go-kit,docker-compose,mysql,Redis">
 
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/github-markdown-css/5.1.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  <!-- feed -->
   
 
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
 
   
-<meta name="generator" content="Hexo 5.4.0"></head>
+    <link rel="shortcut icon" href="/favicon.ico">
+  
 
+  
 
+  
+</head>
 <body>
-  
 
-  <header>
-    
-
-<div class="header-inner" style="height: 60vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>puresai blog</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="iconfont icon-books"></i>
-                专栏
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/goexample/">
-                    
-                    实例学go
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/gosourcecode/">
-                    
-                    go源码笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/phpframe/">
-                    
-                    手写PHP API框架
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/reading/">
-                    
-                    读书笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Nginx/">
-                    
-                    Nginx系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/MySQL/">
-                    
-                    Mysql系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Redis/">
-                    
-                    Redis系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/k8s-learing/">
-                    
-                    Kuberetes系列
-                  </a>
-                
-              </div>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" target="_blank" rel="noopener" href="https://puresai.com/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/images/post/go.jpeg') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle">docker-compose整合go-kit和mysql、Redis</span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-02-12 21:48" pubdate>
-          2021年2月12日
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          4.4k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          37 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span> 次
-        </span>
-        
-      
-    
-  </div>
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
-        
-      </div>
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="undefined" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">puresai blog</div><div class="sub cap">puresai blog</div></a></div></header>
 
-      
-    </div>
-  </div>
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/11/24/520/"><span class="title">Python3虚拟环境venv</span></a><a class="item title" href="/2024/10/24/530/"><span class="title">排查Linux磁盘空间不足的问题</span></a><a class="item title" href="/2024/09/22/525/"><span class="title">python3读取csv _csv.Error: line contains NUL</span></a><a class="item title" href="/2024/08/16/471/"><span class="title">mysql如何使用不定数量的查询</span></a><a class="item title" href="/2024/08/01/520/"><span class="title">python3查询es超时</span></a><a class="item title" href="/2024/08/07/521/"><span class="title">解决webman事务不生效的问题</span></a><a class="item title" href="/2024/04/21/512/"><span class="title">检查是否在企业微信中</span></a><a class="item title" href="/2022/08/10/432/"><span class="title">kubernete实战篇-外部服务</span></a><a class="item title" href="/2017/01/05/95/"><span class="title">windows7创建任务计划</span></a><a class="item title" href="/2024/04/14/511/"><span class="title">做一个简单的服务器监控企业微信通知</span></a></div></widget>
 </div>
 
-</div>
-
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar category-bar" style="margin-right: -1rem">
-    
+</div></aside><div class="l_main" id="main">
 
 
 
 
 
-<div class="category-list">
-  
-  
-  
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/goexample/">goexample</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2021-02-12T13:48:20.000Z">2021-02-12</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-04-08T08:13:25.838Z">2024-04-08</time></span></div></div></div>
     
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="goexample"
-        id="heading-bbf4bcbc3b6c234b840e985b0b467701" role="tab" data-toggle="collapse" href="#collapse-bbf4bcbc3b6c234b840e985b0b467701"
-        aria-expanded="true"
-      >
-        goexample
-        <span class="list-group-count">(10)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
+    <div class="bottom only-title">
       
-      <div class="category-collapse collapse show" id="collapse-bbf4bcbc3b6c234b840e985b0b467701"
-           role="tabpanel" aria-labelledby="heading-bbf4bcbc3b6c234b840e985b0b467701">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2021/02/12/goexample1/" title="搭建http server"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">搭建http server</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample2/" title="利用gin搭建一个api框架"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">利用gin搭建一个api框架</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample5/" title="go面向对象"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go面向对象</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample10/" title="go+MongoDB实现附近的人"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go+MongoDB实现附近的人</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample3/" title="防止漏打卡，利用gin和cron来做一个智能提醒"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">防止漏打卡，利用gin和cron来做一个智能提醒</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample4/" title="gRPC"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">gRPC</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample6/" title="go-kit"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">go-kit</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample7/" title="docker-compose整合go-kit和mysql、Redis"
-           class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">docker-compose整合go-kit和mysql、Redis</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample9/" title="golang限流器"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">golang限流器</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/12/goexample8/" title="goruntine和channel"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">goruntine和channel</span>
-        </a>
-      
-    
-  </div>
-
+      <div class="text-area">
+        <h1 class="text title"><span>docker-compose整合go-kit和mysql、Redis</span></h1>
         
       </div>
     </div>
-  
-</div>
-
-
-  </aside>
-
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">docker-compose整合go-kit和mysql、Redis</h1>
-            
-            <div class="markdown-body">
-              
-              <p>专栏之前有使用go-kit、gorm、go-Redis，所以部分内容就忽略。</p>
+    
+  </div>
+  </div><article class="md-text content"><p>专栏之前有使用go-kit、gorm、go-Redis，所以部分内容就忽略。</p>
 <h2 id="定义model"><a href="#定义model" class="headerlink" title="定义model"></a>定义model</h2><p>主要实现SelectByEmail（查找）和Save（新建）两个方法：</p>
-<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> model
-
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;time&quot;</span>
-
-<span class="hljs-keyword">type</span> UserEntity <span class="hljs-keyword">struct</span> &#123;
-	ID        <span class="hljs-keyword">int64</span>
-	Username  <span class="hljs-keyword">string</span>
-	Password  <span class="hljs-keyword">string</span>
-	Email     <span class="hljs-keyword">string</span>
-	CreatedAt time.Time
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(UserEntity)</span> <span class="hljs-title">TableName</span><span class="hljs-params">()</span> <span class="hljs-title">string</span></span> &#123;
-	<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;user&quot;</span>
-&#125;
-
-<span class="hljs-keyword">type</span> UserDao <span class="hljs-keyword">interface</span> &#123;
-	SelectByEmail(email <span class="hljs-keyword">string</span>) (*UserEntity, error)
-	Save(user *UserEntity) error
-&#125;
-
-<span class="hljs-keyword">type</span> UserDaoImpl <span class="hljs-keyword">struct</span>&#123;&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *UserDaoImpl)</span> <span class="hljs-title">SelectByEmail</span><span class="hljs-params">(email <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(*UserEntity, error)</span></span> &#123;
-	user := &amp;UserEntity&#123;&#125;
-	err := db.Where(<span class="hljs-string">&quot;email = ?&quot;</span>, email).First(user).Error
-	<span class="hljs-keyword">return</span> user, err
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(u *UserDaoImpl)</span> <span class="hljs-title">Save</span><span class="hljs-params">(user *UserEntity)</span> <span class="hljs-title">error</span></span> &#123;
-	<span class="hljs-keyword">return</span> db.Create(user).Error
-&#125;</code></pre></div>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> model</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;time&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserEntity <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID        <span class="type">int64</span></span><br><span class="line">	Username  <span class="type">string</span></span><br><span class="line">	Password  <span class="type">string</span></span><br><span class="line">	Email     <span class="type">string</span></span><br><span class="line">	CreatedAt time.Time</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(UserEntity)</span></span> TableName() <span class="type">string</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;user&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserDao <span class="keyword">interface</span> &#123;</span><br><span class="line">	SelectByEmail(email <span class="type">string</span>) (*UserEntity, <span class="type">error</span>)</span><br><span class="line">	Save(user *UserEntity) <span class="type">error</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserDaoImpl <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *UserDaoImpl)</span></span> SelectByEmail(email <span class="type">string</span>) (*UserEntity, <span class="type">error</span>) &#123;</span><br><span class="line">	user := &amp;UserEntity&#123;&#125;</span><br><span class="line">	err := db.Where(<span class="string">&quot;email = ?&quot;</span>, email).First(user).Error</span><br><span class="line">	<span class="keyword">return</span> user, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *UserDaoImpl)</span></span> Save(user *UserEntity) <span class="type">error</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> db.Create(user).Error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="业务service"><a href="#业务service" class="headerlink" title="业务service"></a>业务service</h2><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> service
-
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;context&quot;</span>
-	<span class="hljs-string">&quot;demo7-docker-compose/model&quot;</span>
-	<span class="hljs-string">&quot;errors&quot;</span>
-	<span class="hljs-string">&quot;log&quot;</span>
-	<span class="hljs-string">&quot;time&quot;</span>
-
-	<span class="hljs-string">&quot;github.com/jinzhu/gorm&quot;</span>
-)
-
-<span class="hljs-keyword">type</span> UserInfoDTO <span class="hljs-keyword">struct</span> &#123;
-	ID       <span class="hljs-keyword">int64</span>  <span class="hljs-string">`json:&quot;id&quot;`</span>
-	Username <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;username&quot;`</span>
-	Email    <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;email&quot;`</span>
-&#125;
-
-<span class="hljs-keyword">var</span> (
-	ErrUserExisted = errors.New(<span class="hljs-string">&quot;user is existed&quot;</span>)
-	ErrPassword    = errors.New(<span class="hljs-string">&quot;email and password are not match&quot;</span>)
-	ErrRegistering = errors.New(<span class="hljs-string">&quot;email is registering&quot;</span>)
-)
-
-<span class="hljs-keyword">type</span> RegisterUser <span class="hljs-keyword">struct</span> &#123;
-	Username <span class="hljs-keyword">string</span>
-	Password <span class="hljs-keyword">string</span>
-	Email    <span class="hljs-keyword">string</span>
-&#125;
-
-<span class="hljs-keyword">type</span> UserService <span class="hljs-keyword">interface</span> &#123;
-	Login(ctx context.Context, email, pass <span class="hljs-keyword">string</span>) (*UserInfoDTO, error)
-	Register(ctx context.Context, user *RegisterUser) (*UserInfoDTO, error)
-&#125;
-
-<span class="hljs-keyword">type</span> UserServiceImpl <span class="hljs-keyword">struct</span> &#123;
-	userDao model.UserDao
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">MakeUserServiceImpl</span><span class="hljs-params">(userDao model.UserDao)</span> <span class="hljs-title">UserService</span></span> &#123;
-	<span class="hljs-keyword">return</span> &amp;UserServiceImpl&#123;
-		userDao,
-	&#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(userService *UserServiceImpl)</span> <span class="hljs-title">Login</span><span class="hljs-params">(ctx context.Context, email, password <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(*UserInfoDTO, error)</span></span> &#123;
-	user, err := userService.userDao.SelectByEmail(email)
-	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-keyword">if</span> user.Password == password &#123;
-			<span class="hljs-keyword">return</span> &amp;UserInfoDTO&#123;
-				ID:       user.ID,
-				Username: user.Username,
-				Email:    user.Email,
-			&#125;, <span class="hljs-literal">nil</span>
-		&#125; <span class="hljs-keyword">else</span> &#123;
-			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, ErrPassword
-		&#125;
-	&#125; <span class="hljs-keyword">else</span> &#123;
-		log.Printf(<span class="hljs-string">&quot;err : %s&quot;</span>, err)
-	&#125;
-	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(userService UserServiceImpl)</span> <span class="hljs-title">Register</span><span class="hljs-params">(ctx context.Context, user *RegisterUser)</span> <span class="hljs-params">(*UserInfoDTO, error)</span></span> &#123;
-	ret := model.RedisClient.SetNX(user.Email, <span class="hljs-number">1</span>, time.Duration(<span class="hljs-number">5</span>)*time.Second)
-	<span class="hljs-keyword">if</span> ret.Val() == <span class="hljs-literal">false</span> &#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, ErrRegistering
-	&#125;
-	<span class="hljs-keyword">defer</span> model.RedisClient.Del(user.Email)
-
-	existUser, err := userService.userDao.SelectByEmail(user.Email)
-
-	<span class="hljs-keyword">if</span> (err == <span class="hljs-literal">nil</span> &amp;&amp; existUser == <span class="hljs-literal">nil</span>) || err == gorm.ErrRecordNotFound &#123;
-		newUser := &amp;model.UserEntity&#123;
-			Username: user.Username,
-			Password: user.Password,
-			Email:    user.Email,
-		&#125;
-		err = userService.userDao.Save(newUser)
-		<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
-			<span class="hljs-keyword">return</span> &amp;UserInfoDTO&#123;
-				ID:       newUser.ID,
-				Username: newUser.Username,
-				Email:    newUser.Email,
-			&#125;, <span class="hljs-literal">nil</span>
-		&#125;
-	&#125;
-	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;
-		err = ErrUserExisted
-	&#125;
-	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err
-
-&#125;</code></pre></div>
+<h2 id="业务service"><a href="#业务service" class="headerlink" title="业务service"></a>业务service</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> service</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;demo7-docker-compose/model&quot;</span></span><br><span class="line">	<span class="string">&quot;errors&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/jinzhu/gorm&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserInfoDTO <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID       <span class="type">int64</span>  <span class="string">`json:&quot;id&quot;`</span></span><br><span class="line">	Username <span class="type">string</span> <span class="string">`json:&quot;username&quot;`</span></span><br><span class="line">	Email    <span class="type">string</span> <span class="string">`json:&quot;email&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	ErrUserExisted = errors.New(<span class="string">&quot;user is existed&quot;</span>)</span><br><span class="line">	ErrPassword    = errors.New(<span class="string">&quot;email and password are not match&quot;</span>)</span><br><span class="line">	ErrRegistering = errors.New(<span class="string">&quot;email is registering&quot;</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> RegisterUser <span class="keyword">struct</span> &#123;</span><br><span class="line">	Username <span class="type">string</span></span><br><span class="line">	Password <span class="type">string</span></span><br><span class="line">	Email    <span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserService <span class="keyword">interface</span> &#123;</span><br><span class="line">	Login(ctx context.Context, email, pass <span class="type">string</span>) (*UserInfoDTO, <span class="type">error</span>)</span><br><span class="line">	Register(ctx context.Context, user *RegisterUser) (*UserInfoDTO, <span class="type">error</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserServiceImpl <span class="keyword">struct</span> &#123;</span><br><span class="line">	userDao model.UserDao</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MakeUserServiceImpl</span><span class="params">(userDao model.UserDao)</span></span> UserService &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;UserServiceImpl&#123;</span><br><span class="line">		userDao,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(userService *UserServiceImpl)</span></span> Login(ctx context.Context, email, password <span class="type">string</span>) (*UserInfoDTO, <span class="type">error</span>) &#123;</span><br><span class="line">	user, err := userService.userDao.SelectByEmail(email)</span><br><span class="line">	<span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> user.Password == password &#123;</span><br><span class="line">			<span class="keyword">return</span> &amp;UserInfoDTO&#123;</span><br><span class="line">				ID:       user.ID,</span><br><span class="line">				Username: user.Username,</span><br><span class="line">				Email:    user.Email,</span><br><span class="line">			&#125;, <span class="literal">nil</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span>, ErrPassword</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		log.Printf(<span class="string">&quot;err : %s&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(userService UserServiceImpl)</span></span> Register(ctx context.Context, user *RegisterUser) (*UserInfoDTO, <span class="type">error</span>) &#123;</span><br><span class="line">	ret := model.RedisClient.SetNX(user.Email, <span class="number">1</span>, time.Duration(<span class="number">5</span>)*time.Second)</span><br><span class="line">	<span class="keyword">if</span> ret.Val() == <span class="literal">false</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, ErrRegistering</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> model.RedisClient.Del(user.Email)</span><br><span class="line"></span><br><span class="line">	existUser, err := userService.userDao.SelectByEmail(user.Email)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (err == <span class="literal">nil</span> &amp;&amp; existUser == <span class="literal">nil</span>) || err == gorm.ErrRecordNotFound &#123;</span><br><span class="line">		newUser := &amp;model.UserEntity&#123;</span><br><span class="line">			Username: user.Username,</span><br><span class="line">			Password: user.Password,</span><br><span class="line">			Email:    user.Email,</span><br><span class="line">		&#125;</span><br><span class="line">		err = userService.userDao.Save(newUser)</span><br><span class="line">		<span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> &amp;UserInfoDTO&#123;</span><br><span class="line">				ID:       newUser.ID,</span><br><span class="line">				Username: newUser.Username,</span><br><span class="line">				Email:    newUser.Email,</span><br><span class="line">			&#125;, <span class="literal">nil</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">		err = ErrUserExisted</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -618,91 +108,44 @@
 <blockquote>
 <p><strong>SET key value [EX seconds] [PX milliseconds] [NX|XX]</strong></p>
 </blockquote>
-<div class="code-wrapper"><pre><code class="hljs text">       ret := model.RedisClient.SetNX(user.Email, 1, time.Duration(5)*time.Second)
-if ret.Val() == false &#123;
-	return nil, ErrRegistering
-&#125;
-defer model.RedisClient.Del(user.Email)</code></pre></div>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">       ret := model.RedisClient.SetNX(user.Email, 1, time.Duration(5)*time.Second)</span><br><span class="line">if ret.Val() == false &#123;</span><br><span class="line">	return nil, ErrRegistering</span><br><span class="line">&#125;</span><br><span class="line">defer model.RedisClient.Del(user.Email)</span><br></pre></td></tr></table></figure>
 
 
 
 <p>对于endpoint和transport，就与之前的没有太大差别了，我们这里就暂时略去，有兴趣可点击文章最后的源码查看。</p>
 <h2 id="mysql和Redis容器"><a href="#mysql和Redis容器" class="headerlink" title="mysql和Redis容器"></a>mysql和Redis容器</h2><p>mysql的Dockerfile：</p>
-<div class="code-wrapper"><pre><code class="hljs docker"><span class="hljs-keyword">FROM</span> mysql:<span class="hljs-number">5.7</span> 
-<span class="hljs-keyword">WORKDIR</span><span class="bash"> /docker-entrypoint-initdb.d </span>
-<span class="hljs-keyword">ENV</span> LANG=C.UTF-<span class="hljs-number">8</span>
-<span class="hljs-keyword">COPY</span><span class="bash"> user.sql .</span></code></pre></div>
+<figure class="highlight docker"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> mysql:<span class="number">5.7</span> </span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /docker-entrypoint-initdb.d </span></span><br><span class="line"><span class="keyword">ENV</span> LANG=C.UTF-<span class="number">8</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> user.sql .</span></span><br></pre></td></tr></table></figure>
 
 <p>运行mysql-for-user容器</p>
-<div class="code-wrapper"><pre><code class="hljs text">docker run  -itd --name mysql-for-user -p 3316:3306 -e MYSQL_ROOT_PASSWORD=111111 mysql-for-user</code></pre></div>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">docker run  -itd --name mysql-for-user -p 3316:3306 -e MYSQL_ROOT_PASSWORD=111111 mysql-for-user</span><br></pre></td></tr></table></figure>
 
 <p>这里容器启动的时候是可以执行user.sql的。（可通过docker logs mysql-for-user查看容器启动信息）</p>
 <blockquote>
 <p>/usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/user.sql</p>
 </blockquote>
 <p>Redis容器的启动简单</p>
-<div class="code-wrapper"><pre><code class="hljs docker">docker pull Redis:<span class="hljs-number">5.0</span>
-
-docker <span class="hljs-keyword">run</span><span class="bash"> -itd --name Redis5 -p 6389:6379 Redis:5.0</span></code></pre></div>
+<figure class="highlight docker"><table><tr><td class="code"><pre><span class="line">docker pull Redis:<span class="number">5.0</span></span><br><span class="line"></span><br><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -itd --name Redis5 -p 6389:6379 Redis:5.0</span></span><br></pre></td></tr></table></figure>
 
 
 
 <p>然后我们可以运行主程序，智能到8089端口：</p>
-<div class="code-wrapper"><pre><code class="hljs text">go run main.go -service.port 8089</code></pre></div>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">go run main.go -service.port 8089</span><br></pre></td></tr></table></figure>
 
 <p>测试一下。</p>
-<p><img src="/images/post/v2-94d150a73c8e24ba9519c5433edab2ee_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/post/v2-94d150a73c8e24ba9519c5433edab2ee_1440w.png" alt="img"></p>
 <p>可以实现登录与注册功能。</p>
 <h2 id="打包会员镜像"><a href="#打包会员镜像" class="headerlink" title="打包会员镜像"></a>打包会员镜像</h2><p>先编译：</p>
 <blockquote>
 <p>CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o user .</p>
 </blockquote>
 <p>user的dockerfile</p>
-<div class="code-wrapper"><pre><code class="hljs docker"><span class="hljs-keyword">FROM</span> alpine:<span class="hljs-number">3.12</span> 
-<span class="hljs-keyword">WORKDIR</span><span class="bash"> /</span>
-<span class="hljs-keyword">COPY</span><span class="bash"> ./user /</span>
-<span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;./user&quot;</span>]</span></code></pre></div>
+<figure class="highlight docker"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> alpine:<span class="number">3.12</span> </span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./user /</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;./user&quot;</span>]</span></span><br></pre></td></tr></table></figure>
 
 <p>构建镜像:</p>
 <blockquote>
 <p>docker build -t user-alpine .</p>
 </blockquote>
-<h2 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h2><div class="code-wrapper"><pre><code class="hljs docker">version: <span class="hljs-string">&#x27;2.1&#x27;</span>
-services:
-  user13:
-    image: <span class="hljs-keyword">user</span>-alpine
-    depends_on: 
-      - Redis
-      - mysql
-    ports:
-      - <span class="hljs-string">&quot;8088:8088&quot;</span>
-    links: 
-      - Redis
-      - mysql
-    networks:
-      - <span class="hljs-keyword">user</span>
-  mysql:
-    image: mysql-for-<span class="hljs-keyword">user</span>
-    ports:
-      - <span class="hljs-string">&quot;3306:3306&quot;</span>
-    <span class="hljs-keyword">expose</span>:
-      - <span class="hljs-string">&quot;3306&quot;</span>
-    environment:
-      - MYSQL_ROOT_PASSWORD=<span class="hljs-number">111111</span>
-    networks:
-      - <span class="hljs-keyword">user</span>
-    restart: always
-  Redis:
-    image: Redis:<span class="hljs-number">5.0</span>
-    ports:
-      - <span class="hljs-string">&quot;6379:6379&quot;</span>
-    <span class="hljs-keyword">expose</span>:
-      - <span class="hljs-string">&quot;6379&quot;</span>
-    networks:
-      - <span class="hljs-keyword">user</span>
-networks:
-  <span class="hljs-keyword">user</span>:
-    driver: bridge</code></pre></div>
+<h2 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h2><figure class="highlight docker"><table><tr><td class="code"><pre><span class="line">version: <span class="string">&#x27;2.1&#x27;</span></span><br><span class="line">services:</span><br><span class="line">  user13:</span><br><span class="line">    image: <span class="keyword">user</span>-alpine</span><br><span class="line">    depends_on: </span><br><span class="line">      - Redis</span><br><span class="line">      - mysql</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="string">&quot;8088:8088&quot;</span></span><br><span class="line">    links: </span><br><span class="line">      - Redis</span><br><span class="line">      - mysql</span><br><span class="line">    networks:</span><br><span class="line">      - <span class="keyword">user</span></span><br><span class="line">  mysql:</span><br><span class="line">    image: mysql-for-<span class="keyword">user</span></span><br><span class="line">    ports:</span><br><span class="line">      - <span class="string">&quot;3306:3306&quot;</span></span><br><span class="line">    <span class="keyword">expose</span>:</span><br><span class="line">      - <span class="string">&quot;3306&quot;</span></span><br><span class="line">    environment:</span><br><span class="line">      - MYSQL_ROOT_PASSWORD=<span class="number">111111</span></span><br><span class="line">    networks:</span><br><span class="line">      - <span class="keyword">user</span></span><br><span class="line">    restart: always</span><br><span class="line">  Redis:</span><br><span class="line">    image: Redis:<span class="number">5.0</span></span><br><span class="line">    ports:</span><br><span class="line">      - <span class="string">&quot;6379:6379&quot;</span></span><br><span class="line">    <span class="keyword">expose</span>:</span><br><span class="line">      - <span class="string">&quot;6379&quot;</span></span><br><span class="line">    networks:</span><br><span class="line">      - <span class="keyword">user</span></span><br><span class="line">networks:</span><br><span class="line">  <span class="keyword">user</span>:</span><br><span class="line">    driver: bridge</span><br></pre></td></tr></table></figure>
 
 
 
@@ -717,7 +160,7 @@ networks:
 <blockquote>
 <p>运行docker-compose up即可。</p>
 </blockquote>
-<p><img src="/images/post/v2-0fe2c4793b45c041c13b10d690266649_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/post/v2-0fe2c4793b45c041c13b10d690266649_1440w.png" alt="img"></p>
 <p>可以看见服务运行成功了。wow～</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/puresai/go-example/tree/main/demo7-docker-compose">详细代码点击进github</a></li>
@@ -725,459 +168,496 @@ networks:
 <p>dcoker composer语法可看菜鸟教程：</p>
 <p><a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-compose.html">Docker Compose | 菜鸟教程</a></p>
 <p>文中部分知识来自《Go微服务实战38讲》，有兴趣可前往查看：</p>
-<p><img src="/images/post/v2-3680541c44e6b0e0526a3d407487e7f3_1440w.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/post/v2-3680541c44e6b0e0526a3d407487e7f3_1440w.png" alt="img"></p>
 
-              
-            </div>
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/goexample/" class="category-chain-item">goexample</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/goexample/">#goexample</a>
-      
-    </div>
-  
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2021/02/12/goexample6/">go-kit</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2021/02/12/goexample8/">goruntine和channel</a></div></section></div>
 
 
-              
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">puresai</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89model"><span class="toc-text">定义model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1service"><span class="toc-text">业务service</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql%E5%92%8CRedis%E5%AE%B9%E5%99%A8"><span class="toc-text">mysql和Redis容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E4%BC%9A%E5%91%98%E9%95%9C%E5%83%8F"><span class="toc-text">打包会员镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-compose"><span class="toc-text">docker-compose</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
   
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>docker-compose整合go-kit和mysql、Redis</div>
-      <div>https://blog.puresai.com/2021/02/12/goexample7/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>puresai</div>
-        </div>
-      
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+</script>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2021/02/12/goexample6/" title="go-kit">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">go-kit</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2021/02/12/goexample9/" title="golang限流器">
-                        <span class="hidden-mobile">golang限流器</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-  <article id="comments" lazyload>
-    
-  <script type="text/javascript">
-    Fluid.utils.loadComments('#comments', function() {
-      var light = 'github-light';
-      var dark = 'github-dark';
-      var schema = document.documentElement.getAttribute('data-user-color-scheme');
-      if (schema === 'dark') {
-        schema = dark;
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
       } else {
-        schema = light;
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
       }
-      window.UtterancesThemeLight = light;
-      window.UtterancesThemeDark = dark;
-      var s = document.createElement('script');
-      s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', 'puresai/puresai.github.io');
-      s.setAttribute('issue-term', 'url');
-      
-      s.setAttribute('label', 'utterances');
-      
-      s.setAttribute('theme', schema);
-      s.setAttribute('crossorigin', 'anonymous');
-      document.getElementById('comments').appendChild(s);
-    })
-  </script>
-  <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-  </article>
-
-
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/mermaid/8.14.0/mermaid.min.js', function() {
-    mermaid.initialize({"theme":"default"});
-  });
-</script>
-
-
-
-
-  <!-- Custom -->
-  <div class="col-lg-7 mx-auto nopadding-x-md">
-    <div class="container custom post-custom mx-auto">
-      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="height:300px;">
-    </div>
-  </div>
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <span>2015 ~ 2024</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
-    </div>
-  
-  
-  
-  
-</div>
-
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-
-
-
-  
-
-  
-
-  
-    <!-- Google gtag.js -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBCEG2QCJD"></script>
-    <script defer>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-YBCEG2QCJD');
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
-    });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
-</script>
-
-
-  <script>
-  (function() {
-    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
-    var enableCopy = CONFIG.copy_btn;
-    if (!enableLang && !enableCopy) {
-      return;
-    }
-
-    function getBgClass(ele) {
-      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
-    }
-
-    var copyTmpl = '';
-    copyTmpl += '<div class="code-widget">';
-    copyTmpl += 'LANG';
-    copyTmpl += '</div>';
-    jQuery('.markdown-body pre').each(function() {
-      var $pre = jQuery(this);
-      if ($pre.find('code.mermaid').length > 0) {
-        return;
-      }
-      if ($pre.find('span.line').length > 0) {
-        return;
-      }
-
-      var lang = '';
-
-      if (enableLang) {
-        lang = CONFIG.code_language.default;
-        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
-          lang = $pre[0].children[0].classList[1];
-        } else if ($pre[0].getAttribute('data-language')) {
-          lang = $pre[0].getAttribute('data-language');
-        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
-          lang = $pre[0].children[0].classList[1];
-          $pre.parent().addClass('code-wrapper');
-        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
-          $pre.wrap('<div class="code-wrapper"></div>');
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
         }
-        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
       }
-      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
-        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
 
-      if (enableCopy) {
-        Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/clipboard.js/2.0.10/clipboard.min.js', function() {
-          var clipboard = new window.ClipboardJS('.copy-btn', {
-            target: function(trigger) {
-              var nodes = trigger.parentNode.childNodes;
-              for (var i = 0; i < nodes.length; i++) {
-                if (nodes[i].tagName === 'CODE') {
-                  return nodes[i];
-                }
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
               }
             }
-          });
-          clipboard.on('success', function(e) {
-            e.clearSelection();
-            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
-            setTimeout(function() {
-              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
-            }, 2000);
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
           });
         });
       }
-    });
-  })();
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
 </script>
 
 
-  
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
 <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
     }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
     }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
     }
-    window.anchors.add(res.join(', '));
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
   });
 </script>
 
 
-  
-<script>
-  Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
+<!-- inject -->
 
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
-</body>
-</html>
+</div></body></html>

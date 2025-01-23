@@ -1,20 +1,24 @@
 
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
+<!DOCTYPE html><html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
-  <link rel="icon" href="/images/qiniu/sai.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
   
-  <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="puresai">
-  <meta name="keywords" content="puresai,golang,Redis,Redis,Linux,MQ">
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>利用ElementUI的table和calendar制作一个价格日历 - puresai blog</title>
+
   
     <meta name="description" content="利用ElementUI的table和calendar制作一个价格日历">
 <meta property="og:type" content="article">
@@ -33,1191 +37,555 @@
 <meta name="twitter:image" content="https://cdn.learnku.com/uploads/images/202005/04/41489/pto2GeGfrI.jpg!large">
   
   
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>利用ElementUI的table和calendar制作一个价格日历 - puresai blog</title>
+  <meta name="keywords" content="ElementUI">
 
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/github-markdown-css/5.1.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  <!-- feed -->
   
 
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
 
   
-<meta name="generator" content="Hexo 5.4.0"></head>
+    <link rel="shortcut icon" href="/favicon.ico">
+  
 
+  
 
+  
+</head>
 <body>
-  
 
-  <header>
-    
-
-<div class="header-inner" style="height: 30vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>puresai blog</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="iconfont icon-books"></i>
-                专栏
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/goexample/">
-                    
-                    实例学go
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/gosourcecode/">
-                    
-                    go源码笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/phpframe/">
-                    
-                    手写PHP API框架
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/reading/">
-                    
-                    读书笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Nginx/">
-                    
-                    Nginx系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/MySQL/">
-                    
-                    Mysql系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Redis/">
-                    
-                    Redis系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/k8s-learing/">
-                    
-                    Kuberetes系列
-                  </a>
-                
-              </div>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" target="_blank" rel="noopener" href="https://puresai.com/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle">利用ElementUI的table和calendar制作一个价格日历</span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2020-05-04 19:43" pubdate>
-          2020年5月4日
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          7.8k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          66 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span> 次
-        </span>
-        
-      
-    
-  </div>
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
-        
-      </div>
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="undefined" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">puresai blog</div><div class="sub cap">puresai blog</div></a></div></header>
 
-      
-    </div>
-  </div>
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/11/24/520/"><span class="title">Python3虚拟环境venv</span></a><a class="item title" href="/2024/10/24/530/"><span class="title">排查Linux磁盘空间不足的问题</span></a><a class="item title" href="/2024/09/22/525/"><span class="title">python3读取csv _csv.Error: line contains NUL</span></a><a class="item title" href="/2024/08/16/471/"><span class="title">mysql如何使用不定数量的查询</span></a><a class="item title" href="/2024/08/01/520/"><span class="title">python3查询es超时</span></a><a class="item title" href="/2024/08/07/521/"><span class="title">解决webman事务不生效的问题</span></a><a class="item title" href="/2024/04/21/512/"><span class="title">检查是否在企业微信中</span></a><a class="item title" href="/2022/08/10/432/"><span class="title">kubernete实战篇-外部服务</span></a><a class="item title" href="/2017/01/05/95/"><span class="title">windows7创建任务计划</span></a><a class="item title" href="/2024/04/14/511/"><span class="title">做一个简单的服务器监控企业微信通知</span></a></div></widget>
 </div>
 
-</div>
-
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar category-bar" style="margin-right: -1rem">
-    
+</div></aside><div class="l_main" id="main">
 
 
 
 
 
-<div class="category-list">
-  
-  
-  
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/vue/">vue</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2020-05-04T11:43:59.000Z">2020-05-04</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2022-03-19T14:35:21.880Z">2022-03-19</time></span></div></div></div>
     
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="vue"
-        id="heading-951c1f757a9f918f0624cd5cb90b890d" role="tab" data-toggle="collapse" href="#collapse-951c1f757a9f918f0624cd5cb90b890d"
-        aria-expanded="true"
-      >
-        vue
-        <span class="list-group-count">(5)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
+    <div class="bottom only-title">
       
-      <div class="category-collapse collapse show" id="collapse-951c1f757a9f918f0624cd5cb90b890d"
-           role="tabpanel" aria-labelledby="heading-951c1f757a9f918f0624cd5cb90b890d">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2020/07/14/262/" title="使用vue-element-admin的一些总结"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">使用vue-element-admin的一些总结</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/05/04/250/" title="利用ElementUI的table和calendar制作一个价格日历"
-           class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">利用ElementUI的table和calendar制作一个价格日历</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/04/29/247/" title="ElementUI中table表格自定义表头Tooltip文字提示"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">ElementUI中table表格自定义表头Tooltip文字提示</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/02/27/228/" title="ElementUI多图拖拽"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">ElementUI多图拖拽</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2020/01/08/222/" title="ElementUI整合编辑器vue-quill-editor"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">ElementUI整合编辑器vue-quill-editor</span>
-        </a>
-      
-    
-  </div>
-
+      <div class="text-area">
+        <h1 class="text title"><span>利用ElementUI的table和calendar制作一个价格日历</span></h1>
         
       </div>
     </div>
-  
-</div>
-
-
-  </aside>
-
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">利用ElementUI的table和calendar制作一个价格日历</h1>
-            
-            <div class="markdown-body">
-              
-              <p>项目中需要做一个价格日历，便于展示和修改日期价格，我们先看下最终效果，然后利用ElementUI的table 和 calendar 实现一下。</p>
-<p><img src="https://cdn.learnku.com/uploads/images/202005/04/41489/pto2GeGfrI.jpg!large" srcset="/img/loading.gif" lazyload alt="价格日历"><br><img src="https://cdn.learnku.com/uploads/images/202005/04/41489/pjnT5lsXnM.jpg!large" srcset="/img/loading.gif" lazyload alt="设置价格"></p>
+    
+  </div>
+  </div><article class="md-text content"><p>项目中需要做一个价格日历，便于展示和修改日期价格，我们先看下最终效果，然后利用ElementUI的table 和 calendar 实现一下。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.learnku.com/uploads/images/202005/04/41489/pto2GeGfrI.jpg!large" alt="价格日历"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.learnku.com/uploads/images/202005/04/41489/pjnT5lsXnM.jpg!large" alt="设置价格"></p>
 <p>来看看主要代码（代码仅保留了主要代码和属性，并不完整，可以自行根据实际情况修改）：</p>
-<div class="code-wrapper"><pre><code class="hljs handlebars"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;calendar-list-container&quot;</span>&gt;</span></span>
-<span class="xml">    <span class="hljs-comment">&lt;!--expand-row-keys设置了row-key也要设置，</span></span>
-<span class="hljs-comment"><span class="xml">	expand-change	当用户对某一行展开或者关闭的时候会触发该事件（展开行时，回调的第二个参数为 expandedRows；树形表格时第二参数为 expanded）	row, (expandedRows | expanded)--&gt;</span></span>
-<span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">el-table</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;table&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">key</span>=<span class="hljs-string">&quot;id&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">v-loading</span>=<span class="hljs-string">&quot;listLoading&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">:data</span>=<span class="hljs-string">&quot;list&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">element-loading-text</span>=<span class="hljs-string">&quot;loading&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">row-key</span>=<span class="hljs-string">&quot;id&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">:expand-row-keys</span>=<span class="hljs-string">&quot;expands&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      @<span class="hljs-attr">expand-change</span>=<span class="hljs-string">&quot;expandChange&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">    &gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span> </span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;expand&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span>
-<span class="xml">			<span class="hljs-comment">&lt;!--价格日历渲染 --&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">el-calendar</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">v-loading</span>=<span class="hljs-string">&quot;calendarLoad&quot;</span>  </span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">element-loading-text</span>=<span class="hljs-string">&quot;loading&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          &gt;</span></span>
-<span class="xml">            <span class="hljs-tag">&lt;<span class="hljs-name">template</span></span></span>
-<span class="hljs-tag"><span class="xml">              <span class="hljs-attr">slot</span>=<span class="hljs-string">&quot;dateCell&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">              <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;&#123;date, data&#125;&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            &gt;</span></span>
-<span class="xml">			<span class="hljs-comment">&lt;!--今日及之后的价格可设置setPrice --&gt;</span></span>
-<span class="xml">              <span class="hljs-tag">&lt;<span class="hljs-name">div</span></span></span>
-<span class="hljs-tag"><span class="xml">                <span class="hljs-attr">:class</span>=<span class="hljs-string">&quot;nowDay &lt;= data.day.replace(/-/g, &#x27;&#x27;)? &#x27;calendar-div&#x27; : &#x27;calendar-div calendar-prev&#x27;&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">                @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;nowDay &lt;= data.day.replace(/-/g, &#x27;&#x27;) &amp;&amp; setPrice(data, date)&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">              &gt;</span></span>
-<span class="xml">                <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">data.day.slice</span>(<span class="hljs-name">-2</span>) &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-<span class="xml">                <span class="hljs-tag">&lt;<span class="hljs-name">div</span></span></span>
-<span class="hljs-tag"><span class="xml">                  <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;data.type == &#x27;current-month&#x27; &amp;&amp; refreshPrice(data)&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">                  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;price &quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">                &gt;</span></span>
-<span class="xml">                  预订价：</span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">priceList</span>[data.day.slice(-2) -1] &#125;&#125;</span><span class="xml">元</span>
-<span class="xml">                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-<span class="xml">              <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-<span class="xml">            <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">el-calendar</span>&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;名称&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">class-name</span>=<span class="hljs-string">&quot;overflow-on&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span>
-<span class="xml">          </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">scope.row.name</span> &#125;&#125;</span><span class="xml"></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;图片&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;210&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">img</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">:src</span>=<span class="hljs-string">&quot;scope.row.imageList[0]&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width:150px&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;今日价格&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">max-width</span>=<span class="hljs-string">&quot;200&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">scope.row.price</span> &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;原价&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">max-width</span>=<span class="hljs-string">&quot;200&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">scope.row.original_price</span> &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-table-column</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;操作&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">template</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;handleCheck(scope.row)&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          &gt;</span></span>
-<span class="xml">            价格设置</span>
-<span class="xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-table-column</span>&gt;</span></span>
-<span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">el-table</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">el-dialog</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;设置价格&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      <span class="hljs-attr">:visible.sync</span>=<span class="hljs-string">&quot;dialogPriceVisible&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">    &gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">el-form</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;small-space&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">:model</span>=<span class="hljs-string">&quot;temp&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label-position</span>=<span class="hljs-string">&quot;left&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">label-width</span>=<span class="hljs-string">&quot;100px&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 500px; margin-left:50px;&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">el-form-item</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;名称&quot;</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">el-input</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;temp.name&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">disabled</span></span></span>
-<span class="hljs-tag"><span class="xml">          /&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">el-form-item</span>&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">el-form-item</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;时间段&quot;</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">el-date-picker</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;temp.date&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;daterange&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">range-separator</span>=<span class="hljs-string">&quot;至&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">start-placeholder</span>=<span class="hljs-string">&quot;开始日期&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">end-placeholder</span>=<span class="hljs-string">&quot;结束日期&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">:picker-options</span>=<span class="hljs-string">&quot;pickerBeginDateBefore&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          /&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">el-form-item</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">el-form-item</span></span></span>
-<span class="hljs-tag"><span class="xml">          <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;分时计价&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          <span class="hljs-attr">prop</span>=<span class="hljs-string">&quot;is_part&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          <span class="hljs-attr">required</span></span></span>
-<span class="hljs-tag"><span class="xml">        &gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">el-radio</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;temp.is_part&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">:label</span>=<span class="hljs-string">&quot;0&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          &gt;</span></span>
-<span class="xml">            不分平时周末</span>
-<span class="xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">el-radio</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">el-radio</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;temp.is_part&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">            <span class="hljs-attr">:label</span>=<span class="hljs-string">&quot;1&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          &gt;</span></span>
-<span class="xml">            区分周末</span>
-<span class="xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">el-radio</span>&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">el-form-item</span>&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">el-form-item</span> <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;平时价&quot;</span>&gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">el-input</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;temp.normal_price&quot;</span> /&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">el-form-item</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">el-form-item</span></span></span>
-<span class="hljs-tag"><span class="xml">          <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;temp.is_part == 1&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;周末价&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        &gt;</span></span>
-<span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">el-input</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">&quot;temp.week_price&quot;</span> /&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">el-form-item</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">el-form</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">div</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">slot</span>=<span class="hljs-string">&quot;footer&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;dialog-footer&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">      &gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;dialogPriceVisible = false&quot;</span>&gt;</span></span>
-<span class="xml">          取 消</span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></span>
-<span class="xml">        <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span></span></span>
-<span class="hljs-tag"><span class="xml">          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">          @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;putPrice&quot;</span></span></span>
-<span class="hljs-tag"><span class="xml">        &gt;</span></span>
-<span class="xml">          确 定</span>
-<span class="xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></span>
-<span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-<span class="xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">el-dialog</span>&gt;</span></span>
-<span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span>
-<span class="xml"></span>
-<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"></span></span>
-<span class="javascript"><span class="xml"><span class="hljs-keyword">import</span> &#123; fetchList, setRoomPrice, getRoomPrice &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/api&quot;</span>;</span></span>
-<span class="javascript"><span class="xml"><span class="hljs-keyword">import</span> moment <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;moment&#x27;</span>;</span></span>
-<span class="javascript"><span class="xml"></span></span>
-<span class="javascript"><span class="xml"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span></span>
-<span class="javascript"><span class="xml">  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;room&quot;</span>,</span></span>
-<span class="javascript"><span class="xml">  <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-keyword">return</span> &#123;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">pickerBeginDateBefore</span>:&#123;</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-function"><span class="hljs-title">disabledDate</span>(<span class="hljs-params">time</span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">          <span class="hljs-keyword">return</span> time.getTime() &lt; <span class="hljs-built_in">Date</span>.now() - <span class="hljs-number">86400</span>*<span class="hljs-number">1000</span>;</span></span>
-<span class="javascript"><span class="xml">        &#125;</span></span>
-<span class="javascript"><span class="xml">      &#125;,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">schedule</span>: [],</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">list</span>: [],</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">dialogPriceVisible</span>: <span class="hljs-literal">false</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">dialogFormVisible</span>: <span class="hljs-literal">false</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">priceDate</span>: <span class="hljs-string">&#x27;2020-01-01&#x27;</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">nowDate</span>: <span class="hljs-number">1</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">nowMonth</span>: <span class="hljs-number">1</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">nowDay</span>: <span class="hljs-number">0</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">nowYear</span>: <span class="hljs-number">2020</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">calendarMonth</span>: <span class="hljs-number">1</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">priceList</span>: [],</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">expands</span>: [],<span class="hljs-comment">//只展开一行放入当前行id</span></span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">room</span>: &#123;&#125;,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">listLoading</span>:<span class="hljs-literal">false</span>,</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-attr">calendarLoad</span>: <span class="hljs-literal">false</span>,</span></span>
-<span class="javascript"><span class="xml">    &#125;;</span></span>
-<span class="javascript"><span class="xml">  &#125;,</span></span>
-<span class="javascript"><span class="xml">  <span class="hljs-function"><span class="hljs-title">created</span>(<span class="hljs-params"></span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-built_in">this</span>.priceDate = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-built_in">this</span>.nowDate = <span class="hljs-built_in">this</span>.priceDate.getDate();</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-built_in">this</span>.nowMonth = <span class="hljs-built_in">this</span>.priceDate.getMonth();</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-built_in">this</span>.calendarMonth = <span class="hljs-built_in">this</span>.nowMonth;</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-built_in">this</span>.nowYear = <span class="hljs-built_in">this</span>.priceDate.getFullYear();</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-built_in">this</span>.nowDay = <span class="hljs-built_in">this</span>.priceDate.getFullYear()*<span class="hljs-number">10000</span>+ (<span class="hljs-number">1</span>+<span class="hljs-built_in">this</span>.priceDate.getMonth())*<span class="hljs-number">100</span>+ <span class="hljs-built_in">this</span>.priceDate.getDate();</span></span>
-<span class="javascript"><span class="xml">  &#125;,</span></span>
-<span class="javascript"><span class="xml">  <span class="hljs-attr">methods</span>: &#123;</span></span>
-<span class="javascript"><span class="xml">    refreshPrice (data) &#123;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-comment">// console.log(data);</span></span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-keyword">if</span> (!data.isSelected) &#123;</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="javascript"><span class="xml">      &#125;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-keyword">if</span> (data.day.slice(<span class="hljs-number">5</span>, <span class="hljs-number">7</span>) == <span class="hljs-built_in">this</span>.calendarMonth + <span class="hljs-number">1</span>) &#123;</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="javascript"><span class="xml">      &#125;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-built_in">this</span>.calendarMonth = data.day.slice(<span class="hljs-number">5</span>, <span class="hljs-number">7</span>) - <span class="hljs-number">1</span>;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-keyword">var</span> that = <span class="hljs-built_in">this</span>;</span></span>
-<span class="javascript"><span class="xml">      getRoomPrice(that.room.id, &#123;<span class="hljs-string">&#x27;date&#x27;</span>: data.day&#125;).then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-keyword">var</span> arr = [];</span></span>
-<span class="javascript"><span class="xml">        response.data.priceList.forEach(<span class="hljs-function">(<span class="hljs-params">item,index,array</span>)=&gt;</span>&#123;</span></span>
-<span class="javascript"><span class="xml">            arr[index] = item? item : that.room.price;</span></span>
-<span class="javascript"><span class="xml">        &#125;)</span></span>
-<span class="javascript"><span class="xml">        that.priceList = arr</span></span>
-<span class="javascript"><span class="xml">      &#125;);</span></span>
-<span class="javascript"><span class="xml">      that.$forceUpdate()</span></span>
-<span class="javascript"><span class="xml">    &#125;,</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-function"><span class="hljs-title">getRowKeys</span>(<span class="hljs-params">row</span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-comment">// console.log(row.id)</span></span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-keyword">return</span> row.id   <span class="hljs-comment">//这里看这一行中需要根据哪个属性值是id</span></span></span>
-<span class="javascript"><span class="xml">    &#125;,</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-function"><span class="hljs-title">selectDate</span>(<span class="hljs-params">type</span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-comment">// consoloe.log(type)</span></span></span>
-<span class="javascript"><span class="xml">    &#125;,</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-function"><span class="hljs-title">expandChange</span>(<span class="hljs-params">row, expandedRows</span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-comment">// console.log(this.expands)</span></span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-keyword">var</span> that = <span class="hljs-built_in">this</span>;</span></span>
-<span class="javascript"><span class="xml">      that.room = row;</span></span>
-<span class="javascript"><span class="xml">	  <span class="hljs-comment">// 每次只展开一行</span></span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-keyword">if</span> (expandedRows.length) &#123; </span></span>
-<span class="javascript"><span class="xml">        that.calendarLoad = <span class="hljs-literal">true</span>;</span></span>
-<span class="javascript"><span class="xml">        getRoomPrice(row.id, &#123;<span class="hljs-string">&#x27;date&#x27;</span>: <span class="hljs-built_in">this</span>.priceDate&#125;).then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;</span></span>
-<span class="javascript"><span class="xml">          that.calendarLoad = <span class="hljs-literal">false</span>;</span></span>
-<span class="javascript"><span class="xml">          <span class="hljs-keyword">var</span> arr = [];</span></span>
-<span class="javascript"><span class="xml">          response.data.priceList.forEach(<span class="hljs-function">(<span class="hljs-params">item,index,array</span>)=&gt;</span>&#123;</span></span>
-<span class="javascript"><span class="xml">              arr[index] = item? item : row.price;</span></span>
-<span class="javascript"><span class="xml">          &#125;)</span></span>
-<span class="javascript"><span class="xml">          that.priceList = arr</span></span>
-<span class="javascript"><span class="xml">          that.expands = [row.id]</span></span>
-<span class="javascript"><span class="xml">        &#125;);</span></span>
-<span class="javascript"><span class="xml">      &#125; <span class="hljs-keyword">else</span> &#123; </span></span>
-<span class="javascript"><span class="xml">	  	<span class="hljs-comment">// 收起价格日历</span></span></span>
-<span class="javascript"><span class="xml">        that.expands = []</span></span>
-<span class="javascript"><span class="xml">      &#125;</span></span>
-<span class="javascript"><span class="xml">    &#125;,</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-function"><span class="hljs-title">setPrice</span>(<span class="hljs-params">data, date</span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.nowDay &gt; data.day.replace(<span class="hljs-regexp">/-/g</span>, <span class="hljs-string">&#x27;&#x27;</span>)) &#123;</span></span>
-<span class="javascript"><span class="xml">          <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="javascript"><span class="xml">      &#125;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-keyword">var</span> that = <span class="hljs-built_in">this</span>;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-built_in">this</span>.temp = &#123;</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-attr">name</span>: that.room.name,</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-attr">date</span>: [date, date],</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-attr">is_part</span>: <span class="hljs-number">0</span>,</span></span>
-<span class="javascript"><span class="xml">      &#125;;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-built_in">this</span>.dialogPriceVisible = <span class="hljs-literal">true</span>;</span></span>
-<span class="javascript"><span class="xml">    &#125;,</span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-function"><span class="hljs-title">putPrice</span>(<span class="hljs-params"></span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">      <span class="hljs-built_in">this</span>.dialogPriceVisible = <span class="hljs-literal">true</span>;</span></span>
-<span class="javascript"><span class="xml">        setRoomPrice(<span class="hljs-built_in">this</span>.room.id, <span class="hljs-built_in">this</span>.temp).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;</span></span>
-<span class="javascript"><span class="xml">          <span class="hljs-keyword">if</span> (res.code == <span class="hljs-number">0</span>) &#123;</span></span>
-<span class="javascript"><span class="xml">            <span class="hljs-built_in">this</span>.$message.success(<span class="hljs-string">&quot;编辑成功&quot;</span>);</span></span>
-<span class="javascript"><span class="xml">            <span class="hljs-built_in">this</span>.dialogPriceVisible = !<span class="hljs-built_in">this</span>.dialogPriceVisible;</span></span>
-<span class="javascript"><span class="xml">            <span class="hljs-keyword">var</span> that = <span class="hljs-built_in">this</span>;</span></span>
-<span class="javascript"><span class="xml">            getRoomPrice(that.room.id, &#123;<span class="hljs-string">&#x27;date&#x27;</span>: <span class="hljs-built_in">this</span>.temp.date[<span class="hljs-number">0</span>]&#125;).then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;</span></span>
-<span class="javascript"><span class="xml">              <span class="hljs-keyword">var</span> arr = [];</span></span>
-<span class="javascript"><span class="xml">              response.data.priceList.forEach(<span class="hljs-function">(<span class="hljs-params">item,index,array</span>)=&gt;</span>&#123;</span></span>
-<span class="javascript"><span class="xml">                  arr[index] = item? item : that.room.price;</span></span>
-<span class="javascript"><span class="xml">              &#125;)</span></span>
-<span class="javascript"><span class="xml">              that.priceList = arr</span></span>
-<span class="javascript"><span class="xml">            &#125;);</span></span>
-<span class="javascript"><span class="xml">            fetchList(that.params).then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;</span></span>
-<span class="javascript"><span class="xml">              that.list = response.data;</span></span>
-<span class="javascript"><span class="xml">            &#125;);</span></span>
-<span class="javascript"><span class="xml">            that.resetTemp();</span></span>
-<span class="javascript"><span class="xml">            that.$forceUpdate()</span></span>
-<span class="javascript"><span class="xml">          &#125; <span class="hljs-keyword">else</span> &#123;</span></span>
-<span class="javascript"><span class="xml">            <span class="hljs-built_in">this</span>.$message.error(res.msg);</span></span>
-<span class="javascript"><span class="xml">          &#125;</span></span>
-<span class="javascript"><span class="xml">        &#125;);</span></span>
-<span class="javascript"><span class="xml">    &#125;,</span></span>
-<span class="javascript"><span class="xml">	<span class="hljs-comment">// 用于可展开表格与树形表格，切换某一行的展开状态，如果使用了第二个参数，则是设置这一行展开与否（expanded 为 true 则展开）</span></span></span>
-<span class="javascript"><span class="xml">    <span class="hljs-function"><span class="hljs-title">handleCheck</span>(<span class="hljs-params">row</span>)</span> &#123;</span></span>
-<span class="javascript"><span class="xml">        <span class="hljs-keyword">const</span> $table = <span class="hljs-built_in">this</span>.$refs.table</span></span>
-<span class="javascript"><span class="xml">        $table.toggleRowExpansion(row)</span></span>
-<span class="javascript"><span class="xml">    &#125;</span></span>
-<span class="javascript"><span class="xml">  &#125;</span></span>
-<span class="javascript"><span class="xml">&#125;;</span></span>
-<span class="javascript"><span class="xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre></div>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;calendar-list-container&quot;&gt;</span><br><span class="line">    &lt;!--expand-row-keys设置了row-key也要设置，</span><br><span class="line">	expand-change	当用户对某一行展开或者关闭的时候会触发该事件（展开行时，回调的第二个参数为 expandedRows；树形表格时第二参数为 expanded）	row, (expandedRows | expanded)--&gt;</span><br><span class="line">    &lt;el-table</span><br><span class="line">      ref=&quot;table&quot;</span><br><span class="line">      key=&quot;id&quot;</span><br><span class="line">      v-loading=&quot;listLoading&quot;</span><br><span class="line">      :data=&quot;list&quot;</span><br><span class="line">      element-loading-text=&quot;loading&quot;</span><br><span class="line">      row-key=&quot;id&quot;</span><br><span class="line">      :expand-row-keys=&quot;expands&quot;</span><br><span class="line">      @expand-change=&quot;expandChange&quot;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;el-table-column </span><br><span class="line">        align=&quot;center&quot;</span><br><span class="line">        type=&quot;expand&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;template slot-scope=&quot;scope&quot;&gt;</span><br><span class="line">			&lt;!--价格日历渲染 --&gt;</span><br><span class="line">          &lt;el-calendar</span><br><span class="line">            v-loading=&quot;calendarLoad&quot;  </span><br><span class="line">            element-loading-text=&quot;loading&quot;</span><br><span class="line">          &gt;</span><br><span class="line">            &lt;template</span><br><span class="line">              slot=&quot;dateCell&quot;</span><br><span class="line">              slot-scope=&quot;&#123;date, data&#125;&quot;</span><br><span class="line">            &gt;</span><br><span class="line">			&lt;!--今日及之后的价格可设置setPrice --&gt;</span><br><span class="line">              &lt;div</span><br><span class="line">                :class=&quot;nowDay &lt;= data.day.replace(/-/g, &#x27;&#x27;)? &#x27;calendar-div&#x27; : &#x27;calendar-div calendar-prev&#x27;&quot;</span><br><span class="line">                @click=&quot;nowDay &lt;= data.day.replace(/-/g, &#x27;&#x27;) &amp;&amp; setPrice(data, date)&quot;</span><br><span class="line">              &gt;</span><br><span class="line">                &lt;div&gt;&#123;&#123; data.day.slice(-2) &#125;&#125;&lt;/div&gt;</span><br><span class="line">                &lt;div</span><br><span class="line">                  v-if=&quot;data.type == &#x27;current-month&#x27; &amp;&amp; refreshPrice(data)&quot;</span><br><span class="line">                  class=&quot;price &quot;</span><br><span class="line">                &gt;</span><br><span class="line">                  预订价：&#123;&#123; priceList[data.day.slice(-2) -1] &#125;&#125;元</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">              &lt;/div&gt;</span><br><span class="line">            &lt;/template&gt;</span><br><span class="line">          &lt;/el-calendar&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">      &lt;/el-table-column&gt;</span><br><span class="line">      &lt;el-table-column</span><br><span class="line">        align=&quot;center&quot;</span><br><span class="line">        label=&quot;名称&quot;</span><br><span class="line">        class-name=&quot;overflow-on&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;template slot-scope=&quot;scope&quot;&gt;</span><br><span class="line">          &#123;&#123; scope.row.name &#125;&#125;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">      &lt;/el-table-column&gt;</span><br><span class="line"></span><br><span class="line">      &lt;el-table-column</span><br><span class="line">        align=&quot;center&quot;</span><br><span class="line">        label=&quot;图片&quot;</span><br><span class="line">        width=&quot;210&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;template slot-scope=&quot;scope&quot;&gt;</span><br><span class="line">          &lt;img</span><br><span class="line">            :src=&quot;scope.row.imageList[0]&quot;</span><br><span class="line">            style=&quot;width:150px&quot;</span><br><span class="line">          &gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">      &lt;/el-table-column&gt;</span><br><span class="line"></span><br><span class="line">      &lt;el-table-column</span><br><span class="line">        align=&quot;center&quot;</span><br><span class="line">        label=&quot;今日价格&quot;</span><br><span class="line">        max-width=&quot;200&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;template slot-scope=&quot;scope&quot;&gt;</span><br><span class="line">          &lt;span&gt;&#123;&#123; scope.row.price &#125;&#125;&lt;/span&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">      &lt;/el-table-column&gt;</span><br><span class="line"></span><br><span class="line">      &lt;el-table-column</span><br><span class="line">        align=&quot;center&quot;</span><br><span class="line">        label=&quot;原价&quot;</span><br><span class="line">        max-width=&quot;200&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;template slot-scope=&quot;scope&quot;&gt;</span><br><span class="line">          &lt;span&gt;&#123;&#123; scope.row.original_price &#125;&#125;&lt;/span&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">      &lt;/el-table-column&gt;</span><br><span class="line"></span><br><span class="line">      &lt;el-table-column</span><br><span class="line">        align=&quot;center&quot;</span><br><span class="line">        label=&quot;操作&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;template slot-scope=&quot;scope&quot;&gt;</span><br><span class="line">          &lt;el-button</span><br><span class="line">            type=&quot;primary&quot;</span><br><span class="line">            @click=&quot;handleCheck(scope.row)&quot;</span><br><span class="line">          &gt;</span><br><span class="line">            价格设置</span><br><span class="line">          &lt;/el-button&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">      &lt;/el-table-column&gt;</span><br><span class="line">    &lt;/el-table&gt;</span><br><span class="line"></span><br><span class="line">    &lt;el-dialog</span><br><span class="line">      title=&quot;设置价格&quot;</span><br><span class="line">      :visible.sync=&quot;dialogPriceVisible&quot;</span><br><span class="line">    &gt;</span><br><span class="line">      &lt;el-form</span><br><span class="line">        class=&quot;small-space&quot;</span><br><span class="line">        :model=&quot;temp&quot;</span><br><span class="line">        label-position=&quot;left&quot;</span><br><span class="line">        label-width=&quot;100px&quot;</span><br><span class="line">        style=&quot;width: 500px; margin-left:50px;&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;el-form-item label=&quot;名称&quot;&gt;</span><br><span class="line">          &lt;el-input</span><br><span class="line">            v-model=&quot;temp.name&quot;</span><br><span class="line">            disabled</span><br><span class="line">          /&gt;</span><br><span class="line">        &lt;/el-form-item&gt;</span><br><span class="line">        &lt;el-form-item label=&quot;时间段&quot;&gt;</span><br><span class="line">          &lt;el-date-picker</span><br><span class="line">            v-model=&quot;temp.date&quot;</span><br><span class="line">            type=&quot;daterange&quot;</span><br><span class="line">            range-separator=&quot;至&quot;</span><br><span class="line">            start-placeholder=&quot;开始日期&quot;</span><br><span class="line">            end-placeholder=&quot;结束日期&quot;</span><br><span class="line">            :picker-options=&quot;pickerBeginDateBefore&quot;</span><br><span class="line">          /&gt;</span><br><span class="line">        &lt;/el-form-item&gt;</span><br><span class="line"></span><br><span class="line">        &lt;el-form-item</span><br><span class="line">          label=&quot;分时计价&quot;</span><br><span class="line">          prop=&quot;is_part&quot;</span><br><span class="line">          required</span><br><span class="line">        &gt;</span><br><span class="line">          &lt;el-radio</span><br><span class="line">            v-model=&quot;temp.is_part&quot;</span><br><span class="line">            :label=&quot;0&quot;</span><br><span class="line">          &gt;</span><br><span class="line">            不分平时周末</span><br><span class="line">          &lt;/el-radio&gt;</span><br><span class="line">          &lt;el-radio</span><br><span class="line">            v-model=&quot;temp.is_part&quot;</span><br><span class="line">            :label=&quot;1&quot;</span><br><span class="line">          &gt;</span><br><span class="line">            区分周末</span><br><span class="line">          &lt;/el-radio&gt;</span><br><span class="line">        &lt;/el-form-item&gt;</span><br><span class="line">        &lt;el-form-item label=&quot;平时价&quot;&gt;</span><br><span class="line">          &lt;el-input v-model=&quot;temp.normal_price&quot; /&gt;</span><br><span class="line">        &lt;/el-form-item&gt;</span><br><span class="line"></span><br><span class="line">        &lt;el-form-item</span><br><span class="line">          v-if=&quot;temp.is_part == 1&quot;</span><br><span class="line">          label=&quot;周末价&quot;</span><br><span class="line">        &gt;</span><br><span class="line">          &lt;el-input v-model=&quot;temp.week_price&quot; /&gt;</span><br><span class="line">        &lt;/el-form-item&gt;</span><br><span class="line">      &lt;/el-form&gt;</span><br><span class="line"></span><br><span class="line">      &lt;div</span><br><span class="line">        slot=&quot;footer&quot;</span><br><span class="line">        class=&quot;dialog-footer&quot;</span><br><span class="line">      &gt;</span><br><span class="line">        &lt;el-button @click=&quot;dialogPriceVisible = false&quot;&gt;</span><br><span class="line">          取 消</span><br><span class="line">        &lt;/el-button&gt;</span><br><span class="line">        &lt;el-button</span><br><span class="line">          type=&quot;primary&quot;</span><br><span class="line">          @click=&quot;putPrice&quot;</span><br><span class="line">        &gt;</span><br><span class="line">          确 定</span><br><span class="line">        &lt;/el-button&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/el-dialog&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; fetchList, setRoomPrice, getRoomPrice &#125; from &quot;@/api&quot;;</span><br><span class="line">import moment from &#x27;moment&#x27;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;room&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      pickerBeginDateBefore:&#123;</span><br><span class="line">        disabledDate(time) &#123;</span><br><span class="line">          return time.getTime() &lt; Date.now() - 86400*1000;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      schedule: [],</span><br><span class="line">      list: [],</span><br><span class="line">      dialogPriceVisible: false,</span><br><span class="line">      dialogFormVisible: false,</span><br><span class="line">      priceDate: &#x27;2020-01-01&#x27;,</span><br><span class="line">      nowDate: 1,</span><br><span class="line">      nowMonth: 1,</span><br><span class="line">      nowDay: 0,</span><br><span class="line">      nowYear: 2020,</span><br><span class="line">      calendarMonth: 1,</span><br><span class="line">      priceList: [],</span><br><span class="line">      expands: [],//只展开一行放入当前行id</span><br><span class="line">      room: &#123;&#125;,</span><br><span class="line">      listLoading:false,</span><br><span class="line">      calendarLoad: false,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  created() &#123;</span><br><span class="line">    this.priceDate = new Date();</span><br><span class="line">    this.nowDate = this.priceDate.getDate();</span><br><span class="line">    this.nowMonth = this.priceDate.getMonth();</span><br><span class="line">    this.calendarMonth = this.nowMonth;</span><br><span class="line">    this.nowYear = this.priceDate.getFullYear();</span><br><span class="line">    this.nowDay = this.priceDate.getFullYear()*10000+ (1+this.priceDate.getMonth())*100+ this.priceDate.getDate();</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    refreshPrice (data) &#123;</span><br><span class="line">      // console.log(data);</span><br><span class="line">      if (!data.isSelected) &#123;</span><br><span class="line">        return true;</span><br><span class="line">      &#125;</span><br><span class="line">      if (data.day.slice(5, 7) == this.calendarMonth + 1) &#123;</span><br><span class="line">        return true;</span><br><span class="line">      &#125;</span><br><span class="line">      this.calendarMonth = data.day.slice(5, 7) - 1;</span><br><span class="line">      var that = this;</span><br><span class="line">      getRoomPrice(that.room.id, &#123;&#x27;date&#x27;: data.day&#125;).then(response =&gt; &#123;</span><br><span class="line">        var arr = [];</span><br><span class="line">        response.data.priceList.forEach((item,index,array)=&gt;&#123;</span><br><span class="line">            arr[index] = item? item : that.room.price;</span><br><span class="line">        &#125;)</span><br><span class="line">        that.priceList = arr</span><br><span class="line">      &#125;);</span><br><span class="line">      that.$forceUpdate()</span><br><span class="line">    &#125;,</span><br><span class="line">    getRowKeys(row) &#123;</span><br><span class="line">        // console.log(row.id)</span><br><span class="line">        return row.id   //这里看这一行中需要根据哪个属性值是id</span><br><span class="line">    &#125;,</span><br><span class="line">    selectDate(type) &#123;</span><br><span class="line">      // consoloe.log(type)</span><br><span class="line">    &#125;,</span><br><span class="line">    expandChange(row, expandedRows) &#123;</span><br><span class="line">      // console.log(this.expands)</span><br><span class="line">      var that = this;</span><br><span class="line">      that.room = row;</span><br><span class="line">	  // 每次只展开一行</span><br><span class="line">      if (expandedRows.length) &#123; </span><br><span class="line">        that.calendarLoad = true;</span><br><span class="line">        getRoomPrice(row.id, &#123;&#x27;date&#x27;: this.priceDate&#125;).then(response =&gt; &#123;</span><br><span class="line">          that.calendarLoad = false;</span><br><span class="line">          var arr = [];</span><br><span class="line">          response.data.priceList.forEach((item,index,array)=&gt;&#123;</span><br><span class="line">              arr[index] = item? item : row.price;</span><br><span class="line">          &#125;)</span><br><span class="line">          that.priceList = arr</span><br><span class="line">          that.expands = [row.id]</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125; else &#123; </span><br><span class="line">	  	// 收起价格日历</span><br><span class="line">        that.expands = []</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    setPrice(data, date) &#123;</span><br><span class="line">      if (this.nowDay &gt; data.day.replace(/-/g, &#x27;&#x27;)) &#123;</span><br><span class="line">          return false;</span><br><span class="line">      &#125;</span><br><span class="line">      var that = this;</span><br><span class="line">      this.temp = &#123;</span><br><span class="line">        name: that.room.name,</span><br><span class="line">        date: [date, date],</span><br><span class="line">        is_part: 0,</span><br><span class="line">      &#125;;</span><br><span class="line">      this.dialogPriceVisible = true;</span><br><span class="line">    &#125;,</span><br><span class="line">    putPrice() &#123;</span><br><span class="line">      this.dialogPriceVisible = true;</span><br><span class="line">        setRoomPrice(this.room.id, this.temp).then(res =&gt; &#123;</span><br><span class="line">          if (res.code == 0) &#123;</span><br><span class="line">            this.$message.success(&quot;编辑成功&quot;);</span><br><span class="line">            this.dialogPriceVisible = !this.dialogPriceVisible;</span><br><span class="line">            var that = this;</span><br><span class="line">            getRoomPrice(that.room.id, &#123;&#x27;date&#x27;: this.temp.date[0]&#125;).then(response =&gt; &#123;</span><br><span class="line">              var arr = [];</span><br><span class="line">              response.data.priceList.forEach((item,index,array)=&gt;&#123;</span><br><span class="line">                  arr[index] = item? item : that.room.price;</span><br><span class="line">              &#125;)</span><br><span class="line">              that.priceList = arr</span><br><span class="line">            &#125;);</span><br><span class="line">            fetchList(that.params).then(response =&gt; &#123;</span><br><span class="line">              that.list = response.data;</span><br><span class="line">            &#125;);</span><br><span class="line">            that.resetTemp();</span><br><span class="line">            that.$forceUpdate()</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">            this.$message.error(res.msg);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">	// 用于可展开表格与树形表格，切换某一行的展开状态，如果使用了第二个参数，则是设置这一行展开与否（expanded 为 true 则展开）</span><br><span class="line">    handleCheck(row) &#123;</span><br><span class="line">        const $table = this.$refs.table</span><br><span class="line">        $table.toggleRowExpansion(row)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
 <p>价格日历返回数据格式：</p>
-<div class="code-wrapper"><pre><code class="hljs json">&#123;
-	<span class="hljs-attr">&quot;status&quot;</span>: <span class="hljs-string">&quot;success&quot;</span>,
-	<span class="hljs-attr">&quot;code&quot;</span>: <span class="hljs-number">0</span>,
-	<span class="hljs-attr">&quot;msg&quot;</span>: <span class="hljs-string">&quot;操作成功&quot;</span>,
-	<span class="hljs-attr">&quot;data&quot;</span>: &#123;
-		<span class="hljs-attr">&quot;room&quot;</span>: &#123;
-			<span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;大床房&quot;</span>,
-			<span class="hljs-attr">&quot;price&quot;</span>: <span class="hljs-number">299</span>,
-			<span class="hljs-attr">&quot;original_price&quot;</span>: <span class="hljs-number">289</span>
-		&#125;,
-		<span class="hljs-attr">&quot;priceList&quot;</span>: [<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-number">209</span>, <span class="hljs-number">219</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>],
-	&#125;
-&#125;</code></pre></div>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;status&quot;: &quot;success&quot;,</span><br><span class="line">	&quot;code&quot;: 0,</span><br><span class="line">	&quot;msg&quot;: &quot;操作成功&quot;,</span><br><span class="line">	&quot;data&quot;: &#123;</span><br><span class="line">		&quot;room&quot;: &#123;</span><br><span class="line">			&quot;name&quot;: &quot;大床房&quot;,</span><br><span class="line">			&quot;price&quot;: 299,</span><br><span class="line">			&quot;original_price&quot;: 289</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;priceList&quot;: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, 209, 219, false, false, false, false, false],</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>priceList是本月价格，false表示未设置。</p>
 <hr>
 <p>table的功能比较强大，部分属性函数并不常用，可以自行打印出来看看，研究一下即可。<br>calendar是2.8版本新增的组件，如果版本过低，可以尝试升级到新版本。</p>
 
-              
-            </div>
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/vue/" class="category-chain-item">vue</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/ElementUI/">#ElementUI</a>
-      
-    </div>
-  
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2020/07/14/262/">使用vue-element-admin的一些总结</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2020/04/29/248/">利用Laravel中间件给后台加个操作日志</a></div></section></div>
 
 
-              
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">puresai</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+</aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
   
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>利用ElementUI的table和calendar制作一个价格日历</div>
-      <div>https://blog.puresai.com/2020/05/04/250/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>puresai</div>
-        </div>
-      
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+</script>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2020/07/14/262/" title="使用vue-element-admin的一些总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">使用vue-element-admin的一些总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2020/04/29/248/" title="利用Laravel中间件给后台加个操作日志">
-                        <span class="hidden-mobile">利用Laravel中间件给后台加个操作日志</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-  <article id="comments" lazyload>
-    
-  <script type="text/javascript">
-    Fluid.utils.loadComments('#comments', function() {
-      var light = 'github-light';
-      var dark = 'github-dark';
-      var schema = document.documentElement.getAttribute('data-user-color-scheme');
-      if (schema === 'dark') {
-        schema = dark;
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
       } else {
-        schema = light;
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
       }
-      window.UtterancesThemeLight = light;
-      window.UtterancesThemeDark = dark;
-      var s = document.createElement('script');
-      s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', 'puresai/puresai.github.io');
-      s.setAttribute('issue-term', 'url');
-      
-      s.setAttribute('label', 'utterances');
-      
-      s.setAttribute('theme', schema);
-      s.setAttribute('crossorigin', 'anonymous');
-      document.getElementById('comments').appendChild(s);
-    })
-  </script>
-  <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-  </article>
-
-
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/mermaid/8.14.0/mermaid.min.js', function() {
-    mermaid.initialize({"theme":"default"});
-  });
-</script>
-
-
-
-
-  <!-- Custom -->
-  <div class="col-lg-7 mx-auto nopadding-x-md">
-    <div class="container custom post-custom mx-auto">
-      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="height:300px;">
-    </div>
-  </div>
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <span>2015 ~ 2024</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
-    </div>
-  
-  
-  
-  
-</div>
-
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-
-
-
-  
-
-  
-
-  
-    <!-- Google gtag.js -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBCEG2QCJD"></script>
-    <script defer>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-YBCEG2QCJD');
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
-    });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
-</script>
-
-
-  <script>
-  (function() {
-    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
-    var enableCopy = CONFIG.copy_btn;
-    if (!enableLang && !enableCopy) {
-      return;
-    }
-
-    function getBgClass(ele) {
-      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
-    }
-
-    var copyTmpl = '';
-    copyTmpl += '<div class="code-widget">';
-    copyTmpl += 'LANG';
-    copyTmpl += '</div>';
-    jQuery('.markdown-body pre').each(function() {
-      var $pre = jQuery(this);
-      if ($pre.find('code.mermaid').length > 0) {
-        return;
-      }
-      if ($pre.find('span.line').length > 0) {
-        return;
-      }
-
-      var lang = '';
-
-      if (enableLang) {
-        lang = CONFIG.code_language.default;
-        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
-          lang = $pre[0].children[0].classList[1];
-        } else if ($pre[0].getAttribute('data-language')) {
-          lang = $pre[0].getAttribute('data-language');
-        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
-          lang = $pre[0].children[0].classList[1];
-          $pre.parent().addClass('code-wrapper');
-        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
-          $pre.wrap('<div class="code-wrapper"></div>');
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
         }
-        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
       }
-      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
-        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
 
-      if (enableCopy) {
-        Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/clipboard.js/2.0.10/clipboard.min.js', function() {
-          var clipboard = new window.ClipboardJS('.copy-btn', {
-            target: function(trigger) {
-              var nodes = trigger.parentNode.childNodes;
-              for (var i = 0; i < nodes.length; i++) {
-                if (nodes[i].tagName === 'CODE') {
-                  return nodes[i];
-                }
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
               }
             }
-          });
-          clipboard.on('success', function(e) {
-            e.clearSelection();
-            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
-            setTimeout(function() {
-              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
-            }, 2000);
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
           });
         });
       }
-    });
-  })();
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
 </script>
 
 
-  
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
 <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
     }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
     }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
     }
-    window.anchors.add(res.join(', '));
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
   });
 </script>
 
 
-  
-<script>
-  Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
+<!-- inject -->
 
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
-</body>
-</html>
+</div></body></html>

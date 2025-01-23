@@ -1,20 +1,24 @@
 
-
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
+<!DOCTYPE html><html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/images/qiniu/sai.ico">
-  <link rel="icon" href="/images/qiniu/sai.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
   
-  <meta name="theme-color" content="#1E90FF">
-  <meta name="author" content="puresai">
-  <meta name="keywords" content="puresai,golang,Redis,Redis,Linux,MQ">
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>成为会带团队的技术人 - puresai blog</title>
+
   
     <meta name="description" content="本文是拉勾专栏《成为会带团队的技术人》的笔记，图基本也来源于专栏，自己以前也有带团队经验，但自我感觉做得不够好，这个专栏给我很多启发。 技术人三要素  技术人三要素：稳定性、债务、架构  稳定性怎么衡量系统稳定性？一般来讲，通过统计系统不可用的时长或次数就可以对稳定性进行量化，比如业内常说 4 个 9 的可用性（即 1 年内 99.99% 的时间系统是可用的，不可用时长仅为 52.6 分钟）。 针">
 <meta property="og:type" content="article">
@@ -60,413 +64,67 @@
 <meta property="article:modified_time" content="2022-05-31T09:34:13.073Z">
 <meta property="article:author" content="puresai">
 <meta property="article:tag" content="reading">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.puresai.com/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMdeAc_F6AAJTrBjwTWE310-20210527163509208.png">
   
   
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7643764568990149" crossorigin="anonymous"></script>
   
-  <title>成为会带团队的技术人 - puresai blog</title>
+  <meta name="keywords" content="reading">
 
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/github-markdown-css/5.1.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  <!-- feed -->
   
 
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"blog.puresai.com","root":"/","version":"1.8.14","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"§"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"","google":null,"gtag":"G-YBCEG2QCJD","tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
 
   
-<meta name="generator" content="Hexo 5.4.0"></head>
+    <link rel="shortcut icon" href="/favicon.ico">
+  
 
+  
 
+  
+</head>
 <body>
-  
 
-  <header>
-    
-
-<div class="header-inner" style="height: 30vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>puresai blog</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
-                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="iconfont icon-books"></i>
-                专栏
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/goexample/">
-                    
-                    实例学go
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/gosourcecode/">
-                    
-                    go源码笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/phpframe/">
-                    
-                    手写PHP API框架
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/reading/">
-                    
-                    读书笔记
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Nginx/">
-                    
-                    Nginx系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/MySQL/">
-                    
-                    Mysql系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/Redis/">
-                    
-                    Redis系列
-                  </a>
-                
-                  
-                  
-                  
-                  <a class="dropdown-item" href="/categories/k8s-learing/">
-                    
-                    Kuberetes系列
-                  </a>
-                
-              </div>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" target="_blank" rel="noopener" href="https://puresai.com/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle">成为会带团队的技术人</span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2021-02-14 14:05" pubdate>
-          2021年2月14日
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          19k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          157 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span> 次
-        </span>
-        
-      
-    
-  </div>
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
 
 
-        
-      </div>
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="undefined" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">puresai blog</div><div class="sub cap">puresai blog</div></a></div></header>
 
-      
-    </div>
-  </div>
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/11/24/520/"><span class="title">Python3虚拟环境venv</span></a><a class="item title" href="/2024/10/24/530/"><span class="title">排查Linux磁盘空间不足的问题</span></a><a class="item title" href="/2024/09/22/525/"><span class="title">python3读取csv _csv.Error: line contains NUL</span></a><a class="item title" href="/2024/08/16/471/"><span class="title">mysql如何使用不定数量的查询</span></a><a class="item title" href="/2024/08/01/520/"><span class="title">python3查询es超时</span></a><a class="item title" href="/2024/08/07/521/"><span class="title">解决webman事务不生效的问题</span></a><a class="item title" href="/2024/04/21/512/"><span class="title">检查是否在企业微信中</span></a><a class="item title" href="/2022/08/10/432/"><span class="title">kubernete实战篇-外部服务</span></a><a class="item title" href="/2017/01/05/95/"><span class="title">windows7创建任务计划</span></a><a class="item title" href="/2024/04/14/511/"><span class="title">做一个简单的服务器监控企业微信通知</span></a></div></widget>
 </div>
 
-</div>
-
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar category-bar" style="margin-right: -1rem">
-    
+</div></aside><div class="l_main" id="main">
 
 
 
 
 
-<div class="category-list">
-  
-  
-  
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/reading/">reading</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2021-02-14T06:05:16.000Z">2021-02-14</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2022-05-31T09:34:13.073Z">2022-05-31</time></span></div></div></div>
     
-    
-    
-    <div class="category row nomargin-x">
-      <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="reading"
-        id="heading-eceadc1d40cea061fd5986f2a109ee93" role="tab" data-toggle="collapse" href="#collapse-eceadc1d40cea061fd5986f2a109ee93"
-        aria-expanded="true"
-      >
-        reading
-        <span class="list-group-count">(5)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
+    <div class="bottom only-title">
       
-      <div class="category-collapse collapse show" id="collapse-eceadc1d40cea061fd5986f2a109ee93"
-           role="tabpanel" aria-labelledby="heading-eceadc1d40cea061fd5986f2a109ee93">
-        
-        
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2023/05/28/484/" title="人人都用得上的写作课4"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">人人都用得上的写作课4</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/05/07/483/" title="人人都用得上的写作课3"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">人人都用得上的写作课3</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/04/29/482/" title="人人都用得上的写作课2"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">人人都用得上的写作课2</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2023/04/25/481/" title="人人都用得上的写作课1"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">人人都用得上的写作课1</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2021/02/14/318/" title="成为会带团队的技术人"
-           class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">成为会带团队的技术人</span>
-        </a>
-      
-    
-  </div>
-
+      <div class="text-area">
+        <h1 class="text title"><span>成为会带团队的技术人</span></h1>
         
       </div>
     </div>
-  
-</div>
-
-
-  </aside>
-
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">成为会带团队的技术人</h1>
-            
-            <div class="markdown-body">
-              
-              <p>本文是拉勾专栏《成为会带团队的技术人》的笔记，图基本也来源于专栏，自己以前也有带团队经验，但自我感觉做得不够好，这个专栏给我很多启发。</p>
+    
+  </div>
+  </div><article class="md-text content"><p>本文是拉勾专栏《成为会带团队的技术人》的笔记，图基本也来源于专栏，自己以前也有带团队经验，但自我感觉做得不够好，这个专栏给我很多启发。</p>
 <h1 id="技术人三要素"><a href="#技术人三要素" class="headerlink" title="技术人三要素"></a>技术人三要素</h1><p class="note note-success">  技术人三要素：稳定性、债务、架构</p>
 
 <h2 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h2><h3 id="怎么衡量系统稳定性？"><a href="#怎么衡量系统稳定性？" class="headerlink" title="怎么衡量系统稳定性？"></a>怎么衡量系统稳定性？</h3><p>一般来讲，通过统计系统不可用的时长或次数就可以对稳定性进行量化，比如业内常说 4 个 9 的可用性（即 1 年内 99.99% 的时间系统是可用的，不可用时长仅为 52.6 分钟）。</p>
@@ -490,7 +148,7 @@
 <ol>
 <li>故障发现</li>
 </ol>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMdeAc_F6AAJTrBjwTWE310-20210527163509208.png" srcset="/img/loading.gif" lazyload alt="故障发现"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMdeAc_F6AAJTrBjwTWE310-20210527163509208.png" alt="故障发现"></p>
 <p>总的来说，人工的被动反馈在时间和速度上有较强的不确定性，很容易出现“小故障 * 长时间 = 大事故”的情形。而纯粹的技术指标监控又会忽略掉接口正常响应，但是业务异常的场景，只有两者结合，通过监控告警，最大程度上缩短故障感知的时间，才能早发现早解决，减少业务影响。</p>
 <ol start="2">
 <li>故障排查</li>
@@ -513,7 +171,7 @@
 <blockquote>
 <p>应急“三板斧”：回滚、重启大法、降级限流。</p>
 </blockquote>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGAJMf2AFDdiAAJOfl-EHu8036.png" srcset="/img/loading.gif" lazyload alt="故障恢复"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGAJMf2AFDdiAAJOfl-EHu8036.png" alt="故障恢复"></p>
 <h3 id="如何有价值地做事后复盘？"><a href="#如何有价值地做事后复盘？" class="headerlink" title="如何有价值地做事后复盘？"></a>如何有价值地做事后复盘？</h3><p>你可以从时长、现象、处理时间轴、根因、改进计划这几个维度进行复盘， 在以下几个方面进行深究：</p>
 <p>事故时长：1-5-10(即 1 分钟发现、5 分钟响应、10 分钟恢复) 是否达成，如果没有是为什么？哪个环节用时最多，如何提高和改善？</p>
 <p>事故根因：根因不等于直接原因，一个事故的直接原因往往并不复杂，但是根因可能是多个维度的缺失，需要像剥洋葱一样一层层找下去。拿库存接口变更这个Case来说，直接原因就是某段代码逻辑变更导致，但是应该在测试、发布、监控、应急影响、预案设计等多个环节展开去看，根因的挖掘并不忌讳“吹毛求疵”。</p>
@@ -522,7 +180,7 @@
 <blockquote>
 <p>没有质量的交付，再多再快都毫无意义。</p>
 </blockquote>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMo-Ae8JIAAI6Da3tjL0715.png" srcset="/img/loading.gif" lazyload alt="稳定性"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAJMo-Ae8JIAAI6Da3tjL0715.png" alt="稳定性"></p>
 <h3 id="变更会引起90-以上的故障"><a href="#变更会引起90-以上的故障" class="headerlink" title="变更会引起90%以上的故障"></a>变更会引起90%以上的故障</h3><ol>
 <li>变更需要监控</li>
 </ol>
@@ -562,19 +220,19 @@
 <li>每人不低于 35% 的稳定性 KPI</li>
 <li>好的坏的都要在阳光之下晒一晒</li>
 </ol>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGAOnceAK51TAAEbIVsowNo778.png" srcset="/img/loading.gif" lazyload alt="可用性治理与预防"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGAOnceAK51TAAEbIVsowNo778.png" alt="可用性治理与预防"></p>
 <h3 id="建立资损概念的宏观认知"><a href="#建立资损概念的宏观认知" class="headerlink" title="建立资损概念的宏观认知"></a>建立资损概念的宏观认知</h3><p>从广义上来看，存在理论损失也应该算资损， 比如因为搜索推荐系统出问题（不论什么原因）导致这一阶段广告的收入减少，或者因系统 Bug 导致用户取消订单的申请被默认同意（虽然原本商户可能也会做同意处理，但是申诉的话平台依然要赔付），类似预计收益减少或者因系统问题产生赔付的场景都应算为资损。</p>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASYyyAAp99AAHQPeoXQkg893.png" srcset="/img/loading.gif" lazyload alt="资损定义和分类"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASYyyAAp99AAHQPeoXQkg893.png" alt="资损定义和分类"></p>
 <h3 id="资损防控的三个关键"><a href="#资损防控的三个关键" class="headerlink" title="资损防控的三个关键"></a>资损防控的三个关键</h3><ol>
 <li>防：资金视角做风险点识别</li>
 </ol>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY0OAILA7AAE89CbKGfA505.png" srcset="/img/loading.gif" lazyload alt="资损风险点识别"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY0OAILA7AAE89CbKGfA505.png" alt="资损风险点识别"></p>
 <ol start="2">
 <li>监：一致性与正确性双核对</li>
 </ol>
 <p>针对资损感知的核心思想是：基于线上业务结果收拢进行监控，基于线下业务场景扩散进行核对。</p>
 <p>与可用性监控围绕接口的技术指标不同，资损更关注的是数据核对，监控的并不是运行状态而是运行结果，并且资损监控的粒度要求非常高，精细到每一笔交易、每一次金额计算、每一个红包发放。所以资损监控的有效性很依赖于场景的覆盖率，仅覆盖几个关键场景是不足以规避资损风险的，除了要定期梳理外，每次系统有变更或者新功能时，都需检查是否有新的核对点，以及旧有核对公式是否需要调整。</p>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY1aARH-TAAHJrR1s-W0317.png" srcset="/img/loading.gif" lazyload alt="资损监控核对"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY1aARH-TAAHJrR1s-W0317.png" alt="资损监控核对"></p>
 <ol start="3">
 <li>控：资金拦截 + 资产控制</li>
 </ol>
@@ -590,10 +248,10 @@
 <p>资产管控的能力则是资产的快速锁定和数据订正展开，以红包而言，如果不同模版不同活动的红包都有一个统一的批次号，就可以通过这个标记快速捞取某一批有问题的数据。同时如果提前准备批量订正的脚本，或者有订正数据的平台，就可以快速修改红包金额、使用时间、使用门槛等关键信息，甚至批量无效所有问题红包。</p>
 <p>你需要注意，这些能力的实现更多依赖于技术 Leader 在日常需求迭代和架构设计时，是否有意识引导团队加强这方面的建设。大部分的预案思路来源于过去已经发生的问题，或者对未来可能发生问题的假设，将预案常态化是你重点关注并推进落地的。</p>
 <p>除了建设预案，还要有预案演练，以此保证预案的有效性。技术 Leader 更应该鼓励测试和开发的同学主动做攻防演练，寻找漏洞、验证止损方案、及时发现并修复问题。</p>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGASY2aAan_KAAHwX7CkMbQ394.png" srcset="/img/loading.gif" lazyload alt="资源预案止损"></p>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY3WAF33QAAE50Zm97VM138.png" srcset="/img/loading.gif" lazyload></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cip5yGASY2aAan_KAAHwX7CkMbQ394.png" alt="资源预案止损"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2ASY3WAF33QAAE50Zm97VM138.png"></p>
 <h2 id="技术债务"><a href="#技术债务" class="headerlink" title="技术债务"></a>技术债务</h2><p>技术债务在研发领域类似于“金融债务”的概念，大部分情况下是说因为人为妥协，系统的设计和实现没有遵循最佳实践，所以虽然短期做到了快速交付，但也制约了系统未来的可扩展性，并且埋下了稳定性的风险隐患。</p>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAXyHeAZE15AAF3VXvSekM464.png" srcset="/img/loading.gif" lazyload alt="技术债务"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAXyHeAZE15AAF3VXvSekM464.png" alt="技术债务"></p>
 <h3 id="重视技术债务的原因"><a href="#重视技术债务的原因" class="headerlink" title="重视技术债务的原因"></a>重视技术债务的原因</h3><ul>
 <li>影响系统扩展和需求交付</li>
 <li>恶性循环导致人员流失</li>
@@ -608,9 +266,9 @@
 <li>通过 CheckList 识别债务</li>
 </ol>
 <p>建立一个债务 Review 的 CheckList ，并且不断完善。技术债务从表象上可以做一些细分：</p>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Ciqc1GAXyKCAQhAeAAIzRmP_aiA027.png" srcset="/img/loading.gif" lazyload alt="技术债务划分"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Ciqc1GAXyKCAQhAeAAIzRmP_aiA027.png" alt="技术债务划分"></p>
 <p>通过现象我们就可以反推出一些导致现象的原因，将这些原因结合系统的架构进行分类，就会形成一个个具体的关注点。这些关注点往往是结合我们之前踩过的坑、发生过的问题，以及编码、架构上广为遵守的一些最佳实践所形成的，这样你就可以制定出一个较为详细的 CheckList 用以具体的债务识别（下图供参考）。</p>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAXyKmAL5F9AAGrGtOqSM0087.png" srcset="/img/loading.gif" lazyload alt="债务细分"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgqCHmAXyKmAL5F9AAGrGtOqSM0087.png" alt="债务细分"></p>
 <ol start="3">
 <li>有计划地分级偿债</li>
 </ol>
@@ -648,8 +306,8 @@
 <li><p>机制流程外还要讲策略和方法。很多技术 Leader 觉得这件事很重要，讲的同时设计了很多流程和机制，不遵守就要承担怎样怎样的后果，这样往往事半功倍。机制流程不是越多越好，也不能光有惩罚而没有激励，同时最重要的是你不能只追杀要结果，要给帮助、给方法、给支持。</p>
 </li>
 </ul>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2AXyMeAKHX_AAGCjDqqNX4257.png" srcset="/img/loading.gif" lazyload alt="债务总结"></p>
-<h2 id="大项目：把握关键点，谋定而后动"><a href="#大项目：把握关键点，谋定而后动" class="headerlink" title="大项目：把握关键点，谋定而后动"></a>大项目：把握关键点，谋定而后动</h2><h3 id="认清异同，做到心中有数"><a href="#认清异同，做到心中有数" class="headerlink" title="认清异同，做到心中有数"></a>认清异同，做到心中有数</h3><p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAcw7WAEx7QAAE0B9ewvBc719.png" srcset="/img/loading.gif" lazyload alt="项目迭代周期"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CgpVE2AXyMeAKHX_AAGCjDqqNX4257.png" alt="债务总结"></p>
+<h2 id="大项目：把握关键点，谋定而后动"><a href="#大项目：把握关键点，谋定而后动" class="headerlink" title="大项目：把握关键点，谋定而后动"></a>大项目：把握关键点，谋定而后动</h2><h3 id="认清异同，做到心中有数"><a href="#认清异同，做到心中有数" class="headerlink" title="认清异同，做到心中有数"></a>认清异同，做到心中有数</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAcw7WAEx7QAAE0B9ewvBc719.png" alt="项目迭代周期"></p>
 <p>在这个常规流程中，技术团队的重心是把执行做到位，你要更关注过程管控，确保系统交付。</p>
 <p>大项目与常规项目的核心差异点，我认为主要在于这个“大”字上，你可以从三个方面去理解。</p>
 <ul>
@@ -669,7 +327,7 @@
 <li><p>WHAT（项目做成什么样）</p>
 </li>
 </ul>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAcxamAVdqbAACyNLxS9YE927.png" srcset="/img/loading.gif" lazyload alt="what"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAcxamAVdqbAACyNLxS9YE927.png" alt="what"></p>
 <ul>
 <li><p>WHO（哪些人来一起做项目）</p>
 </li>
@@ -708,7 +366,7 @@
 <li><p>时刻牢记你将项目按时上线没有故障只是做到了60分，更关键的是业务效果，所以除了盯紧开发过程外，还要在最开始的业务与产品设计阶段就投身其中。</p>
 </li>
 </ol>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cgp9HWAeZGqARfAHAAohBfqxiaQ465.png" srcset="/img/loading.gif" lazyload alt="项目"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cgp9HWAeZGqARfAHAAohBfqxiaQ465.png" alt="项目"></p>
 <h2 id="业务理解：深入业务是做好架构的前提"><a href="#业务理解：深入业务是做好架构的前提" class="headerlink" title="业务理解：深入业务是做好架构的前提"></a>业务理解：深入业务是做好架构的前提</h2><h3 id="为什么技术要理解业务？"><a href="#为什么技术要理解业务？" class="headerlink" title="为什么技术要理解业务？"></a>为什么技术要理解业务？</h3><h4 id="产品需求不等于业务诉求"><a href="#产品需求不等于业务诉求" class="headerlink" title="产品需求不等于业务诉求"></a>产品需求不等于业务诉求</h4><p>同样的，技术 Leader 可能会花时间参加各种会议，尤其是产品需求的会，在会上如果仅仅是听“自己团队应该做什么”，而没有思考和探究业务的根本诉求，那么就我的经验来说，技术团队不可避免的会成为工具人。Leader 缺乏独立思考，人云亦云，最后整个团队都会被拖累，这也是为什么大多数研发团队被产品以及业务按在地上摩擦的原因！</p>
 <h4 id="领域建模的前提是理解业务"><a href="#领域建模的前提是理解业务" class="headerlink" title="领域建模的前提是理解业务"></a>领域建模的前提是理解业务</h4><p>正因为没有仔细看业务的现状、推测业务的发展、去思考业务上对交易的诉求，我们认识的只是一个个需求，而非整体的从业务维度思考系统的设计，导致系统复杂度越来越高。所以要想设计可靠、简单、真正可持续迭代的系统，深度理解业务就是前提，你对业务的理解程度影响了你对系统未来发展的预判程度。</p>
 <h4 id="提升技术团队的使命感"><a href="#提升技术团队的使命感" class="headerlink" title="提升技术团队的使命感"></a>提升技术团队的使命感</h4><p>你写的每一行代码，线上的每一次发布，都会改变用户的体验，解决实际的问题，你就会发现这份工作的意义。</p>
@@ -717,7 +375,7 @@
 <li>建立走进业务的机制</li>
 <li>业务上多参会多画图（参加评审会，梳理流程图等等）</li>
 </ol>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cgp9HWAfsGSAa_gIAAKhlQeDXYs745.png" srcset="/img/loading.gif" lazyload alt="理解业务"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/Cgp9HWAfsGSAa_gIAAKhlQeDXYs745.png" alt="理解业务"></p>
 <h2 id="架构设计：治理好系统复杂度才最务实"><a href="#架构设计：治理好系统复杂度才最务实" class="headerlink" title="架构设计：治理好系统复杂度才最务实"></a>架构设计：治理好系统复杂度才最务实</h2><h3 id="治理好系统复杂度才最务实"><a href="#治理好系统复杂度才最务实" class="headerlink" title="治理好系统复杂度才最务实"></a>治理好系统复杂度才最务实</h3><p>C.A.R. Hoare曾说过：“软件设计有两种风格，一种是将软件设计得很复杂，以使其缺陷没那么明显；一种是把软件设计得很简单，以使其没有明显的缺陷”。</p>
 <p>系统的结构清晰、即使整体繁杂但是每个局部都相对简单、链路干脆直接，没有不必要的冗余。</p>
 <h3 id="衡量复杂度"><a href="#衡量复杂度" class="headerlink" title="衡量复杂度"></a>衡量复杂度</h3><ul>
@@ -744,12 +402,12 @@
 <li>坚持“日拱一卒</li>
 </ol>
 <h3 id="没必要一定把系统做成中台"><a href="#没必要一定把系统做成中台" class="headerlink" title="没必要一定把系统做成中台"></a>没必要一定把系统做成中台</h3><p>没必要一定把系统做成中台，不做中台就会落后更是无稽之谈，不过，你可以借鉴中台的思路作为系统设计与演进上的形态参考。</p>
-<p><img src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAlYm-AU3RIAAIkbegMocs361.png" srcset="/img/loading.gif" lazyload alt="复杂度"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0/CioPOWAlYm-AU3RIAAIkbegMocs361.png" alt="复杂度"></p>
 <hr>
 <p class="note note-success"> 管理三板斧：拿结果、建团队、招聘与解聘</p>
 
 <h1 id="定目标：让你的方向与公司的方向保持一致"><a href="#定目标：让你的方向与公司的方向保持一致" class="headerlink" title="定目标：让你的方向与公司的方向保持一致"></a>定目标：让你的方向与公司的方向保持一致</h1><h2 id="怎么解读目标？"><a href="#怎么解读目标？" class="headerlink" title="怎么解读目标？"></a>怎么解读目标？</h2><p>解读目标就是要确保自己做的事儿和公司的方向一致，顺势而为，没有走偏（这里的“势”就是公司的战略和目标），正因为有了目标才有根据目标制定的 KPI，才会有围绕目标的执行动作和最终取得的结果。</p>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAqh56AQalmAAE6asGZIRs826.png" srcset="/img/loading.gif" lazyload></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAqh56AQalmAAE6asGZIRs826.png"></p>
 <p>目标不是一句口号，它是一个个层层拆解、递进的过程。说白了，解读目标是把公司的方向变成你的方向，把上一层的问题转变成你可以改变的问题。</p>
 <p>确保目标解读正确有很多技巧和方法。根据目标逐层分解的特性，可以考虑四个方面。</p>
 <ul>
@@ -771,7 +429,7 @@
 </ol>
 <p>结合以上四点，围绕目标和团队一起讨论策略与打法，将目标拆解成几个关键任务，明确到责任人，总结一下就是：定策略、拆任务、细到人。</p>
 <h2 id="怎么传递目标？"><a href="#怎么传递目标？" class="headerlink" title="怎么传递目标？"></a>怎么传递目标？</h2><p>大部分情况下，你会发现信息不对等、传递过程中的损失、个人理解的差异，直接导致不是所有人都清楚“我们要往哪去”。</p>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAqh9iAfN3jAAE8QXqq33w549.png" srcset="/img/loading.gif" lazyload></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAqh9iAfN3jAAE8QXqq33w549.png"></p>
 <p>最后，目标的传递是一个连贯的动作，要落到日常的管理动作、重点项目与任务、KPI 的过程管理这些平日的点滴中。目标要反复讲，要经常对焦，重要的事儿，3 遍是不够的，要说“300 遍！”。</p>
 <p>所谓的方向与目标就是：你要往哪去，你要走多远，你要走到哪。清晰的目标就好比沙漠中的指南针，让你能比其他人更快找到水源并生存下去，今天这节课，我提醒你注意这样几点：</p>
 <ul>
@@ -779,7 +437,7 @@
 <li>制定目标一定要够聚焦，但切勿只考虑眼前，注意“长短结合”。</li>
 <li>注意目标传递，要充分考虑团队成员的感受，选取合适的方式。</li>
 </ul>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWAqh-mAAqQvAAHkRyUTqL0533.png" srcset="/img/loading.gif" lazyload alt="定目标"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWAqh-mAAqQvAAHkRyUTqL0533.png" alt="定目标"></p>
 <h2 id="追过程：如何用-PDCA-做过程管理？"><a href="#追过程：如何用-PDCA-做过程管理？" class="headerlink" title="追过程：如何用 PDCA 做过程管理？"></a>追过程：如何用 PDCA 做过程管理？</h2><p>只有掌握过程管理的方法，才会尽可能减少事务往不好方向发展的波动，从而更轻松、更低风险、更稳妥地去拿到结果，让一切尽在掌控。</p>
 <h3 id="什么是过程管理？"><a href="#什么是过程管理？" class="headerlink" title="什么是过程管理？"></a>什么是过程管理？</h3><p>管理就是追求事务的可持续发展，而想要达成这个目标有两个基本点：</p>
 <ul>
@@ -796,7 +454,7 @@
 <li>Action（复盘调优）：小事尽快复盘、大事分阶段复盘、事后全面复盘，抓住每一次提升和优化的机会。</li>
 </ul>
 <h3 id="如何用-PDCA-做过程管理？"><a href="#如何用-PDCA-做过程管理？" class="headerlink" title="如何用 PDCA 做过程管理？"></a>如何用 PDCA 做过程管理？</h3><p>很多能力和经验是历练出来的，只要过程可控，过程中走一些弯路也未必是坏事，要允许犯错。但是你要注意，放手不等于放任，更不等于不闻不问，你依然要对最终的结果负责。</p>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAuOIWATM3RAAKl9h_7RCo041.png" srcset="/img/loading.gif" lazyload alt="会议"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAuOIWATM3RAAKl9h_7RCo041.png" alt="会议"></p>
 <ul>
 <li>复盘前：复盘前的核心在于思考复盘的目的和产出是什么。借此，你才可以明确复盘会议主要会聊些什么，哪些人会参加。</li>
 <li>复盘中：自省是复盘会的基调，复盘就一个目的“找到团队的不足加以改进，以便在未来取得更好的结果”。所以每个人没必要甩锅，也没必要全盘否定。在复盘的过程中，一定要把问题找准，内部对齐，达成所有人的共识。</li>
@@ -845,7 +503,7 @@
 <li>面向未来而非现在去做考虑</li>
 </ol>
 <p>牢记资源总是有限的，资源分配本身是博弈，有人多就要有人少。这种情况下，平均分配的结果不是普天同庆，而是所有人都不满意，每个人都觉得少。与其如此，不如把资源倾斜到那些你团队最优秀、绩效最好的同学身上，让他们得到预期的收益甚至超出预期。</p>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAzaOuAOmbSAADrwmhxbqc219.png" srcset="/img/loading.gif" lazyload alt="奖优罚劣"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWAzaOuAOmbSAADrwmhxbqc219.png" alt="奖优罚劣"></p>
 <hr>
 <h2 id="勤沟通：在信任的基础上，让沟通简单且纯粹"><a href="#勤沟通：在信任的基础上，让沟通简单且纯粹" class="headerlink" title="勤沟通：在信任的基础上，让沟通简单且纯粹"></a>勤沟通：在信任的基础上，让沟通简单且纯粹</h2><p>要知道，沟通是有目的的，既然沟通的对象是人，我们还希望通过沟通去达到一定的结果（效果），那么就要懂得一定的道理与技巧。</p>
 <h3 id="沟通的核心原则"><a href="#沟通的核心原则" class="headerlink" title="沟通的核心原则"></a>沟通的核心原则</h3><p>沟通是内心想法和思考逻辑的外延，如果你有良好的沟通能力，可以在整个团队中营造公开透明的信任氛围，让信息透明的同时，也让团队成员愿意发出自己的声音。</p>
@@ -863,7 +521,7 @@
 </ol>
 <h4 id="团队沟通"><a href="#团队沟通" class="headerlink" title="团队沟通"></a>团队沟通</h4><p>与One One沟通不同的是，团队沟通受人数的限制，是一对多的沟通，所以除了参考OneOne沟通的核心点外，你最关键的应该是搭场子，发起团队沟通。</p>
 <p>团队沟通目的性更强，频次不高，考验你的控场能力。</p>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWA2GNuATPfwAAG2oUoqhik144.png" srcset="/img/loading.gif" lazyload alt="勤沟通"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWA2GNuATPfwAAG2oUoqhik144.png" alt="勤沟通"></p>
 <hr>
 <h2 id="建机制：规则流程越建越多，为何效果却越来越差？"><a href="#建机制：规则流程越建越多，为何效果却越来越差？" class="headerlink" title="建机制：规则流程越建越多，为何效果却越来越差？"></a>建机制：规则流程越建越多，为何效果却越来越差？</h2><h3 id="机制发挥什么作用？"><a href="#机制发挥什么作用？" class="headerlink" title="机制发挥什么作用？"></a>机制发挥什么作用？</h3><p>两类机制：</p>
 <ul>
@@ -886,13 +544,13 @@
 <li><p>承诺行为举止： 确认机制之后，需要让结论形成对各自行为的约束。比如不同的成员认领不同的角色和任务，或者在 IM 中一起公告规则，总之每个成员要与机制的参与感。</p>
 </li>
 </ul>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWA9Dj-AbXWgAAQfSFZSZ1Y787.png" srcset="/img/loading.gif" lazyload alt="会议设计"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWA9Dj-AbXWgAAQfSFZSZ1Y787.png" alt="会议设计"></p>
 <p>先考虑目的， CodeReview 主要是解决两方面的问题：提高代码质量；帮助开发同学认识到如何写出更好的代码。</p>
 <p>不同的侧重点设计出来的机制也有所不同，按照我的理解，CodeReview 的主要作用还是帮助大家成长，打造团队内的技术提升氛围，次要才是促进产品质量的提升。</p>
 <p>确定了核心想要达成的效果，接下来就可以着手确定机制的内容，这里面要考虑几个方面的内容：可能会遇到的问题（阻力）、机制实施的成本、机制运行的时机和周期、站在一个机制参与者的角度考虑他要做什么。</p>
 <p>具体 CodeReview 的机制方案可以参考下图：</p>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWA9DlSAQbjfAAGeT66ULls027.png" srcset="/img/loading.gif" lazyload alt="code review"></p>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWA9DlyAYnBoAADCktnlzHk931.png" srcset="/img/loading.gif" lazyload alt="建立机制"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWA9DlSAQbjfAAGeT66ULls027.png" alt="code review"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWA9DlyAYnBoAADCktnlzHk931.png" alt="建立机制"></p>
 <hr>
 <h2 id="知人善用：借事修人，借人成事"><a href="#知人善用：借事修人，借人成事" class="headerlink" title="知人善用：借事修人，借人成事"></a>知人善用：借事修人，借人成事</h2><h3 id="知人善用的三个关键点"><a href="#知人善用的三个关键点" class="headerlink" title="知人善用的三个关键点"></a>知人善用的三个关键点</h3><ol>
 <li>找对人</li>
@@ -930,7 +588,7 @@
 <li><p>内心是否非常犹豫？犹豫往往意味着“不想要 &gt; 想要”，如果是迫于业务压力不得不加人，我建议你还是不要勉强，因为有可能本来解决业务压力就可以的问题演变成还要额外解决不适合的新员工的问题。</p>
 </li>
 </ul>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWBF1_6AMv9fAAFMMGSqBd0745.png" srcset="/img/loading.gif" lazyload alt="找到对的人"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWBF1_6AMv9fAAFMMGSqBd0745.png" alt="找到对的人"></p>
 <h2 id="能落地：90-天试用期，转正时我们要考察什么？"><a href="#能落地：90-天试用期，转正时我们要考察什么？" class="headerlink" title="能落地：90 天试用期，转正时我们要考察什么？"></a>能落地：90 天试用期，转正时我们要考察什么？</h2><ol>
 <li>明确新同学落地的整体节奏</li>
 <li>重点抓试用期考核以及工作习惯的养成</li>
@@ -962,7 +620,7 @@
 <li><p>Happy stay、Happy go： 很多时候，送走一个同学对彼此来说并不是一件糟糕的事，换个角度看，如果他在当前环境下一直无法适配团队，对他来说也是很难受的，这时分开对他对团队都是解脱。尤其是当公司出现变化时，如果一些同学不再合适，换环境来讲对他是新的机会，所以你不要存在太多的情绪，而是要往“好聚好散”的方向上推动。</p>
 </li>
 </ul>
-<h3 id="不要给“白兔”生存机会"><a href="#不要给“白兔”生存机会" class="headerlink" title="不要给“白兔”生存机会"></a>不要给“白兔”生存机会</h3><p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWBLFaeAA8v9AAA6D5TpRtM361.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="不要给“白兔”生存机会"><a href="#不要给“白兔”生存机会" class="headerlink" title="不要给“白兔”生存机会"></a>不要给“白兔”生存机会</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/Cgp9HWBLFaeAA8v9AAA6D5TpRtM361.png"></p>
 <p>白兔看起来人畜无害，繁殖能力极强，大公司里最容易存在的就是“白兔”（不干活的好人）。他们目标和价值观认同度较高，但是业绩长期拖后腿。每一家公司都有这样的人，看着勤勤恳恳，但却拿不到任何结果，如果你纵容白兔的存在，那么长久下去，很容易滋生一群白兔磨洋工，针对这类员工，你前期可以给予改正的机会，如果依旧没有改善，应该毫不犹豫将其送走。</p>
 <h3 id="离职面谈“TRF”"><a href="#离职面谈“TRF”" class="headerlink" title="离职面谈“TRF”"></a>离职面谈“TRF”</h3><p> Train him、Remove him、Fire him</p>
 <p>Train him 是指如果他能力跟不上，你可以给予其帮助；Remove him 是指如果他的能力和岗位匹配有问题，你要更多地采用转岗的方式，为他的发展打开空间；如果在你给予他机会之后，他还是无法改善，那你就应该 Fire him。</p>
@@ -971,7 +629,7 @@
 <p>“无重点”：对有关问题避重就轻，只说无关痛痒的祝福。</p>
 <p>“没技巧”：对员工工作横加指责，面谈完反而加深了矛盾。</p>
 <p>“从不谈”：是对员工存在很大偏见，不面谈直接一拍两散。</p>
-<p><img src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWBLFeGAX6HuAADUCQlA8L8413.png" srcset="/img/loading.gif" lazyload alt="升级汰换"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E7%AE%A1%E7%90%86%E4%B8%89%E6%9D%BF%E6%96%A7/CioPOWBLFeGAX6HuAADUCQlA8L8413.png" alt="升级汰换"></p>
 <hr>
 <h1 id="技术管理的常见痛点"><a href="#技术管理的常见痛点" class="headerlink" title="技术管理的常见痛点"></a>技术管理的常见痛点</h1><h2 id="晋升：是不是技术到位、项目做好就够了？"><a href="#晋升：是不是技术到位、项目做好就够了？" class="headerlink" title="晋升：是不是技术到位、项目做好就够了？"></a>晋升：是不是技术到位、项目做好就够了？</h2><h3 id="经过多少“关”才能晋升？"><a href="#经过多少“关”才能晋升？" class="headerlink" title="经过多少“关”才能晋升？"></a>经过多少“关”才能晋升？</h3><p>晋升步骤：</p>
 <p>晋升启动——主管提名——部门提报——述职答辩——结果表决——公司复审——结果公布</p>
@@ -990,7 +648,7 @@
 <blockquote>
 <p>晋升不是奖励，是责任与担当，是为未来做的事。</p>
 </blockquote>
-<p><img src="/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/CioPOWBS8c-AJOCiAAO-OZ0qSJg929.png" srcset="/img/loading.gif" lazyload alt="晋升"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/CioPOWBS8c-AJOCiAAO-OZ0qSJg929.png" alt="晋升"></p>
 <h2 id="跨团队：没有汇报线的人和事就是推不动？"><a href="#跨团队：没有汇报线的人和事就是推不动？" class="headerlink" title="跨团队：没有汇报线的人和事就是推不动？"></a>跨团队：没有汇报线的人和事就是推不动？</h2><h3 id="跨团队事务推进的难点"><a href="#跨团队事务推进的难点" class="headerlink" title="跨团队事务推进的难点"></a>跨团队事务推进的难点</h3><ul>
 <li>方案无法达成一致： 你提出的 A 方案与运营团队提出的 B 方案，在实现成本、方式、资源等方面存在很明显差异，陷入僵局。</li>
 <li>时间无法达成一致： 协作方赞同 A 方案，但对“一周上线项目”的时间节点有意见，认为至少需要 20 天，这会从“时间无法达成一致”回滚到“方案无法达成一致”，陷入新一轮僵局。</li>
@@ -1071,461 +729,498 @@
 <li>规划最终成了技术Leader的规划</li>
 </ol>
 <p>做团队规划是一件比较综合宏观的事情，有时哪怕只是几个人的团队，想做好一份规划而非执行计划也很考验 Leader 的思考深度，某种程度来说，规划是你定义一群人在未来一段时间内做什么、怎么做、最终变成什么样。这个过程中需要考量的点非常多，这些深入的思考也会促进你日常的一些行为和结果，对于团队的季度乃至半年规划我是非常推荐你要定期梳理并落地的，有目标和没目标的团队，还是有很大的差别的。</p>
-<p><img src="/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/Cgp9HWBcUYKAHXrjAAHoV4ZOizs520.png" srcset="/img/loading.gif" lazyload alt="做规划"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/Cgp9HWBcUYKAHXrjAAHoV4ZOizs520.png" alt="做规划"></p>
 <h2 id="接手新团队：士气低、交付迟、事故多发，如何下手解决？"><a href="#接手新团队：士气低、交付迟、事故多发，如何下手解决？" class="headerlink" title="接手新团队：士气低、交付迟、事故多发，如何下手解决？"></a>接手新团队：士气低、交付迟、事故多发，如何下手解决？</h2><p>虽然接手一个问题团队很难，要处理很多问题并且非常辛苦，但是对一个 Leader 的锻炼也是无与伦比的，我见过几乎所有优秀的技术 Leader 都是一次次这样磨炼出来的。毕竟技术管理能力很重要的一个落地场景就是这种情况，也是最能发挥技术 Leader 管理能力价值的场景之一。</p>
-<p><img src="/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/Cgp9HWBhhzyAIeYyAAGwGD_IRZw948.png" srcset="/img/loading.gif" lazyload alt="新团队"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/images/%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9/Cgp9HWBhhzyAIeYyAAGwGD_IRZw948.png" alt="新团队"></p>
 
-              
-            </div>
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/reading/" class="category-chain-item">reading</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/reading/">#reading</a>
-      
-    </div>
-  
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
 </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2021/02/27/319/">go的GC机制</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2021/02/13/310/">git知识汇总</a></div></section></div>
 
 
-              
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">puresai</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E4%BA%BA%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="toc-text">技术人三要素</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-text">稳定性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%A1%A1%E9%87%8F%E7%B3%BB%E7%BB%9F%E7%A8%B3%E5%AE%9A%E6%80%A7%EF%BC%9F"><span class="toc-text">怎么衡量系统稳定性？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E6%95%85%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-text">事故的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E5%A4%84%E7%90%86%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">故障处理的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%9C%89%E4%BB%B7%E5%80%BC%E5%9C%B0%E5%81%9A%E4%BA%8B%E5%90%8E%E5%A4%8D%E7%9B%98%EF%BC%9F"><span class="toc-text">如何有价值地做事后复盘？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E6%9B%B4%E4%BC%9A%E5%BC%95%E8%B5%B790-%E4%BB%A5%E4%B8%8A%E7%9A%84%E6%95%85%E9%9A%9C"><span class="toc-text">变更会引起90%以上的故障</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%9A%E5%AE%88-Design-For-Failure-%E7%9A%84%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5"><span class="toc-text">坚守 Design For Failure 的架构理念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%BD%93%E4%BD%9C%E6%9C%BA%E5%88%B6%E4%B8%8E%E6%96%87%E5%8C%96%E5%8E%BB%E5%BB%BA%E8%AE%BE"><span class="toc-text">把稳定性当作机制与文化去建设</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%B5%84%E6%8D%9F%E6%A6%82%E5%BF%B5%E7%9A%84%E5%AE%8F%E8%A7%82%E8%AE%A4%E7%9F%A5"><span class="toc-text">建立资损概念的宏观认知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%84%E6%8D%9F%E9%98%B2%E6%8E%A7%E7%9A%84%E4%B8%89%E4%B8%AA%E5%85%B3%E9%94%AE"><span class="toc-text">资损防控的三个关键</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1"><span class="toc-text">技术债务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A7%86%E6%8A%80%E6%9C%AF%E5%80%BA%E5%8A%A1%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-text">重视技术债务的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BB%8E%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%80%BA%E5%8A%A1%E5%9B%B0%E5%A2%83%E4%B8%AD%E7%AA%81%E5%9B%B4%E8%80%8C%E5%87%BA%EF%BC%9F"><span class="toc-text">如何从循环的债务困境中突围而出？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E9%A1%B9%E7%9B%AE%EF%BC%9A%E6%8A%8A%E6%8F%A1%E5%85%B3%E9%94%AE%E7%82%B9%EF%BC%8C%E8%B0%8B%E5%AE%9A%E8%80%8C%E5%90%8E%E5%8A%A8"><span class="toc-text">大项目：把握关键点，谋定而后动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E6%B8%85%E5%BC%82%E5%90%8C%EF%BC%8C%E5%81%9A%E5%88%B0%E5%BF%83%E4%B8%AD%E6%9C%89%E6%95%B0"><span class="toc-text">认清异同，做到心中有数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E6%8F%A1%E5%85%B3%E9%94%AE%E7%82%B9%EF%BC%8C%E8%B0%8B%E5%AE%9A%E8%80%8C%E5%90%8E%E5%8A%A8"><span class="toc-text">把握关键点，谋定而后动</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E6%A3%98%E6%89%8B%E9%97%AE%E9%A2%98"><span class="toc-text">如何处理棘手问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%B8%80%EF%BC%9A%E7%BC%BA%E5%85%B5%E5%B0%91%E5%B0%86%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="toc-text">问题一：缺兵少将怎么办？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%BA%8C%EF%BC%9A%E6%8E%A8%E4%B8%8D%E5%8A%A8%E7%9A%84%E5%88%B0%E5%BA%95%E6%98%AF%E4%BA%BA%E8%BF%98%E6%98%AF%E4%BA%8B%EF%BC%9F"><span class="toc-text">问题二：推不动的到底是人还是事？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%B8%89%EF%BC%9A%E4%B8%80%E5%AE%9A%E4%BC%9A%E6%9C%89%E9%A1%B9%E7%9B%AE%E5%8F%98%E6%9B%B4%E5%90%97%EF%BC%9F"><span class="toc-text">问题三：一定会有项目变更吗？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E4%B8%AA%E9%87%8D%E7%82%B9"><span class="toc-text">3个重点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E7%90%86%E8%A7%A3%EF%BC%9A%E6%B7%B1%E5%85%A5%E4%B8%9A%E5%8A%A1%E6%98%AF%E5%81%9A%E5%A5%BD%E6%9E%B6%E6%9E%84%E7%9A%84%E5%89%8D%E6%8F%90"><span class="toc-text">业务理解：深入业务是做好架构的前提</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%8A%80%E6%9C%AF%E8%A6%81%E7%90%86%E8%A7%A3%E4%B8%9A%E5%8A%A1%EF%BC%9F"><span class="toc-text">为什么技术要理解业务？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A7%E5%93%81%E9%9C%80%E6%B1%82%E4%B8%8D%E7%AD%89%E4%BA%8E%E4%B8%9A%E5%8A%A1%E8%AF%89%E6%B1%82"><span class="toc-text">产品需求不等于业务诉求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%86%E5%9F%9F%E5%BB%BA%E6%A8%A1%E7%9A%84%E5%89%8D%E6%8F%90%E6%98%AF%E7%90%86%E8%A7%A3%E4%B8%9A%E5%8A%A1"><span class="toc-text">领域建模的前提是理解业务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E5%8D%87%E6%8A%80%E6%9C%AF%E5%9B%A2%E9%98%9F%E7%9A%84%E4%BD%BF%E5%91%BD%E6%84%9F"><span class="toc-text">提升技术团队的使命感</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%E4%B8%9A%E5%8A%A1%EF%BC%9F"><span class="toc-text">如何理解业务？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E6%B2%BB%E7%90%86%E5%A5%BD%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%89%8D%E6%9C%80%E5%8A%A1%E5%AE%9E"><span class="toc-text">架构设计：治理好系统复杂度才最务实</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%BB%E7%90%86%E5%A5%BD%E7%B3%BB%E7%BB%9F%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%89%8D%E6%9C%80%E5%8A%A1%E5%AE%9E"><span class="toc-text">治理好系统复杂度才最务实</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A1%E9%87%8F%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-text">衡量复杂度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%B2%BB%E7%90%86%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="toc-text">复杂度治理的思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%B2%BB%E7%90%86%E5%AE%9E%E8%B7%B5"><span class="toc-text">复杂度治理实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%A1%E5%BF%85%E8%A6%81%E4%B8%80%E5%AE%9A%E6%8A%8A%E7%B3%BB%E7%BB%9F%E5%81%9A%E6%88%90%E4%B8%AD%E5%8F%B0"><span class="toc-text">没必要一定把系统做成中台</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E7%9B%AE%E6%A0%87%EF%BC%9A%E8%AE%A9%E4%BD%A0%E7%9A%84%E6%96%B9%E5%90%91%E4%B8%8E%E5%85%AC%E5%8F%B8%E7%9A%84%E6%96%B9%E5%90%91%E4%BF%9D%E6%8C%81%E4%B8%80%E8%87%B4"><span class="toc-text">定目标：让你的方向与公司的方向保持一致</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%A7%A3%E8%AF%BB%E7%9B%AE%E6%A0%87%EF%BC%9F"><span class="toc-text">怎么解读目标？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%88%B6%E5%AE%9A%E7%9B%AE%E6%A0%87%EF%BC%9F"><span class="toc-text">怎么制定目标？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E4%BC%A0%E9%80%92%E7%9B%AE%E6%A0%87%EF%BC%9F"><span class="toc-text">怎么传递目标？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%BD%E8%BF%87%E7%A8%8B%EF%BC%9A%E5%A6%82%E4%BD%95%E7%94%A8-PDCA-%E5%81%9A%E8%BF%87%E7%A8%8B%E7%AE%A1%E7%90%86%EF%BC%9F"><span class="toc-text">追过程：如何用 PDCA 做过程管理？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%BF%87%E7%A8%8B%E7%AE%A1%E7%90%86%EF%BC%9F"><span class="toc-text">什么是过程管理？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PDCA-%E6%A8%A1%E5%9E%8B"><span class="toc-text">PDCA 模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%A8-PDCA-%E5%81%9A%E8%BF%87%E7%A8%8B%E7%AE%A1%E7%90%86%EF%BC%9F"><span class="toc-text">如何用 PDCA 做过程管理？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E9%87%8D%E7%82%B9%EF%BC%9A"><span class="toc-text">三个重点：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%96%E4%BC%98%E7%BD%9A%E5%8A%A3%EF%BC%9A%E6%80%8E%E6%A0%B7%E4%BC%A0%E9%80%92%E6%88%91%E4%BB%AC%E2%80%9D%E8%A6%81%E4%BB%80%E4%B9%88%E2%80%9D%E4%B8%8E%E2%80%9C%E4%B8%8D%E8%A6%81%E4%BB%80%E4%B9%88%E2%80%9D%EF%BC%9F"><span class="toc-text">奖优罚劣：怎样传递我们”要什么”与“不要什么”？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%A5%96%E4%BC%98%E3%80%81%E7%BD%9A%E5%8A%A3"><span class="toc-text">什么是奖优、罚劣</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A5%96%E4%BC%98%E7%BD%9A%E5%8A%A3%E7%9A%84%E5%85%B3%E9%94%AE%E5%8A%A8%E4%BD%9C"><span class="toc-text">奖优罚劣的关键动作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%A9%E6%95%88%E8%80%83%E6%A0%B8"><span class="toc-text">绩效考核</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%A9%E6%95%88%E9%9D%A2%E8%B0%88"><span class="toc-text">绩效面谈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%96%AA%E9%85%AC%E6%BF%80%E5%8A%B1"><span class="toc-text">薪酬激励</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8B%A4%E6%B2%9F%E9%80%9A%EF%BC%9A%E5%9C%A8%E4%BF%A1%E4%BB%BB%E7%9A%84%E5%9F%BA%E7%A1%80%E4%B8%8A%EF%BC%8C%E8%AE%A9%E6%B2%9F%E9%80%9A%E7%AE%80%E5%8D%95%E4%B8%94%E7%BA%AF%E7%B2%B9"><span class="toc-text">勤沟通：在信任的基础上，让沟通简单且纯粹</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%9F%E9%80%9A%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E5%88%99"><span class="toc-text">沟通的核心原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E7%BB%B4%E5%BA%A6%E7%9A%84%E6%B2%9F%E9%80%9A"><span class="toc-text">不同维度的沟通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E5%85%B7%E4%BD%93%E7%9A%84%E6%B2%9F%E9%80%9A%E5%9C%BA%E6%99%AF"><span class="toc-text">两个具体的沟通场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#One-One-%E6%B2%9F%E9%80%9A"><span class="toc-text">One One 沟通</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%A2%E9%98%9F%E6%B2%9F%E9%80%9A"><span class="toc-text">团队沟通</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E6%9C%BA%E5%88%B6%EF%BC%9A%E8%A7%84%E5%88%99%E6%B5%81%E7%A8%8B%E8%B6%8A%E5%BB%BA%E8%B6%8A%E5%A4%9A%EF%BC%8C%E4%B8%BA%E4%BD%95%E6%95%88%E6%9E%9C%E5%8D%B4%E8%B6%8A%E6%9D%A5%E8%B6%8A%E5%B7%AE%EF%BC%9F"><span class="toc-text">建机制：规则流程越建越多，为何效果却越来越差？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%88%B6%E5%8F%91%E6%8C%A5%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="toc-text">机制发挥什么作用？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E5%A5%BD%E7%9A%84%E6%9C%BA%E5%88%B6%EF%BC%9F"><span class="toc-text">如何设计一个好的机制？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%88%B6%E8%A6%81%E6%80%8E%E4%B9%88%E8%90%BD%E5%9C%B0%EF%BC%9F"><span class="toc-text">机制要怎么落地？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E4%BA%BA%E5%96%84%E7%94%A8%EF%BC%9A%E5%80%9F%E4%BA%8B%E4%BF%AE%E4%BA%BA%EF%BC%8C%E5%80%9F%E4%BA%BA%E6%88%90%E4%BA%8B"><span class="toc-text">知人善用：借事修人，借人成事</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A5%E4%BA%BA%E5%96%84%E7%94%A8%E7%9A%84%E4%B8%89%E4%B8%AA%E5%85%B3%E9%94%AE%E7%82%B9"><span class="toc-text">知人善用的三个关键点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%90%BD%E5%9C%B0%E6%89%A7%E8%A1%8C%EF%BC%9F"><span class="toc-text">怎么落地执行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tips"><span class="toc-text">tips</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%BE%E5%88%B0%E4%BA%BA%EF%BC%9A%E6%8B%9B%E8%81%98%E6%98%AF-Leader-%E7%9A%84%E8%B4%A3%E4%BB%BB%EF%BC%8C%E4%B8%8D%E6%98%AF-HR-%E7%9A%84"><span class="toc-text">找到人：招聘是 Leader 的责任，不是 HR 的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%9B%E4%BA%BA%E4%B8%8D%E7%AD%89%E4%BA%8E%E7%9B%B2%E7%9B%AE%E5%8A%A0%E4%BA%BA"><span class="toc-text">招人不等于盲目加人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%BB%E5%91%B3%E9%81%93%E3%80%81%E9%97%AE%E4%BA%8B%E5%AE%9E%E3%80%81%E7%9C%8B%E8%83%BD%E5%8A%9B"><span class="toc-text">闻味道、问事实、看能力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%81%E7%BC%BA%E6%AF%8B%E6%BB%A5%EF%BC%8C%E5%AE%88%E4%BD%8F%E5%BA%95%E7%BA%BF"><span class="toc-text">宁缺毋滥，守住底线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E6%B3%A8%E6%9C%AA%E6%9D%A5"><span class="toc-text">关注未来</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%81%E7%BC%BA%E6%AF%8B%E6%BB%A5"><span class="toc-text">宁缺毋滥</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E8%90%BD%E5%9C%B0%EF%BC%9A90-%E5%A4%A9%E8%AF%95%E7%94%A8%E6%9C%9F%EF%BC%8C%E8%BD%AC%E6%AD%A3%E6%97%B6%E6%88%91%E4%BB%AC%E8%A6%81%E8%80%83%E5%AF%9F%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">能落地：90 天试用期，转正时我们要考察什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A2%E8%A6%81%E5%B8%AE%EF%BC%8C%E4%B9%9F%E8%A6%81%E4%B8%A5"><span class="toc-text">既要帮，也要严</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%8E%E7%A1%AE%E6%96%B0%E5%90%8C%E5%AD%A6%E8%90%BD%E5%9C%B0%E7%9A%84%E6%95%B4%E4%BD%93%E8%8A%82%E5%A5%8F"><span class="toc-text">明确新同学落地的整体节奏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E6%AD%A3%E8%BF%B0%E8%81%8C%E8%A6%81%E8%80%83%E6%A0%B8%E4%BB%80%E4%B9%88"><span class="toc-text">转正述职要考核什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E9%95%BF%E6%9C%9F%E7%9A%84%E8%B7%9F%E8%BF%9B"><span class="toc-text">成长期的跟进</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%87%E7%BA%A7%E6%B1%B0%E6%8D%A2%EF%BC%9A%E2%80%9C%E5%BF%83%E8%A6%81%E6%85%88%EF%BC%8C%E5%88%80%E8%A6%81%E5%BF%AB%E2%80%9D"><span class="toc-text">升级汰换：“心要慈，刀要快”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E9%99%A4%E4%BA%BA%E2%80%9C%E5%BF%83%E8%A6%81%E6%85%88%EF%BC%8C%E5%88%80%E8%A6%81%E5%BF%AB%E2%80%9D"><span class="toc-text">开除人“心要慈，刀要快”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E8%A6%81%E7%BB%99%E2%80%9C%E7%99%BD%E5%85%94%E2%80%9D%E7%94%9F%E5%AD%98%E6%9C%BA%E4%BC%9A"><span class="toc-text">不要给“白兔”生存机会</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E8%81%8C%E9%9D%A2%E8%B0%88%E2%80%9CTRF%E2%80%9D"><span class="toc-text">离职面谈“TRF”</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86%E7%9A%84%E5%B8%B8%E8%A7%81%E7%97%9B%E7%82%B9"><span class="toc-text">技术管理的常见痛点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%8B%E5%8D%87%EF%BC%9A%E6%98%AF%E4%B8%8D%E6%98%AF%E6%8A%80%E6%9C%AF%E5%88%B0%E4%BD%8D%E3%80%81%E9%A1%B9%E7%9B%AE%E5%81%9A%E5%A5%BD%E5%B0%B1%E5%A4%9F%E4%BA%86%EF%BC%9F"><span class="toc-text">晋升：是不是技术到位、项目做好就够了？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8F%E8%BF%87%E5%A4%9A%E5%B0%91%E2%80%9C%E5%85%B3%E2%80%9D%E6%89%8D%E8%83%BD%E6%99%8B%E5%8D%87%EF%BC%9F"><span class="toc-text">经过多少“关”才能晋升？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E5%90%8D%E6%B2%9F%E9%80%9A"><span class="toc-text">提名沟通</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B5%84%E6%96%99%E5%87%86%E5%A4%87"><span class="toc-text">资料准备</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%99%8B%E5%8D%87%E7%AD%94%E8%BE%A9"><span class="toc-text">晋升答辩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C%E5%AE%89%E6%8E%92"><span class="toc-text">结果安排</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9B%A2%E9%98%9F%EF%BC%9A%E6%B2%A1%E6%9C%89%E6%B1%87%E6%8A%A5%E7%BA%BF%E7%9A%84%E4%BA%BA%E5%92%8C%E4%BA%8B%E5%B0%B1%E6%98%AF%E6%8E%A8%E4%B8%8D%E5%8A%A8%EF%BC%9F"><span class="toc-text">跨团队：没有汇报线的人和事就是推不动？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%A8%E5%9B%A2%E9%98%9F%E4%BA%8B%E5%8A%A1%E6%8E%A8%E8%BF%9B%E7%9A%84%E9%9A%BE%E7%82%B9"><span class="toc-text">跨团队事务推进的难点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%A8%E5%9B%A2%E9%98%9F%E4%BA%8B%E5%8A%A1%E6%8E%A8%E8%BF%9B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%81%E5%BA%A6"><span class="toc-text">跨团队事务推进的基本态度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%A8%E5%9B%A2%E9%98%9F%E4%BA%8B%E5%8A%A1%E6%8E%A8%E8%BF%9B%E7%9A%84%E5%8E%9F%E5%88%99%E6%96%B9%E6%B3%95"><span class="toc-text">跨团队事务推进的原则方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%81%9A%E8%A7%84%E5%88%92%EF%BC%9A%E9%99%A4%E4%BA%86%E4%BA%A4%E4%BB%98%E5%92%8C%E7%A8%B3%E5%AE%9A%E6%80%A7%EF%BC%8C%E8%BF%98%E8%A6%81%E8%A7%84%E5%88%92%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">做规划：除了交付和稳定性，还要规划什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%9A%E8%A7%84%E5%88%92%E8%A6%81%E8%80%83%E8%99%91%E5%9B%A2%E9%98%9F%E7%8E%B0%E7%8A%B6"><span class="toc-text">做规划要考虑团队现状</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%A0%E7%9A%84%E8%A7%84%E5%88%92%E4%B8%AD%E5%8C%85%E5%90%AB%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">你的规划中包含了什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E7%BB%93%E6%9E%9C"><span class="toc-text">业务结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%88%9B%E6%96%B0"><span class="toc-text">技术创新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A2%E9%98%9F%E5%BB%BA%E8%AE%BE"><span class="toc-text">团队建设</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E5%88%92%E8%90%BD%E5%9C%B0%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98%E4%B8%8E%E6%80%9D%E8%B7%AF"><span class="toc-text">规划落地时的问题与思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E6%89%8B%E6%96%B0%E5%9B%A2%E9%98%9F%EF%BC%9A%E5%A3%AB%E6%B0%94%E4%BD%8E%E3%80%81%E4%BA%A4%E4%BB%98%E8%BF%9F%E3%80%81%E4%BA%8B%E6%95%85%E5%A4%9A%E5%8F%91%EF%BC%8C%E5%A6%82%E4%BD%95%E4%B8%8B%E6%89%8B%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-text">接手新团队：士气低、交付迟、事故多发，如何下手解决？</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
   
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>成为会带团队的技术人</div>
-      <div>https://blog.puresai.com/2021/02/14/318/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>puresai</div>
-        </div>
-      
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
+</script>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2021/02/27/319/" title="go的GC机制">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">go的GC机制</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2021/02/13/310/" title="git知识汇总">
-                        <span class="hidden-mobile">git知识汇总</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-  <article id="comments" lazyload>
-    
-  <script type="text/javascript">
-    Fluid.utils.loadComments('#comments', function() {
-      var light = 'github-light';
-      var dark = 'github-dark';
-      var schema = document.documentElement.getAttribute('data-user-color-scheme');
-      if (schema === 'dark') {
-        schema = dark;
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
       } else {
-        schema = light;
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
       }
-      window.UtterancesThemeLight = light;
-      window.UtterancesThemeDark = dark;
-      var s = document.createElement('script');
-      s.setAttribute('src', 'https://utteranc.es/client.js');
-      s.setAttribute('repo', 'puresai/puresai.github.io');
-      s.setAttribute('issue-term', 'url');
-      
-      s.setAttribute('label', 'utterances');
-      
-      s.setAttribute('theme', schema);
-      s.setAttribute('crossorigin', 'anonymous');
-      document.getElementById('comments').appendChild(s);
-    })
-  </script>
-  <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-  </article>
-
-
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/mermaid/8.14.0/mermaid.min.js', function() {
-    mermaid.initialize({"theme":"default"});
-  });
-</script>
-
-
-
-
-  <!-- Custom -->
-  <div class="col-lg-7 mx-auto nopadding-x-md">
-    <div class="container custom post-custom mx-auto">
-      <img src="/images/qiniu/zan.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block" style="height:300px;">
-    </div>
-  </div>
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <span>2015 ~ 2024</span> <i class="iconfont icon-copyright"></i> <a href="https://hexo.io/" target="_blank"><span>Powered by Hexo</span></a> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Theme is Fluid</span></a>
-    </div>
-  
-  
-  
-  
-</div>
-
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/jquery/3.6.0/jquery.min.js" ></script>
-<script  src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/bootstrap/4.6.0/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-
-
-
-  
-
-  
-
-  
-    <!-- Google gtag.js -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBCEG2QCJD"></script>
-    <script defer>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-YBCEG2QCJD');
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-y/tocbot/4.18.2/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
-      scrollSmooth    : true,
-      headingsOffset  : -boardTop
-    });
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-  });
-</script>
-
-
-  <script>
-  (function() {
-    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
-    var enableCopy = CONFIG.copy_btn;
-    if (!enableLang && !enableCopy) {
-      return;
-    }
-
-    function getBgClass(ele) {
-      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
-    }
-
-    var copyTmpl = '';
-    copyTmpl += '<div class="code-widget">';
-    copyTmpl += 'LANG';
-    copyTmpl += '</div>';
-    jQuery('.markdown-body pre').each(function() {
-      var $pre = jQuery(this);
-      if ($pre.find('code.mermaid').length > 0) {
-        return;
-      }
-      if ($pre.find('span.line').length > 0) {
-        return;
-      }
-
-      var lang = '';
-
-      if (enableLang) {
-        lang = CONFIG.code_language.default;
-        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
-          lang = $pre[0].children[0].classList[1];
-        } else if ($pre[0].getAttribute('data-language')) {
-          lang = $pre[0].getAttribute('data-language');
-        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
-          lang = $pre[0].children[0].classList[1];
-          $pre.parent().addClass('code-wrapper');
-        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
-          $pre.wrap('<div class="code-wrapper"></div>');
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
         }
-        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
       }
-      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
-        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
 
-      if (enableCopy) {
-        Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/clipboard.js/2.0.10/clipboard.min.js', function() {
-          var clipboard = new window.ClipboardJS('.copy-btn', {
-            target: function(trigger) {
-              var nodes = trigger.parentNode.childNodes;
-              for (var i = 0; i < nodes.length; i++) {
-                if (nodes[i].tagName === 'CODE') {
-                  return nodes[i];
-                }
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
               }
             }
-          });
-          clipboard.on('success', function(e) {
-            e.clearSelection();
-            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
-            setTimeout(function() {
-              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
-            }, 2000);
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
           });
         });
       }
-    });
-  })();
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
 </script>
 
 
-  
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
 <script>
-  Fluid.utils.createScript('https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-y/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
     }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
     }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
     }
-    window.anchors.add(res.join(', '));
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
   });
 </script>
 
 
-  
-<script>
-  Fluid.utils.createScript('https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/fancybox/3.5.6/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
+<!-- inject -->
 
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
-</body>
-</html>
+</div></body></html>
